@@ -1,0 +1,4 @@
+Gapminder dataset (via plotly/datasets, CC-BY by Gapminder Foundation)
+URL: https://raw.githubusercontent.com/plotly/datasets/master/gapminder_with_codes.csv
+列: country, continent, year, lifeExp, pop, gdpPercap, iso_alpha, iso_num
+教材では最新年(2007)を抽出して国別クラスタリングに使用。

@@ -1,0 +1,13 @@
+Inside Airbnb: Tokyo（2026-06-30 取得分）
+出典: Inside Airbnb（http://insideairbnb.com/）, "Tokyo, Kantō, Japan", listings.csv.gz（詳細版）
+URL: https://data.insideairbnb.com/japan/kantō/tokyo/2026-06-30/data/listings.csv.gz
+ライセンス: Creative Commons Attribution 4.0 International (CC BY 4.0)。出典の表示を要する。
+
+加工内容:
+- 教材で使う16列だけを残した（地区・部屋のタイプ・建物のタイプ・定員・寝室数・ベッド数・
+  バスルーム数とその表記・最低宿泊数・年間の予約可能日数・レビュー数・レビューの点数・
+  1か月あたりのレビュー数・スーパーホストか・ホストの掲載数・1泊の料金）。
+- 掲載の ID・URL、ホストの名前・紹介文・写真、物件の説明文・緯度経度など、個人や物件の
+  特定につながる列はすべて外した。
+- price は "$" と "," を除いて数値（円、整数）にした。料金が空欄の掲載（元データの約6%）は除いた。
+- それ以外の値（欠測を含む）は元データのまま。

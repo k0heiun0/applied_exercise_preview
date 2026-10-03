@@ -1,0 +1,5 @@
+Bike Sharing Dataset (UCI ML Repository, id=275)
+出典: Fanaee-T, Hadi, and Gama, Joao (2013). 'Event labeling combining ensemble
+detectors and background knowledge', Progress in Artificial Intelligence.
+URL: https://archive.ics.uci.edu/dataset/275/bike+sharing+dataset
+教材利用にあたり上記文献を引用すること。

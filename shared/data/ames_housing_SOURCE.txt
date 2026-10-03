@@ -1,0 +1,12 @@
+Ames Housing Data
+出典: De Cock, D. (2011). Ames, Iowa: Alternative to the Boston Housing Data as an End of
+Semester Regression Project. Journal of Statistics Education, 19(3).
+URL: https://jse.amstat.org/v19n3/decock/AmesHousing.txt
+    （変数の説明: https://jse.amstat.org/v19n3/decock/DataDocumentation.txt）
+元データは Ames 市（米国アイオワ州）の資産評価事務所の記録（2006〜2010年の住宅の売買 2,930件）。
+
+加工内容:
+- タブ区切りをカンマ区切りの CSV にした。
+- 通し番号（Order）と区画番号（PID）の2列を外した。それ以外の80列は元データのまま。
+- 欠測（NA）の多くは「その設備がない」ことを表す（例: Pool QC の NA＝プールなし）。
+  詳しくは上記の変数の説明を参照。

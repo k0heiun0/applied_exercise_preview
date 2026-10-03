@@ -1,0 +1,4 @@
+Heart Disease Dataset (UCI ML Repository, id=45, Cleveland)
+出典: Detrano, R. et al. / UCI Machine Learning Repository.
+URL: https://archive.ics.uci.edu/dataset/45/heart+disease
+processed.cleveland.data を整形。target: 1=心臓病あり(num>0), 0=なし。'?'は欠損。

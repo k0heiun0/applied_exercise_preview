@@ -1,0 +1,9 @@
+MovieLens ml-latest-small から生成した ジャンル×年代 クロス集計表
+出典: F. Maxwell Harper and Joseph A. Konstan (2015). The MovieLens Datasets.
+URL: https://grouplens.org/datasets/movielens/ (研究・教育利用可)
+movies.csv のジャンル(複数)と公開年代(10年区切り)を集計。上位10ジャンル×主要年代。
+【再配布について】本ファイルは movies.csv のジャンル欄と公開年から数え上げた
+10ジャンル×9年代のカウント表であり、MovieLens の生データ（評価値・ユーザー情報・
+個別作品行）は一切含まない派生集計である。GroupLens は生データの公開再配布を
+許可していない（"We typically do not permit public redistribution."）ため、
+ml-latest-small 本体はリポジトリに置かず、この集計表のみを配布する。
