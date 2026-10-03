@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①気になる列の例" class="slide level2">
 <h2>TODO①：気になる列の例</h2>
-<div id="9d11b0de" class="cell" data-execution_count="2">
+<div id="b528095d" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>      temp  atemp
 mean  0.50   0.47
@@ -1083,7 +1083,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="todo①もう1つの癖" class="slide level2">
 <h2>TODO①：もう1つの癖</h2>
-<div id="63efad63" class="cell" data-execution_count="3">
+<div id="e24ed52e" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>season
 1    181
@@ -1098,7 +1098,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="todo②湿度で描いた例" class="slide level2">
 <h2>TODO②：湿度で描いた例</h2>
-<div id="60a28da3" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="4">
+<div id="b77e683d" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>plt.scatter(df[<span class="st">&#39;hum&#39;</span>], df[<span class="st">&#39;cnt&#39;</span>], s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
 <span id="cb3-2"><a href aria-label="2"></a>plt.xlabel(<span class="st">&#39;湿度 hum（0〜1）&#39;</span>)</span>
 <span id="cb3-3"><a href aria-label="3"></a>plt.ylabel(<span class="st">&#39;利用台数 cnt&#39;</span>)</span>
@@ -1114,7 +1114,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="湿度と台数はどんな関係" class="slide level2">
 <h2>湿度と台数は、どんな関係？</h2>
-<div id="b695fe00" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="5">
+<div id="733723ee" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1129,7 +1129,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="右端だけ少ない" class="slide level2">
 <h2>右端だけ、少ない</h2>
-<div id="2b18db18" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="6">
+<div id="1949867a" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1144,7 +1144,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="右端は曇りか雨雪の日" class="slide level2">
 <h2>右端は、曇りか雨・雪の日</h2>
-<div id="7bef7a17" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="7">
+<div id="e210bebf" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1159,7 +1159,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="全体では相関は弱い" class="slide level2">
 <h2>全体では、相関は弱い</h2>
-<div id="2a687059" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="8">
+<div id="d793542e" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1174,7 +1174,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="todo③晴れと雨雪" class="slide level2">
 <h2>TODO③：晴れと雨・雪</h2>
-<div id="f0cc60fb" class="cell" data-execution_count="9">
+<div id="4ac1bc0c" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>sunny <span class="op">=</span> df[df[<span class="st">&#39;weathersit&#39;</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
 <span id="cb4-2"><a href aria-label="2"></a>rainy <span class="op">=</span> df[df[<span class="st">&#39;weathersit&#39;</span>] <span class="op">==</span> <span class="dv">3</span>]</span>
 <span id="cb4-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;晴れ   日数:&#39;</span>, <span class="bu">len</span>(sunny), <span class="st">&#39; 平均台数:&#39;</span>, <span class="bu">round</span>(sunny[<span class="st">&#39;cnt&#39;</span>].mean()))</span>
@@ -1190,7 +1190,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="雨雪の日は晴れの日の半分以下" class="slide level2">
 <h2>雨・雪の日は、晴れの日の半分以下</h2>
-<div id="8d4c56ca" class="cell" data-execution_count="10">
+<div id="26fb0861" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>晴れ   日数: 463  平均台数: 4877
 雨・雪 日数: 21  平均台数: 1803</code></pre>
@@ -1202,7 +1202,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="でも雨雪の日は21日だけ" class="slide level2">
 <h2>でも、雨・雪の日は21日だけ</h2>
-<div id="c025d66a" class="cell" data-execution_count="11">
+<div id="de1a0b61" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>晴れ   日数: 463  平均台数: 4877
 雨・雪 日数: 21  平均台数: 1803</code></pre>
@@ -1214,7 +1214,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="todo④分け方の例" class="slide level2">
 <h2>TODO④：分け方の例</h2>
-<div id="658e6148" class="cell" data-execution_count="12">
+<div id="39440a4d" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a><span class="cf">for</span> keys <span class="kw">in</span> [[<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;yr&#39;</span>, <span class="st">&#39;mnth&#39;</span>],</span>
 <span id="cb8-2"><a href aria-label="2"></a>             [<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;yr&#39;</span>, <span class="st">&#39;season&#39;</span>],</span>
 <span id="cb8-3"><a href aria-label="3"></a>             [<span class="st">&#39;mnth&#39;</span>, <span class="st">&#39;yr&#39;</span>, <span class="st">&#39;weathersit&#39;</span>]]:</span>
@@ -1231,7 +1231,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="todo④どこまで縮む" class="slide level2">
 <h2>TODO④：どこまで縮む？</h2>
-<div id="d12029d2" class="cell" data-execution_count="13">
+<div id="d2bbc3ef" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-stdout">
 <pre><code>4 列 → 408 台 ／ 1日だけのグループ 101 個
 5 列 → 214 台 ／ 1日だけのグループ 323 個</code></pre>
@@ -1243,7 +1243,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="縮むほど疑う" class="slide level2">
 <h2>縮むほど、疑う</h2>
-<div id="8db056df" class="cell" data-execution_count="14">
+<div id="11227d5a" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>4 列 → 408 台 ／ 1日だけのグループ 101 個
 5 列 → 214 台 ／ 1日だけのグループ 323 個</code></pre>
@@ -1261,7 +1261,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="応用①時刻ごとに集計する" class="slide level2 fit-90">
 <h2>応用①：時刻ごとに集計する</h2>
-<div id="31f40856" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="15">
+<div id="0f2641c8" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a>hour <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/bike_hour.csv&#39;</span>)</span>
 <span id="cb12-2"><a href aria-label="2"></a>by_hr <span class="op">=</span> hour.groupby(<span class="st">&#39;hr&#39;</span>)[<span class="st">&#39;cnt&#39;</span>].mean()</span>
 <span id="cb12-3"><a href aria-label="3"></a>by_hr.plot(marker<span class="op">=</span><span class="st">&#39;o&#39;</span>, color<span class="op">=</span><span class="st">&#39;#0066cc&#39;</span>)</span>
@@ -1279,7 +1279,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="日の中でどう変わる" class="slide level2">
 <h2>1日の中で、どう変わる？</h2>
-<div id="66a03588" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="16">
+<div id="ab72b39a" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1294,7 +1294,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="山が2つある" class="slide level2">
 <h2>山が2つある</h2>
-<div id="c41809d8" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="17">
+<div id="f012d346" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1309,7 +1309,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="応用②最も多い時刻" class="slide level2">
 <h2>応用②：最も多い時刻</h2>
-<div id="3ffa8245" class="cell" data-execution_count="18">
+<div id="07e958fd" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;最大の平均台数:&#39;</span>, <span class="bu">round</span>(by_hr.<span class="bu">max</span>(), <span class="dv">1</span>))</span>
 <span id="cb13-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;答え:&#39;</span>, <span class="bu">int</span>(by_hr.idxmax()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1323,7 +1323,7 @@ std   0.18   0.16</code></pre>
 </section>
 <section id="目で見ずコードで取り出す" class="slide level2">
 <h2>目で見ず、コードで取り出す</h2>
-<div id="f28435a1" class="cell" data-execution_count="19">
+<div id="5608f28f" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>hr
 16    312.0

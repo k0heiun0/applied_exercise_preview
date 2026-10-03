@@ -2483,7 +2483,7 @@ Gentoo        124      0          0</code></pre>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>測定値だけでは、平均0.975。区分の列を入れた0.993より下がります。区分の列（島・性別）は役に立っていました。</p>
-<p>ただし、ここでは島と性別を両方外したので、どちらが役に立ったのかは、この比べ方だけでは分けられません。1節のクロス集計（ChinstrapはDream島だけ、GentooはBiscoe島だけ）から見て、主に島だろうと考えられます。</p>
+<p>ただし、ここでは島と性別を両方外したので、どちらが役に立ったのかは、この比べ方だけでは分けられません。1節のクロス集計（ChinstrapはDream島だけ、GentooはBiscoe島だけ）から、島が役に立った見込みはあります。でも、まだ確かめてはいません。確かめるなら、島だけ・性別だけを測定値に足して、交差検証で比べます。</p>
 <hr>
 </section>
 </section>
@@ -2497,7 +2497,7 @@ Gentoo        124      0          0</code></pre>
 <li>入力：<code>gs</code>、テストデータ</li>
 <li>出力：正解率と、3行3列の混同行列</li>
 </ul>
-<p>テストを使うのは、ここで一度だけです。テストは、最後まで取っておく本番でした（第2回）。何度もテストを見てモデルを直すと、テストに合わせこんでしまいます。</p>
+<p>テストを使うのは、ここで一度だけです。テストは、最後まで取っておく本番でした（第2回）。何度もテストを見てモデルを直すと、テストに合わせこんでしまいます。7節でもう一度テストの数を出しますが、それは同じ計算を関数で書き直して、同じ数が出るかを見るだけです。モデルを選び直すことはしません。</p>
 <div id="af416d66" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">&#39;Adelie&#39;</span>, <span class="st">&#39;Chinstrap&#39;</span>, <span class="st">&#39;Gentoo&#39;</span>]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(gs.score(X_te, y_te), <span class="dv">3</span>))</span>
@@ -2524,40 +2524,40 @@ Gentoo        124      0          0</code></pre>
 </section>
 <section id="どの測定が役立ったか係数と散布図" class="level2">
 <h2 class="anchored" data-anchor-id="どの測定が役立ったか係数と散布図">5. どの測定が役立ったか：係数と散布図</h2>
-<p>3種は見分けられたので、残る問いは、どの測定が見分けに役立つかです。3種の分類のロジスティック回帰は、種ごとに1組の係数を持ちます。Adelieの係数は「Adelieらしさ」を、Gentooの係数は「Gentooらしさ」を決めます。測定値の4本は標準化されているので、その4本どうしなら、係数の大きさ（絶対値）で比べられます（第4回）。島と性別のワンホットの列は0/1のままで、標準化されていません。単位が違うので、測定値の係数と大きさをそのまま比べることはできません。</p>
+<p>3種は見分けられたので、残る問いは、どの測定が見分けに役立つかです。3種の分類のロジスティック回帰は、種ごとに1組の係数を持ちます。Adelieの係数は「Adelieらしさ」を、Gentooの係数は「Gentooらしさ」を決めます。測定値の4本は標準化されているので、その4本どうしなら、係数の大きさ（絶対値）で比べられます（第4回）。島と性別のワンホットの列は0/1のままで、標準化されていません。単位が違うので、測定値の係数と大きさをそのまま比べることはできません。だから、ここでは測定値の4本だけを大きい順に並べます。</p>
 <section id="お手本adelieらしさを決める列" class="level3">
 <h3 class="anchored" data-anchor-id="お手本adelieらしさを決める列">お手本：Adelieらしさを決める列</h3>
 <ul>
-<li>役割：選んだモデルから、Adelieの係数を取り出し、絶対値の大きい順に4本を表示する</li>
+<li>役割：選んだモデルから、Adelieの係数を取り出し、測定値の4本を絶対値の大きい順に表示する</li>
 <li>入力：<code>gs.best_estimator_</code></li>
 <li>出力：列の名前と係数</li>
 </ul>
-<p><code>named_steps</code>は、パイプラインの部品を名前で取り出す辞書です。<code>coef_[0]</code>は1行目、つまり1番目の種（Adelie）の係数です。<code>np.argsort</code>は小さい順の並び順を返すので、<code>[::-1]</code>で逆にして大きい順にします。</p>
-<div id="9801490b" class="cell" data-execution_count="13">
+<p><code>named_steps</code>は、パイプラインの部品を名前で取り出す辞書です。<code>coef_[0]</code>は1行目、つまり1番目の種（Adelie）の係数です。<code>coef[:4]</code>は先頭の4本で、測定値（<code>num__</code>の列）にあたります。<code>np.argsort</code>は小さい順の並び順を返すので、<code>[::-1]</code>で逆にして大きい順にします。</p>
+<div id="6e0edb3b" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> gs.best_estimator_</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> best.named_steps[<span class="st">&#39;pre&#39;</span>].get_feature_names_out()</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> best.named_steps[<span class="st">&#39;model&#39;</span>].coef_[<span class="dv">0</span>]       <span class="co"># Adelie らしさ</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>top <span class="op">=</span> np.argsort(np.<span class="bu">abs</span>(coef))[::<span class="op">-</span><span class="dv">1</span>][:<span class="dv">4</span>]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>top <span class="op">=</span> np.argsort(np.<span class="bu">abs</span>(coef[:<span class="dv">4</span>]))[::<span class="op">-</span><span class="dv">1</span>]       <span class="co"># 測定値の4本</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> j <span class="kw">in</span> top:</span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>names[j]<span class="sc">:24s}</span><span class="ss"> </span><span class="sc">{</span>coef[j]<span class="sc">:+.2f}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>num__bill_length_mm      -4.43
 num__bill_depth_mm       +1.88
-cat__island_Torgersen    +1.38
-cat__sex_Male            +0.77</code></pre>
+num__flipper_length_mm   -0.50
+num__body_mass_g         +0.41</code></pre>
 </div>
 </div>
-<p>係数がいちばん大きいのはくちばしの長さ（−4.43）。マイナスなので、「くちばしが短いほどAdelieらしい」です。次がくちばしの深さ（＋1.88）、Torgersen島（＋1.38）と続きます。1節の平均（Adelieはくちばしが短い）と合っています。</p>
+<p>絶対値がいちばん大きいのはくちばしの長さ（−4.43）。マイナスなので、「くちばしが短いほどAdelieらしい」です。次がくちばしの深さ（＋1.88）です。1節の平均（Adelieはくちばしが短い）と合っています。</p>
 </section>
 <section id="todo④gentooらしさを決める列" class="level3">
 <h3 class="anchored" data-anchor-id="todo④gentooらしさを決める列">TODO④：Gentooらしさを決める列</h3>
-<p>お手本をまねて、Gentoo（3番目の種、<code>coef_[2]</code>）の係数を、絶対値の大きい順に4本表示してください。</p>
-<div id="66f715f2" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Gentoo の係数を、絶対値の大きい順に4本表示する</span></span>
+<p>お手本をまねて、Gentoo（3番目の種、<code>coef_[2]</code>）の測定値の係数を、絶対値の大きい順に表示してください。</p>
+<div id="4da41445" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Gentoo の測定値の係数を、絶対値の大きい順に表示する</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の coef_[0] を coef_[2] に変える</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Gentooらしさで係数がいちばん大きいのはくちばしの深さ（−2.15）。「くちばしが浅いほどGentooらしい」です。次がBiscoe島（＋1.65）。1節の平均（Gentooはくちばしが浅い）とクロス集計（GentooはBiscoe島だけ）の両方と合っています。</p>
+<p>Gentooらしさで絶対値がいちばん大きいのはくちばしの深さ（−2.15）。マイナスなので、「くちばしが浅いほどGentooらしい」です。1節の平均（Gentooはくちばしが浅い）と合っています。</p>
 <div id="94e9a4ed" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
@@ -2634,7 +2634,7 @@ cat__sex_Male            +0.77</code></pre>
 <pre><code>交差検証 0.996</code></pre>
 </div>
 </div>
-<p>交差検証は0.996。3節と同じ数が、3行で出ました。<code>load</code>の中の<code>df</code>は、関数の中だけの名前です。外の<code>df</code>を書きかえることはありません。</p>
+<p>交差検証は0.996。3節のGridSearchCV（C＝10）と同じ数が、3行で出ました。<code>load</code>の中の<code>df</code>は、関数の中だけの名前です。外の<code>df</code>を書きかえることはありません。</p>
 </section>
 <section id="変えてみるcを変えて交差検証で比べる" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるcを変えて交差検証で比べる">変えてみる：Cを変えて、交差検証で比べる</h3>
@@ -2657,7 +2657,7 @@ cat__sex_Male            +0.77</code></pre>
 <pre><code>テスト 0.986</code></pre>
 </div>
 </div>
-<p>テストは0.986。4節と同じ数です。</p>
+<p>テストは0.986。4節と同じ数です。4節の計算を関数で書き直しただけで、モデルを選び直してはいません。</p>
 <p>このように、定義（部品）と呼び出し（手順）を分けて書くと、条件を変えたやり直しが楽になり、読む人にも流れが見えます。課題では、この関数を使って、くちばしの長さを外した場合を試します。</p>
 <hr>
 </section>

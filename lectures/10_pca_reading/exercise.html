@@ -2626,16 +2626,19 @@ dtype: float64</code></pre>
 <section id="todo③ホンダシビックを探す" class="level3">
 <h3 class="anchored" data-anchor-id="todo③ホンダシビックを探す">TODO③：ホンダ・シビックを探す</h3>
 <p>名前に<code>&#39;honda civic&#39;</code>を含む車をすべて探し、年式（<code>model_year</code>）と、PC1・PC2、燃費を表示してください。シビックは、地図のどこにいますか。</p>
-<div id="455e5f70" class="cell" data-execution_count="15">
+<p><code>cars[&#39;name&#39;].str.contains(&#39;toyota&#39;)</code>は、名前に<code>&#39;toyota&#39;</code>を含むかのTrue/Falseを返します。<code>cars[ ]</code>にTrue/Falseの並びを入れると、Trueの行だけが残ります。</p>
+<div id="079d35da" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 名前に &#39;honda civic&#39; を含む車を探して表示する</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cars[cars[&#39;name&#39;].str.contains(&#39;honda civic&#39;)]</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: civic = cars[cars[&#39;name&#39;].str.contains(&#39;honda civic&#39;)]</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         civic[[&#39;name&#39;, &#39;model_year&#39;, &#39;PC1&#39;, &#39;PC2&#39;, &#39;mpg&#39;]]</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>シビックは8台。1974年の1台（PC1 −0.99）を除き、PC1は −2.2〜−2.7と、地図の左端近くに並びます。燃費は24〜44.6マイル／ガロンで、いちばんよいのは1980年の1500 GL（44.6）。1982年の2台は38と32です。1500 GLはPC2が −1.68と下（きびきび加速する）にいます。</p>
 </section>
 <section id="todo④地図のいちばん上にいる車" class="level3">
 <h3 class="anchored" data-anchor-id="todo④地図のいちばん上にいる車">TODO④：地図のいちばん上にいる車</h3>
 <p>PC2がいちばん大きい車を探し、名前・製造国・年式・PC1・PC2・加速を表示してください。その車を、読者に一文で紹介してみましょう。</p>
+<p><code>i = cars[&#39;PC1&#39;].idxmax()</code>は、PC1がいちばん大きい値がある行の番号を返します。<code>cars.loc[i]</code>で、その番号の行を1行まるごと取り出せます。</p>
 <div id="cded76e0" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: PC2 がいちばん大きい車を探して表示する</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cars.loc[cars[&#39;PC2&#39;].idxmax()]</span></span>
@@ -2643,7 +2646,7 @@ dtype: float64</code></pre>
 </div>
 <p>1979年のプジョー504（ヨーロッパ）です。PC2は2.91、0→60マイルに24.8秒かかる、ゆったり加速する車です。PC1は −2.04と左寄りで、小さめで燃費もよい（27.2マイル／ガロン）。</p>
 <blockquote class="blockquote">
-<p>答え：392台の車は、「大きさ・パワー」と「加速のゆるやかさ」の2本の軸で、6つの性能の9割を保った地図に並べられる。右のインパラは大きく重いアメリカ車、左のカローラは軽く燃費のよい日本車、上のプジョー504はゆったり加速する車、と地図の位置で説明できる。</p>
+<p>答え：392台の車は、「大きさ・パワー」と「加速のゆるやかさ」の2本の軸で、6つの性能の散らばりの9割を保った地図に並べられる。右のインパラは大きく重いアメリカ車、左のカローラは軽く燃費のよい日本車、上のプジョー504はゆったり加速する車、と地図の位置で説明できる。</p>
 </blockquote>
 <p>まだ言えないことが、2つ残っています。</p>
 <ul>
@@ -2670,7 +2673,7 @@ dtype: float64</code></pre>
 <li>負荷量の大きい列から、主成分に名前（あだ名）をつける</li>
 <li>バイプロットは、得点（点）と負荷量（矢印）を重ねた地図。点の位置で、その行の性格を読む</li>
 <li>矢印の角度は相関の目安。矢印の長さは、2本の軸でその列を保てている度合い（短い矢印の角度は当てにならない）</li>
-<li>累積寄与率とスクリープロットで、残す軸の数を決める（肘の手前まで）</li>
+<li>累積寄与率とスクリープロットで、残す軸の数を決める（肘まで）</li>
 <li>Python：配られたスクリプトは、関数ごとの役割・入力・出力（docstring、引数、return）から読む。使うのに中身の全部は要らない</li>
 </ul>
 <hr>

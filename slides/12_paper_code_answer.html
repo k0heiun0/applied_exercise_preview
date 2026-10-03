@@ -1069,12 +1069,12 @@ margin-right: 0; }
 </section>
 <section id="todo①コードのセルの1行目" class="slide level2 fit-80">
 <h2>TODO①：コードのセルの1行目</h2>
-<div id="6b60d632" class="cell" data-execution_count="2">
+<div id="8b335cd8" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="cf">for</span> i, cell <span class="kw">in</span> <span class="bu">enumerate</span>(nb[<span class="st">&#39;cells&#39;</span>]):</span>
 <span id="cb1-2"><a href aria-label="2"></a>    <span class="cf">if</span> cell[<span class="st">&#39;cell_type&#39;</span>] <span class="op">==</span> <span class="st">&#39;code&#39;</span>:</span>
 <span id="cb1-3"><a href aria-label="3"></a>        <span class="bu">print</span>(i, cell[<span class="st">&#39;source&#39;</span>][<span class="dv">0</span>].strip())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="0a5e8713" class="cell" data-execution_count="3">
+<div id="0816d464" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>1 import re,os                      3 SHP=(30,30,3)
 5 def rescale(a):                   7 import matplotlib.image as mpi
@@ -1098,7 +1098,7 @@ margin-right: 0; }
 </section>
 <section id="todo②外す条件" class="slide level2">
 <h2>TODO②：外す条件</h2>
-<div id="f5372ec8" class="cell" data-execution_count="4">
+<div id="119c9c63" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>([x[:, :, i].<span class="bu">max</span>() <span class="op">==</span> <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)])</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(x.std() <span class="op">!=</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1112,7 +1112,7 @@ True</code></pre>
 </section>
 <section id="todo③90は3個" class="slide level2">
 <h2>TODO③：90%は3個</h2>
-<div id="011e8aeb" class="cell" data-execution_count="5">
+<div id="6723c27d" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>cum <span class="op">=</span> np.cumsum(PCA().fit(norm_data).explained_variance_ratio_)</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(np.argmax(cum <span class="op">&gt;=</span> <span class="fl">0.9</span>) <span class="op">+</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1125,9 +1125,9 @@ True</code></pre>
 </section>
 <section id="todo④2番目のグループ" class="slide level2">
 <h2>TODO④：2番目のグループ</h2>
-<div id="7b5d333d" class="cell" data-execution_count="6">
+<div id="12485723" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>second <span class="op">=</span> indexes[clust.labels_ <span class="op">==</span> sizes.index[<span class="dv">1</span>]]</span>
-<span id="cb7-2"><a href aria-label="2"></a>make_image(second[:<span class="dv">30</span>], (<span class="dv">3</span>, <span class="dv">10</span>))</span>
+<span id="cb7-2"><a href aria-label="2"></a>make_image(second[:<span class="dv">30</span>], (<span class="dv">5</span>, <span class="dv">6</span>))</span>
 <span id="cb7-3"><a href aria-label="3"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
@@ -1141,7 +1141,7 @@ True</code></pre>
 </section>
 <section id="応用①回転をそろえない" class="slide level2 fit-80">
 <h2>応用①：回転をそろえない</h2>
-<div id="3754e95f" class="cell" data-execution_count="7">
+<div id="73f1d405" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a>L, U <span class="op">=</span> np.quantile(raw_data, [<span class="dv">0</span>, <span class="fl">.99</span>])</span>
 <span id="cb8-2"><a href aria-label="2"></a>clip_only <span class="op">=</span> np.clip(raw_data, L, U)        <span class="co"># 回転をそろえない</span></span>
 <span id="cb8-3"><a href aria-label="3"></a>pca_r <span class="op">=</span> PCA(<span class="fl">.96</span>).fit(clip_only)</span>
@@ -1161,7 +1161,7 @@ True</code></pre>
 </section>
 <section id="応用②主成分の数" class="slide level2">
 <h2>応用②：主成分の数</h2>
-<div id="c81a9032" class="cell" data-execution_count="8">
+<div id="dac22379" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 14</code></pre>
 </div>
@@ -1173,7 +1173,7 @@ True</code></pre>
 </section>
 <section id="回転をそろえたとき" class="slide level2">
 <h2>回転をそろえたとき</h2>
-<div id="b12c8fec" class="cell" data-execution_count="9">
+<div id="638fd6e9" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1188,7 +1188,7 @@ True</code></pre>
 </section>
 <section id="そろえないとき" class="slide level2">
 <h2>そろえないとき</h2>
-<div id="f68d6cd6" class="cell" data-execution_count="10">
+<div id="0b087754" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1208,13 +1208,14 @@ True</code></pre>
 <li>そのぶん、固有銀河の数が増える</li>
 </ul>
 </section>
-<section id="応用③模範例" class="slide level2">
+<section id="応用③模範例" class="slide level2 fit-90">
 <h2>応用③：模範例</h2>
 <div class="callout callout-none no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
 <p>回転をそろえたときは10個の固有銀河で96%を表せましたが、そろえないと14個が要りました。そろえないときの固有銀河には、同じ伸びた形を、いろいろな向きで表すための成分が混ざります。</p>
-<p>「銀河の形は十数枚の固有銀河で表せる」という論文の主張は、向きをそろえる前処理があってこそ成り立つので、この1段は省けません。</p>
+<p>向きが違うだけの同じ形を、別々の成分で表すことになるので、そのぶん固有銀河の数が増えます。回転をそろえると、同じ96%に要る数が14個から10個に減ります。</p>
+<p>論文の「約12個」という少なさは、向きをそろえる段を含めた数です。論文の数と比べるときは、この1段を省かずに再現する必要があります。</p>
 </div>
 </div>
 </div>
@@ -1222,9 +1223,9 @@ True</code></pre>
 <section id="書き方の型" class="slide level2">
 <h2>書き方の型</h2>
 <ul>
-<li>1文目：数で比べる（10個と14個）</li>
-<li>2文目：固有銀河の形の違い</li>
-<li>3文目：論文の主張にとっての意味</li>
+<li>1段落目：数で比べる（10個と14個）。固有銀河の形の違い</li>
+<li>2段落目：なぜ数が増えるか</li>
+<li>3段落目：論文の数にとっての意味</li>
 </ul>
 </section></section>
 <section>

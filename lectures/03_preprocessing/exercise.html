@@ -2543,7 +2543,7 @@ True               2.0  15960.0
 <li>行を落とす：どこかが欠けた部屋を丸ごと使わない。手軽だが、データが減る</li>
 <li>補う（補完）：欠けた値を、訓練データの中央値などで埋める。データは減らない</li>
 </ul>
-<p>中央値を使うのは、極端な値に引きずられにくいからです（寝室数には50という値も混ざっています）。ただし、補った値はあくまで推測です。寝室数が欠けた部屋は小さい部屋に偏っていたので、中央値（寝室1）は、その部屋の本当の値とずれているかもしれません。だから、印の列を残しておきます。</p>
+<p>中央値を使うのは、極端な値に引きずられにくいからです（寝室数はほとんどが1か2ですが、10の部屋も混ざっています）。ただし、補った値はあくまで推測です。寝室数が欠けた部屋は小さい部屋に偏っていたので、中央値（寝室1）は、その部屋の本当の値とずれているかもしれません。だから、印の列を残しておきます。</p>
 </section>
 <section id="お手本訓練の中央値で補う" class="level3">
 <h3 class="anchored" data-anchor-id="お手本訓練の中央値で補う">お手本：訓練の中央値で補う</h3>
@@ -2577,7 +2577,7 @@ dtype: float64</code></pre>
 </section>
 <section id="変えてみる落とした場合と補った場合を比べる" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる落とした場合と補った場合を比べる">変えてみる：落とした場合と、補った場合を比べる</h3>
-<p>同じ線形回帰の式を、欠けた行を落として作った場合と、中央値で補って作った場合で比べます。2節の<code>mae</code>を2回呼ぶだけです。</p>
+<p>同じ線形回帰の式を、欠けた行を落として作った場合と、中央値で補って作った場合で比べます。2節の<code>mae</code>を2回呼ぶだけです。違うのは訓練の扱いだけで、テストはどちらも、お手本で訓練の中央値を使って補った<code>X_te</code>で測ります。</p>
 <p><code>notna()</code>は欠けていないマスをTrueで表し、<code>.all(axis=1)</code>は1行ずつ、その行の列が全部Trueかを調べます。<code>axis=1</code>は「行ごとに、列をまたいでまとめる」という意味です（5節で使う<code>axis=0</code>は「列ごとに、行をまたいでまとめる」）。最後の行の<code>coef_[-1]</code>は、係数の並びの最後（ここでは印の列）の係数です。<code>[-1]</code>は、後ろから1つ目を取り出します。</p>
 <div id="d448db10" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> tr[num].notna().<span class="bu">all</span>(axis<span class="op">=</span><span class="dv">1</span>).values      <span class="co"># 欠けのない行は True</span></span>
@@ -2595,8 +2595,8 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>行を落とすと、訓練21,146件のうち使えるのは19,321件だけで、8.6%（1,825件）を捨てることになります。外れ幅は8,822円。中央値で補うと8,807円で、少しだけ良くなりました。どちらも基準の10,756円から2千円近く縮んでいます。</p>
-<p>差は小さくても、補うやり方には大きな利点があります。新しいホストが寝室数を書き忘れていても、落とすやり方では値付けそのものができませんが、補うやり方なら答えを返せます。</p>
-<p>印の列の係数は−140円でした。定員などがそろっていれば、寝室数が欠けていた部屋だけが特に安い、というわけではないようです。欠けた部屋が安く見えたのは、主に定員が小さいからでした。このデータでは、中央値で補っても大きな問題はないと言えそうです。印を残したおかげで、そのことを確かめられました。</p>
+<p>差は小さくても、補うやり方には利点があります。新しいホストが寝室数を書き忘れていたら、どちらのやり方でも、値付けするには補うしかありません（テストもそうして測りました）。それなら訓練でも同じように補えば、データを捨てずに済みます。</p>
+<p>印の列の係数は−140円でした。定員などがそろっていれば、寝室数が欠けていた部屋だけが特に安い、というわけではないようです。欠けた部屋が安く見えたのは、主に定員が小さいからでした。このデータでは、中央値で補っても、式が大きくゆがむことはなさそうです。印を残したおかげで、そのことを確かめられました。</p>
 <p>scikit-learnの<code>SimpleImputer(strategy=&#39;median&#39;)</code>も、同じことをする道具です。訓練で<code>fit</code>すると、<code>statistics_</code>に中央値が入ります。</p>
 <div id="ad4bb980" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>imp <span class="op">=</span> SimpleImputer(strategy<span class="op">=</span><span class="st">&#39;median&#39;</span>).fit(tr[num])</span>
@@ -2691,7 +2691,7 @@ Name: neighbourhood, dtype: int64</code></pre>
 </div>
 </div>
 <p>アルファベット順に番号を振ると外れ幅は8,708円、部屋の多い順では8,748円です。外れ幅の差は40円ほどですが、番号の係数を見ると、アルファベット順では番号が1増えると+114円、部屋の多い順では−216円と、向きまで逆になっています。同じ地区の情報なのに、番号の振り方を変えただけで、式の読み方が変わってしまうのです。</p>
-<p>式は「番号が1増えると料金がいくら変わる」と、番号の大小に意味があるかのように読みます。でも、アルファベット順で足立区が1番になる、といった番号には、そんな意味はありません（第1回の「数値の顔をした区分」と同じ問題です）。番号なし（3節の8,807円）より外れ幅が少し縮んでも、こう読めてしまう式では、値付けの理由を説明できません。</p>
+<p>式は「番号が1増えると料金がいくら変わる」と、番号の大小に意味があるかのように読みます。でも、アルファベット順で足立区が1番になる、といった番号には、そんな意味はありません（第1回の「区分の番号」と同じ問題です）。番号なし（3節の8,807円）より外れ幅が少し縮んでも、こう読めてしまう式では、値付けの理由を説明できません。</p>
 <p>文字の区分を式に入れる方法もありますが、注意点が多くあります。今日は地区を式に入れず、数の列だけで進めます。</p>
 <hr>
 </section>
@@ -2729,9 +2729,9 @@ dtype: float64</code></pre>
 </section>
 <section id="おさらいdef" class="level3">
 <h3 class="anchored" data-anchor-id="おさらいdef">おさらい：def</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae(y, pred):          <span class="co"># 引数は y と pred</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.<span class="bu">abs</span>(y <span class="op">-</span> pred).mean())   <span class="co"># 戻り値</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>def</code>の後ろが関数の名前と引数、<code>return</code>の後ろが戻り値です。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> 名前(引数):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> 戻り値</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>def</code>の後ろが関数の名前と引数（入力）、<code>return</code>の後ろが戻り値（出力）です。2節の<code>mae</code>も、この形で作りました。</p>
 </section>
 <section id="変えてみる標準化の関数を作る" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる標準化の関数を作る">変えてみる：標準化の関数を作る</h3>
@@ -2759,7 +2759,7 @@ dtype: float64</code></pre>
 </section>
 <section id="todo③標準化してから似た部屋の平均で答える" class="level3">
 <h3 class="anchored" data-anchor-id="todo③標準化してから似た部屋の平均で答える">TODO③：標準化してから、似た部屋の平均で答える</h3>
-<p>訓練とテストの両方を、訓練の平均と標準偏差で標準化し（<code>standardize</code>を2回呼ぶ）、お手本と同じKNNで外れ幅を表示してください。できたKNNは、あとで使うので<code>knn_sc</code>という名前にします。</p>
+<p>テストも、訓練の平均と標準偏差で標準化し（訓練の<code>Z_tr</code>は上のセルで作りました）、お手本と同じKNNで外れ幅を表示してください。できたKNNは<code>knn_sc</code>という名前にします。</p>
 <div id="29b6f632" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Z_te を作り、標準化した訓練で knn_sc を学び、</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       テストの外れ幅を表示する</span></span>

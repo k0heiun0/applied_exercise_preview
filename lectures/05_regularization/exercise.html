@@ -2362,7 +2362,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 <section id="リスト内包表記forを1行で書いてリストを作る" class="level3">
 <h3 class="anchored" data-anchor-id="リスト内包表記forを1行で書いてリストを作る">リスト内包表記：forを1行で書いて、リストを作る</h3>
-<p><code>[式 for 名前 in 並び]</code>と書くと、並びの中身を1つずつ名前に入れて式を計算し、その結果を並べた新しいリストができます。後ろに<code>if 条件</code>を付けると、条件が成り立つものだけが残ります。</p>
+<p><code>[式 for 名前 in 並び]</code>と書くと、並びの中身を1つずつ名前に入れて式を計算し、その結果を並べた新しいリストができます。後ろに<code>if 条件</code>を付けると、条件が成り立つものだけが残ります。第4回で、列を選ぶのに使った形です。</p>
 <div id="6b94f3d2" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([i <span class="op">*</span> <span class="dv">10</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)])            <span class="co"># [0, 10, 20]</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([i <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>) <span class="cf">if</span> i <span class="op">&gt;</span> <span class="dv">0</span>])        <span class="co"># [1, 2]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2514,7 +2514,7 @@ dtype: float64</code></pre>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>αを大きくすると、車庫の台数と車庫の面積の係数は1,477と2,031（α=1）から、3,601と3,994（α=1000）へと、近づいていきます。外れ幅は、α=100で16,744ドルと、正則化なし（16,970ドル）より少し良くなり、α=1000では17,212ドルに悪くなりました。</p>
-<p>でも、おかしくないでしょうか。「αが大きいほど縮む」はずなのに、車庫の2つの係数は、どちらも2倍以上に大きくなっています。大きな係数と並べて確かめます。</p>
+<p>でも、おかしくないでしょうか。「αが大きいほど縮む」はずなのに、車庫の2つの係数は、台数が約2.4倍、面積が約2倍に大きくなっています。大きな係数と並べて確かめます。</p>
 <div id="acd2d20d" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cols5 <span class="op">=</span> [<span class="st">&#39;Gr Liv Area&#39;</span>, <span class="st">&#39;Overall Qual&#39;</span>, <span class="st">&#39;Year Built&#39;</span>,</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Garage Cars&#39;</span>, <span class="st">&#39;Garage Area&#39;</span>]</span>
@@ -2591,10 +2591,13 @@ Garage Area    2031.0   3994.0</code></pre>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>α=10でも2本が0になり、α=1000では13本、α=3000では17本が0になりました。外れ幅は、α=1000で16,663ドルといちばん良く、α=3000では17,499ドルに悪くなりました。罰金を強くしすぎると、役に立つ列まで外してしまうのです。</p>
-<p>どの列が、最初に0になったのでしょうか。</p>
+<p>どの列が、最初に0になったのでしょうか。列の名前と係数を組にして、係数が0の名前だけを残します。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c, v <span class="kw">in</span> <span class="bu">zip</span>([<span class="st">&#39;a&#39;</span>, <span class="st">&#39;b&#39;</span>], [<span class="dv">1</span>, <span class="dv">0</span>]):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(c, v)       <span class="co"># a 1、b 0 と表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>zip</code>は、2つの並びを、同じ順に1組ずつ取り出します。<code>for c, v in</code>で、1組の中身を2つの名前に受け取ります。下のセルでは、列の名前<code>c</code>と係数<code>v</code>を組にして、<code>v == 0</code>の名前だけをリストに残しています。</p>
 <div id="ed54a0ef" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>l10 <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Z_tr, y_tr)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([c <span class="cf">for</span> c, v <span class="kw">in</span> <span class="bu">zip</span>(num, l10.coef_) <span class="cf">if</span> v <span class="op">==</span> <span class="dv">0</span>])    <span class="co"># 0になった列</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>l10 <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Z_tr, y_tr)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>([c <span class="cf">for</span> c, v <span class="kw">in</span> <span class="bu">zip</span>(num, l10.coef_) <span class="cf">if</span> v <span class="op">==</span> <span class="dv">0</span>])    <span class="co"># 0になった列</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;Bsmt Unf SF&#39;, &#39;2nd Flr SF&#39;]</code></pre>
 </div>
@@ -2617,12 +2620,12 @@ Garage Area    2031.0   3994.0</code></pre>
 </ul>
 <p><code>np.logspace(-1, 4, 50)</code>は、0.1から10000までを、かけ算で等しい間隔に50個並べた候補です。<code>cv=5</code>は5分割の交差検証です。</p>
 <div id="17e5643f" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> RidgeCV.__doc__</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> doc.find(<span class="st">&#39;alphas :&#39;</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(doc[i:i <span class="op">+</span> <span class="dv">300</span>])</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>rcv <span class="op">=</span> RidgeCV(alphas<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">50</span>), cv<span class="op">=</span><span class="dv">5</span>).fit(Z_tr, y_tr)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;選んだ α:&#39;</span>, <span class="bu">round</span>(rcv.alpha_, <span class="dv">1</span>))</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;外れ幅:&#39;</span>, mae(y_te, rcv.predict(Z_te)), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>doc <span class="op">=</span> RidgeCV.__doc__</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> doc.find(<span class="st">&#39;alphas :&#39;</span>)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(doc[i:i <span class="op">+</span> <span class="dv">300</span>])</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>rcv <span class="op">=</span> RidgeCV(alphas<span class="op">=</span>np.logspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">50</span>), cv<span class="op">=</span><span class="dv">5</span>).fit(Z_tr, y_tr)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;選んだ α:&#39;</span>, <span class="bu">round</span>(rcv.alpha_, <span class="dv">1</span>))</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;外れ幅:&#39;</span>, mae(y_te, rcv.predict(Z_te)), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>alphas : array-like of shape (n_alphas,), default=(0.1, 1.0, 10.0)
         Array of alpha values to try.
@@ -2638,11 +2641,11 @@ Garage Area    2031.0   3994.0</code></pre>
 <h3 class="anchored" data-anchor-id="変えてみるlassocvで選ぶ">変えてみる：LassoCVで選ぶ</h3>
 <p><code>LassoCV</code>は、αの候補を自分で作ってくれます。<code>cv=5</code>は、RidgeCVと同じく5分割の交差検証です。</p>
 <div id="c84e9eb9" class="cell" data-execution_count="21">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>lcv <span class="op">=</span> LassoCV(cv<span class="op">=</span><span class="dv">5</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Z_tr, y_tr)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>coef_lasso <span class="op">=</span> pd.Series(lcv.coef_, index<span class="op">=</span>num)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;選んだ α:&#39;</span>, <span class="bu">round</span>(lcv.alpha_, <span class="dv">1</span>))</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;外れ幅:&#39;</span>, mae(y_te, lcv.predict(Z_te)), <span class="st">&#39;ドル&#39;</span>)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;0になった列:&#39;</span>, coef_lasso[coef_lasso <span class="op">==</span> <span class="dv">0</span>].index.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>lcv <span class="op">=</span> LassoCV(cv<span class="op">=</span><span class="dv">5</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Z_tr, y_tr)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>coef_lasso <span class="op">=</span> pd.Series(lcv.coef_, index<span class="op">=</span>num)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;選んだ α:&#39;</span>, <span class="bu">round</span>(lcv.alpha_, <span class="dv">1</span>))</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;外れ幅:&#39;</span>, mae(y_te, lcv.predict(Z_te)), <span class="st">&#39;ドル&#39;</span>)</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;0になった列:&#39;</span>, coef_lasso[coef_lasso <span class="op">==</span> <span class="dv">0</span>].index.tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>選んだ α: 193.1
 外れ幅: 16841 ドル
@@ -2651,7 +2654,7 @@ Garage Area    2031.0   3994.0</code></pre>
 </div>
 <p>交差検証で選ばれたαは、Ridgeが約36、Lassoが約193でした（3節で見たとおり、RidgeとLassoのαは物差しが違うので、大きさは比べません）。外れ幅は、正則化なしの16,970ドルから、Ridgeで16,861ドル、Lassoで16,841ドルと、わずかに良くなりました。</p>
 <p>TODO③では、テストの外れ幅が最も良かったのはα=1000でした。交差検証が選んだα（約193）とは違いますが、それでかまいません。交差検証は訓練の中だけで選んでいて、テストの結果に合わせて選び直したら、本番を覗いたことになります。Lassoは、2階の面積・地下の未仕上げの面積・バスルームの数の3本を0にしました。</p>
-<p>当たりは、ほとんど変わりません。正則化の本当の効果は、当たりよりも、係数が説明に使える形になることにあります。</p>
+<p>当たりは、ほとんど変わりません。今回のデータでは、正則化の効果は、当たりよりも、係数が説明に使える形になることにあります。</p>
 <p>なお、ここでは標準化の物差しを訓練データ全体で決めてから交差検証をしています。厳密には、分けるたびに物差しを決め直すべきです（第3回の順番）。今日は、このまま進めます。</p>
 <hr>
 </section>
@@ -2660,10 +2663,10 @@ Garage Area    2031.0   3994.0</code></pre>
 <h2 class="anchored" data-anchor-id="説明に使える係数で査定する">5. 説明に使える係数で、査定する</h2>
 <p>交差検証で選んだLassoは、重なる列を外しました。この係数で、お客さんへの説明を組み立てます。まず、Lassoの係数を、大きい順に見てみます。</p>
 <div id="0d28b817" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ranked <span class="op">=</span> coef_lasso.sort_values(key<span class="op">=</span><span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ranked.<span class="bu">round</span>(<span class="dv">0</span>).head(<span class="dv">8</span>))</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_lasso[[<span class="st">&#39;Gr Liv Area&#39;</span>, <span class="st">&#39;1st Flr SF&#39;</span>,</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;2nd Flr SF&#39;</span>]].<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>ranked <span class="op">=</span> coef_lasso.sort_values(key<span class="op">=</span><span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ranked.<span class="bu">round</span>(<span class="dv">0</span>).head(<span class="dv">8</span>))</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_lasso[[<span class="st">&#39;Gr Liv Area&#39;</span>, <span class="st">&#39;1st Flr SF&#39;</span>,</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">&#39;2nd Flr SF&#39;</span>]].<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Gr Liv Area      29334.0
 Overall Qual     18209.0
@@ -2681,20 +2684,21 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>居住面積が1位、品質が2位です。この上位2つは、第4回の11本の式（標準化した係数）と同じです。3位以下には、地下の仕上げた部分の面積など、今日足した列も入ってきました。</p>
-<p>5位の寝室の数（<code>Bedroom AbvGr</code>）は−7,412ドルと、マイナスです。第4回のバスルームと同じく、「同じ広さなら、寝室が多いほど1部屋が狭い」差を映していると考えられます。「寝室が多いと安い」とは読みません。</p>
+<p>5位の寝室の数（<code>Bedroom AbvGr</code>）は、1標準偏差（約0.8部屋）あたり−7,412ドルと、マイナスです。第4回のバスルームと同じく、「同じ広さなら、寝室が多いほど1部屋が狭い」差を映していると考えられます。「寝室が多いと安い」とは読みません。</p>
 <p>そして、居住面積の効き目は、2階の面積を0にしたおかげで、居住面積の列にまとまっています。</p>
 <section id="todo④係数を元の単位に戻す" class="level3">
 <h3 class="anchored" data-anchor-id="todo④係数を元の単位に戻す">TODO④：係数を、元の単位に戻す</h3>
 <p>Lassoの係数は「1標準偏差（standard deviation）あたり」です。お客さんに伝えるには、「1㎡あたり」「1段階あたり」に戻す必要があります。係数を、標準化で割った標準偏差（<code>sc.scale_</code>）で割って元の単位に戻し、居住面積と品質の係数を、f-stringの文で表示してください。</p>
 <div id="356afdbc" class="cell" data-execution_count="23">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: coef_lasso / sc.scale_ で元の単位に戻し、</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       居住面積と品質の係数を文にする</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: raw_unit = coef_lasso / sc.scale_ のあと、</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         raw_unit[&#39;Gr Liv Area&#39;] を f-string に埋め込む</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: coef_lasso / sc.scale_ で元の単位に戻し、</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       居住面積と品質の係数を文にする</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: raw_unit = coef_lasso / sc.scale_ のあと、</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         raw_unit[&#39;Gr Liv Area&#39;] を f-string に埋め込む</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>居住面積は1㎡あたり約662ドル、品質は1段階あたり約13,626ドルです。正則化なしの35本の式では4つの列に散らばっていた居住面積の効き目が、一つの説明にまとまりました。</p>
-<p>査定担当としての答えです。35本の列を使って当たりを良くしても（外れ幅16,841ドル）、Lassoで係数を抑えれば、お客さんに説明できます。その説明は『居住面積1㎡あたり約660ドル、品質1段階あたり約1万4千ドル』です。</p>
+<p>居住面積の係数は1㎡あたり約662ドル、品質は1段階あたり約13,626ドルです。正則化なしの35本の式では4つの列に散らばっていた居住面積の効き目が、ほぼ一つの列にまとまりました。</p>
+<p>ただし、1節で見たとおり、面積の係数は組み合わせて読みます。元の単位に戻した1階の係数は約39ドル、2階は0ドルです（<code>raw_unit[[&#39;Gr Liv Area&#39;, &#39;1st Flr SF&#39;, &#39;2nd Flr SF&#39;]]</code>で確かめられます）。2階の1㎡は居住面積の約662ドルだけですが、1階が1㎡広いと居住面積も1㎡広いので、1階の1㎡は662＋39＝約701ドルです。</p>
+<p>査定担当としての答えです。35本の列を使って当たりを良くしても（外れ幅16,841ドル）、Lassoで係数を抑えれば、お客さんに説明できます。その説明は『2階の1㎡で約660ドル（1階は約700ドル）、品質1段階あたり約1万4千ドル』です。</p>
 <p>まだ言えないことが、2つあります。</p>
 <ul>
 <li>地区の違い：家の値段は場所で大きく違うはずだが、今の式には地区が入っていない</li>
@@ -2720,7 +2724,7 @@ dtype: float64</code></pre>
 <li>Ridgeは係数の二乗に罰金をかけ、似た列の組の係数を近づけながら縮める</li>
 <li>Lassoは係数の絶対値に罰金をかけ、いくつかの係数をちょうど0にする（列を選ぶ）</li>
 <li>罰金の強さαは、テストではなく訓練の中の交差検証で選ぶ</li>
-<li>正則化の本当の効果は、係数が説明に使える形になること。元の単位に戻して伝える</li>
+<li>今回のデータでは、正則化の効果は当たりよりも、係数が説明に使える形になること。元の単位に戻して伝える</li>
 <li>Python：関数の引数は、説明書き（<code>__doc__</code>・<code>help</code>）で確かめてから使う</li>
 <li>Python：リスト内包表記<code>[c for c in cols if 条件]</code>で、条件に合う列の名前を1行で選ぶ</li>
 </ul>
@@ -2728,7 +2732,7 @@ dtype: float64</code></pre>
 </section>
 <section id="次回へ" class="level2">
 <h2 class="anchored" data-anchor-id="次回へ">次回へ</h2>
-<p>今日までの4回は、値段や台数のような数を当ててきました。</p>
+<p>今日までの5回は、値段や台数のような数を当ててきました。</p>
 <p>次回は、場面を健診の担当医に変えます。当てたいのは、「心臓病か、そうでないか」という区分です。数を当てる式を、どう区分の判定に変えるのか。そして、見逃しと誤検出は、どう数えればよいのでしょうか。</p>
 <hr>
 </section>
@@ -2739,8 +2743,8 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>TODO②では、αを変えてRidgeを作りました。今度は、α=100のRidgeについて、車庫の台数（<code>Garage Cars</code>）と車庫の面積（<code>Garage Area</code>）の係数を、正則化なしの線形回帰（標準化したデータで立てたもの）の係数と並べて表示してください。</p>
 <div id="b4492ef3" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -2753,8 +2757,8 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①で、α=100のRidgeでの、車庫の台数（<code>Garage Cars</code>）の係数は何ドルですか。四捨五入して整数（ドル）で答えてください（例: 1234）。</p>
 <div id="59d06de6" class="cell" data-execution_count="25">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -2765,7 +2769,8 @@ dtype: float64</code></pre>
 </section>
 <section id="応用③解釈" class="level3">
 <h3 class="anchored" data-anchor-id="応用③解釈">応用③（解釈）</h3>
-<p>応用①の結果をふまえて、「Ridgeで正則化すると、車庫の台数と車庫の面積の係数はどう変わり、それは査定の説明にとってなぜ良いのか」を、同僚の査定担当者に向けて3行程度で説明してください。</p>
+<p>応用①では、係数を縮めるはずのRidgeで、車庫の台数と車庫の面積の係数が、どちらも正則化なしより大きくなりました。「なぜ大きくなったのか」と「お客さんに車庫の係数をどう伝えればよいか」を、同僚の査定担当者に向けて3行程度で説明してください。</p>
+<p>応用①の表を、居住面積（<code>Gr Liv Area</code>）・品質（<code>Overall Qual</code>）・建築年（<code>Year Built</code>）の行にも広げて見るとよいでしょう。</p>
 <p>（ここに3行程度で書く）</p>
 <hr>
 </section>
@@ -2776,15 +2781,15 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="lassoが選ぶ列は揺れないのか">Lassoが選ぶ列は、揺れないのか</h3>
 <p>Lassoは、2階の面積を0にしました。でも、居住面積・1階・2階は「足すと等しい」関係なので、1階を0にしても同じように当てられるはずです。訓練データをブートストラップ（第4回の発展）で20回取り直し、そのたびにα=300のLassoで、どの列が0になるかを数えてみます。</p>
 <div id="d7b96fc1" class="cell" data-execution_count="26">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> Counter()                 <span class="co"># 列ごとに、0になった回数を数える入れ物</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> tr.sample(<span class="bu">len</span>(tr), replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>i)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    Zs <span class="op">=</span> sc.transform(imp.transform(s[num]))</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">300</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Zs, s[<span class="st">&#39;SalePrice&#39;</span>])</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    count.update([c <span class="cf">for</span> c, v <span class="kw">in</span> <span class="bu">zip</span>(num, l.coef_) <span class="cf">if</span> v <span class="op">==</span> <span class="dv">0</span>])</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">&#39;1st Flr SF&#39;</span>, <span class="st">&#39;2nd Flr SF&#39;</span>, <span class="st">&#39;Gr Liv Area&#39;</span>, <span class="st">&#39;Bsmt Unf SF&#39;</span>, <span class="st">&#39;Full Bath&#39;</span>]:</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>c<span class="sc">:&gt;14}</span><span class="ss">: 20回中 </span><span class="sc">{</span>count[c]<span class="sc">:&gt;2}</span><span class="ss"> 回、0になった&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> Counter()                 <span class="co"># 列ごとに、0になった回数を数える入れ物</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> tr.sample(<span class="bu">len</span>(tr), replace<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span>i)</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    Zs <span class="op">=</span> sc.transform(imp.transform(s[num]))</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">300</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Zs, s[<span class="st">&#39;SalePrice&#39;</span>])</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>    count.update([c <span class="cf">for</span> c, v <span class="kw">in</span> <span class="bu">zip</span>(num, l.coef_) <span class="cf">if</span> v <span class="op">==</span> <span class="dv">0</span>])</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">&#39;1st Flr SF&#39;</span>, <span class="st">&#39;2nd Flr SF&#39;</span>, <span class="st">&#39;Gr Liv Area&#39;</span>, <span class="st">&#39;Bsmt Unf SF&#39;</span>, <span class="st">&#39;Full Bath&#39;</span>]:</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>c<span class="sc">:&gt;14}</span><span class="ss">: 20回中 </span><span class="sc">{</span>count[c]<span class="sc">:&gt;2}</span><span class="ss"> 回、0になった&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    1st Flr SF: 20回中  3 回、0になった
     2nd Flr SF: 20回中 20 回、0になった

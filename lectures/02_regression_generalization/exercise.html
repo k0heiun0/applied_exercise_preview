@@ -2829,6 +2829,7 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <li>入力：訓練とテストの気温・台数</li>
 <li>出力：2つのR²</li>
 </ul>
+<p><code>X_tr[:, [7]]</code>の<code>:</code>はすべての行、<code>[7]</code>は8本目の列（番号は0から）を表します。<code>[7]</code>とかっこで囲むと、1列の表の形のまま取り出せます。<code>fit</code>は手がかりを表の形で受け取るので、この形にしておきます。</p>
 <p><code>PolynomialFeatures(3)</code>は気温から2乗・3乗の列を作る部品、<code>Pipeline</code>は部品を順につなぐ道具です。</p>
 <div id="5ab96d38" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>x1_tr <span class="op">=</span> X_tr[:, [<span class="dv">7</span>]]    <span class="co"># 8本目の列（temp）だけ</span></span>
@@ -2927,18 +2928,28 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </section>
 <section id="明日は何台-本当の実力で答える" class="level2">
 <h2 class="anchored" data-anchor-id="明日は何台-本当の実力で答える">9. 明日は何台？　本当の実力で答える</h2>
-<p>8節までで、式の実力をまだ見ていない日で測る方法が分かりました。最後に、運営者への答えを出します。気温と年の2つを使った直線の式を訓練データで作り、テストデータで外れ幅を測ります。明日が27℃・2年目なら、何台でしょうか。</p>
-<div id="aeb8b199" class="cell" data-execution_count="27">
+<p>8節で測ったR²およそ0.78は、11本の列を使った式の実力です。ただ、明日の湿度や風速は、まだ分かりません。明日に答えるのは、5節の気温と年の2つを使った式にします。まず、この式の実力も交差検証で測ります。8節のお手本の<code>X</code>を、2本の列の<code>Xty</code>に変えただけです。</p>
+<div id="a267a7b5" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> df[[<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;yr&#39;</span>]].values</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>a_tr, a_te, b_tr, b_te <span class="op">=</span> train_test_split(Xty, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                                          random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression().fit(a_tr, b_tr)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>err_tr <span class="op">=</span> np.<span class="bu">abs</span>(b_tr <span class="op">-</span> model_ty.predict(a_tr)).mean()</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>err_te <span class="op">=</span> np.<span class="bu">abs</span>(b_te <span class="op">-</span> model_ty.predict(a_te)).mean()</span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;作った日の外れ幅  :&#39;</span>, <span class="bu">round</span>(err_tr), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;まだ見ていない日  :&#39;</span>, <span class="bu">round</span>(err_te), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>pred_t <span class="op">=</span> model_ty.predict([[<span class="dv">27</span> <span class="op">/</span> <span class="dv">41</span>, <span class="dv">1</span>]])[<span class="dv">0</span>]     <span class="co"># 27℃・2年目</span></span>
-<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;明日（27℃・2年目）:&#39;</span>, <span class="bu">round</span>(pred_t), <span class="st">&#39;台&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>scores_ty <span class="op">=</span> cross_val_score(LinearRegression(), Xty, y, cv<span class="op">=</span>kf,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                            scoring<span class="op">=</span><span class="st">&#39;r2&#39;</span>)</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores_ty.mean().<span class="bu">round</span>(<span class="dv">3</span>), scores_ty.std().<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.674 0.031</code></pre>
+</div>
+</div>
+<p>R²の平均は0.674で、11本の列の0.78より低くなりました。手がかりを減らしたぶん、外れます。その代わり、明日に使える式になりました。</p>
+<p>次に、この式を訓練データで作り、テストデータで外れ幅を測ります。6節と同じ分け方なので、<code>y_tr</code>・<code>y_te</code>は6節と同じ日です。明日が27℃・2年目なら、何台でしょうか。</p>
+<div id="21502a67" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Xty_tr, Xty_te, y_tr, y_te <span class="op">=</span> train_test_split(Xty, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>                                              random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression().fit(Xty_tr, y_tr)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>err_tr <span class="op">=</span> np.<span class="bu">abs</span>(y_tr <span class="op">-</span> model_ty.predict(Xty_tr)).mean()</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>err_te <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> model_ty.predict(Xty_te)).mean()</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;作った日の外れ幅  :&#39;</span>, <span class="bu">round</span>(err_tr), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;まだ見ていない日  :&#39;</span>, <span class="bu">round</span>(err_te), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>pred_t <span class="op">=</span> model_ty.predict([[<span class="dv">27</span> <span class="op">/</span> <span class="dv">41</span>, <span class="dv">1</span>]])[<span class="dv">0</span>]     <span class="co"># 27℃・2年目</span></span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;明日（27℃・2年目）:&#39;</span>, <span class="bu">round</span>(pred_t), <span class="st">&#39;台&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>作った日の外れ幅  : 859 台
 まだ見ていない日  : 837 台
@@ -2946,13 +2957,13 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </div>
 </div>
 <p>答えは「およそ6600台。まだ見ていない日での外れ幅は、平均840台くらい」です。</p>
-<p>第1回の答え（およそ7200台）より低いのは、主に天気の違いです。第1回は25〜30℃・2年目の晴れの日（54日）だけの平均でしたが、今日の式は天気を入れていないので、晴れも雨も混ぜた見積もりになっています。</p>
+<p>第1回の答え（およそ7200台）より低いのは、半分ほどが天気の違いです。第1回は25〜30℃・2年目の晴れの日（54日）だけの平均でしたが、今日の式は天気を入れていないので、晴れも雨も混ぜた見積もりになっています。25〜30℃・2年目の日を天気を混ぜて84日で平均すると6843台で、晴れの54日の7198台より355台少なくなります。差の633台の残り278台は、直線が頭打ちの曲がり方をなぞれないぶんです。</p>
 <p>外れ幅も、同じ物差しで比べる必要があります。第1回の「500台前後」は、晴れの54日の中で、作った日で測った外れ幅でした。同じテスト147日で比べると、気温帯×年の段（6節）は773台、今日の直線は837台です。直線は境目で跳ばない代わりに、暑い日の頭打ちを外すぶん、少し外れます。</p>
 <p>まだ言えないことも残っています。</p>
 <ul>
 <li>データを整えていない：今日のデータは、欠けた値も文字の列もない、きれいなデータでした。実務のデータはそうはいきません</li>
 <li>物差しは何がよいか：R²も二乗和を使うので、大外れを重く見ている。外れ幅の平均はどの外れも同じ重さ。どちらで測るかは場面しだい</li>
-<li>係数をどう読むか：年の係数2083は「2年目は同じ気温でも2083台多い」と読めるのか</li>
+<li>係数をどう読むか：5節の式の年の係数2083は「2年目は同じ気温でも2083台多い」と読めるのか</li>
 </ul>
 <hr>
 </section>
@@ -2991,9 +3002,9 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>6節では<code>random_state=42</code>で1回だけ分けて、テストのR²を測りました。今度は分け方を変えて、同じことを5回くり返します。</p>
 <p><code>for</code>文で<code>random_state</code>を0, 1, 2, 3, 4と変えながら、11本の列の<code>X</code>と<code>y</code>を訓練8割・テスト2割に分け、それぞれで<code>LinearRegression</code>を訓練データで学んで、テストのR²を5つ表示してください。5つの値は、あとで使うのでリスト<code>r2_list</code>にためておきます（<code>r2_list.append(値)</code>で1つ足せます）。</p>
-<div id="14f559b2" class="cell" data-execution_count="28">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="14f559b2" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -3005,9 +3016,9 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①の5つのテストのR²のうち、最大と最小の差はいくつですか。丸めていない値で差を計算し、小数第2位に丸めて答えてください（例: 0.12）。</p>
-<div id="954a8b96" class="cell" data-execution_count="29">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="954a8b96" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -3029,26 +3040,26 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <h3 class="anchored" data-anchor-id="timeseriessplit日付順のデータで未来を覗かない">TimeSeriesSplit：日付順のデータで、未来を覗かない</h3>
 <p>8節の交差検証は、行をばらばらに混ぜてから分けました。でも、自転車シェアの台数は日付順に並んだデータです。混ぜて分けると、2012年の日で学んで2011年の日を当てる、という「未来を覗いた」採点が混ざります。</p>
 <p><code>TimeSeriesSplit</code>は、必ず過去で学んで未来を当てるように分けます。運営者が本当にやりたいのは、昨日までのデータで明日を当てることなので、こちらのほうが実際に近い採点です。</p>
-<div id="1649a8a5" class="cell" data-execution_count="30">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> TimeSeriesSplit</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>tss <span class="op">=</span> TimeSeriesSplit(n_splits<span class="op">=</span><span class="dv">5</span>)                        <span class="co"># 過去 → 未来の順で分割</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>s_kf <span class="op">=</span> cross_val_score(LinearRegression(), X, y, cv<span class="op">=</span>kf, scoring<span class="op">=</span><span class="st">&#39;r2&#39;</span>)</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>s_tss <span class="op">=</span> cross_val_score(LinearRegression(), X, y, cv<span class="op">=</span>tss,</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>                        scoring<span class="op">=</span><span class="st">&#39;r2&#39;</span>)</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;ランダム分割:&#39;</span>, s_kf.<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">&#39; 平均&#39;</span>, s_kf.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;時系列分割  :&#39;</span>, s_tss.<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">&#39; 平均&#39;</span>, s_tss.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="1649a8a5" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> TimeSeriesSplit</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>tss <span class="op">=</span> TimeSeriesSplit(n_splits<span class="op">=</span><span class="dv">5</span>)                        <span class="co"># 過去 → 未来の順で分割</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>s_kf <span class="op">=</span> cross_val_score(LinearRegression(), X, y, cv<span class="op">=</span>kf, scoring<span class="op">=</span><span class="st">&#39;r2&#39;</span>)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>s_tss <span class="op">=</span> cross_val_score(LinearRegression(), X, y, cv<span class="op">=</span>tss,</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>                        scoring<span class="op">=</span><span class="st">&#39;r2&#39;</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;ランダム分割:&#39;</span>, s_kf.<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">&#39; 平均&#39;</span>, s_kf.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;時系列分割  :&#39;</span>, s_tss.<span class="bu">round</span>(<span class="dv">3</span>), <span class="st">&#39; 平均&#39;</span>, s_tss.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ランダム分割: [0.828 0.746 0.813 0.722 0.808]  平均 0.783
 時系列分割  : [-4.526  0.249 -0.425 -0.182  0.6  ]  平均 -0.857</code></pre>
 </div>
 </div>
-<div id="5daec4d6" class="cell" data-execution_count="31">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 時系列分割の各回で「どの期間で学び、どの期間を当てたか」を見る</span></span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (tr_idx, te_idx) <span class="kw">in</span> <span class="bu">enumerate</span>(tss.split(X), start<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">回目: 訓練 </span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39; → テスト </span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39;  R²=</span><span class="sc">{</span>s_tss[i <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="5daec4d6" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 時系列分割の各回で「どの期間で学び、どの期間を当てたか」を見る</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (tr_idx, te_idx) <span class="kw">in</span> <span class="bu">enumerate</span>(tss.split(X), start<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">回目: 訓練 </span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39; → テスト </span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39;  R²=</span><span class="sc">{</span>s_tss[i <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1回目: 訓練 2011-01-01〜2011-05-06 → テスト 2011-05-07〜2011-09-04  R²=-4.526
 2回目: 訓練 2011-01-01〜2011-09-04 → テスト 2011-09-05〜2012-01-03  R²=0.249
@@ -3057,12 +3068,12 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 5回目: 訓練 2011-01-01〜2012-09-01 → テスト 2012-09-02〜2012-12-31  R²=0.600</code></pre>
 </div>
 </div>
-<div id="35d7b619" class="cell" data-execution_count="32">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 回ごとの外れ幅の平均（MAE）と、5回の R² の中央値</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>s_mae <span class="op">=</span> <span class="op">-</span>cross_val_score(LinearRegression(), X, y, cv<span class="op">=</span>tss,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>                         scoring<span class="op">=</span><span class="st">&#39;neg_mean_absolute_error&#39;</span>)</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;時系列分割の外れ幅:&#39;</span>, s_mae.<span class="bu">round</span>(), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;R² の中央値:&#39;</span>, np.median(s_tss).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="35d7b619" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 回ごとの外れ幅の平均（MAE）と、5回の R² の中央値</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>s_mae <span class="op">=</span> <span class="op">-</span>cross_val_score(LinearRegression(), X, y, cv<span class="op">=</span>tss,</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>                         scoring<span class="op">=</span><span class="st">&#39;neg_mean_absolute_error&#39;</span>)</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;時系列分割の外れ幅:&#39;</span>, s_mae.<span class="bu">round</span>(), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;R² の中央値:&#39;</span>, np.median(s_tss).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>時系列分割の外れ幅: [1230.  662. 1632.  793.  942.] 台
 R² の中央値: -0.182</code></pre>

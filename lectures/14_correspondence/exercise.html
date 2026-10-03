@@ -2502,6 +2502,7 @@ Thriller     11    32    32    49    95   180   420   654   417
 </div>
 <p>10ジャンル × 9年代、のべ18544本（複数のジャンルを持つ映画は、それぞれのジャンルで数える）。カイ二乗は548.4、自由度72、p値は10のマイナス74乗ほどと、とても小さい値です。「ジャンルと年代に関係がない」とすると、こんなに大きなずれはまず起きません。年代によって、ジャンルの構成は偏っています。</p>
 <p>ただし、p値が小さいことは、偏りが「ある」ことを示すだけで、偏りが「どれくらい大きいか」は示しません。本数が多い表では、小さな偏りでもp値はとても小さくなります。どこが、どれくらい偏っているかは、2節の地図と、3節の「実際 ÷ 期待」の倍率で見ていきます。</p>
+<p>もう一つ、注意があります。この表は、ジャンルを複数持つ映画をそれぞれのジャンルで数えていて、1本の映画がいくつものマスに入っています。カイ二乗は1本を1つのマスで数えた表を前提にしているので、p値の値そのものは目安として読みます。ここまで小さければ、偏りがあることはまず確かです。</p>
 </section>
 <section id="おさらい配列の計算" class="level3">
 <h3 class="anchored" data-anchor-id="おさらい配列の計算">おさらい：配列の計算</h3>
@@ -2576,9 +2577,9 @@ Thriller     11    32    32    49    95   180   420   654   417
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ca.eigenvalues_summary、または ca.percentage_of_variance_</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>次元1が67.3%、次元2が16.6%、合わせて83.9%。2本の軸で、ずれの8割以上を表せています。この地図は、かなり信頼して読めます。では、地図を読みます。</p>
+<p>次元1が67.3%、次元2が16.6%、合わせて83.9%。2本の軸で、ずれの8割以上を表せています。では、地図を読みます。</p>
 <p>横軸（次元1）を見ると、年代は、右の端に古い年代（1930・1940年代が0.5前後）、左に新しい年代（1970・1980・2010年代）と並びます。次元1は時代の軸です。</p>
-<p>ただし、「右が古く、左が新しい」と言えるのは両端です。1990年代（＋0.09）と2000年代（＋0.03）は原点のやや右にあり、1990年代は1960年代（＋0.06）より右です。これは、この2つの年代の本数が多いからです。確かめてみます。</p>
+<p>ただし、「右が古く、左が新しい」と言えるのは両端です。1990年代（＋0.09）と2000年代（＋0.03）は原点のやや右にあり、1990年代は1960年代（＋0.06）より右です。なぜか、年代ごとの本数の割合を確かめてみます。</p>
 <div id="06bdde9d" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>share <span class="op">=</span> ct.<span class="bu">sum</span>() <span class="op">/</span> ct.values.<span class="bu">sum</span>()     <span class="co"># 年代ごとの、本数の割合</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(share.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2595,7 +2596,8 @@ Thriller     11    32    32    49    95   180   420   654   417
 dtype: float64</code></pre>
 </div>
 </div>
-<p>1990年代が22.4%、2000年代が31.3%で、2つ合わせて全体の54%です。原点は、全体の平均の構成を表します。本数の多い年代は、全体の平均そのものに近いので、原点の近くに来ます。だから、1990年代が1960年代より右にあっても、「1960年代より古い」とは読みません。</p>
+<p>1990年代が22.4%、2000年代が31.3%で、2つ合わせて全体の54%です。原点は、全体の平均の構成を表します。全体の平均は、半分以上がこの2つの年代でできているので、2つの年代のジャンルの構成は、平均に近くなりやすいのです。だから、1990年代が1960年代より右にあっても、「1960年代より古い」とは読みません。</p>
+<p>ただし、本数が多ければ原点に近い、とは限りません。2010年代も全体の20.1%を占めますが、地図では左の端（−0.16）にいます。地図の位置を決めるのは、その年代のジャンルの構成が、全体の平均とどれだけ違うかです。どれだけ違うかは、3節の倍率で確かめます。</p>
 <p>ジャンルでは、ロマンス（0.29）とドラマ（0.13）が右（古い年代の側）、SF（−0.21）とアクション（−0.19）が左（新しい年代の側）にいます。コメディ（−0.02）は原点の近くで、どの年代にも同じくらいある、時代を選ばない定番です。</p>
 <hr>
 </section>
@@ -2629,49 +2631,60 @@ Sci-Fi     0.24  0.11  1.34  1.25
 Thriller   0.45  0.94  0.79  1.10</code></pre>
 </div>
 </div>
-<p>1930年代のロマンスは期待の2.32倍、1940年代は、ロマンス（1.89倍）に次いでドラマが1.51倍。1980年代はホラーが1.51倍、2010年代はアクションが1.27倍、SFが1.25倍です。地図で、古い年代の近くにロマンス・ドラマ、新しい年代の近くにアクション・SFが置かれていたことと、合っています。</p>
+<p>1930年代のロマンスは期待の2.32倍、1940年代は、ロマンス（1.89倍）に次いでドラマが1.51倍。1980年代はホラーが1.51倍、SFが1.34倍、2010年代はアクションが1.27倍、SFが1.25倍です。地図で、古い年代の近くにロマンス・ドラマ、新しい年代の近くにアクション・SFが置かれていたことと、合っています。</p>
+<p>地図で原点の近くにいた1990年代と2000年代は、どのジャンルも倍率が1に近く、0.74〜1.19倍に収まります。</p>
+<div id="23780db7" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ratio[[<span class="st">&#39;1990&#39;</span>, <span class="st">&#39;2000&#39;</span>]].agg([<span class="st">&#39;min&#39;</span>, <span class="st">&#39;max&#39;</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     1990  2000
+min  0.74  0.87
+max  1.19  1.10</code></pre>
+</div>
+</div>
 </section>
 <section id="おさらいforと辞書" class="level3">
 <h3 class="anchored" data-anchor-id="おさらいforと辞書">おさらい：forと辞書</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {}</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    d[i] <span class="op">=</span> i <span class="op">*</span> <span class="dv">10</span>        <span class="co"># d は {0: 0, 1: 10, 2: 20}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>for</code>で1つずつ取り出し、辞書にキーと値をためていく書き方でした（第13回）。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> {}</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    out[i] <span class="op">=</span> i <span class="op">*</span> <span class="dv">10</span>      <span class="co"># out は {0: 0, 1: 10, 2: 20}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>辞書は、名前（キー）と値の組を覚えておく入れ物でした（第3回）。空の辞書<code>{}</code>を作り、<code>for</code>で1つずつ取り出しながら、<code>out[キー] = 値</code>でキーと値をためていきます。</p>
 </section>
 <section id="todo③1950年代と1970年代の上位3ジャンル" class="level3">
 <h3 class="anchored" data-anchor-id="todo③1950年代と1970年代の上位3ジャンル">TODO③：1950年代と1970年代の上位3ジャンル</h3>
 <p><code>for</code>で<code>&#39;1950&#39;</code>と<code>&#39;1970&#39;</code>の2つの年代を取り出し、<code>ratio</code>の倍率が高い順に3つのジャンルを、辞書<code>top3</code>に<code>{年代: {ジャンル: 倍率}}</code>の形でためて表示してください。</p>
-<div id="f4f37bcc" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1950・1970年代の、倍率の高い3ジャンルを辞書 top3 にためる</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: top3 = {} → for dec in [&#39;1950&#39;, &#39;1970&#39;]: の中で</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         s = ratio[dec].sort_values(ascending=False)</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         top3[dec] = s.head(3).to_dict()</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="dfc0b87b" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1950・1970年代の、倍率の高い3ジャンルを辞書 top3 にためる</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: top3 = {} → for dec in [&#39;1950&#39;, &#39;1970&#39;]: の中で</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         s = ratio[dec].sort_values(ascending=False)</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         top3[dec] = s.head(3).to_dict()</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>1950年代は、ロマンス（1.65倍）・SF（1.47倍）・ドラマ（1.37倍）。1970年代は、ホラー（1.31倍）・SF（1.23倍）・犯罪もの（1.18倍）。1950年代にはまだロマンスとドラマが多く、SFが伸びはじめています。1970年代には、ロマンスが減り、ホラーとSFの時代になります。</p>
 </section>
 <section id="おさらいf-string" class="level3">
 <h3 class="anchored" data-anchor-id="おさらいf-string">おさらい：f-string</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">個&#39;</span>)     <span class="co"># 3個</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>n<span class="sc">}</span><span class="ss">個&#39;</span>)     <span class="co"># 3個</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>f&#39;…&#39;</code>の中の<code>{}</code>に、値を埋めこめるのでした（第4回）。</p>
 </section>
 <section id="todo④特集の企画書を一文で書く" class="level3">
 <h3 class="anchored" data-anchor-id="todo④特集の企画書を一文で書く">TODO④：特集の企画書を、一文で書く</h3>
 <p>1960年代について、<code>ratio[&#39;1960&#39;]</code>の倍率がいちばん高いジャンルといちばん低いジャンルを求め、f-stringで「1960年代の特集は ○○（□倍）を中心に。△△（□倍）は少なめでよい。」という一文を表示してください。</p>
-<div id="85ae0ef5" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1960年代の倍率が最も高い・低いジャンルで、企画書の一文を作る</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: r = ratio[&#39;1960&#39;].sort_values()</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         いちばん高いのは r.index[-1]、倍率は r.iloc[-1]</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         いちばん低いのは r.index[0]</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="873c0207" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1960年代の倍率が最も高い・低いジャンルで、企画書の一文を作る</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: r = ratio[&#39;1960&#39;].sort_values()</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         いちばん高いのは r.index[-1]、倍率は r.iloc[-1]</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         いちばん低いのは r.index[0]</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>「1960年代の特集はAdventure（1.38倍）を中心に。Thriller（0.69倍）は少なめでよい。」冒険ものが、1960年代らしいジャンルです。</p>
 <p>企画担当者としての答えは、年代ごとに次のジャンルを合わせることです。</p>
 <ul>
-<li>古い年代の特集：ロマンスとドラマ（1930年代のロマンスは期待の2.32倍）</li>
-<li>1980年代：ホラー</li>
+<li>1930〜50年代：ロマンスとドラマ（1930年代のロマンスは期待の2.32倍）</li>
+<li>1960年代：冒険もの（1.38倍）</li>
+<li>1970・1980年代：ホラーとSF（1980年代のホラーは1.51倍）</li>
 <li>2010年代：アクションとSF</li>
+<li>1990・2000年代：どのジャンルも倍率が1に近い（0.74〜1.19倍）ので、ジャンル以外の切り口も考える</li>
 <li>どの年代にも合う定番：コメディ</li>
 </ul>
 <p>根拠は2つです。ジャンルと年代には、はっきりした関係があります（カイ二乗548.4）。対応分析の地図は、横軸が時代の軸で、2本の軸でずれの83.9%を表せます。</p>
@@ -2708,7 +2721,7 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 <h2 class="anchored" data-anchor-id="次回へ">次回へ</h2>
 <p>次回は最終回、最終討論です。</p>
 <p>これまでの分析から1つを選びます。その分析の「目標 → 解析 → 目標に立ち返る」の一周と、「まだ言えないこと」を、自分の言葉で説明できるでしょうか。</p>
-<p>今日も、年代別の特集という目標を立て、地図と倍率で解析し、企画の答えを出しました。どの分析を選ぶかを考えるために、第14回までの歩みをふり返ります。題材は自転車・民泊・住宅・心臓病・ペンギン・顔・自動車・国・映画とめぐりましたが、どの回も「① 目標を立てる → ② 解析する → ③ 目標に立ち返る」の一周でした。</p>
+<p>今日も、年代別の特集という目標を立て、地図と倍率で解析し、企画の答えを出しました。どの分析を選ぶかを考えるために、第14回までの歩みをふり返ります。題材は自転車・民泊・住宅・心臓病・ペンギン・顔・車・国・銀河・映画とめぐりましたが、どの回も「① 目標を立てる → ② 解析する → ③ 目標に立ち返る」の一周でした。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -2804,9 +2817,9 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 <section id="応用①変形" class="level3">
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>2節の地図は、1930年代から2010年代までの9つの年代で描きました。今度は、年代を1990年代以降の3つ（<code>&#39;1990&#39;</code>・<code>&#39;2000&#39;</code>・<code>&#39;2010&#39;</code>） に絞ったクロス表<code>ct_new</code>を作り、同じように対応分析をかけて、寄与率と地図を表示してください。地図は、2節の関数<code>draw_ca</code>を使えば描けます。</p>
-<div id="e870b1ad" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="e870b1ad" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -2818,9 +2831,9 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①の、次元1の寄与率は何%ですか。%で小数第1位まで答えてください（例: 12.3）。</p>
-<div id="b8c6bb92" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b8c6bb92" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -2842,13 +2855,13 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 <h3 class="anchored" data-anchor-id="多重対応分析mca区分が3つ以上あるとき">多重対応分析（MCA）：区分が3つ以上あるとき</h3>
 <p>今日の対応分析は、「ジャンル × 年代」という2つの区分のクロス表を地図にしました。アンケートのように、区分が3つも4つもあるときは、多重対応分析（MCA）を使います。それぞれの区分を「その区分なら1」の列（ワンホット、第7回）に直した大きな表に、対応分析をかける、と考えれば十分です。</p>
 <p>第8回のペンギンの、種・島・性別の3つの区分で試します。</p>
-<div id="22dd9648" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/penguins.csv&#39;</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>X_cat <span class="op">=</span> penguins[[<span class="st">&#39;species&#39;</span>, <span class="st">&#39;island&#39;</span>, <span class="st">&#39;sex&#39;</span>]].dropna()   <span class="co"># 欠けた行は除く</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>mca <span class="op">=</span> prince.MCA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_cat)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(X_cat))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mca.eigenvalues_summary)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mca.column_coordinates(X_cat).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="22dd9648" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/penguins.csv&#39;</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>X_cat <span class="op">=</span> penguins[[<span class="st">&#39;species&#39;</span>, <span class="st">&#39;island&#39;</span>, <span class="st">&#39;sex&#39;</span>]].dropna()   <span class="co"># 欠けた行は除く</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>mca <span class="op">=</span> prince.MCA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X_cat)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(X_cat))</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mca.eigenvalues_summary)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mca.column_coordinates(X_cat).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>333
           eigenvalue % of variance % of variance (cumulative)
@@ -2866,17 +2879,17 @@ sex__Female         0.02  0.03
 sex__Male          -0.02 -0.03</code></pre>
 </div>
 </div>
-<div id="92a75e91" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cc <span class="op">=</span> mca.column_coordinates(X_cat)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> {<span class="st">&#39;species&#39;</span>: <span class="st">&#39;#0066cc&#39;</span>, <span class="st">&#39;island&#39;</span>: <span class="st">&#39;#e63946&#39;</span>, <span class="st">&#39;sex&#39;</span>: <span class="st">&#39;#2a9d8f&#39;</span>}</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, (x, y) <span class="kw">in</span> cc.iterrows():</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    var, cat <span class="op">=</span> name.split(<span class="st">&#39;__&#39;</span>)              <span class="co"># 例: &#39;species__Adelie&#39;</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    ax.scatter(x, y, color<span class="op">=</span>colors[var], s<span class="op">=</span><span class="dv">60</span>)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    ax.text(x, y, <span class="ss">f&#39; </span><span class="sc">{</span>var<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">&#39;</span>, color<span class="op">=</span>colors[var], fontsize<span class="op">=</span><span class="dv">10</span>)</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>ax.margins(<span class="fl">0.15</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="92a75e91" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>cc <span class="op">=</span> mca.column_coordinates(X_cat)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> {<span class="st">&#39;species&#39;</span>: <span class="st">&#39;#0066cc&#39;</span>, <span class="st">&#39;island&#39;</span>: <span class="st">&#39;#e63946&#39;</span>, <span class="st">&#39;sex&#39;</span>: <span class="st">&#39;#2a9d8f&#39;</span>}</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, (x, y) <span class="kw">in</span> cc.iterrows():</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    var, cat <span class="op">=</span> name.split(<span class="st">&#39;__&#39;</span>)              <span class="co"># 例: &#39;species__Adelie&#39;</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    ax.scatter(x, y, color<span class="op">=</span>colors[var], s<span class="op">=</span><span class="dv">60</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    ax.text(x, y, <span class="ss">f&#39; </span><span class="sc">{</span>var<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>cat<span class="sc">}</span><span class="ss">&#39;</span>, color<span class="op">=</span>colors[var], fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>ax.axvline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>, lw<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>ax.margins(<span class="fl">0.15</span>)<span class="op">;</span> plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">

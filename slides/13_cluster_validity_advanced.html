@@ -1079,13 +1079,13 @@ margin-right: 0; }
 <section id="bicでkを選ぶ" class="slide level2">
 <h2>BICで、Kを選ぶ</h2>
 <ul>
-<li>当てはまりのよさに、山を増やしたぶんの罰を足した物差し</li>
+<li>当てはまりの悪さに、山を増やしたぶんの罰を足した物差し</li>
 <li>小さいほどよい</li>
 </ul>
 </section>
 <section id="kごとのbic" class="slide level2">
 <h2>KごとのBIC</h2>
-<div id="9ca92c0c" class="cell" data-execution_count="3">
+<div id="f47211b2" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>bic <span class="op">=</span> {}</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">8</span>):</span>
 <span id="cb1-3"><a href aria-label="3"></a>    g <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">5</span>,</span>
@@ -1115,7 +1115,7 @@ BIC が最小の K: 4</code></pre>
 </section>
 <section id="確率を見る" class="slide level2 fit-90">
 <h2>確率を見る</h2>
-<div id="df3da836" class="cell" data-execution_count="4">
+<div id="21b86cbd" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>g3 <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
 <span id="cb3-2"><a href aria-label="2"></a>prob <span class="op">=</span> g3.predict_proba(X).<span class="bu">round</span>(<span class="dv">2</span>)        <span class="co"># 各国が、各グループから来た確率</span></span>
 <span id="cb3-3"><a href aria-label="3"></a>pick <span class="op">=</span> [<span class="st">&#39;Japan&#39;</span>, <span class="st">&#39;Iraq&#39;</span>, <span class="st">&#39;Puerto Rico&#39;</span>, <span class="st">&#39;Portugal&#39;</span>, <span class="st">&#39;Mongolia&#39;</span>]</span>
@@ -1135,7 +1135,7 @@ Mongolia     [0.   0.77 0.23]</code></pre>
 <h2>「どちらとも言える」を、数で</h2>
 <ul>
 <li>日本は、1つのグループに確率1</li>
-<li>プエルトリコ0.32と0.68、ポルトガル0.29と0.71、モンゴル0.77と0.23</li>
+<li>たとえばプエルトリコ0.32と0.68、ポルトガル0.29と0.71、モンゴル0.77と0.23</li>
 <li>2つのグループに、確率が分かれる</li>
 </ul>
 </section>
@@ -1149,7 +1149,7 @@ Mongolia     [0.   0.77 0.23]</code></pre>
 <section id="境目の顔ぶれが違う" class="slide level2">
 <h2>境目の顔ぶれが違う</h2>
 <ul>
-<li>GMMの境目は、プエルトリコ・ポルトガル・モンゴル。k-meansとは違う国</li>
+<li>GMMの境目は、たとえばプエルトリコ・ポルトガル・モンゴル。k-meansとは違う国</li>
 <li>GMMは、グループを丸ではなくだ円の山とみるから</li>
 </ul>
 </section>

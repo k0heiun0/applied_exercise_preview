@@ -2375,7 +2375,7 @@ window.Quarto = {
 </section>
 <section id="今日の分析目標" class="level2">
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
-<p>あなたは国際協力機関の担当者です。前回の3つのグループを報告書に載せる前に、「なぜ3つなのか」を、数の根拠で説明したい。</p>
+<p>あなたは国際協力機関の担当者です。第11回の3つのグループを報告書に載せる前に、「なぜ3つなのか」を、数の根拠で説明したい。</p>
 <p>Kを変えたときの物差しを、リストや辞書に集めて比べ、報告に載せるKを決めます。最後の「目標に答えられたか」で振り返りましょう。</p>
 <section id="場面" class="level3">
 <h3 class="anchored" data-anchor-id="場面">場面</h3>
@@ -2470,7 +2470,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 <section id="慣性はkとともに必ず下がる" class="level2">
 <h2 class="anchored" data-anchor-id="慣性はkとともに必ず下がる">1. 慣性は、Kとともに必ず下がる</h2>
-<p>前回、分け方の良し悪しを慣性（各国から自分のグループの中心までの距離の2乗の合計）で測りました。Kを2から8まで変えて、慣性を並べてみます。</p>
+<p>第11回では、分け方の良し悪しを慣性（各国から自分のグループの中心までの距離の2乗の合計）で測りました。Kを2から8まで変えて、慣性を並べてみます。</p>
 <section id="おさらいforとリスト" class="level3">
 <h3 class="anchored" data-anchor-id="おさらいforとリスト">おさらい：forとリスト</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> []</span>
@@ -2497,7 +2497,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </div>
 </div>
 <p>84.2、53.8、37.1、25.1、19.2、16.0、13.8。一度も上がらずに下がり続けます。</p>
-<p>Kを1つ増やせば、いちばん広がったグループを2つに割るだけでも、距離の合計は必ず小さくなります。極端には、Kを国の数（142）にすれば、どの国も自分が中心で、慣性は0です。だから、慣性がいちばん小さいKを選ぶ、とはいきません。</p>
+<p>Kを1つ増やせば、いちばん広がったグループを2つに割るだけでも、距離の2乗の合計は必ず小さくなります。極端には、Kを国の数（142）にすれば、どの国も自分が中心で、慣性は0です。だから、慣性がいちばん小さいKを選ぶ、とはいきません。</p>
 <div id="d9518e00" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
@@ -2521,7 +2521,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <li><span class="math inline">\(a_i\)</span>：同じグループのほかの国までの、距離の平均（小さいほど、グループの中でまとまっている）</li>
 <li><span class="math inline">\(b_i\)</span>：いちばん近い別のグループの国までの、距離の平均（大きいほど、ほかのグループから離れている）</li>
 </ul>
-<p><span class="math inline">\(s_i\)</span> が1に近いほど、しっくり収まっています。0に近いと境目、マイナスなら、別のグループのほうが近いということです。全国の平均が<code>silhouette_score</code>で、大きいほどよい分け方です。</p>
+<p><span class="math inline">\(s_i\)</span> が1に近いほど、しっくり収まっています。0に近いと境目、マイナスなら、別のグループのほうが近いということです。全部の国の平均が<code>silhouette_score</code>で、大きいほどよい分け方です。</p>
 <section id="お手本k3のシルエット" class="level3">
 <h3 class="anchored" data-anchor-id="お手本k3のシルエット">お手本：K＝3のシルエット</h3>
 <ul>
@@ -2539,14 +2539,14 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 [&#39;Iraq&#39;, &#39;Sao Tome and Principe&#39;, &#39;Trinidad and Tobago&#39;]</code></pre>
 </div>
 </div>
-<p>K＝3のシルエットは0.513。マイナスになったのは、イラク・サントメプリンシペ・トリニダードトバゴの3か国です。トリニダードトバゴとイラクは、前回のTODO④で「境目の国」として見つけた国でした。別の物差しでも、同じ国が境目に出てきます。</p>
+<p>K＝3のシルエットは0.513。マイナスになったのは、イラク・サントメプリンシペ・トリニダード・トバゴの3か国です。トリニダード・トバゴとイラクは、第11回のTODO④で「境目の国」として見つけた国でした。別の物差しでも、同じ国が境目に出てきます。</p>
 </section>
 <section id="おさらい辞書にキーと値をためる" class="level3">
 <h3 class="anchored" data-anchor-id="おさらい辞書にキーと値をためる">おさらい：辞書に、キーと値をためる</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> {}</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> {}</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    d[i] <span class="op">=</span> i <span class="op">*</span> <span class="dv">10</span>        <span class="co"># d は {0: 0, 1: 10, 2: 20}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>辞書は、名前（キー）と値の組を覚えておく入れ物でした（第3回）。空の辞書<code>{}</code>を作り、<code>for</code>で1つずつ取り出しながら、<code>d[キー] = 値</code>でキーと値をためていきます。</p>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    out[i] <span class="op">=</span> i <span class="op">*</span> <span class="dv">10</span>      <span class="co"># out は {0: 0, 1: 10, 2: 20}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>辞書は、名前（キー）と値の組を覚えておく入れ物でした（第3回）。空の辞書<code>{}</code>を作り、<code>for</code>で1つずつ取り出しながら、<code>out[キー] = 値</code>でキーと値をためていきます。</p>
 </section>
 <section id="todo①kごとのシルエットを辞書に集める" class="level3">
 <h3 class="anchored" data-anchor-id="todo①kごとのシルエットを辞書に集める">TODO①：Kごとのシルエットを、辞書に集める</h3>
@@ -2579,7 +2579,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 </section>
 <section id="乱数の種を変えると分け方は揺れるか" class="level2">
 <h2 class="anchored" data-anchor-id="乱数の種を変えると分け方は揺れるか">3. 乱数の種を変えると、分け方は揺れるか</h2>
-<p>エルボーとシルエットで、Kの候補は2・3・5に絞れました。前回、k-meansの答えは出発点で変わることを見ました。出発点は乱数で決まるので、乱数の種（<code>random_state</code>）を変えると、分け方が変わるかもしれません。報告に載せるなら、分け方が安定していることも確かめたいところです。</p>
+<p>エルボーとシルエットで、Kの候補は2・3・5に絞れました。第11回では、k-meansの答えが出発点で変わることを見ました。出発点は乱数で決まるので、乱数の種（<code>random_state</code>）を変えると、分け方が変わるかもしれません。報告に載せるなら、分け方が安定していることも確かめたいところです。</p>
 <p>分け方がどれだけ同じかは、第11回のARI（2つの分け方の一致度。同じ分け方なら1、でたらめに分けたのと同じくらいなら0）で測ります。</p>
 <section id="お手本出発点1つで種を5通り" class="level3">
 <h3 class="anchored" data-anchor-id="お手本出発点1つで種を5通り">お手本：出発点1つで、種を5通り</h3>
@@ -2618,17 +2618,31 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <li><code>sum</code>は<code>True</code>を1、<code>False</code>を0として足す。だから、条件に合う数（ここでは2）が出る</li>
 </ul>
 </section>
+<section id="辞書の値だけを取り出す" class="level3">
+<h3 class="anchored" data-anchor-id="辞書の値だけを取り出す">辞書の値だけを、取り出す</h3>
+<p>TODO②では、辞書の値を並びとして使います。<code>.values()</code>を付けると、辞書から値だけを1つずつ取り出せます。</p>
+<div id="3e59e9e6" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>out <span class="op">=</span> {<span class="dv">0</span>: <span class="dv">0</span>, <span class="dv">1</span>: <span class="dv">10</span>, <span class="dv">2</span>: <span class="dv">20</span>}</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> v <span class="kw">in</span> out.values():</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(v)          <span class="co"># 0, 10, 20 と表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0
+10
+20</code></pre>
+</div>
+</div>
+</section>
 <section id="todo②10通りの種で揺れを数える" class="level3">
 <h3 class="anchored" data-anchor-id="todo②10通りの種で揺れを数える">TODO②：10通りの種で、揺れを数える</h3>
 <p>種を0〜9に変えて（<code>n_init=1</code>）、<code>km3</code>とのARIを辞書<code>ari_seed</code>に<code>{種: ARI}</code>の形で集めてください。ARIが0.95以上になった種は、10通りのうちいくつですか。</p>
-<div id="e8d6d5b9" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 種0〜9の ARI を辞書 ari_seed に集め、0.95 以上の数を数える</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ari_seed[seed] = adjusted_rand_score(km3.labels_, …)</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         sum(v &gt;= 0.95 for v in ari_seed.values())</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="18e8e1bb" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 種0〜9の ARI を辞書 ari_seed に集め、0.95 以上の数を数える</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ari_seed[seed] = adjusted_rand_score(km3.labels_, …)</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         sum(v &gt;= 0.95 for v in ari_seed.values())</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>0.95以上は、10通りのうち3通り（種5・8・9、どれも0.98）だけです。出発点1つでは、いつも同じ分け方にたどり着くとは限りません。</p>
-<p>だから、前回から<code>n_init=10</code>（出発点を10通り試し、慣性のいちばん小さいものを残す）を使ってきました。<code>n_init=10</code>なら種を変えても分け方がほとんど揺れないかは、課題で確かめます。</p>
+<p>だから、第11回から<code>n_init=10</code>（出発点を10通り試し、慣性のいちばん小さいものを残す）を使ってきました。<code>n_init=10</code>なら種を変えても分け方がほとんど揺れないかは、課題で確かめます。</p>
 <hr>
 </section>
 </section>
@@ -2643,21 +2657,22 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <li>入力：<code>km3</code>、<code>d[&#39;continent&#39;]</code></li>
 <li>出力：ARI</li>
 </ul>
-<div id="e6935e10" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(adjusted_rand_score(d[<span class="st">&#39;continent&#39;</span>], km3.labels_), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="a46d72fd" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(adjusted_rand_score(d[<span class="st">&#39;continent&#39;</span>], km3.labels_), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.365</code></pre>
 </div>
 </div>
-<p>0.365。前回のクロス集計で見たとおり、大陸とある程度は重なりますが、同じではありません。重なりが大きいのと小さいのと、どちらがよいかは、目的しだいです。</p>
+<p>0.365。第11回のクロス集計で見たとおり、大陸とある程度は重なりますが、同じではありません。重なりが大きいのと小さいのと、どちらがよいかは、目的しだいです。</p>
 </section>
 <section id="todo③kごとに大陸と比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo③kごとに大陸と比べる">TODO③：Kごとに、大陸と比べる</h3>
 <p>Kを2〜6に変えて、大陸とのARIを辞書<code>ari_cont</code>に集め、表示してください。どのKで最大になりますか。</p>
-<div id="4122cdc0" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜6 の、大陸との ARI を辞書 ari_cont に集めて表示する</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ari_cont[k] = adjusted_rand_score(d[&#39;continent&#39;], labels)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ebcbea8d" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜6 の、大陸との ARI を辞書 ari_cont に集めて表示する</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: labels = KMeans(n_clusters=k, …).fit_predict(X)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         ari_cont[k] = adjusted_rand_score(d[&#39;continent&#39;], labels)</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>K＝2で0.241、K＝3で0.365（最大）、K＝4で0.226、K＝5で0.205、K＝6で0.202。K＝3のとき、グループがいちばん大陸と重なります。「アフリカ中心の最貧」「ヨーロッパ中心の先進」と、地理の言葉で説明しやすい分け方です。</p>
 <p>報告書の読み手は、国を地域の名前で思い浮かべます。地理の言葉で説明できる分け方は、報告で伝わりやすい。今日の目的（報告に載せる）には、これは強みです。</p>
@@ -2667,15 +2682,23 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="答えを出す報告に載せるk" class="level2">
 <h2 class="anchored" data-anchor-id="答えを出す報告に載せるk">5. 答えを出す：報告に載せるK</h2>
 <p>最初の問いに戻ります。ここまでの物差しを、1つの表にまとめて、報告に載せるKを決めます。</p>
+<section id="おさらい辞書をためて表にする" class="level3">
+<h3 class="anchored" data-anchor-id="おさらい辞書をためて表にする">おさらい：辞書をためて、表にする</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&#39;i&#39;</span>: i, <span class="st">&#39;10倍&#39;</span>: i <span class="op">*</span> <span class="dv">10</span>})</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame(rows))     <span class="co"># 3行2列の表</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>各回の結果を辞書（<code>{&#39;名前&#39;: 値}</code>）にしてリスト<code>rows</code>にため、<code>pd.DataFrame(rows)</code>に渡すと、辞書1つが1行の表になるのでした（第4回）。</p>
+</section>
 <section id="todo④kごとの物差しを1つの表にする" class="level3">
 <h3 class="anchored" data-anchor-id="todo④kごとの物差しを1つの表にする">TODO④：Kごとの物差しを、1つの表にする</h3>
 <p>Kを2〜6に変えて、1行ずつ辞書<code>{&#39;K&#39;: k, &#39;慣性&#39;: …, &#39;シルエット&#39;: …, &#39;大陸ARI&#39;: …}</code>をリスト<code>rows</code>に集め、<code>pd.DataFrame(rows)</code>で表にしてください（第4回・第7回と同じ作り方です）。</p>
-<div id="8389151c" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜6 の慣性・シルエット・大陸 ARI を1つの表にする</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: rows = [] → for k in range(2, 7): の中で km を作り、</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         rows.append({&#39;K&#39;: k, &#39;慣性&#39;: km.inertia_, …})</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         → pd.DataFrame(rows)</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3b07afa2" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜6 の慣性・シルエット・大陸 ARI を1つの表にする</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: rows = [] → for k in range(2, 7): の中で km を作り、</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         rows.append({&#39;K&#39;: k, &#39;慣性&#39;: km.inertia_, …})</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         → pd.DataFrame(rows)</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>表にすると、3つの物差しが、それぞれ違うKを推していることがわかります。</p>
 <table class="caption-top table">
@@ -2757,10 +2780,10 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <p>提出するもの：応用②の答えと、応用③の文章。提出フォームに入力してください。期限はありません。応用①のコードは提出しませんが、②の答えを出すために必要です。</p>
 <section id="応用①変形" class="level3">
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
-<p>3節では、出発点1つ（<code>n_init=1</code>）だと、種によって分け方が揺れました。今度は、前回から使ってきた<code>n_init=10</code>で、種を0〜4の5通りに変えてK＝3で分け、それぞれの慣性と、<code>km3</code>とのARIを表示してください。ARIは辞書<code>ari10</code>に<code>{種: ARI}</code>の形で集めておきましょう。</p>
-<div id="0b4f79b4" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>3節では、出発点1つ（<code>n_init=1</code>）だと、種によって分け方が揺れました。今度は、第11回から使ってきた<code>n_init=10</code>で、種を0〜4の5通りに変えてK＝3で分け、それぞれの慣性と、<code>km3</code>とのARIを表示してください。ARIは辞書<code>ari10</code>に<code>{種: ARI}</code>の形で集めておきましょう。</p>
+<div id="0b4f79b4" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -2772,15 +2795,15 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①の5つのARIのうち、いちばん小さい値はいくつですか。小数第2位まで答えてください（例: 0.57）。</p>
-<div id="6c40ef88" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="6c40ef88" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
 詰まったら
 </summary>
-<p><code>min(ari10.values())</code>を<code>round(…, 2)</code>します。</p>
+<p><code>.values()</code>で辞書の値だけを取り出し、<code>min(ari10.values())</code>を<code>round(…, 2)</code>します。</p>
 </details>
 </section>
 <section id="応用③解釈" class="level3">
@@ -2795,29 +2818,29 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="gmmとbic国を確率で分ける" class="level3">
 <h3 class="anchored" data-anchor-id="gmmとbic国を確率で分ける">GMMとBIC：国を、確率で分ける</h3>
 <p>k-meansは、どの国もどれか1つのグループに必ず入れました。混合ガウスモデル（GMM）は、各グループを「中心のまわりに、だ円形に散らばる山」と考え、各国がどの山から来たかを確率で表します。</p>
-<p>Kの選び方にも、BICという物差しが使えます。当てはまりのよさに、山の数を増やしたぶんの罰を足したもので、小さいほどよいです。</p>
-<div id="43598377" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>bic <span class="op">=</span> {}</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">8</span>):</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>                        random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    bic[k] <span class="op">=</span> g.bic(X)</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>({k: <span class="bu">round</span>(v, <span class="dv">1</span>) <span class="cf">for</span> k, v <span class="kw">in</span> bic.items()})</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;BIC が最小の K:&#39;</span>, <span class="bu">min</span>(bic, key<span class="op">=</span>bic.get))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Kの選び方にも、BICという物差しが使えます。当てはまりの悪さに、山の数を増やしたぶんの罰を足したもので、小さいほどよいです。</p>
+<div id="43598377" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.mixture <span class="im">import</span> GaussianMixture</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>bic <span class="op">=</span> {}</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">8</span>):</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>                        random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    bic[k] <span class="op">=</span> g.bic(X)</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>({k: <span class="bu">round</span>(v, <span class="dv">1</span>) <span class="cf">for</span> k, v <span class="kw">in</span> bic.items()})</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;BIC が最小の K:&#39;</span>, <span class="bu">min</span>(bic, key<span class="op">=</span>bic.get))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{1: 679.8, 2: 561.9, 3: 549.2, 4: 547.3, 5: 563.0, 6: 591.0, 7: 601.3}
 BIC が最小の K: 4</code></pre>
 </div>
 </div>
-<div id="b94ba071" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>g3 <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> g3.predict_proba(X).<span class="bu">round</span>(<span class="dv">2</span>)        <span class="co"># 各国が、各グループから来た確率</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>pick <span class="op">=</span> [<span class="st">&#39;Japan&#39;</span>, <span class="st">&#39;Iraq&#39;</span>, <span class="st">&#39;Puerto Rico&#39;</span>, <span class="st">&#39;Portugal&#39;</span>, <span class="st">&#39;Mongolia&#39;</span>]</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> pick:</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> d.index[d[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> c][<span class="dv">0</span>]</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>c<span class="sc">:12s}</span><span class="ss">&#39;</span>, prob[i])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="b94ba071" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>g3 <span class="op">=</span> GaussianMixture(n_components<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">0</span>).fit(X)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> g3.predict_proba(X).<span class="bu">round</span>(<span class="dv">2</span>)        <span class="co"># 各国が、各グループから来た確率</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>pick <span class="op">=</span> [<span class="st">&#39;Japan&#39;</span>, <span class="st">&#39;Iraq&#39;</span>, <span class="st">&#39;Puerto Rico&#39;</span>, <span class="st">&#39;Portugal&#39;</span>, <span class="st">&#39;Mongolia&#39;</span>]</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> pick:</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> d.index[d[<span class="st">&#39;country&#39;</span>] <span class="op">==</span> c][<span class="dv">0</span>]</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>c<span class="sc">:12s}</span><span class="ss">&#39;</span>, prob[i])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Japan        [1. 0. 0.]
 Iraq         [0. 1. 0.]
@@ -2827,7 +2850,7 @@ Mongolia     [0.   0.77 0.23]</code></pre>
 </div>
 </div>
 <p>BICはK＝4で最小（547.3）で、K＝3（549.2）との差は1.9とわずかです。エルボー・シルエット・大陸ARIとは、また違うKを推しました。物差しが変われば推すKも変わる、ということです。差がわずかなので、確率は本編の答えと同じK＝3（<code>g3</code>）で見ます。</p>
-<p>確率を見ると、日本はほぼ1つのグループに確率1で入ります。一方、プエルトリコ（0.32と0.68）、ポルトガル（0.29と0.71）、モンゴル（0.77と0.23）は、2つのグループに確率が分かれます。「どちらとも言える」ことを、数で表せるのがGMMの強みです。</p>
+<p>確率を見ると、日本はほぼ1つのグループに確率1で入ります。一方、たとえばプエルトリコ（0.32と0.68）、ポルトガル（0.29と0.71）、モンゴル（0.77と0.23）は、2つのグループに確率が分かれます。「どちらとも言える」ことを、数で表せるのがGMMの強みです。</p>
 <p>k-meansでシルエットがマイナスだったイラクは、GMMでは確率1で1つのグループに入ります。境目の顔ぶれが違うのは、GMMがグループを、丸ではなくだ円の山とみるからです。</p>
 <p>試すなら、<code>GaussianMixture(n_components=4, …)</code>で4つの山に分けて、4つ目のグループがどんな国か、要約してみましょう。</p>
 </section>

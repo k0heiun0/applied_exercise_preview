@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①欠測の数と割合" class="slide level2 fit-90">
 <h2>TODO①：欠測の数と割合</h2>
-<div id="d8ca400a" class="cell" data-execution_count="2">
+<div id="6088dc74" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>cc <span class="op">=</span> num[:<span class="op">-</span><span class="dv">1</span>] <span class="op">+</span> [<span class="st">&#39;review_scores_rating&#39;</span>]</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;欠測の数&#39;</span>: df[cc].isna().<span class="bu">sum</span>(),</span>
 <span id="cb1-3"><a href aria-label="3"></a>                    <span class="st">&#39;割合&#39;</span>: (df[cc].isna().mean() <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">1</span>)}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1092,7 +1092,7 @@ review_scores_rating  2899  11.0</code></pre>
 </section>
 <section id="todo②地区ごとの中央値" class="slide level2">
 <h2>TODO②：地区ごとの中央値</h2>
-<div id="f29dde9d" class="cell" data-execution_count="3">
+<div id="0e685c39" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>by_area <span class="op">=</span> tr.groupby(<span class="st">&#39;neighbourhood&#39;</span>)[<span class="st">&#39;price&#39;</span>].agg(</span>
 <span id="cb3-2"><a href aria-label="2"></a>    [<span class="st">&#39;median&#39;</span>, <span class="st">&#39;count&#39;</span>])</span>
 <span id="cb3-3"><a href aria-label="3"></a><span class="bu">print</span>(by_area[by_area[<span class="st">&#39;count&#39;</span>] <span class="op">&gt;=</span> <span class="dv">30</span>].sort_values(<span class="st">&#39;median&#39;</span>).head(<span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1113,7 +1113,7 @@ Nerima Ku      17100.0     79</code></pre>
 </section>
 <section id="todo③標準化してからknn" class="slide level2">
 <h2>TODO③：標準化してからKNN</h2>
-<div id="9d5af078" class="cell" data-execution_count="4">
+<div id="4f24ea92" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>Z_te <span class="op">=</span> standardize(X_te, mean_tr, std_tr)</span>
 <span id="cb5-2"><a href aria-label="2"></a>knn_sc <span class="op">=</span> KNeighborsRegressor(n_neighbors<span class="op">=</span><span class="dv">10</span>).fit(Z_tr, y_tr)</span>
 <span id="cb5-3"><a href aria-label="3"></a><span class="bu">print</span>(mae(y_te, knn_sc.predict(Z_te)), <span class="st">&#39;円&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1128,7 +1128,7 @@ Nerima Ku      17100.0     79</code></pre>
 </section>
 <section id="todo④定員2人の部屋" class="slide level2">
 <h2>TODO④：定員2人の部屋</h2>
-<div id="bf40195c" class="cell" data-execution_count="5">
+<div id="1e8adbd7" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>room2 <span class="op">=</span> my_room.assign(accommodates<span class="op">=</span><span class="dv">2</span>, bedrooms<span class="op">=</span><span class="dv">1</span>, beds<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="bu">round</span>(knn_ok.predict(prep(tr, room2))[<span class="dv">0</span>]), <span class="st">&#39;円&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1146,7 +1146,7 @@ Nerima Ku      17100.0     79</code></pre>
 </section>
 <section id="応用①平均で補う" class="slide level2 fit-90">
 <h2>応用①：平均で補う</h2>
-<div id="7a59abb8" class="cell" data-execution_count="6">
+<div id="7c53db2f" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>imp_mean <span class="op">=</span> SimpleImputer(strategy<span class="op">=</span><span class="st">&#39;mean&#39;</span>).fit(tr[num])</span>
 <span id="cb9-2"><a href aria-label="2"></a>m_mean <span class="op">=</span> LinearRegression().fit(imp_mean.transform(tr[num]), y_tr)</span>
 <span id="cb9-3"><a href aria-label="3"></a>pred <span class="op">=</span> m_mean.predict(imp_mean.transform(te[num]))</span>
@@ -1162,7 +1162,7 @@ Nerima Ku      17100.0     79</code></pre>
 </section>
 <section id="応用②外れ幅は何円" class="slide level2">
 <h2>応用②：外れ幅は何円？</h2>
-<div id="3434da57" class="cell" data-execution_count="7">
+<div id="1448ed83" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 8808</code></pre>
 </div>
@@ -1174,7 +1174,7 @@ Nerima Ku      17100.0     79</code></pre>
 </section>
 <section id="補う値を見比べる" class="slide level2">
 <h2>補う値を、見比べる</h2>
-<div id="33412c13" class="cell" data-execution_count="8">
+<div id="60ba6ab1" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;平均&#39;</span>: imp_mean.statistics_,</span>
 <span id="cb12-2"><a href aria-label="2"></a>                    <span class="st">&#39;中央値&#39;</span>: imp.statistics_}, index<span class="op">=</span>num).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1193,7 +1193,7 @@ bedrooms_missing       0.05    0.0</code></pre>
 </section>
 <section id="平均は極端な部屋に引っぱられる" class="slide level2">
 <h2>平均は、極端な部屋に引っぱられる</h2>
-<div id="0151ad66" class="cell" data-execution_count="9">
+<div id="32332504" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>                         平均    中央値
 accommodates           4.71    4.0
