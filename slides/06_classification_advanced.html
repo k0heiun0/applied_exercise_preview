@@ -1079,7 +1079,7 @@ margin-right: 0; }
 </section>
 <section id="キャリブレーション曲線を描く" class="slide level2 fit-90">
 <h2>キャリブレーション曲線を描く</h2>
-<div id="3208b59f" class="cell" data-execution_count="2">
+<div id="cc17b76d" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="im">from</span> sklearn.calibration <span class="im">import</span> CalibrationDisplay</span>
 <span id="cb1-2"><a href aria-label="2"></a></span>
 <span id="cb1-3"><a href aria-label="3"></a>clf <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>).fit(Z_tr, y_tr)</span>
@@ -1097,7 +1097,7 @@ margin-right: 0; }
 </section>
 <section id="区間ごとの人数も見る" class="slide level2">
 <h2>区間ごとの人数も見る</h2>
-<div id="9f7d7593" class="cell" data-execution_count="3">
+<div id="6fe8f0b8" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href aria-label="1"></a>prob <span class="op">=</span> clf.predict_proba(Z_te)[:, <span class="dv">1</span>]</span>
 <span id="cb2-2"><a href aria-label="2"></a>grp <span class="op">=</span> pd.cut(prob, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>])</span>
 <span id="cb2-3"><a href aria-label="3"></a>t <span class="op">=</span> pd.DataFrame({<span class="st">&#39;予測確率&#39;</span>: prob, <span class="st">&#39;実際&#39;</span>: y_te})</span>

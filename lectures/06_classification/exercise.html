@@ -2377,7 +2377,21 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは健診センターの医師です。検査の結果から、心臓病の疑いがある人を見つけ出し、何人を見逃すかを数で言えるようにする。</p>
 <p>心臓病かどうかを確率で当てるロジスティック回帰を立て、その判定がどう当たり、どう外れたかを、混同行列のマスを自分で数えて確かめます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは健診センターの医師です。胸の痛みなどで来た人に、いくつかの検査をします。心臓カテーテルの精密検査は体への負担が大きいので、気軽には回せません。</p>
+<p>決めたいのは、検査の結果から、精密検査に回す人を選ぶことです。そのとき見逃す人が何人出るかも、前もって知っておきたいところです。病気の人を健康だとして帰す見逃しは、治療の機会を失わせます。健康な人を病気と言う誤検出は、再検査で済みます。2つの間違いは、重さが違います。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>米国クリーブランドの病院で、心臓の検査を受けた303人の記録です（UCI Machine Learning RepositoryのHeart Disease）。1行が1人で、年齢・性別・血圧・コレステロール・最大心拍数など、13の検査値が並びます。</p>
+<p>答えの列<code>target</code>は、心臓カテーテルの検査で、太い血管の少なくとも1本が半分以上狭まっていた人を1（心臓病あり）、そうでない人を0としています。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>「確率がいくつ以上なら精密検査に回すか」という判定のしかたと、その判定で何人を見つけ、何人を見逃すかの人数です。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2400,7 +2414,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="3d4781c8" class="cell" data-execution_count="1">
+<div id="102d40dd" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2435,7 +2449,7 @@ window.Quarto = {
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は ② の解析と、③ の解釈が中心です。</p>
-<div id="ef65fdfa" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="f3257ffc" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2457,7 +2471,7 @@ window.Quarto = {
 <li>入力：データの置き場所とファイル名</li>
 <li>出力：表<code>df</code>、人数、グループごとの平均</li>
 </ul>
-<div id="34369a05" class="cell" data-execution_count="3">
+<div id="dc1ef4b4" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2475,7 +2489,7 @@ target
 </div>
 <p>303人のうち、心臓病ありが139人で、ほぼ半々です。列は、年齢（<code>age</code>）、性別（<code>sex</code>、1が男性）、胸の痛みの型（<code>cp</code>）、安静時の血圧（<code>trestbps</code>）、コレステロール（<code>chol</code>）、運動したときの最大心拍数（<code>thalach</code>）、運動で起きる胸の痛み（<code>exang</code>）、運動で心電図が下がる幅（<code>oldpeak</code>）など、13本です。</p>
 <p>心臓病ありの人は、平均すると年齢がやや高く（56.6歳と52.6歳）、最大心拍数が低く（139と158）、心電図の下がり幅が大きい（1.6と0.6）ことがわかります。ただし、どれか一つの列だけで、はっきり分けられるわけではありません。最大心拍数を、グループ別に重ねてみます。</p>
-<div id="9962f90b" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
+<div id="8d185cd4" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2495,7 +2509,7 @@ target
 <section id="変えてみる訓練とテストに分け第3回のprepで整える" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる訓練とテストに分け第3回のprepで整える">変えてみる：訓練とテストに分け、第3回のprepで整える</h3>
 <p><code>stratify=df[&#39;target&#39;]</code>を付けると、訓練とテストで、心臓病ありの割合がそろうように分けられます。<code>prep</code>は、第3回と同じく、補う値（中央値）と標準化の物差しを<code>base</code>で決めます。違うのは、使う列を引数<code>cols</code>で受け取るところだけです。</p>
-<div id="43767ccd" class="cell" data-execution_count="5">
+<div id="fc33fedb" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>feat <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> c <span class="op">!=</span> <span class="st">&#39;target&#39;</span>]      <span class="co"># 13本の検査値</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                          stratify<span class="op">=</span>df[<span class="st">&#39;target&#39;</span>])</span>
@@ -2520,7 +2534,7 @@ target
 <h2 class="anchored" data-anchor-id="確率で当てるロジスティック回帰">2. 確率で当てる：ロジスティック回帰</h2>
 <p>1本の列では、心臓病あり・なしの山が重なりました。13本の列をまとめて当てるには、どうすればよいでしょうか。</p>
 <p>当てたいのは0/1の二択です。これまでの線形回帰（linear regression）で0/1を当ててはいけないのでしょうか。試すと、うまくいかない理由がはっきり出ます。</p>
-<div id="cac0960f" class="cell" data-execution_count="6">
+<div id="4efc3f1b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lin <span class="op">=</span> LinearRegression().fit(Z_tr, y_tr)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>p_lin <span class="op">=</span> lin.predict(Z_te)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_lin.<span class="bu">min</span>().<span class="bu">round</span>(<span class="dv">2</span>), p_lin.<span class="bu">max</span>().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2543,7 +2557,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 </ul>
 <p><code>predict_proba</code>は、「0である確率」と「1である確率」の2列を返すメソッドです。<code>[:, 1]</code>で2列目（心臓病である確率）だけを取り出します。</p>
 <p>なお、scikit-learnの<code>LogisticRegression</code>には、初めから係数の二乗の罰金（L2）がかかっています。前回のRidgeと同じ罰金です。強さは引数<code>C</code>で決まり、<code>C</code>が小さいほど罰金が強くなります（初めの値は<code>C=1.0</code>）。</p>
-<div id="7be0f2ad" class="cell" data-execution_count="7">
+<div id="0c4b02a5" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>).fit(Z_tr, y_tr)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> clf.predict_proba(Z_te)[:, <span class="dv">1</span>]      <span class="co"># 心臓病である確率</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prob[:<span class="dv">5</span>].<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2556,7 +2570,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <section id="変えてみるldaでも確率を出す" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるldaでも確率を出す">変えてみる：LDAでも確率を出す</h3>
 <p>線形判別分析（linear discriminant analysis）（LDA）は、「病気の人」と「健康な人」の検査値の散らばりから、2つを分ける方向を求める、もう一つの分類（classification）の方法です。使い方は同じです。</p>
-<div id="3a0233ca" class="cell" data-execution_count="8">
+<div id="c9f7e850" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>lda <span class="op">=</span> LinearDiscriminantAnalysis().fit(Z_tr, y_tr)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>prob_lda <span class="op">=</span> lda.predict_proba(Z_te)[:, <span class="dv">1</span>]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prob_lda[:<span class="dv">5</span>].<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2585,7 +2599,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <li>出力：判定の並び<code>pred</code>と、正解率</li>
 </ul>
 <p><code>prob &gt; 0.5</code>は、61人それぞれについて「0.5を超えるか」をTrue/Falseで並べたものです（第1回の「条件で絞る」で使った並びと同じ）。<code>.astype(int)</code>でTrueを1、Falseを0に変えます。<code>pred == y_te</code>は「判定と答えが同じか」のTrue/Falseの並びで、その<code>.mean()</code>はTrueの割合、つまり正解率です（Trueを1、Falseを0として平均するから）。</p>
-<div id="0afdb2bf" class="cell" data-execution_count="9">
+<div id="807ff8cf" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> (prob <span class="op">&gt;</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)           <span class="co"># 0.5 を超えたら 1（心臓病）</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred[:<span class="dv">5</span>])</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((pred <span class="op">==</span> y_te).mean().<span class="bu">round</span>(<span class="dv">3</span>))      <span class="co"># 正解率</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2632,7 +2646,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <li>出力：人数<code>tp</code></li>
 </ul>
 <p><code>&amp;</code>は「かつ」です（第1回）。2つのTrue/Falseの並びを<code>&amp;</code>でつなぐと、両方Trueの人だけがTrueになります。<code>.sum()</code>でTrueの数を数えます。</p>
-<div id="42073eee" class="cell" data-execution_count="10">
+<div id="7ffc141c" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>tp <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>()    <span class="co"># 判定も本当も心臓病</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tp)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2643,7 +2657,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <section id="変えてみる真陰性tnを数える" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる真陰性tnを数える">変えてみる：真陰性（TN）を数える</h3>
 <p><code>1</code>を<code>0</code>に変えるだけです。</p>
-<div id="c1b16999" class="cell" data-execution_count="11">
+<div id="ac1ae898" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tn <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">0</span>)).<span class="bu">sum</span>()    <span class="co"># 判定も本当も健康</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2654,13 +2668,13 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <section id="todo①誤検出fpと見逃しfnを数え答え合わせする" class="level3">
 <h3 class="anchored" data-anchor-id="todo①誤検出fpと見逃しfnを数え答え合わせする">TODO①：誤検出（FP）と見逃し（FN）を数え、答え合わせする</h3>
 <p>お手本のセルの<code>==</code>の右側の0/1を組み替えて、誤検出<code>fp</code>（判定は1、本当は0）と見逃し<code>fn</code>（判定は0、本当は1）を数えてください。そして、<code>confusion_matrix(y_te, pred)</code>と一致するか確かめてください。</p>
-<div id="38c5934f" class="cell" data-execution_count="12">
+<div id="c8b5ba8a" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: fp と fn を数え、confusion_matrix(y_te, pred) と比べる</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: fp = ((pred == 1) &amp; (y_te == 0)).sum()</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>TP=26、TN=27、FP=6、FN=2。<code>confusion_matrix</code>は、左上からTN・FP、下の段がFN・TPの順に並べた表を返します。誤検出は6人、見逃しは2人でした。</p>
-<div id="b24e9aba" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="13">
+<div id="93427467" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2686,7 +2700,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <section id="todo②適合率と再現率を式から計算する" class="level3">
 <h3 class="anchored" data-anchor-id="todo②適合率と再現率を式から計算する">TODO②：適合率と再現率を、式から計算する</h3>
 <p>4節で数えた<code>tp</code>・<code>fp</code>・<code>fn</code>から、適合率と再現率を計算して表示してください。そして、<code>classification_report</code>の心臓病（1）の行と一致するか確かめてください。</p>
-<div id="25c1be37" class="cell" data-execution_count="14">
+<div id="db6e0883" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: tp, fp, fn から適合率と再現率を計算する</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: tp / (tp + fp) が適合率。そのあと</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         classification_report(y_te, pred) で答え合わせ</span></span>
@@ -2716,7 +2730,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <li>入力：<code>y_te</code>・<code>prob</code></li>
 <li>出力：図とAUC</li>
 </ul>
-<div id="f1314578" class="cell" data-execution_count="15">
+<div id="5f6fc54c" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fpr, tpr, _ <span class="op">=</span> roc_curve(y_te, prob)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(y_te, prob), <span class="dv">3</span>))</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr, lw<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">&#39;ロジスティック回帰&#39;</span>)</span>
@@ -2739,7 +2753,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <section id="todo③ldaのaucと比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo③ldaのaucと比べる">TODO③：LDAのAUCと比べる</h3>
 <p>2節のLDAの確率<code>prob_lda</code>で、同じようにAUCを計算し、ロジスティック回帰と比べてください。</p>
-<div id="354a80ed" class="cell" data-execution_count="16">
+<div id="b604b6d2" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: roc_auc_score で LDA の AUC を出し、ロジスティック回帰と比べる</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の prob を prob_lda に変える</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2758,7 +2772,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <li>入力：<code>tp</code>・<code>pred</code>・<code>y_te</code></li>
 <li>出力：報告の文</li>
 </ul>
-<div id="7a440e6c" class="cell" data-execution_count="17">
+<div id="acc983ec" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>()    <span class="co"># 見逃し（TODO①と同じ）</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>n_sick <span class="op">=</span> tp <span class="op">+</span> fn                          <span class="co"># 本当に心臓病の人</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;心臓病の</span><span class="sc">{</span>n_sick<span class="sc">}</span><span class="ss">人のうち</span><span class="sc">{</span>tp<span class="sc">}</span><span class="ss">人を見つけ、</span><span class="sc">{</span>fn<span class="sc">}</span><span class="ss">人を見逃した&#39;</span></span>
@@ -2771,7 +2785,7 @@ p = \frac{1}{1 + e^{-z}}, \qquad z = \beta_0 + \sum_j \beta_j x_j
 <section id="todo④誤検出も文にする" class="level3">
 <h3 class="anchored" data-anchor-id="todo④誤検出も文にする">TODO④：誤検出も文にする</h3>
 <p>お手本をまねて、「健康な○人のうち○人を、心臓病と判定した（誤検出）」の文を表示してください。健康な人の数は<code>tn + fp</code>です。</p>
-<div id="e640c899" class="cell" data-execution_count="18">
+<div id="e24c78d7" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 健康な人のうち、誤って心臓病と判定した人数を文にする</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: fp = ((pred == 1) &amp; (y_te == 0)).sum()、n_ok = tn + fp、</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         お手本の f-string をまねる</span></span>
