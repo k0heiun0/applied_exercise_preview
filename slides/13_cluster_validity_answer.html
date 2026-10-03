@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①kごとのシルエット" class="slide level2 fit-90">
 <h2>TODO①：Kごとのシルエット</h2>
-<div id="d0180fac" class="cell" data-execution_count="2">
+<div id="6d2d2683" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>sil <span class="op">=</span> {}</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> ks:</span>
 <span id="cb1-3"><a href aria-label="3"></a>    labels <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit_predict(X)</span>
@@ -1085,7 +1085,7 @@ margin-right: 0; }
 </section>
 <section id="todo②10通りの種" class="slide level2">
 <h2>TODO②：10通りの種</h2>
-<div id="a148463d" class="cell" data-execution_count="3">
+<div id="51b06fe0" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>ari_seed <span class="op">=</span> {}</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
 <span id="cb3-3"><a href aria-label="3"></a>    k1 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span>seed).fit(X)</span>
@@ -1107,7 +1107,7 @@ margin-right: 0; }
 </section>
 <section id="todo③大陸とのari" class="slide level2 fit-90">
 <h2>TODO③：大陸とのARI</h2>
-<div id="576f3fb0" class="cell" data-execution_count="4">
+<div id="e7eb39b5" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href aria-label="1"></a>ari_cont <span class="op">=</span> {}</span>
 <span id="cb6-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">7</span>):</span>
 <span id="cb6-3"><a href aria-label="3"></a>    labels <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit_predict(X)</span>
@@ -1120,7 +1120,7 @@ margin-right: 0; }
 </section>
 <section id="todo④1つの表に" class="slide level2 fit-80">
 <h2>TODO④：1つの表に</h2>
-<div id="0d3577b6" class="cell" data-execution_count="5">
+<div id="94967fa2" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a>rows <span class="op">=</span> []</span>
 <span id="cb8-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">7</span>):</span>
 <span id="cb8-3"><a href aria-label="3"></a>    km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span>k, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X)</span>
@@ -1145,7 +1145,7 @@ margin-right: 0; }
 </section>
 <section id="応用①n_init10で種を5通り" class="slide level2">
 <h2>応用①：n_init=10で、種を5通り</h2>
-<div id="315a3868" class="cell" data-execution_count="6">
+<div id="c4edb459" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href aria-label="1"></a>ari10 <span class="op">=</span> {}</span>
 <span id="cb10-2"><a href aria-label="2"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
 <span id="cb10-3"><a href aria-label="3"></a>    k10 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span>seed).fit(X)</span>
@@ -1162,7 +1162,7 @@ margin-right: 0; }
 </section>
 <section id="応用②いちばん小さいari" class="slide level2">
 <h2>応用②：いちばん小さいARI</h2>
-<div id="7fe8dc81" class="cell" data-execution_count="7">
+<div id="ebe687a7" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 0.98</code></pre>
 </div>

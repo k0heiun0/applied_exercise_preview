@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①累積寄与率" class="slide level2">
 <h2>TODO①：累積寄与率</h2>
-<div id="41bcef3a" class="cell" data-execution_count="2">
+<div id="7aabdd9f" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>cum <span class="op">=</span> np.cumsum(pca.explained_variance_ratio_)</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="ss">f&#39;上位50個: </span><span class="sc">{</span>cum[<span class="dv">49</span>]<span class="sc">:.1%}</span><span class="ss">&#39;</span>)</span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="cf">for</span> k <span class="kw">in</span> [<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">100</span>]:</span>
@@ -1088,7 +1088,7 @@ margin-right: 0; }
 </section>
 <section id="todo②別の顔で" class="slide level2 fit-90">
 <h2>TODO②：別の顔で</h2>
-<div id="6dbd073c" class="cell" data-execution_count="3">
+<div id="1df6f983" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>face2 <span class="op">=</span> X[<span class="dv">100</span>] <span class="op">-</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb3-2"><a href aria-label="2"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">7</span>, <span class="fl">2.6</span>))</span>
 <span id="cb3-3"><a href aria-label="3"></a>show(axes[<span class="dv">0</span>], X[<span class="dv">100</span>], <span class="st">&#39;元の顔&#39;</span>)</span>
@@ -1108,7 +1108,7 @@ margin-right: 0; }
 </section>
 <section id="todo③9割を保つ個数" class="slide level2">
 <h2>TODO③：9割を保つ個数</h2>
-<div id="94079f73" class="cell" data-execution_count="4">
+<div id="e5344db2" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>cum <span class="op">=</span> np.cumsum(pca.explained_variance_ratio_)</span>
 <span id="cb4-2"><a href aria-label="2"></a>k90 <span class="op">=</span> np.argmax(cum <span class="op">&gt;=</span> <span class="fl">0.9</span>) <span class="op">+</span> <span class="dv">1</span>          <span class="co"># 番号は0からなので1を足す</span></span>
 <span id="cb4-3"><a href aria-label="3"></a><span class="bu">print</span>(k90, <span class="bu">round</span>(cum[k90 <span class="op">-</span> <span class="dv">1</span>], <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1123,7 +1123,7 @@ margin-right: 0; }
 </section>
 <section id="todo④個数と保てる割合" class="slide level2 fit-90">
 <h2>TODO④：個数と、保てる割合</h2>
-<div id="5fc1e364" class="cell" data-execution_count="5">
+<div id="1b4b8060" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href aria-label="1"></a>cum <span class="op">=</span> np.cumsum(pca.explained_variance_ratio_)</span>
 <span id="cb6-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> [<span class="dv">20</span>, <span class="dv">50</span>, <span class="dv">66</span>, <span class="dv">100</span>]:</span>
 <span id="cb6-3"><a href aria-label="3"></a>    size <span class="op">=</span> d <span class="op">+</span> d <span class="op">*</span> k <span class="op">+</span> n <span class="op">*</span> k</span>
@@ -1150,7 +1150,7 @@ margin-right: 0; }
 </section>
 <section id="応用①1050100個で比べる" class="slide level2 fit-90">
 <h2>応用①：10・50・100個で比べる</h2>
-<div id="76b8f2bc" class="cell" data-execution_count="6">
+<div id="6ba566b4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a>accs <span class="op">=</span> {}</span>
 <span id="cb8-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> [<span class="dv">10</span>, <span class="dv">50</span>, <span class="dv">100</span>]:</span>
 <span id="cb8-3"><a href aria-label="3"></a>    pipe_k <span class="op">=</span> Pipeline([(<span class="st">&#39;pca&#39;</span>, PCA(n_components<span class="op">=</span>k, random_state<span class="op">=</span><span class="dv">0</span>)),</span>
@@ -1173,7 +1173,7 @@ margin-right: 0; }
 </section>
 <section id="応用②初めて0.95を超えるのは" class="slide level2">
 <h2>応用②：初めて0.95を超えるのは</h2>
-<div id="46de323f" class="cell" data-execution_count="7">
+<div id="dd60d8a0" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 50</code></pre>
 </div>

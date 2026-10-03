@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①グループの要約" class="slide level2">
 <h2>TODO①：グループの要約</h2>
-<div id="7f59426e" class="cell" data-execution_count="2">
+<div id="9cb91f46" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>d[<span class="st">&#39;cluster&#39;</span>] <span class="op">=</span> km.labels_</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(d.groupby(<span class="st">&#39;cluster&#39;</span>).agg(国数<span class="op">=</span>(<span class="st">&#39;country&#39;</span>, <span class="st">&#39;size&#39;</span>),</span>
 <span id="cb1-3"><a href aria-label="3"></a>                               平均寿命<span class="op">=</span>(<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;mean&#39;</span>),</span>
@@ -1088,7 +1088,7 @@ cluster
 </section>
 <section id="todo②標準化しないと" class="slide level2">
 <h2>TODO②：標準化しないと</h2>
-<div id="7606b2b6" class="cell" data-execution_count="3">
+<div id="5457f2ff" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>raw <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>,</span>
 <span id="cb3-2"><a href aria-label="2"></a>             random_state<span class="op">=</span><span class="dv">42</span>).fit_predict(d[[<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;loggdp&#39;</span>]].values)</span>
 <span id="cb3-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">round</span>(adjusted_rand_score(km.labels_, raw), <span class="dv">2</span>))</span>
@@ -1107,7 +1107,7 @@ cluster
 </section>
 <section id="todo③気になる国" class="slide level2">
 <h2>TODO③：気になる国</h2>
-<div id="4351dc73" class="cell" data-execution_count="4">
+<div id="62495c03" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>pick <span class="op">=</span> [<span class="st">&#39;Japan&#39;</span>, <span class="st">&#39;China&#39;</span>, <span class="st">&#39;India&#39;</span>, <span class="st">&#39;South Africa&#39;</span>, <span class="st">&#39;Botswana&#39;</span>]</span>
 <span id="cb5-2"><a href aria-label="2"></a>cols <span class="op">=</span> [<span class="st">&#39;country&#39;</span>, <span class="st">&#39;cluster&#39;</span>, <span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;gdpPercap&#39;</span>]</span>
 <span id="cb5-3"><a href aria-label="3"></a><span class="bu">print</span>(d[d[<span class="st">&#39;country&#39;</span>].isin(pick)][cols].<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1123,7 +1123,7 @@ cluster
 </section>
 <section id="todo④境目にいる国" class="slide level2 fit-90">
 <h2>TODO④：境目にいる国</h2>
-<div id="3adc5d3e" class="cell" data-execution_count="5">
+<div id="8f7b5c71" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>dist <span class="op">=</span> np.sort(km.transform(X), axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb7-2"><a href aria-label="2"></a>d[<span class="st">&#39;margin&#39;</span>] <span class="op">=</span> dist[:, <span class="dv">1</span>] <span class="op">-</span> dist[:, <span class="dv">0</span>]     <span class="co"># 2番目 − いちばん近い</span></span>
 <span id="cb7-3"><a href aria-label="3"></a>cols <span class="op">=</span> [<span class="st">&#39;country&#39;</span>, <span class="st">&#39;cluster&#39;</span>, <span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;gdpPercap&#39;</span>, <span class="st">&#39;margin&#39;</span>]</span>
@@ -1148,7 +1148,7 @@ cluster
 </section>
 <section id="応用①階層クラスタリング" class="slide level2 fit-90">
 <h2>応用①：階層クラスタリング</h2>
-<div id="51b9ec17" class="cell" data-execution_count="6">
+<div id="c1457e0d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> AgglomerativeClustering</span>
 <span id="cb9-2"><a href aria-label="2"></a></span>
 <span id="cb9-3"><a href aria-label="3"></a>hc <span class="op">=</span> AgglomerativeClustering(n_clusters<span class="op">=</span><span class="dv">3</span>)        <span class="co"># つなぐ基準はウォード法</span></span>
@@ -1175,7 +1175,7 @@ hc
 </section>
 <section id="応用②ari" class="slide level2">
 <h2>応用②：ARI</h2>
-<div id="48310fb0" class="cell" data-execution_count="7">
+<div id="39977857" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href aria-label="1"></a><span class="bu">print</span>(pd.crosstab(km.labels_, d[<span class="st">&#39;hc&#39;</span>], rownames<span class="op">=</span>[<span class="st">&#39;k-means&#39;</span>],</span>
 <span id="cb11-2"><a href aria-label="2"></a>                  colnames<span class="op">=</span>[<span class="st">&#39;階層&#39;</span>]))</span>
 <span id="cb11-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;答え:&#39;</span>, <span class="bu">round</span>(adjusted_rand_score(km.labels_, d[<span class="st">&#39;hc&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

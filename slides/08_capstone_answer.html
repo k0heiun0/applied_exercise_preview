@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①欠けた値" class="slide level2">
 <h2>TODO①：欠けた値</h2>
-<div id="b9d6eab2" class="cell" data-execution_count="2">
+<div id="4672574a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>miss <span class="op">=</span> df.isna().<span class="bu">sum</span>()</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(miss.to_string())</span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;合計:&#39;</span>, miss.<span class="bu">sum</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1090,7 +1090,7 @@ sex                  11
 </section>
 <section id="todo②前処理のあとの列" class="slide level2">
 <h2>TODO②：前処理のあとの列</h2>
-<div id="0c77d9b2" class="cell" data-execution_count="3">
+<div id="42195bed" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>names <span class="op">=</span> pre.fit(X_tr).get_feature_names_out()</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(names, <span class="bu">len</span>(names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1105,7 +1105,7 @@ sex                  11
 </section>
 <section id="todo③数の列だけ" class="slide level2">
 <h2>TODO③：数の列だけ</h2>
-<div id="9d85f454" class="cell" data-execution_count="4">
+<div id="d71f0984" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>pre_n <span class="op">=</span> ColumnTransformer([(<span class="st">&#39;num&#39;</span>, num_steps, num)])</span>
 <span id="cb5-2"><a href aria-label="2"></a>pipe_n <span class="op">=</span> Pipeline([(<span class="st">&#39;pre&#39;</span>, pre_n),</span>
 <span id="cb5-3"><a href aria-label="3"></a>                   (<span class="st">&#39;model&#39;</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>))])</span>
@@ -1121,7 +1121,7 @@ sex                  11
 </section>
 <section id="todo④gentooらしさ" class="slide level2">
 <h2>TODO④：Gentooらしさ</h2>
-<div id="4b72ac05" class="cell" data-execution_count="5">
+<div id="9306ffb7" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>coef_g <span class="op">=</span> best.named_steps[<span class="st">&#39;model&#39;</span>].coef_[<span class="dv">2</span>]     <span class="co"># Gentoo らしさ</span></span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="cf">for</span> j <span class="kw">in</span> np.argsort(np.<span class="bu">abs</span>(coef_g))[::<span class="op">-</span><span class="dv">1</span>][:<span class="dv">4</span>]:</span>
 <span id="cb7-3"><a href aria-label="3"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>names[j]<span class="sc">:24s}</span><span class="ss"> </span><span class="sc">{</span>coef_g[j]<span class="sc">:+.2f}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1150,7 +1150,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="応用①くちばしの長さを外す" class="slide level2 fit-90">
 <h2>応用①：くちばしの長さを外す</h2>
-<div id="0301dc92" class="cell" data-execution_count="6">
+<div id="f088db6e" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>num3 <span class="op">=</span> [<span class="st">&#39;bill_depth_mm&#39;</span>, <span class="st">&#39;flipper_length_mm&#39;</span>, <span class="st">&#39;body_mass_g&#39;</span>]   <span class="co"># 長さを外す</span></span>
 <span id="cb9-2"><a href aria-label="2"></a>model3 <span class="op">=</span> build_pipeline(num3, cat, C<span class="op">=</span><span class="dv">10</span>)</span>
 <span id="cb9-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;交差検証&#39;</span>, <span class="bu">round</span>(evaluate(model3, X_tr, y_tr), <span class="dv">3</span>))</span>
@@ -1178,7 +1178,7 @@ cat__island_Dream        -1.03</code></pre>
 <ul>
 <li>問い：応用①の、テストの正解率はいくつか（小数第2位まで）</li>
 </ul>
-<div id="a44247ef" class="cell" data-execution_count="7">
+<div id="f1c71010" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 0.84</code></pre>
 </div>

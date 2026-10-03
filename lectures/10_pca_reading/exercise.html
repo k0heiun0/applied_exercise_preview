@@ -2238,7 +2238,20 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは自動車雑誌の編集者です。392台の車を、6つの性能から1枚の地図に並べ、読者に「この車は、どんな車か」を伝えたい。</p>
 <p>6つの性能を2本の軸に束ねて地図にし、その軸に名前をつけ、地図の上の位置で1台の車を説明します。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは自動車雑誌の編集者です。誌面で、いろいろな車を読者に紹介します。性能表には、燃費・馬力・重さなどの数が並びます。</p>
+<p>決めたいのは、392台の車を、6つの性能から1枚の地図に並べることです。そして読者に、地図の上の位置で「この車は、どんな車か」を伝えたいのです。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>seabornに入っている車の性能表<code>mpg</code>です。1行が1台で、燃費・気筒数・排気量・馬力・重さ・加速の6つの性能に、製造国・年式・車名が並びます。欠けた値のある行を落とすと、392台です。答えの列はありません。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>2本の軸の名前（右に行くほど、上に行くほど、どんな車か）と、地図の上の位置から1台の車を説明する一文です。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2261,7 +2274,7 @@ vertical-align: -.125em;
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="fef57bce" class="cell" data-execution_count="1">
+<div id="b10ca93f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2294,7 +2307,7 @@ vertical-align: -.125em;
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は ③ の解釈が中心です。</p>
-<div id="ecb83243" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="ac9e2b0d" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2323,7 +2336,7 @@ vertical-align: -.125em;
 <li>出力：なし（関数ができる）</li>
 </ul>
 <p><code>def</code>のすぐ下の<code>&quot;&quot;&quot;…&quot;&quot;&quot;</code>はドキュメント文字列（docstring）で、その関数の説明です。ここを読めば、中身を読まなくても役割がわかります。</p>
-<div id="735e8a46" class="cell" data-execution_count="3">
+<div id="c8780b24" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_cars():</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;車の性能表を読み込み、欠けた値のある行を落とす&quot;&quot;&quot;</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> sns.load_dataset(<span class="st">&#39;mpg&#39;</span>).dropna().reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
@@ -2392,7 +2405,7 @@ vertical-align: -.125em;
 <section id="変えてみる関数を呼んで2本の軸に縮める" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる関数を呼んで2本の軸に縮める">変えてみる：関数を呼んで、2本の軸に縮める</h3>
 <p>使う列は、燃費（<code>mpg</code>）・気筒数（<code>cylinders</code>）・排気量（<code>displacement</code>）・馬力（<code>horsepower</code>）・重さ（<code>weight</code>、ポンド）・加速（<code>acceleration</code>、0→60マイルの秒数）の6つです。</p>
-<div id="ec56a334" class="cell" data-execution_count="4">
+<div id="1d40aa00" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> load_cars()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>feat <span class="op">=</span> [<span class="st">&#39;mpg&#39;</span>, <span class="st">&#39;cylinders&#39;</span>, <span class="st">&#39;displacement&#39;</span>, <span class="st">&#39;horsepower&#39;</span>, <span class="st">&#39;weight&#39;</span>,</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;acceleration&#39;</span>]</span>
@@ -2425,7 +2438,7 @@ vertical-align: -.125em;
 <li>出力：6行×2列の表</li>
 </ul>
 <p><code>.T</code>で転置して、列ごとに1行にします。</p>
-<div id="a962fda8" class="cell" data-execution_count="5">
+<div id="db2926aa" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.DataFrame(pca2.components_.T, index<span class="op">=</span>feat,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                    columns<span class="op">=</span>[<span class="st">&#39;PC1&#39;</span>, <span class="st">&#39;PC2&#39;</span>])</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2450,7 +2463,7 @@ acceleration -0.29  0.89</code></pre>
 </ul>
 <p><code>pca2.explained_variance_</code>は、PC1・PC2の得点の分散です。その平方根（得点の標準偏差）を係数にかけたものが負荷量で、その列と主成分の得点との相関になります（−1〜1）。</p>
 <p><code>表 * 並び</code>は、表の1列目に並びの1つ目を、2列目に2つ目を、かけます。</p>
-<div id="4709a43d" class="cell" data-execution_count="6">
+<div id="4e4162f2" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>load <span class="op">=</span> coef <span class="op">*</span> np.sqrt(pca2.explained_variance_)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(load.<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2468,7 +2481,7 @@ acceleration -0.64  0.76</code></pre>
 <section id="todo①pc2と関係の強い列を大きい順に並べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo①pc2と関係の強い列を大きい順に並べる">TODO①：PC2と関係の強い列を、大きい順に並べる</h3>
 <p><code>load[&#39;PC2&#39;]</code>を、絶対値の大きい順に並べて表示してください。PC2には、何という名前をつけられますか。</p>
-<div id="e36c0618" class="cell" data-execution_count="7">
+<div id="fda44201" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: PC2 の負荷量を、絶対値の大きい順に並べて表示する</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: load[&#39;PC2&#39;].abs().sort_values(ascending=False)</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2488,7 +2501,7 @@ acceleration -0.64  0.76</code></pre>
 <li>入力：得点<code>S</code>、<code>pca2</code>、<code>feat</code>、製造国の列</li>
 <li>出力：バイプロット</li>
 </ul>
-<div id="d47f1437" class="cell" data-execution_count="8">
+<div id="52166e15" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">5</span>))</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>biplot(ax, S, pca2, feat, df[<span class="st">&#39;origin&#39;</span>].values)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2506,7 +2519,7 @@ acceleration -0.64  0.76</code></pre>
 <section id="todo②相関を計算して矢印と比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo②相関を計算して矢印と比べる">TODO②：相関を計算して、矢印と比べる</h3>
 <p>「重さと排気量」「燃費と重さ」の相関を計算して、矢印の向き（同じ向き／反対向き）と合っているか確かめてください。</p>
-<div id="c61f0309" class="cell" data-execution_count="9">
+<div id="842e0635" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: weight と displacement、mpg と weight の相関を表示する</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: df[&#39;weight&#39;].corr(df[&#39;displacement&#39;])</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2516,7 +2529,7 @@ acceleration -0.64  0.76</code></pre>
 <section id="変えてみる燃費と加速" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる燃費と加速">変えてみる：燃費と加速</h3>
 <p>燃費と加速の相関も見てみます。</p>
-<div id="03a52ee1" class="cell" data-execution_count="10">
+<div id="ed83ca1f" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;mpg&#39;</span>].corr(df[<span class="st">&#39;acceleration&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.42</code></pre>
@@ -2532,7 +2545,7 @@ acceleration -0.64  0.76</code></pre>
 <li>出力：列ごとの、保てている割合</li>
 </ul>
 <p><code>load ** 2</code>で表のすべての値を2乗し、<code>.sum(axis=1)</code>で行ごとに（PC1とPC2を）足します。</p>
-<div id="5fcf2bf6" class="cell" data-execution_count="11">
+<div id="95ca9a0c" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((load <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mpg             0.81
@@ -2559,7 +2572,7 @@ dtype: float64</code></pre>
 <li>入力：<code>df</code>、<code>feat</code>、k＝6</li>
 <li>出力：6つの累積寄与率</li>
 </ul>
-<div id="f06914de" class="cell" data-execution_count="12">
+<div id="322f4666" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pca6, _ <span class="op">=</span> fit_pca(df, feat, k<span class="op">=</span><span class="dv">6</span>)        <span class="co"># 得点は使わない</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.cumsum(pca6.explained_variance_ratio_).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2568,7 +2581,7 @@ dtype: float64</code></pre>
 </div>
 <p>1本で79.8%、2本で91.9%、3本で96.3%、4本で98.3%。2本目までで大きく増え、3本目からは、ほとんど増えません。</p>
 <p><code>_</code>（アンダースコア）は、「返ってくるけれど使わない値」を受けるときの名前です。<code>fit_pca</code>はPCAと得点の2つを返しますが、ここでは得点を使いません。</p>
-<div id="e47f6ee3" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="13">
+<div id="4e8651b1" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2596,7 +2609,7 @@ dtype: float64</code></pre>
 <li>出力：2台の表</li>
 </ul>
 <p><code>assign</code>は、列を加えた表を返すメソッドです（第7回）。<code>isin</code>は、「並びのどれかに入っているか」のTrue/Falseを返します。<code>drop_duplicates(&#39;name&#39;)</code>で、同じ名前の車が何年ぶんもあるときに1台に絞ります。</p>
-<div id="c882cf11" class="cell" data-execution_count="14">
+<div id="22e56dea" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>cars <span class="op">=</span> df.assign(PC1<span class="op">=</span>S[:, <span class="dv">0</span>], PC2<span class="op">=</span>S[:, <span class="dv">1</span>])</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>two <span class="op">=</span> [<span class="st">&#39;toyota corolla 1200&#39;</span>, <span class="st">&#39;chevrolet impala&#39;</span>]</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>pick <span class="op">=</span> cars[cars[<span class="st">&#39;name&#39;</span>].isin(two)].drop_duplicates(<span class="st">&#39;name&#39;</span>)</span>
@@ -2613,7 +2626,7 @@ dtype: float64</code></pre>
 <section id="todo③ホンダシビックを探す" class="level3">
 <h3 class="anchored" data-anchor-id="todo③ホンダシビックを探す">TODO③：ホンダ・シビックを探す</h3>
 <p>名前に<code>&#39;honda civic&#39;</code>を含む車をすべて探し、年式（<code>model_year</code>）と、PC1・PC2、燃費を表示してください。シビックは、地図のどこにいますか。</p>
-<div id="42ec957e" class="cell" data-execution_count="15">
+<div id="455e5f70" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 名前に &#39;honda civic&#39; を含む車を探して表示する</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cars[cars[&#39;name&#39;].str.contains(&#39;honda civic&#39;)]</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2623,7 +2636,7 @@ dtype: float64</code></pre>
 <section id="todo④地図のいちばん上にいる車" class="level3">
 <h3 class="anchored" data-anchor-id="todo④地図のいちばん上にいる車">TODO④：地図のいちばん上にいる車</h3>
 <p>PC2がいちばん大きい車を探し、名前・製造国・年式・PC1・PC2・加速を表示してください。その車を、読者に一文で紹介してみましょう。</p>
-<div id="dbdacfc9" class="cell" data-execution_count="16">
+<div id="cded76e0" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: PC2 がいちばん大きい車を探して表示する</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cars.loc[cars[&#39;PC2&#39;].idxmax()]</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

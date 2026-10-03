@@ -2377,7 +2377,20 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは国際協力機関の担当者です。前回の3つのグループを報告書に載せる前に、「なぜ3つなのか」を、数の根拠で説明したい。</p>
 <p>Kを変えたときの物差しを、リストや辞書に集めて比べ、報告に載せるKを決めます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは国際協力機関の担当者です。国々を3つのグループに分けた結果を、報告書に載せようとしています。</p>
+<p>決めたいのは、報告書に載せるグループの数Kを、いくつにするかです。上司に「なぜその数なのか」を、数の根拠で説明できるようにしておきたいところです。正解のラベルがないので、「当たったか」では測れません。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>Gapminder財団がまとめた、国ごとの平均寿命（<code>lifeExp</code>）と一人あたりGDP（<code>gdpPercap</code>）の表です（CC-BY、plotly/datasets経由で取得）。このうち2007年の142か国を使い、1行が1つの国です。答えの列はありません。大陸の列（<code>continent</code>）は、グループの分け方と比べる相手に使います。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>報告書に載せるグループの数Kと、その数を選んだ根拠を、いくつかの物差しの数で示します。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2396,11 +2409,11 @@ window.Quarto = {
 <section id="最初に実行する道具を呼び出す設定のセル" class="level3">
 <h3 class="anchored" data-anchor-id="最初に実行する道具を呼び出す設定のセル">最初に実行する：道具を呼び出す設定のセル</h3>
 <ul>
-<li>役割：このノートで使う道具を呼び出し、前回と同じ142か国の表を用意する</li>
+<li>役割：このノートで使う道具を呼び出し、第11回と同じ142か国の表を用意する</li>
 <li>入力：データの置き場所</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="d728cf66" class="cell" data-execution_count="1">
+<div id="62db8120" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2432,8 +2445,9 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/gapminder.csv&#39;</span>)</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df[df[<span class="st">&#39;year&#39;</span>] <span class="op">==</span> <span class="dv">2007</span>].copy().reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;loggdp&#39;</span>] <span class="op">=</span> np.log10(d[<span class="st">&#39;gdpPercap&#39;</span>])</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> StandardScaler().fit_transform(d[[<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;loggdp&#39;</span>]])   <span class="co"># 前回と同じ</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;セットアップ完了&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># 標準化は、第11回と同じ</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> StandardScaler().fit_transform(d[[<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;loggdp&#39;</span>]])</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;セットアップ完了&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>セットアップ完了</code></pre>
 </div>
@@ -2442,7 +2456,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は ③ の目標との整合（その分け方で、報告に耐えるか）が中心です。</p>
-<div id="2af7416b" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="d9d92261" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2471,7 +2485,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>入力：標準化（standardization）した<code>X</code></li>
 <li>出力：7つの慣性</li>
 </ul>
-<div id="8f35d483" class="cell" data-execution_count="3">
+<div id="cc07ebcd" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ks <span class="op">=</span> <span class="bu">range</span>(<span class="dv">2</span>, <span class="dv">9</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>inertias <span class="op">=</span> []</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> ks:</span>
@@ -2484,7 +2498,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </div>
 <p>84.2、53.8、37.1、25.1、19.2、16.0、13.8。一度も上がらずに下がり続けます。</p>
 <p>Kを1つ増やせば、いちばん広がったグループを2つに割るだけでも、距離の合計は必ず小さくなります。極端には、Kを国の数（142）にすれば、どの国も自分が中心で、慣性は0です。だから、慣性がいちばん小さいKを選ぶ、とはいきません。</p>
-<div id="683079a7" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
+<div id="d9518e00" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2515,7 +2529,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <li>入力：<code>X</code></li>
 <li>出力：全体の値と、マイナスになった国</li>
 </ul>
-<div id="d39b1b7b" class="cell" data-execution_count="5">
+<div id="aacc45b0" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>km3 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(silhouette_score(X, km3.labels_), <span class="dv">3</span>))</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> silhouette_samples(X, km3.labels_)         <span class="co"># 国ごとのシルエット</span></span>
@@ -2537,7 +2551,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="todo①kごとのシルエットを辞書に集める" class="level3">
 <h3 class="anchored" data-anchor-id="todo①kごとのシルエットを辞書に集める">TODO①：Kごとのシルエットを、辞書に集める</h3>
 <p>Kを2〜8に変えて、シルエット（全体の値）を辞書<code>sil</code>に<code>{K: 値}</code>の形で集め、表示してください。どのKで最大になりますか。</p>
-<div id="c5e4da9c" class="cell" data-execution_count="6">
+<div id="1ffc4778" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜8 のシルエットを辞書 sil に集めて表示する</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: sil = {} → for k in ks: の中で</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         sil[k] = silhouette_score(X, KMeans(…).fit_predict(X))</span></span>
@@ -2549,7 +2563,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="k5はどんな分け方か" class="level3">
 <h3 class="anchored" data-anchor-id="k5はどんな分け方か">K＝5は、どんな分け方か</h3>
 <p>エルボーでもシルエットでも、K＝5はK＝3と並ぶ候補でした。K＝5で分けたグループを、図で見てみます（図の数字は、各グループの平均寿命）。</p>
-<div id="97c423e3" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="7">
+<div id="c9c8c388" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2574,7 +2588,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <li>入力：<code>X</code>、<code>km3</code></li>
 <li>出力：5行の結果</li>
 </ul>
-<div id="065f5908" class="cell" data-execution_count="8">
+<div id="cd4ef682" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    k1 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">1</span>, random_state<span class="op">=</span>seed).fit(X)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    ari <span class="op">=</span> adjusted_rand_score(km3.labels_, k1.labels_)</span>
@@ -2592,7 +2606,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="新しい書き方条件に合う数をsumで数える" class="level3">
 <h3 class="anchored" data-anchor-id="新しい書き方条件に合う数をsumで数える">新しい書き方：条件に合う数を、sumで数える</h3>
 <p>TODO②では、「ARIが0.95以上の種はいくつか」を数えます。そのための書き方です。</p>
-<div id="4051e60f" class="cell" data-execution_count="9">
+<div id="bc0426d8" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(v <span class="op">&gt;=</span> <span class="fl">0.95</span> <span class="cf">for</span> v <span class="kw">in</span> [<span class="fl">0.4</span>, <span class="fl">0.98</span>, <span class="fl">0.99</span>]))   <span class="co"># 2 と表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2</code></pre>
@@ -2607,7 +2621,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="todo②10通りの種で揺れを数える" class="level3">
 <h3 class="anchored" data-anchor-id="todo②10通りの種で揺れを数える">TODO②：10通りの種で、揺れを数える</h3>
 <p>種を0〜9に変えて（<code>n_init=1</code>）、<code>km3</code>とのARIを辞書<code>ari_seed</code>に<code>{種: ARI}</code>の形で集めてください。ARIが0.95以上になった種は、10通りのうちいくつですか。</p>
-<div id="7cdb17ec" class="cell" data-execution_count="10">
+<div id="e8d6d5b9" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 種0〜9の ARI を辞書 ari_seed に集め、0.95 以上の数を数える</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ari_seed[seed] = adjusted_rand_score(km3.labels_, …)</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         sum(v &gt;= 0.95 for v in ari_seed.values())</span></span>
@@ -2629,7 +2643,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <li>入力：<code>km3</code>、<code>d[&#39;continent&#39;]</code></li>
 <li>出力：ARI</li>
 </ul>
-<div id="c22d06c0" class="cell" data-execution_count="11">
+<div id="e6935e10" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(adjusted_rand_score(d[<span class="st">&#39;continent&#39;</span>], km3.labels_), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.365</code></pre>
@@ -2640,7 +2654,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="todo③kごとに大陸と比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo③kごとに大陸と比べる">TODO③：Kごとに、大陸と比べる</h3>
 <p>Kを2〜6に変えて、大陸とのARIを辞書<code>ari_cont</code>に集め、表示してください。どのKで最大になりますか。</p>
-<div id="2a9ed364" class="cell" data-execution_count="12">
+<div id="4122cdc0" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜6 の、大陸との ARI を辞書 ari_cont に集めて表示する</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ari_cont[k] = adjusted_rand_score(d[&#39;continent&#39;], labels)</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2656,7 +2670,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <section id="todo④kごとの物差しを1つの表にする" class="level3">
 <h3 class="anchored" data-anchor-id="todo④kごとの物差しを1つの表にする">TODO④：Kごとの物差しを、1つの表にする</h3>
 <p>Kを2〜6に変えて、1行ずつ辞書<code>{&#39;K&#39;: k, &#39;慣性&#39;: …, &#39;シルエット&#39;: …, &#39;大陸ARI&#39;: …}</code>をリスト<code>rows</code>に集め、<code>pd.DataFrame(rows)</code>で表にしてください（第4回・第7回と同じ作り方です）。</p>
-<div id="721a4ba2" class="cell" data-execution_count="13">
+<div id="8389151c" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: K＝2〜6 の慣性・シルエット・大陸 ARI を1つの表にする</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: rows = [] → for k in range(2, 7): の中で km を作り、</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         rows.append({&#39;K&#39;: k, &#39;慣性&#39;: km.inertia_, …})</span></span>

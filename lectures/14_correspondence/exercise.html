@@ -2377,7 +2377,20 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは映画配信サービスの企画担当者です。「年代別の特集」を組むとき、どの年代にどのジャンルを合わせれば、その時代らしさが出るかを、1枚の地図と数で示したい。</p>
 <p>ジャンルと年代に関係があるかを確かめ、対応分析で地図を描き、年代ごとに「多すぎる」ジャンルを数で確かめます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは映画配信サービスの企画担当者です。古い映画から新しい映画まで、たくさんの作品を扱っています。次の企画は「年代別の特集」です。</p>
+<p>決めたいのは、それぞれの年代の特集に、どのジャンルを並べるかです。その時代らしさが出る組み合わせを、根拠をもって選びたいところです。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>MovieLens（F. M. Harper and J. A. Konstan, 2015）の映画の一覧から、映画をジャンルと公開の年代で数えた表です。1行が1つのジャンル、1列が1つの年代で、10行 × 9列です。1つのマスが映画の本数で、ジャンルを複数持つ映画は、それぞれのジャンルで数えています。答えの列はありません。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>年代ごとに、合わせるジャンルを並べた企画の一文です。その根拠として、1枚の地図と、その年代に多いジャンルを示す数を出します。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2399,7 +2412,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="11d3dd7e" class="cell" data-execution_count="1">
+<div id="e95f8cc0" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> importlib.util</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> importlib.util.find_spec(<span class="st">&#39;prince&#39;</span>) <span class="kw">is</span> <span class="va">None</span>:   <span class="co"># 無ければ入れる</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">%</span>pip install <span class="op">-</span>q prince</span>
@@ -2434,7 +2447,7 @@ window.Quarto = {
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は、①から③までを全部回ります。</p>
-<div id="e281a106" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="ca509ded" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2461,7 +2474,7 @@ window.Quarto = {
 \chi^2 = \sum \frac{(\text{実際} - \text{期待})^2}{\text{期待}}
 \]</span></p>
 <p>p値は、「関係がない」としたとき、これ以上大きなずれが偶然に起きる確率です。小さいほど、「関係がない」とは考えにくくなります。<code>chi2_contingency</code>は、カイ二乗・p値・自由度・期待度数の4つを返します。</p>
-<div id="3e116784" class="cell" data-execution_count="3">
+<div id="bb320198" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2487,7 +2500,7 @@ Thriller     11    32    32    49    95   180   420   654   417
 548.4 72 1.97641130983306e-74</code></pre>
 </div>
 </div>
-<p>10ジャンル × 9年代、合わせて18544本。カイ二乗は548.4、自由度72、p値は10のマイナス74乗ほどと、とても小さい値です。「ジャンルと年代に関係がない」とすると、こんなに大きなずれはまず起きません。年代によって、ジャンルの構成は偏っています。</p>
+<p>10ジャンル × 9年代、のべ18544本（複数のジャンルを持つ映画は、それぞれのジャンルで数える）。カイ二乗は548.4、自由度72、p値は10のマイナス74乗ほどと、とても小さい値です。「ジャンルと年代に関係がない」とすると、こんなに大きなずれはまず起きません。年代によって、ジャンルの構成は偏っています。</p>
 <p>ただし、p値が小さいことは、偏りが「ある」ことを示すだけで、偏りが「どれくらい大きいか」は示しません。本数が多い表では、小さな偏りでもp値はとても小さくなります。どこが、どれくらい偏っているかは、2節の地図と、3節の「実際 ÷ 期待」の倍率で見ていきます。</p>
 </section>
 <section id="おさらい配列の計算" class="level3">
@@ -2499,7 +2512,7 @@ Thriller     11    32    32    49    95   180   420   654   417
 <section id="todo①期待度数を自分で計算する" class="level3">
 <h3 class="anchored" data-anchor-id="todo①期待度数を自分で計算する">TODO①：期待度数を、自分で計算する</h3>
 <p>関係がないときの期待度数は、「そのジャンルの合計 × その年代の合計 ÷ 総数」です。<code>ct.sum(axis=1)</code>（ジャンルの合計）と<code>ct.sum(axis=0)</code>（年代の合計）から、<code>np.outer</code>で期待度数の表<code>E2</code>を作り、<code>chi2_contingency</code>が返した<code>E</code>と一致するか確かめてください。</p>
-<div id="a17a5417" class="cell" data-execution_count="4">
+<div id="e9abcef9" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 期待度数 E2 を自分で計算し、E と一致するか確かめる</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: n = ct.values.sum()</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         E2 = np.outer(ct.sum(axis=1), ct.sum(axis=0)) / n</span></span>
@@ -2527,7 +2540,7 @@ Thriller     11    32    32    49    95   180   420   654   417
 <li>出力：対応分析<code>ca</code>、ジャンルの座標<code>rows</code>、年代の座標<code>cols</code>、地図</li>
 </ul>
 <p><code>prince.CA(n_components=2)</code>は、2本の軸に縮める対応分析です。<code>row_coordinates</code>が行（ジャンル）、<code>column_coordinates</code>が列（年代）の座標を返します。</p>
-<div id="aad6dbb1" class="cell" data-execution_count="5">
+<div id="eb71603e" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ca <span class="op">=</span> prince.CA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(ct)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> ca.row_coordinates(ct)                <span class="co"># ジャンルの座標</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> ca.column_coordinates(ct)             <span class="co"># 年代の座標</span></span>
@@ -2558,7 +2571,7 @@ Thriller     11    32    32    49    95   180   420   654   417
 <section id="todo②寄与率を確かめる" class="level3">
 <h3 class="anchored" data-anchor-id="todo②寄与率を確かめる">TODO②：寄与率を確かめる</h3>
 <p>この2本の軸で、全体の何割のずれを表せているか（寄与率）を確かめてください。</p>
-<div id="5f67165a" class="cell" data-execution_count="6">
+<div id="f5227cc4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 次元1・次元2の寄与率を表示する</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ca.eigenvalues_summary、または ca.percentage_of_variance_</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2566,7 +2579,7 @@ Thriller     11    32    32    49    95   180   420   654   417
 <p>次元1が67.3%、次元2が16.6%、合わせて83.9%。2本の軸で、ずれの8割以上を表せています。この地図は、かなり信頼して読めます。では、地図を読みます。</p>
 <p>横軸（次元1）を見ると、年代は、右の端に古い年代（1930・1940年代が0.5前後）、左に新しい年代（1970・1980・2010年代）と並びます。次元1は時代の軸です。</p>
 <p>ただし、「右が古く、左が新しい」と言えるのは両端です。1990年代（＋0.09）と2000年代（＋0.03）は原点のやや右にあり、1990年代は1960年代（＋0.06）より右です。これは、この2つの年代の本数が多いからです。確かめてみます。</p>
-<div id="6364a851" class="cell" data-execution_count="7">
+<div id="06bdde9d" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>share <span class="op">=</span> ct.<span class="bu">sum</span>() <span class="op">/</span> ct.values.<span class="bu">sum</span>()     <span class="co"># 年代ごとの、本数の割合</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(share.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2598,7 +2611,7 @@ dtype: float64</code></pre>
 <li>出力：倍率の表<code>ratio</code>（4つの年代だけ表示）</li>
 </ul>
 <p>表どうしの割り算も、配列と同じく、マスごとにまとめて計算されます。</p>
-<div id="91601449" class="cell" data-execution_count="8">
+<div id="33817514" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ratio <span class="op">=</span> (ct <span class="op">/</span> E).<span class="bu">round</span>(<span class="dv">2</span>)      <span class="co"># 1 より大きいほど、その年代に多い</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ratio[[<span class="st">&#39;1930&#39;</span>, <span class="st">&#39;1940&#39;</span>, <span class="st">&#39;1980&#39;</span>, <span class="st">&#39;2010&#39;</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2628,7 +2641,7 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 <section id="todo③1950年代と1970年代の上位3ジャンル" class="level3">
 <h3 class="anchored" data-anchor-id="todo③1950年代と1970年代の上位3ジャンル">TODO③：1950年代と1970年代の上位3ジャンル</h3>
 <p><code>for</code>で<code>&#39;1950&#39;</code>と<code>&#39;1970&#39;</code>の2つの年代を取り出し、<code>ratio</code>の倍率が高い順に3つのジャンルを、辞書<code>top3</code>に<code>{年代: {ジャンル: 倍率}}</code>の形でためて表示してください。</p>
-<div id="177d7962" class="cell" data-execution_count="9">
+<div id="f4f37bcc" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1950・1970年代の、倍率の高い3ジャンルを辞書 top3 にためる</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: top3 = {} → for dec in [&#39;1950&#39;, &#39;1970&#39;]: の中で</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         s = ratio[dec].sort_values(ascending=False)</span></span>
@@ -2646,7 +2659,7 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 <section id="todo④特集の企画書を一文で書く" class="level3">
 <h3 class="anchored" data-anchor-id="todo④特集の企画書を一文で書く">TODO④：特集の企画書を、一文で書く</h3>
 <p>1960年代について、<code>ratio[&#39;1960&#39;]</code>の倍率がいちばん高いジャンルといちばん低いジャンルを求め、f-stringで「1960年代の特集は ○○（□倍）を中心に。△△（□倍）は少なめでよい。」という一文を表示してください。</p>
-<div id="589986bb" class="cell" data-execution_count="10">
+<div id="85ae0ef5" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1960年代の倍率が最も高い・低いジャンルで、企画書の一文を作る</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: r = ratio[&#39;1960&#39;].sort_values()</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         いちばん高いのは r.index[-1]、倍率は r.iloc[-1]</span></span>

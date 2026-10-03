@@ -1217,12 +1217,126 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <h1>明日、何台用意する？</h1>
 
 </section>
-<section id="あなたは自転車シェアの運営者" class="slide level2">
-<h2>あなたは、自転車シェアの運営者</h2>
+<section id="場面自転車シェア" class="slide level2">
+<h2>場面：自転車シェア</h2>
 <ul>
+<li>あなたは、自転車シェアの運営者</li>
 <li>街のあちこちに自転車を置き、借りて乗り捨ててもらうサービス</li>
+</ul>
+</section>
+<section id="決めたいこと" class="slide level2">
+<h2>決めたいこと</h2>
+<ul>
+<li>毎晩、明日に向けて、自転車を何台用意するかを決めたい</li>
+<li>手がかりは、明日の季節・天気・気温など</li>
+</ul>
+</section>
+<section id="足りなくても余っても困る" class="slide level2">
+<h2>足りなくても、余っても困る</h2>
+<ul>
 <li>自転車が足りなければ、客を逃す</li>
 <li>余れば、置き場と整備のむだになる</li>
+</ul>
+</section>
+<section id="手元のデータ" class="slide level2">
+<h2>手元のデータ</h2>
+<ul>
+<li>ある自転車シェアの、2011〜2012年の記録（UCIの公開データ）</li>
+<li>季節・天気・気温など、11の手がかりが並ぶ</li>
+<li>1行が何を表すかは、1節で表を読んで確かめる</li>
+<li>答えの列：その日の利用台数<code>cnt</code></li>
+</ul>
+</section>
+<section id="データをのぞく" class="slide level2">
+<h2>データをのぞく</h2>
+<div id="c9aa54f8" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<div>
+<style scoped>
+.dataframe tbody tr th:only-of-type {
+vertical-align: middle;
+}
+.dataframe tbody tr th {
+vertical-align: top;
+}
+.dataframe thead th {
+text-align: right;
+}
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">yr</th>
+<th data-quarto-table-cell-role="th">mnth</th>
+<th data-quarto-table-cell-role="th">weathersit</th>
+<th data-quarto-table-cell-role="th">temp</th>
+<th data-quarto-table-cell-role="th">cnt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>0.344167</td>
+<td>985</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>2</td>
+<td>0.363478</td>
+<td>801</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0.196364</td>
+<td>1349</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0.200000</td>
+<td>1562</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0.226957</td>
+<td>1600</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<ul>
+<li>季節（1〜4）、年（0が2011年）、月、天気（1が晴れ）、気温（0〜1に縮めた値）、台数</li>
+</ul>
+</section>
+<section id="最後に出す答え" class="slide level2">
+<h2>最後に出す答え</h2>
+<ul>
+<li>明日と条件が似た日の平均から、「およそ何台」という1つの数</li>
+<li>その数が、何台くらい前後しうるか</li>
 </ul>
 </section>
 <section id="今日の問い" class="slide level2">
@@ -1238,7 +1352,7 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いに、どう近づくか</h2>
-<div id="15416b4e" class="cell" data-execution_count="2">
+<div id="5a38e059" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1432,8 +1546,8 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 </section>
 <section id="tempとatempを見比べると" class="slide level2 fit-90">
 <h2>tempとatempを見比べると？</h2>
-<div id="0f98ff9a" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div id="f572ddd8" class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 <style scoped>
 .dataframe tbody tr th:only-of-type {
@@ -1526,8 +1640,8 @@ text-align: right;
 </section>
 <section id="実はほぼ同じ2列" class="slide level2 fit-90">
 <h2>実は、ほぼ同じ2列</h2>
-<div id="4a56df8e" class="cell" data-execution_count="4">
-<div class="cell-output cell-output-display" data-execution_count="4">
+<div id="9f826987" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 <style scoped>
 .dataframe tbody tr th:only-of-type {
@@ -1620,8 +1734,8 @@ text-align: right;
 </section>
 <section id="seasonの数字に意味はある" class="slide level2 fit-90">
 <h2>seasonの数字に、意味はある？</h2>
-<div id="22d1262f" class="cell" data-execution_count="5">
-<div class="cell-output cell-output-display" data-execution_count="5">
+<div id="dcc29059" class="cell" data-execution_count="6">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 <style scoped>
 .dataframe tbody tr th:only-of-type {
@@ -1714,8 +1828,8 @@ text-align: right;
 </section>
 <section id="実は区分に付けた番号" class="slide level2 fit-90">
 <h2>実は、区分に付けた番号</h2>
-<div id="9b7a7fcc" class="cell" data-execution_count="6">
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div id="77ec5033" class="cell" data-execution_count="7">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <div>
 <style scoped>
 .dataframe tbody tr th:only-of-type {
@@ -1904,7 +2018,7 @@ text-align: right;
 </section>
 <section id="なだらかに広がり偏りはない" class="slide level2">
 <h2>なだらかに広がり、偏りはない</h2>
-<div id="f917e5bb" class="cell" data-execution_count="7">
+<div id="ffab1f8a" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1926,7 +2040,7 @@ text-align: right;
 </section>
 <section id="形は2種類" class="slide level2 fit-90">
 <h2>形は2種類</h2>
-<div id="7b2e03d2" class="cell" data-execution_count="8">
+<div id="61671d14" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1948,7 +2062,7 @@ text-align: right;
 </section>
 <section id="暖かいほど多い" class="slide level2">
 <h2>暖かいほど、多い</h2>
-<div id="b222dd8f" class="cell" data-execution_count="9">
+<div id="b3f1c385" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1963,7 +2077,7 @@ text-align: right;
 </section>
 <section id="でもいちばん暑いあたりは" class="slide level2">
 <h2>でも、いちばん暑いあたりは？</h2>
-<div id="9fe1af5d" class="cell" data-execution_count="10">
+<div id="1d5df51c" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1978,7 +2092,7 @@ text-align: right;
 </section>
 <section id="暑すぎると頭打ち" class="slide level2">
 <h2>暑すぎると、頭打ち</h2>
-<div id="bf52e33d" class="cell" data-execution_count="11">
+<div id="19c06877" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1998,7 +2112,7 @@ text-align: right;
 </section>
 <section id="数字で確かめたい" class="slide level2">
 <h2>数字で確かめたい</h2>
-<div id="fdd7c8c0" class="cell" data-execution_count="12">
+<div id="df072635" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2023,7 +2137,7 @@ text-align: right;
 </section>
 <section id="にtruefalseの並び" class="slide level2">
 <h2><code>[ ]</code>に、True/Falseの並び</h2>
-<div id="8c1581c2" class="cell" data-execution_count="13">
+<div id="6aaff95c" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>       気温  25以上か
 112  18.9  False
@@ -2040,7 +2154,7 @@ text-align: right;
 </section>
 <section id="trueの行だけが残る" class="slide level2">
 <h2>Trueの行だけが、残る</h2>
-<div id="ed327e72" class="cell" data-execution_count="14">
+<div id="da8e1062" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-stdout">
 <pre><code>       気温  25以上か
 112  18.9  False
@@ -2103,7 +2217,7 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="答え合わせ暑い日は何台" class="slide level2">
 <h2>答え合わせ：暑い日は何台？</h2>
-<div id="06548606" class="cell" data-execution_count="15">
+<div id="20258cd8" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>日数: 242
 平均台数: 5632</code></pre>
@@ -2115,7 +2229,7 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="答え合わせ寒い日は" class="slide level2">
 <h2>答え合わせ：寒い日は？</h2>
-<div id="16b3540c" class="cell" data-execution_count="16">
+<div id="a522bc8e" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>日数: 60
 平均台数: 1678</code></pre>
@@ -2127,7 +2241,7 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="答え合わせ暑い2年目の日は" class="slide level2">
 <h2>答え合わせ：暑い2年目の日は？</h2>
-<div id="f584deaf" class="cell" data-execution_count="17">
+<div id="7072baeb" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-stdout">
 <pre><code>日数: 120
 平均台数: 6741</code></pre>
@@ -2217,8 +2331,8 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="答え合わせそっくりな2列" class="slide level2">
 <h2>答え合わせ：そっくりな2列</h2>
-<div id="cb64a4f9" class="cell" data-execution_count="18">
-<div class="cell-output cell-output-display" data-execution_count="18">
+<div id="56d52528" class="cell" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="19">
 <pre><code>np.float64(0.992)</code></pre>
 </div>
 </div>
@@ -2228,8 +2342,8 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="ということは-2" class="slide level2">
 <h2>ということは？</h2>
-<div id="4916d18c" class="cell" data-execution_count="19">
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div id="27b98620" class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>np.float64(0.992)</code></pre>
 </div>
 </div>
@@ -2353,7 +2467,7 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="答え合わせ基準は何台" class="slide level2">
 <h2>答え合わせ：基準は何台？</h2>
-<div id="2af74ddc" class="cell" data-execution_count="21">
+<div id="93946a72" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 4504 台
 外れ幅の平均: 1582 台</code></pre>
@@ -2365,8 +2479,8 @@ hot に残った行: [115, 116]</code></pre>
 </section>
 <section id="答え合わせ気温帯ごとの平均" class="slide level2">
 <h2>答え合わせ：気温帯ごとの平均</h2>
-<div id="5575a3f2" class="cell" data-execution_count="22">
-<div class="cell-output cell-output-display" data-execution_count="22">
+<div id="7536d905" class="cell" data-execution_count="23">
+<div class="cell-output cell-output-display" data-execution_count="23">
 <div>
 <style scoped>
 .dataframe tbody tr th:only-of-type {
@@ -2436,8 +2550,8 @@ text-align: right;
 </section>
 <section id="を超えると" class="slide level2">
 <h2>30℃を超えると？</h2>
-<div id="8c7bb8d9" class="cell" data-execution_count="23">
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div id="18929c6e" class="cell" data-execution_count="24">
+<div class="cell-output cell-output-display" data-execution_count="24">
 <div>
 <style scoped>
 .dataframe tbody tr th:only-of-type {
@@ -2507,7 +2621,7 @@ text-align: right;
 </section>
 <section id="答え合わせ気温帯で当てると" class="slide level2">
 <h2>答え合わせ：気温帯で当てると</h2>
-<div id="cef37de3" class="cell" data-execution_count="24">
+<div id="d8e7ff2c" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-stdout">
 <pre><code>外れ幅の平均: 1211 台</code></pre>
 </div>
@@ -2518,7 +2632,7 @@ text-align: right;
 </section>
 <section id="年も分けると" class="slide level2">
 <h2>年も分けると</h2>
-<div id="dc534adf" class="cell" data-execution_count="25">
+<div id="3bc0d96a" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;気温帯&#39;, &#39;yr&#39;] → 762 台
 [&#39;気温帯&#39;, &#39;yr&#39;, &#39;weathersit&#39;] → 665 台</code></pre>
@@ -2530,7 +2644,7 @@ text-align: right;
 </section>
 <section id="天気も分けると" class="slide level2">
 <h2>天気も分けると</h2>
-<div id="0abc0929" class="cell" data-execution_count="26">
+<div id="6813b1a9" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;気温帯&#39;, &#39;yr&#39;] → 762 台
 [&#39;気温帯&#39;, &#39;yr&#39;, &#39;weathersit&#39;] → 665 台</code></pre>
@@ -2562,7 +2676,7 @@ text-align: right;
 </section>
 <section id="外れ幅は408台" class="slide level2">
 <h2>外れ幅は、408台</h2>
-<div id="2cbaa7a2" class="cell" data-execution_count="27">
+<div id="65571a51" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-stdout">
 <pre><code>外れ幅の平均: 408 台
 グループの数: 326
@@ -2575,7 +2689,7 @@ text-align: right;
 </section>
 <section id="グループは1日しかない" class="slide level2">
 <h2>101グループは、1日しかない</h2>
-<div id="2909582b" class="cell" data-execution_count="28">
+<div id="896b0d2f" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-stdout">
 <pre><code>外れ幅の平均: 408 台
 グループの数: 326
@@ -2613,7 +2727,7 @@ text-align: right;
 </section>
 <section id="気温帯の1つをどう書く" class="slide level2">
 <h2>気温帯の1つを、どう書く？</h2>
-<div id="d0c7d1d1" class="cell" data-execution_count="29">
+<div id="a856e471" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-stdout">
 <pre><code>0    (10, 15]
 1    (10, 15]
@@ -2641,7 +2755,7 @@ Categories (6, interval[int64, right]): [(0, 10] &lt; (10, 15] &lt; (15, 20] &lt
 </section>
 <section id="答え合わせ同じ条件の日" class="slide level2">
 <h2>答え合わせ：同じ条件の日</h2>
-<div id="29c9ae76" class="cell" data-execution_count="30">
+<div id="193d1d12" class="cell" data-execution_count="31">
 <div class="cell-output cell-output-stdout">
 <pre><code>同じ条件の日: 54 日
 平均: 7198 台
@@ -2654,7 +2768,7 @@ Categories (6, interval[int64, right]): [(0, 10] &lt; (10, 15] &lt; (15, 20] &lt
 </section>
 <section id="答えおよそ7200台" class="slide level2">
 <h2>答え：およそ7200台</h2>
-<div id="7e24da8e" class="cell" data-execution_count="31">
+<div id="dc93295b" class="cell" data-execution_count="32">
 <div class="cell-output cell-output-stdout">
 <pre><code>同じ条件の日: 54 日
 平均: 7198 台
@@ -2697,7 +2811,7 @@ Categories (6, interval[int64, right]): [(0, 10] &lt; (10, 15] &lt; (15, 20] &lt
 </section>
 <section id="今日一周した" class="slide level2">
 <h2>今日、一周した</h2>
-<div id="fe5cca21" class="cell" data-execution_count="32">
+<div id="360fbba8" class="cell" data-execution_count="33">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

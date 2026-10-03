@@ -2377,7 +2377,21 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは健診センターの医師です。新しい受診者を、訓練と同じ手順で判定したい。そして、どの確率から精密検査に回すかを、誤りの重さから決めたい。</p>
 <p>前処理とモデルを1本にまとめ、しきい値を動かしたときの見逃しと誤検出を表にし、誤りの重さから区切りを決めます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは、今日も健診センターの医師です。今日は、新しい受診者が来ます。心臓カテーテルの精密検査は体への負担が大きいので、気軽には回せません。</p>
+<p>決めたいのは2つです。新しい人にも、訓練と同じ手順で判定すること。そして、どの確率から精密検査に回すかを、誤りの重さから決めることです。病気の人を健康だとして帰す見逃しは、治療の機会を失わせます。健康な人を病気と言う誤検出は、再検査で済みます。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>前回と同じ、米国クリーブランドの病院で心臓の検査を受けた303人の記録です（UCI Machine Learning RepositoryのHeart Disease）。1行が1人で、年齢・性別・胸の痛みの型など、13の検査値が並びます。</p>
+<p>答えの列<code>target</code>は、心臓カテーテルの検査で、太い血管の少なくとも1本が半分以上狭まっていた人を1（心臓病あり）、そうでない人を0としています。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>「確率がいくつを超えたら精密検査に回すか」という区切りと、新しい受診者の確率と、その区切りでの判定です。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2400,7 +2414,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="251e8e8f" class="cell" data-execution_count="1">
+<div id="6a7a1ec0" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2437,7 +2451,7 @@ window.Quarto = {
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は ② の前処理と解析をひとまとめにし、③ で区切りを決めます。</p>
-<div id="a4069f63" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="9b0a1368" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2459,7 +2473,7 @@ window.Quarto = {
 <li>入力：データの置き場所とファイル名</li>
 <li>出力：<code>X_tr</code>・<code>X_te</code>（表のまま）と、答え<code>y_tr</code>・<code>y_te</code></li>
 </ul>
-<div id="4a4a86fb" class="cell" data-execution_count="3">
+<div id="bc0f4402" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2484,7 +2498,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>入力：訓練の<code>cp</code>列</li>
 <li>出力：先頭3人の、分けた4本の列</li>
 </ul>
-<div id="2d494d25" class="cell" data-execution_count="4">
+<div id="c1eba703" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>oh <span class="op">=</span> OneHotEncoder().fit(X_tr[[<span class="st">&#39;cp&#39;</span>]])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_tr[<span class="st">&#39;cp&#39;</span>].head(<span class="dv">3</span>).tolist())</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(oh.transform(X_tr[[<span class="st">&#39;cp&#39;</span>]].head(<span class="dv">3</span>)).toarray())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2507,7 +2521,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>区分の列：最頻値（いちばん多い区分）で補う → ワンホット。区分には平均も中央値もないので、最頻値で補います</li>
 <li><code>handle_unknown=&#39;ignore&#39;</code>：訓練になかった区分が来ると、ふつうはそこで止まります。<code>&#39;ignore&#39;</code>にすると、止まらずに、その区分の列をすべて0にします</li>
 </ul>
-<div id="6aec7849" class="cell" data-execution_count="5">
+<div id="30beaac9" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>num_steps <span class="op">=</span> Pipeline([(<span class="st">&#39;imp&#39;</span>, SimpleImputer(strategy<span class="op">=</span><span class="st">&#39;median&#39;</span>)),</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                      (<span class="st">&#39;sc&#39;</span>, StandardScaler())])</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cat_steps <span class="op">=</span> Pipeline([</span>
@@ -2515,12 +2529,12 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&#39;oh&#39;</span>, OneHotEncoder(handle_unknown<span class="op">=</span><span class="st">&#39;ignore&#39;</span>))])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>段階2は、列ごとに別の手順を当てることです。<code>ColumnTransformer</code>は、<code>(&#39;名前&#39;, 手順, 列のリスト)</code>の組で、どの列にどの手順を当てるかを決める部品です。</p>
-<div id="cb86cfe4" class="cell" data-execution_count="6">
+<div id="fe81d995" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pre <span class="op">=</span> ColumnTransformer([(<span class="st">&#39;num&#39;</span>, num_steps, num),</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                         (<span class="st">&#39;cat&#39;</span>, cat_steps, cat)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>段階3は、前処理とモデルを1本にすることです。もう一度<code>Pipeline</code>で、「前処理<code>pre</code> → モデル」を1本の部品にまとめます（部品の中に部品が入っています）。<code>fit</code>を呼ぶと、前から順に訓練で学びます。</p>
-<div id="86056534" class="cell" data-execution_count="7">
+<div id="e1ef19a6" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> Pipeline([(<span class="st">&#39;pre&#39;</span>, pre),</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                 (<span class="st">&#39;model&#39;</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>))])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>pipe.fit(X_tr, y_tr)</span>
@@ -2551,7 +2565,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：覚えた平均</li>
 </ul>
 <p><code>class</code>は、データ（覚えたもの）と、それを使う手順（def）をひとまとめにした型です。中の<code>def</code>をメソッドと呼びます。<code>self</code>は「この部品自身」で、<code>self.mean_</code>と書くと、部品の中に値を覚えておけます。</p>
-<div id="3b8f028d" class="cell" data-execution_count="8">
+<div id="8d2ff0b7" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> MyScaler:</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X):                  <span class="co"># 訓練で物差しを覚える</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mean_ <span class="op">=</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
@@ -2572,7 +2586,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="変えてみるscikit-learnのstandardscalerと比べる" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるscikit-learnのstandardscalerと比べる">変えてみる：scikit-learnのStandardScalerと比べる</h3>
 <p>同じ配列を、自作の部品と<code>StandardScaler</code>で整えて、結果が一致するか確かめます。<code>np.allclose</code>は「すべての値がほぼ等しいか」を返します。</p>
-<div id="be413584" class="cell" data-execution_count="9">
+<div id="4d132fe0" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>mine <span class="op">=</span> sc.transform(A_te)                      <span class="co"># テストに訓練の物差し</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>sk <span class="op">=</span> StandardScaler().fit(A_tr).transform(A_te)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.allclose(mine, sk))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2602,7 +2616,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </ul>
 <p>候補は辞書で渡します。キーの<code>&#39;model__C&#39;</code>は、「パイプラインの<code>model</code>という部品の<code>C</code>」という意味です（部品の名前と引数の名前を、<code>_</code> 2つでつなぎます）。パイプラインごと交差検証するので、補う値や物差しも、分けた訓練の中だけで毎回学び直されます。</p>
 <p>選び終えると、<code>GridSearchCV</code>は、選んだCで訓練全体（242人）を学び直します。だから<code>gs</code>は、そのまま<code>gs.predict_proba</code>で当てるのに使えます。</p>
-<div id="169540df" class="cell" data-execution_count="10">
+<div id="2b24c0ca" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> {<span class="st">&#39;model__C&#39;</span>: [<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]}</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>gs <span class="op">=</span> GridSearchCV(pipe, grid, cv<span class="op">=</span><span class="dv">5</span>, scoring<span class="op">=</span><span class="st">&#39;roc_auc&#39;</span>).fit(X_tr, y_tr)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gs.best_params_, <span class="bu">round</span>(gs.best_score_, <span class="dv">3</span>))</span>
@@ -2619,7 +2633,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="todo①cの候補ごとの成績を並べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo①cの候補ごとの成績を並べる">TODO①：Cの候補ごとの成績を並べる</h3>
 <p><code>gs.cv_results_[&#39;mean_test_score&#39;]</code>には、候補の順に交差検証のAUCの平均が入っています。<code>for</code>と<code>zip</code>で、Cの値とAUCを1行ずつ表示してください。</p>
-<div id="6186fb53" class="cell" data-execution_count="11">
+<div id="6727c205" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: C の候補ごとに、交差検証の AUC を表示する</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: scores = gs.cv_results_[&#39;mean_test_score&#39;] として</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         for c, s in zip(grid[&#39;model__C&#39;], scores):</span></span>
@@ -2646,7 +2660,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：3つの人数</li>
 </ul>
 <p>前回と同じ数え方です。<code>pred.sum()</code>は、判定が1（精密検査へ）の人数です。</p>
-<div id="80dd13df" class="cell" data-execution_count="12">
+<div id="af8a6519" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.5</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> (prob <span class="op">&gt;</span> t).astype(<span class="bu">int</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>fn <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>()     <span class="co"># 見逃し</span></span>
@@ -2661,7 +2675,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="変えてみる3つのしきい値でくり返す" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる3つのしきい値でくり返す">変えてみる：3つのしきい値で、くり返す</h3>
 <p>同じ手順を、<code>for</code>で0.3・0.5・0.7に当てます。</p>
-<div id="e75584b3" class="cell" data-execution_count="13">
+<div id="e309b3af" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> [<span class="fl">0.3</span>, <span class="fl">0.5</span>, <span class="fl">0.7</span>]:</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> (prob <span class="op">&gt;</span> t).astype(<span class="bu">int</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    fn <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>()</span>
@@ -2678,14 +2692,14 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="todo②0.10.9の表にする" class="level3">
 <h3 class="anchored" data-anchor-id="todo②0.10.9の表にする">TODO②：0.1〜0.9の表にする</h3>
 <p>しきい値を0.1から0.9まで0.1ずつ動かし、1行ずつ辞書<code>{&#39;しきい値&#39;: t, &#39;精密検査&#39;: ..., &#39;見逃し&#39;: fn, &#39;誤検出&#39;: fp}</code>をリストに集めて、<code>pd.DataFrame</code>で表にしてください（第4回の交差検証の表と同じ作り方です）。</p>
-<div id="f4be467c" class="cell" data-execution_count="14">
+<div id="c919e354" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.1〜0.9 のしきい値ごとに、辞書を rows に集めて表にする</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: rows = [] → for t in np.arange(1, 10) / 10: の中で</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         rows.append({&#39;しきい値&#39;: t, ...}) → pd.DataFrame(rows)</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>表にすると、見逃しは0.3までずっと0人、0.4で1人、0.5で2人、0.7で9人と増えていきます。精密検査の人数は、0.1の51人から0.9の8人まで減ります。「見逃し0人」を守れるのは0.3までです。</p>
-<div id="9eef47ee" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="15">
+<div id="45c3710c" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2717,7 +2731,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 <li>入力：2つの重さ</li>
 <li>出力：しきい値 <span class="math inline">\(t^*\)</span></li>
 </ul>
-<div id="ee2a4248" class="cell" data-execution_count="16">
+<div id="784d9084" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>c_fp, c_fn <span class="op">=</span> <span class="dv">1</span>, <span class="dv">1</span>            <span class="co"># 誤検出と見逃しの重さ</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(c_fp <span class="op">/</span> (c_fp <span class="op">+</span> c_fn))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2729,7 +2743,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 <section id="todo③見逃しが4倍重いなら" class="level3">
 <h3 class="anchored" data-anchor-id="todo③見逃しが4倍重いなら">TODO③：見逃しが4倍重いなら</h3>
 <p>健診では、見逃しのほうがずっと重い誤りです。見逃しの重さを誤検出の4倍（<code>c_fn = 4</code>）として、<span class="math inline">\(t^*\)</span> を計算してください。そして、TODO②の表で、そのしきい値の見逃しと精密検査の人数を読んでください。</p>
-<div id="2034fd6b" class="cell" data-execution_count="17">
+<div id="849e037f" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: c_fn = 4 のときの t* を計算する</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の c_fn を 4 に変える</span></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2755,7 +2769,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 <p>判定の文字は、1行の<code>if〜else</code>で選びます。<code>A if 条件 else B</code>は、条件が成り立てばA、成り立たなければBになる書き方です。</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">5</span></span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;大&#39;</span> <span class="cf">if</span> x <span class="op">&gt;</span> <span class="dv">3</span> <span class="cf">else</span> <span class="st">&#39;小&#39;</span>)   <span class="co"># 大 と表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="dee8a6a1" class="cell" data-execution_count="18">
+<div id="553b561b" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> pd.DataFrame([{<span class="st">&#39;age&#39;</span>: <span class="dv">58</span>, <span class="st">&#39;trestbps&#39;</span>: <span class="dv">140</span>, <span class="st">&#39;chol&#39;</span>: <span class="dv">250</span>,</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;thalach&#39;</span>: <span class="dv">130</span>, <span class="st">&#39;oldpeak&#39;</span>: <span class="fl">1.5</span>, <span class="st">&#39;sex&#39;</span>: <span class="dv">1</span>,</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;cp&#39;</span>: <span class="dv">4</span>, <span class="st">&#39;fbs&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;restecg&#39;</span>: <span class="dv">2</span>, <span class="st">&#39;exang&#39;</span>: <span class="dv">1</span>,</span>
@@ -2771,7 +2785,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 <section id="todo④もう1人を判定する" class="level3">
 <h3 class="anchored" data-anchor-id="todo④もう1人を判定する">TODO④：もう1人を判定する</h3>
 <p>2人目の受診者は、お手本の人と比べて、胸の痛みの型が<code>cp=3</code>、最大心拍数が<code>thalach=165</code>、運動で胸が痛まない（<code>exang=0</code>）、心電図の下がり幅が<code>oldpeak=0.2</code>です。ほかは同じです。確率を出し、しきい値0.2と0.5で、それぞれ判定してください。</p>
-<div id="f330c288" class="cell" data-execution_count="19">
+<div id="bbf1ca14" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 2人目の確率を出し、0.2 と 0.5 で判定する</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: new2 = new.assign(cp=3, thalach=165, exang=0, oldpeak=0.2)</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         gs.predict_proba(new2)[0, 1]</span></span>

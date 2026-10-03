@@ -2238,7 +2238,21 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは南極の調査担当者です。くちばしや翼の長さ、体重といった測定値から、ペンギンの種（3種）を見分けたい。そして、どの測定が見分けに役立つかを、調査チームに報告したい。</p>
 <p>データの理解から報告までを順に進めます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは南極の調査チームで、データをまとめる担当者です。チームは島をまわってペンギンを測り、くちばしの長さと深さ、翼の長さ、体重を記録します。どの島にいたか、オスかメスかも書きとめます。</p>
+<p>決めたいのは、この測定値からペンギンの種（3種）を見分けられるかどうかです。そして、どの測定が見分けに役立つかを、調査チームに報告したいところです。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>南極のパーマー基地の近くで測られた、344羽のペンギンの記録です（palmerpenguins。Kristen Gorman博士とPalmer Station Antarctica LTERが集めたもの）。1行が1羽です。</p>
+<p>答えの列<code>species</code>は種で、Adelie・Chinstrap・Gentooの3種です。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>3種をテストで何羽中何羽当てられるかと、モデルが見分けに主に使った測定はどれかです。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2260,7 +2274,7 @@ vertical-align: -.125em;
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="88143f2b" class="cell" data-execution_count="1">
+<div id="b8fa13a7" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2298,7 +2312,7 @@ vertical-align: -.125em;
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は総合演習なので、①から③までを全部回ります。</p>
-<div id="4b50ab5d" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="94c51729" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2320,7 +2334,7 @@ vertical-align: -.125em;
 <li>入力：データの置き場所とファイル名</li>
 <li>出力：表<code>df</code>、種ごとの羽数と平均</li>
 </ul>
-<div id="01a2565e" class="cell" data-execution_count="3">
+<div id="6c1f2787" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2348,7 +2362,7 @@ Gentoo               47.5           15.0              217.2       5076.0</code><
 <section id="変えてみる種と島をクロス集計する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる種と島をクロス集計する">変えてみる：種と島を、クロス集計する</h3>
 <p>区分の列は、島（<code>island</code>）と性別（<code>sex</code>）の2本です。<code>pd.crosstab</code>は、2つの区分の組み合わせごとに数を数えた表を作ります。</p>
-<div id="a416489d" class="cell" data-execution_count="4">
+<div id="0bcd266d" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.crosstab(df[<span class="st">&#39;species&#39;</span>], df[<span class="st">&#39;island&#39;</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>island     Biscoe  Dream  Torgersen
@@ -2363,7 +2377,7 @@ Gentoo        124      0          0</code></pre>
 <section id="todo①欠けた値を数える" class="level3">
 <h3 class="anchored" data-anchor-id="todo①欠けた値を数える">TODO①：欠けた値を数える</h3>
 <p>列ごとに欠けた値がいくつあるかを数え、全体の合計も表示してください。</p>
-<div id="9c97ebe7" class="cell" data-execution_count="5">
+<div id="3dcd3f44" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 列ごとの欠けた値の数と、その合計を表示する</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: df.isna().sum() で列ごと、さらに .sum() で合計</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2391,7 +2405,7 @@ Gentoo        124      0          0</code></pre>
 <li>入力：表<code>df</code></li>
 <li>出力：<code>X_tr</code>・<code>X_te</code>・<code>y_tr</code>・<code>y_te</code>と、前処理の部品<code>pre</code></li>
 </ul>
-<div id="ffd80efb" class="cell" data-execution_count="6">
+<div id="339ea803" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cat <span class="op">=</span> [<span class="st">&#39;island&#39;</span>, <span class="st">&#39;sex&#39;</span>]</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> df[num <span class="op">+</span> cat], df[<span class="st">&#39;species&#39;</span>]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
@@ -2413,7 +2427,7 @@ Gentoo        124      0          0</code></pre>
 <section id="todo②前処理のあとの列を確かめる" class="level3">
 <h3 class="anchored" data-anchor-id="todo②前処理のあとの列を確かめる">TODO②：前処理のあとの列を確かめる</h3>
 <p><code>pre</code>を訓練<code>X_tr</code>で<code>fit</code>し、<code>get_feature_names_out()</code>で、前処理のあとの列の名前を表示してください。何本になりましたか。</p>
-<div id="b8d3e30b" class="cell" data-execution_count="7">
+<div id="b4c0b3e8" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: pre を訓練で fit し、前処理のあとの列の名前を表示する</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: names = pre.fit(X_tr).get_feature_names_out()</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         print(names, len(names))</span></span>
@@ -2434,7 +2448,7 @@ Gentoo        124      0          0</code></pre>
 <li>出力：5回ぶんの正解率と、その平均</li>
 </ul>
 <p>3種の分類（classification）でも、ロジスティック回帰はそのまま使えます。種ごとに「その種である確率」を出し、一番高い種を答えます。</p>
-<div id="e104c99f" class="cell" data-execution_count="8">
+<div id="6d4cc4ed" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> Pipeline([(<span class="st">&#39;pre&#39;</span>, pre),</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>                 (<span class="st">&#39;model&#39;</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>))])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>cv <span class="op">=</span> cross_val_score(pipe, X_tr, y_tr, cv<span class="op">=</span><span class="dv">5</span>)</span>
@@ -2448,7 +2462,7 @@ Gentoo        124      0          0</code></pre>
 <section id="変えてみるgridsearchcvでcを選ぶ" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるgridsearchcvでcを選ぶ">変えてみる：GridSearchCVでCを選ぶ</h3>
 <p>第7回と同じく、Cの候補を辞書で渡します。</p>
-<div id="438c4b8b" class="cell" data-execution_count="9">
+<div id="ca6a8fc1" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>grid <span class="op">=</span> {<span class="st">&#39;model__C&#39;</span>: [<span class="fl">0.01</span>, <span class="fl">0.1</span>, <span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>]}</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>gs <span class="op">=</span> GridSearchCV(pipe, grid, cv<span class="op">=</span><span class="dv">5</span>).fit(X_tr, y_tr)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(gs.best_params_, <span class="bu">round</span>(gs.best_score_, <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2461,7 +2475,7 @@ Gentoo        124      0          0</code></pre>
 <section id="todo③区分の列は役に立っているか" class="level3">
 <h3 class="anchored" data-anchor-id="todo③区分の列は役に立っているか">TODO③：区分の列は、役に立っているか</h3>
 <p>区分の列（島・性別）を外して、測定値の4本だけのパイプラインを作り、同じように交差検証の正解率の平均を出してください。お手本（0.993）と比べて、区分の列は役に立っていますか。</p>
-<div id="14f3a6c4" class="cell" data-execution_count="10">
+<div id="050f7eca" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 数の列だけのパイプラインで、交差検証の正解率の平均を出す</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: pre_n = ColumnTransformer([(&#39;num&#39;, num_steps, num)])</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         pipe_n = Pipeline([(&#39;pre&#39;, pre_n), (&#39;model&#39;, …)])</span></span>
@@ -2484,7 +2498,7 @@ Gentoo        124      0          0</code></pre>
 <li>出力：正解率と、3行3列の混同行列</li>
 </ul>
 <p>テストを使うのは、ここで一度だけです。テストは、最後まで取っておく本番でした（第2回）。何度もテストを見てモデルを直すと、テストに合わせこんでしまいます。</p>
-<div id="15f74629" class="cell" data-execution_count="11">
+<div id="af416d66" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">&#39;Adelie&#39;</span>, <span class="st">&#39;Chinstrap&#39;</span>, <span class="st">&#39;Gentoo&#39;</span>]</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(gs.score(X_te, y_te), <span class="dv">3</span>))</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_te, gs.predict(X_te), labels<span class="op">=</span>labels))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2496,7 +2510,7 @@ Gentoo        124      0          0</code></pre>
 </div>
 </div>
 <p>テストの正解率は0.986。69羽のうち68羽を当てました。混同行列は、行が本当の種、列が判定です。外した1羽は、本当はAdelieなのにChinstrapと判定されました。Gentooの25羽は、すべて正解です。</p>
-<div id="62f9f5c1" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="12">
+<div id="b5044059" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2519,7 +2533,7 @@ Gentoo        124      0          0</code></pre>
 <li>出力：列の名前と係数</li>
 </ul>
 <p><code>named_steps</code>は、パイプラインの部品を名前で取り出す辞書です。<code>coef_[0]</code>は1行目、つまり1番目の種（Adelie）の係数です。<code>np.argsort</code>は小さい順の並び順を返すので、<code>[::-1]</code>で逆にして大きい順にします。</p>
-<div id="fee76d18" class="cell" data-execution_count="13">
+<div id="9801490b" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> gs.best_estimator_</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> best.named_steps[<span class="st">&#39;pre&#39;</span>].get_feature_names_out()</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> best.named_steps[<span class="st">&#39;model&#39;</span>].coef_[<span class="dv">0</span>]       <span class="co"># Adelie らしさ</span></span>
@@ -2538,13 +2552,13 @@ cat__sex_Male            +0.77</code></pre>
 <section id="todo④gentooらしさを決める列" class="level3">
 <h3 class="anchored" data-anchor-id="todo④gentooらしさを決める列">TODO④：Gentooらしさを決める列</h3>
 <p>お手本をまねて、Gentoo（3番目の種、<code>coef_[2]</code>）の係数を、絶対値の大きい順に4本表示してください。</p>
-<div id="1802200b" class="cell" data-execution_count="14">
+<div id="66f715f2" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Gentoo の係数を、絶対値の大きい順に4本表示する</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の coef_[0] を coef_[2] に変える</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Gentooらしさで係数がいちばん大きいのはくちばしの深さ（−2.15）。「くちばしが浅いほどGentooらしい」です。次がBiscoe島（＋1.65）。1節の平均（Gentooはくちばしが浅い）とクロス集計（GentooはBiscoe島だけ）の両方と合っています。</p>
-<div id="76153323" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="15">
+<div id="94e9a4ed" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2588,7 +2602,7 @@ cat__sex_Male            +0.77</code></pre>
 </ul>
 <p>上の関数の定義だけを読めば、「何をする部品があるか」がわかります。下の3行だけを読めば、「どの順で何をしたか」がわかります。</p>
 <p><code>evaluate</code>（交差検証）と<code>final_test</code>（テスト）を、別の関数に分けたのがポイントです。比べたり選んだりするのは<code>evaluate</code>の値だけにして、<code>final_test</code>は、選び終えたあとに一度だけ呼びます。</p>
-<div id="d976135c" class="cell" data-execution_count="16">
+<div id="52e3a880" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load(path):                               <span class="co"># 読み込んで、分ける</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(path)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    X, y <span class="op">=</span> df.drop(columns<span class="op">=</span><span class="st">&#39;species&#39;</span>), df[<span class="st">&#39;species&#39;</span>]</span>
@@ -2625,7 +2639,7 @@ cat__sex_Male            +0.77</code></pre>
 <section id="変えてみるcを変えて交差検証で比べる" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるcを変えて交差検証で比べる">変えてみる：Cを変えて、交差検証で比べる</h3>
 <p>関数に分けてあれば、やり直しは呼ぶ行を変えるだけです。Cを0.01（強く縮める）にして、交差検証で比べます。テストは見ません。</p>
-<div id="be15975d" class="cell" data-execution_count="17">
+<div id="2eb02fed" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>weak <span class="op">=</span> build_pipeline(num, cat, C<span class="op">=</span><span class="fl">0.01</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;交差検証&#39;</span>, <span class="bu">round</span>(evaluate(weak, X_tr, y_tr), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2637,7 +2651,7 @@ cat__sex_Male            +0.77</code></pre>
 <section id="お手本選び終えたら最後に一度だけテスト" class="level3">
 <h3 class="anchored" data-anchor-id="お手本選び終えたら最後に一度だけテスト">お手本：選び終えたら、最後に一度だけテスト</h3>
 <p>選んだC＝10のパイプライン<code>model</code>を、訓練全体で学び、テストで一度だけ確かめます。</p>
-<div id="4e6eee1b" class="cell" data-execution_count="18">
+<div id="21097634" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト&#39;</span>, <span class="bu">round</span>(final_test(model, X_tr, y_tr, X_te, y_te), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>テスト 0.986</code></pre>

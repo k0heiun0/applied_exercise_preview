@@ -1078,7 +1078,7 @@ margin-right: 0; }
 </section>
 <section id="つの地図を作る" class="slide level2 fit-80">
 <h2>3つの地図を作る</h2>
-<div id="c565327b" class="cell" data-execution_count="3">
+<div id="7494a028" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="im">import</span> importlib.util</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="cf">if</span> importlib.util.find_spec(<span class="st">&#39;umap&#39;</span>) <span class="kw">is</span> <span class="va">None</span>:   <span class="co"># 無ければ入れる</span></span>
 <span id="cb1-3"><a href aria-label="3"></a>    <span class="op">%</span>pip install <span class="op">-</span>q umap<span class="op">-</span>learn</span>
@@ -1095,7 +1095,7 @@ margin-right: 0; }
 </section>
 <section id="pcaの地図" class="slide level2">
 <h2>PCAの地図</h2>
-<div id="d75864bd" class="cell" data-execution_count="4">
+<div id="a221d31c" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1110,7 +1110,7 @@ margin-right: 0; }
 </section>
 <section id="t-sneとumapの地図" class="slide level2">
 <h2>t-SNEとUMAPの地図</h2>
-<div id="6a6b4be3" class="cell" data-execution_count="5">
+<div id="bf424e8b" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1125,7 +1125,7 @@ margin-right: 0; }
 </section>
 <section id="島は気筒数ごと" class="slide level2">
 <h2>島は、気筒数ごと</h2>
-<div id="6e928a90" class="cell" data-execution_count="6">
+<div id="f4383944" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1140,7 +1140,7 @@ margin-right: 0; }
 </section>
 <section id="pcaにも同じ帯がある" class="slide level2">
 <h2>PCAにも、同じ帯がある</h2>
-<div id="91bead1d" class="cell" data-execution_count="7">
+<div id="60044408" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1162,7 +1162,7 @@ margin-right: 0; }
 </section>
 <section id="注意①種で形が変わる" class="slide level2">
 <h2>注意①：種で、形が変わる</h2>
-<div id="322e7a35" class="cell" data-execution_count="8">
+<div id="0f5e1ce6" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href aria-label="1"></a><span class="co"># 注意①：乱数の種を変えると、地図の形が変わる</span></span>
 <span id="cb2-2"><a href aria-label="2"></a><span class="co"># init=&#39;random&#39; は、はじめの点の置き方をでたらめにする指定</span></span>
 <span id="cb2-3"><a href aria-label="3"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">13</span>, <span class="fl">4.2</span>))</span>
@@ -1178,7 +1178,7 @@ margin-right: 0; }
 </section>
 <section id="つの種" class="slide level2">
 <h2>3つの種</h2>
-<div id="b2861e66" class="cell" data-execution_count="9">
+<div id="1cef79e8" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1200,7 +1200,7 @@ margin-right: 0; }
 </section>
 <section id="注意②遠い距離は保たれない" class="slide level2">
 <h2>注意②：遠い距離は、保たれない</h2>
-<div id="a2be7f4e" class="cell" data-execution_count="10">
+<div id="8925eb0c" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>d_orig <span class="op">=</span> pdist(X_s)                        <span class="co"># 6つの性能での、車どうしの距離</span></span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="cf">for</span> name, Z <span class="kw">in</span> maps.items():</span>
 <span id="cb3-3"><a href aria-label="3"></a>    r <span class="op">=</span> np.corrcoef(d_orig, pdist(Z))[<span class="dv">0</span>, <span class="dv">1</span>]</span>

@@ -2377,7 +2377,21 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは顔認証システムの開発チームの一員です。400枚の顔写真を、見分ける力を落とさずに、できるだけ少ない数で持ちたい。1枚あたり何個の数で持てばよいか。</p>
 <p>顔の散らばりの「向き」を行列の計算で求め、少ない向きで顔を組み立て直し、見分ける力が落ちないかを確かめます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは顔認証システムの開発チームの一員です。システムは、人ごとに顔写真をためておきます。1枚の顔写真は、たくさんの数でできています。</p>
+<p>決めたいのは、顔写真をできるだけ少ない数で持つことです。でも、人を見分ける力は落としたくありません。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>Olivettiの顔写真です。scikit-learnの<code>fetch_olivetti_faces</code>で読み込みます。40人が10枚ずつ、合わせて400枚で、1行が1枚の顔です。</p>
+<p>答えの列のかわりに、人物の番号（0〜39）が付いています。縮めるときには使わず、見分ける力を確かめるときだけ使います。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>1枚あたり何個の数で持てばよいかと、そのとき人を見分ける正解率がどうなるかです。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2400,7 +2414,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="f3d83e66" class="cell" data-execution_count="1">
+<div id="9338683f" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> fetch_olivetti_faces</span>
@@ -2434,7 +2448,7 @@ window.Quarto = {
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は ② の解析（縮める）と、③ の解釈（何個で持つか）が中心です。</p>
-<div id="45b170c9" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="92e6c2af" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2470,7 +2484,7 @@ window.Quarto = {
 </ul>
 <p><code>X</code>の1行が1枚の顔で、4096個の明るさが横に並んでいます。<code>reshape(64, 64)</code>で、横一列の4096個を、縦64×横64のマス目に並べ直すと、画像に戻ります。表示の手順は、何度も使うので関数<code>show</code>にしておきます。</p>
 <p><code>plt.subplots(figsize=…)</code>は、図（<code>fig</code>）と、絵を描く枠（<code>ax</code>）を1つ作ります。<code>show(ax, 顔, 題)</code>と呼ぶと、その枠に顔を描きます。</p>
-<div id="4c84954a" class="cell" data-execution_count="3">
+<div id="446617bd" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>faces <span class="op">=</span> fetch_olivetti_faces(shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> faces.data, faces.target      <span class="co"># 顔の表と、人物の番号（0〜39）</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape)</span>
@@ -2514,7 +2528,7 @@ window.Quarto = {
 <li>出力：固有値（eigenvalue）<code>vals</code>（大きい順）と、固有ベクトル<code>vecs</code></li>
 </ul>
 <p><code>.T</code>は転置（行と列を入れかえる）、<code>@</code>は行列の積です。<code>Xc</code>は400×4096、<code>Xc.T</code>は4096×400なので、<code>Xc.T @ Xc</code>は4096×4096になります。<code>np.linalg.eigh</code>は、共分散行列のような対称な行列の固有値分解をする関数で、固有値を小さい順に返します。<code>[::-1]</code>で大きい順に並べかえます。計算に10秒ほどかかります。</p>
-<div id="7c304d78" class="cell" data-execution_count="4">
+<div id="7c1c2c83" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Xc <span class="op">=</span> X <span class="op">-</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>)              <span class="co"># 中心化：平均の顔からのずれ</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> Xc.T <span class="op">@</span> Xc <span class="op">/</span> (<span class="bu">len</span>(X) <span class="op">-</span> <span class="dv">1</span>)         <span class="co"># 共分散行列（4096×4096）</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Xc.shape, Xc.T.shape, S.shape)</span>
@@ -2531,7 +2545,7 @@ window.Quarto = {
 <section id="変えてみるscikit-learnのpcaと比べる" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるscikit-learnのpcaと比べる">変えてみる：scikit-learnのPCAと比べる</h3>
 <p>同じ計算を、<code>PCA</code>で行います。<code>explained_variance_</code>が固有値、<code>components_</code>の行が固有ベクトル（主成分）です。</p>
-<div id="5f1617d7" class="cell" data-execution_count="5">
+<div id="319cd980" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA().fit(X)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pca.explained_variance_[:<span class="dv">3</span>].<span class="bu">round</span>(<span class="dv">3</span>))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.allclose(np.<span class="bu">abs</span>(vecs[:, <span class="dv">0</span>]), np.<span class="bu">abs</span>(pca.components_[<span class="dv">0</span>]),</span>
@@ -2558,7 +2572,7 @@ True</code></pre>
 </ul>
 <p><code>plt.subplots(2, 5)</code>は、2行5列、10個の枠を作ります。<code>axes</code>は枠の2次元の配列で、<code>axes[0, 0]</code>は0行0列、つまり左上の枠です。<code>axes.ravel()</code>は、2行5列の枠を1列の10個に並べ直し、<code>[1:]</code>で左上を除いた9個にします。</p>
 <p><code>enumerate(並び)</code>は、並びの中身を番号といっしょに取り出します。<code>i</code>が0, 1, 2, …、<code>ax</code>が枠で、<code>i</code>番目の主成分を「固有顔i＋1」として描きます。</p>
-<div id="36e17c4b" class="cell" data-execution_count="6">
+<div id="2edce72f" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="fl">4.4</span>))</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>show(axes[<span class="dv">0</span>, <span class="dv">0</span>], X.mean(axis<span class="op">=</span><span class="dv">0</span>), <span class="st">&#39;平均の顔&#39;</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, ax <span class="kw">in</span> <span class="bu">enumerate</span>(axes.ravel()[<span class="dv">1</span>:]):</span>
@@ -2579,14 +2593,14 @@ True</code></pre>
 <section id="todo①上位50個で何割を保てるか" class="level3">
 <h3 class="anchored" data-anchor-id="todo①上位50個で何割を保てるか">TODO①：上位50個で、何割を保てるか</h3>
 <p><code>pca.explained_variance_ratio_</code>（寄与率）を<code>np.cumsum</code>で累積して、上位50個の主成分で全体の何割を保てるかを表示してください。5・10・20・100個でも表示してみましょう。</p>
-<div id="8cd5f279" class="cell" data-execution_count="7">
+<div id="234e287e" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 累積寄与率を計算し、上位50個で保てる割合を表示する</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cum = np.cumsum(pca.explained_variance_ratio_)</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         上位50個は cum[49]（番号は0から）</span></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>上位50個で87.4%。4096個のうち、たった50個の向きで、顔の散らばりの9割近くを保てます。5個で54.4%、10個で65.6%、20個で76.3%、100個で93.5%。はじめは急に増え、だんだん頭打ちになります。</p>
-<div id="c261852d" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="8">
+<div id="bcf70010" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2613,7 +2627,7 @@ True</code></pre>
 </ul>
 <p><code>plt.subplots(1, 5)</code>のように1行だけのときは、<code>axes</code>は1列の配列になり、<code>axes[0]</code>が左端の枠です。<code>zip(axes[1:], [5, 20, 50, 100])</code>は、左端を除いた4つの枠と4つの個数を、同じ順に1組ずつ取り出します。</p>
 <p><code>V = pca.components_[:k]</code>はk×4096の行列です。<code>face @ V.T</code>で、顔のずれをk個の固有顔それぞれに当てた得点（k個）が出ます。<code>得点 @ V</code>で、得点 × 固有顔を足し合わせた顔（4096個）に戻ります。</p>
-<div id="edb686c0" class="cell" data-execution_count="9">
+<div id="1bc18a71" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>face <span class="op">=</span> X[<span class="dv">0</span>] <span class="op">-</span> X.mean(axis<span class="op">=</span><span class="dv">0</span>)          <span class="co"># 平均の顔からのずれ</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">5</span>, figsize<span class="op">=</span>(<span class="dv">11</span>, <span class="fl">2.6</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>show(axes[<span class="dv">0</span>], X[<span class="dv">0</span>], <span class="st">&#39;元の顔&#39;</span>)</span>
@@ -2636,7 +2650,7 @@ True</code></pre>
 <section id="todo②別の顔を10個と200個で組み立て直す" class="level3">
 <h3 class="anchored" data-anchor-id="todo②別の顔を10個と200個で組み立て直す">TODO②：別の顔を、10個と200個で組み立て直す</h3>
 <p>100枚目の顔<code>X[100]</code>を選び、10個と200個で組み立て直して、元の顔と並べて表示してください。</p>
-<div id="85fb3db3" class="cell" data-execution_count="10">
+<div id="26b53c37" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: X[100] を 10個と200個で組み立て直し、元の顔と並べる</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の X[0] を X[100] に、</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         [5, 20, 50, 100] を [10, 200] に。</span></span>
@@ -2658,7 +2672,7 @@ True</code></pre>
 <li>出力：2つの正解率</li>
 </ul>
 <p>縮めるほうは、<code>PCA(n_components=50)</code>とロジスティック回帰をパイプライン（pipeline）につなぎます（第7回）。PCAの向きも、交差検証の訓練の中だけで学ばれます。計算に30秒ほどかかります。</p>
-<div id="7e5a5bb1" class="cell" data-execution_count="11">
+<div id="5d56789c" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>full <span class="op">=</span> cross_val_score(LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>), X, y, cv<span class="op">=</span><span class="dv">5</span>)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> Pipeline([(<span class="st">&#39;pca&#39;</span>, PCA(n_components<span class="op">=</span><span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">0</span>)),</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                 (<span class="st">&#39;model&#39;</span>, LogisticRegression(max_iter<span class="op">=</span><span class="dv">2000</span>))])</span>
@@ -2685,7 +2699,7 @@ True</code></pre>
 <li>入力：表の大きさ、k＝50</li>
 <li>出力：2つの個数と、その比</li>
 </ul>
-<div id="8644b501" class="cell" data-execution_count="12">
+<div id="973eadfa" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>n, d <span class="op">=</span> X.shape</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">50</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>full_size <span class="op">=</span> n <span class="op">*</span> d                    <span class="co"># そのまま：400枚 × 4096</span></span>
@@ -2702,7 +2716,7 @@ True</code></pre>
 <section id="todo③9割を保つには何個か" class="level3">
 <h3 class="anchored" data-anchor-id="todo③9割を保つには何個か">TODO③：9割を保つには、何個か</h3>
 <p>累積寄与率が初めて0.9以上になる主成分の数を求めてください。</p>
-<div id="f21cb4ca" class="cell" data-execution_count="13">
+<div id="263b396a" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 累積寄与率が初めて 0.9 以上になる主成分の数を求める</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cum = np.cumsum(pca.explained_variance_ratio_)</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         np.argmax(cum &gt;= 0.9) は、最初に True になる番号（0から）</span></span>
@@ -2713,7 +2727,7 @@ True</code></pre>
 <section id="todo④個数と保てる割合の表" class="level3">
 <h3 class="anchored" data-anchor-id="todo④個数と保てる割合の表">TODO④：個数と、保てる割合の表</h3>
 <p>kを20・50・66・100と変えて、数の個数、そのままとの比、累積寄与率を1行ずつ表示してください。</p>
-<div id="28534b9e" class="cell" data-execution_count="14">
+<div id="be8e95a1" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: k = 20, 50, 66, 100 で、個数・比・累積寄与率を表示する</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: for k in [20, 50, 66, 100]: の中で、</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         お手本の pca_size を計算し、cum[k - 1] も表示する</span></span>

@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①期待度数を自分で" class="slide level2">
 <h2>TODO①：期待度数を自分で</h2>
-<div id="008ffb42" class="cell" data-execution_count="2">
+<div id="156e96ba" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>E2 <span class="op">=</span> np.outer(ct.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), ct.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)) <span class="op">/</span> ct.values.<span class="bu">sum</span>()</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(np.allclose(E, E2))</span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">round</span>(E2[ct.index.get_loc(<span class="st">&#39;Romance&#39;</span>), <span class="dv">0</span>], <span class="dv">1</span>))   <span class="co"># ロマンスの1930年代</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1084,7 +1084,7 @@ margin-right: 0; }
 </section>
 <section id="todo②寄与率" class="slide level2">
 <h2>TODO②：寄与率</h2>
-<div id="f184f3e7" class="cell" data-execution_count="3">
+<div id="37123752" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>(ca.eigenvalues_summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          eigenvalue % of variance % of variance (cumulative)
@@ -1099,7 +1099,7 @@ component
 </section>
 <section id="todo③上位3ジャンル" class="slide level2">
 <h2>TODO③：上位3ジャンル</h2>
-<div id="44c3c509" class="cell" data-execution_count="4">
+<div id="954a319f" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>top3 <span class="op">=</span> {}</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="cf">for</span> dec <span class="kw">in</span> [<span class="st">&#39;1950&#39;</span>, <span class="st">&#39;1970&#39;</span>]:</span>
 <span id="cb5-3"><a href aria-label="3"></a>    top3[dec] <span class="op">=</span> ratio[dec].sort_values(ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">3</span>).to_dict()</span>
@@ -1114,7 +1114,7 @@ component
 </section>
 <section id="todo④企画書の一文" class="slide level2">
 <h2>TODO④：企画書の一文</h2>
-<div id="96e557e5" class="cell" data-execution_count="5">
+<div id="e76318e6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>r <span class="op">=</span> ratio[<span class="st">&#39;1960&#39;</span>].sort_values()</span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="ss">f&#39;1960年代の特集は </span><span class="sc">{</span>r<span class="sc">.</span>index[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">（</span><span class="sc">{</span>r<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">倍）を中心に。&#39;</span></span>
 <span id="cb7-3"><a href aria-label="3"></a>      <span class="ss">f&#39;</span><span class="sc">{</span>r<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">（</span><span class="sc">{</span>r<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">倍）は少なめでよい。&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1133,7 +1133,7 @@ component
 </section>
 <section id="応用①1990年代以降に絞る" class="slide level2 fit-80">
 <h2>応用①：1990年代以降に絞る</h2>
-<div id="f4ffd0d4" class="cell" data-execution_count="6">
+<div id="eac88026" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>ct_new <span class="op">=</span> ct[[<span class="st">&#39;1990&#39;</span>, <span class="st">&#39;2000&#39;</span>, <span class="st">&#39;2010&#39;</span>]]         <span class="co"># 1990年代以降</span></span>
 <span id="cb9-2"><a href aria-label="2"></a>ca_new <span class="op">=</span> prince.CA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(ct_new)</span>
 <span id="cb9-3"><a href aria-label="3"></a>rows_new <span class="op">=</span> ca_new.row_coordinates(ct_new)</span>
@@ -1146,7 +1146,7 @@ component
 </section>
 <section id="応用②次元1の寄与率" class="slide level2">
 <h2>応用②：次元1の寄与率</h2>
-<div id="c4ff038a" class="cell" data-execution_count="7">
+<div id="6ccfef92" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 88.8</code></pre>
 </div>
@@ -1157,7 +1157,7 @@ component
 </section>
 <section id="つの地図を並べる" class="slide level2">
 <h2>2つの地図を並べる</h2>
-<div id="b955d90a" class="cell" data-execution_count="8">
+<div id="12bb083a" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

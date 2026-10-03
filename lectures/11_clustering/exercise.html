@@ -2238,7 +2238,20 @@ vertical-align: -.125em;
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>あなたは国際協力機関の担当者です。142か国を、平均寿命と豊かさから、支援の方針が近いグループに分けたい。</p>
 <p>k-meansという方法を自分で書いて中身を確かめ、3つのグループに分け、それぞれに名前と支援の方針をつけます。最後の「目標に答えられたか」で振り返りましょう。</p>
+<section id="場面" class="level3">
+<h3 class="anchored" data-anchor-id="場面">場面</h3>
+<p>あなたは国際協力機関の担当者です。世界の国々に、保健や経済の支援をしています。1か国ずつ方針を立てるのではなく、似た国をまとめて方針を考えたいところです。</p>
+<p>決めたいのは、142か国を、支援の方針が近いグループに分けることです。手がかりは、平均寿命と豊かさです。</p>
+</section>
+<section id="手元のデータ" class="level3">
+<h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
+<p>Gapminder財団が公開している、世界の国々の統計です（plotly/datasets経由で取得）。1行が、ある国のある年で、平均寿命・人口・一人あたりGDPが5年ごとに並びます。今日は、2007年の142か国を使います。正解のグループを示す列はありません。</p>
+</section>
+<section id="最後に出す答え" class="level3">
+<h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
+<p>142か国を分けた3つのグループとその名前、グループごとの支援の方針、そして境目にいる国をどう扱うかです。</p>
 <hr>
+</section>
 </section>
 <section id="学習ゴール" class="level2">
 <h2 class="anchored" data-anchor-id="学習ゴール">学習ゴール</h2>
@@ -2261,7 +2274,7 @@ vertical-align: -.125em;
 <li>入力：なし</li>
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
-<div id="5161ff5c" class="cell" data-execution_count="1">
+<div id="8142079d" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2294,7 +2307,7 @@ vertical-align: -.125em;
 <section id="分析の地図今日はここ" class="level3">
 <h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
 <p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は ② の解析（グループに分ける）と、③ の解釈（名前と方針をつける）が中心です。</p>
-<div id="66cb26c1" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
+<div id="bcc432e7" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2317,7 +2330,7 @@ vertical-align: -.125em;
 <li>出力：表<code>d</code>（142か国）</li>
 </ul>
 <p>GDPは、277ドルから49357ドルまで、180倍近い開きがあります。そのままでは、豊かな国の違いばかりが目立つので、<code>np.log10</code>で対数にします（第4回）。対数にすると、「10倍の違い」が同じ幅になります。</p>
-<div id="78dd331b" class="cell" data-execution_count="3">
+<div id="29905a91" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2340,7 +2353,7 @@ max      82.60    4.69</code></pre>
 </div>
 </div>
 <p>142か国。平均寿命は39.6〜82.6歳、GDPの対数は2.44〜4.69です。</p>
-<div id="12bf645c" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
+<div id="c13abec3" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2354,7 +2367,7 @@ max      82.60    4.69</code></pre>
 <section id="変えてみる標準化する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる標準化する">変えてみる：標準化する</h3>
 <p>2つの列は、単位も散らばりの大きさも違います（平均寿命の標準偏差は12.07、GDPの対数は0.59）。距離で近さを測るので、標準化して物差しをそろえます（第3回）。</p>
-<div id="97008bdd" class="cell" data-execution_count="5">
+<div id="70548fa6" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> StandardScaler().fit_transform(d[[<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;loggdp&#39;</span>]])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X.shape, X.mean(axis<span class="op">=</span><span class="dv">0</span>).<span class="bu">round</span>(<span class="dv">2</span>), X.std(axis<span class="op">=</span><span class="dv">0</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2394,7 +2407,7 @@ max      82.60    4.69</code></pre>
 <li>出力：割り当て<code>labels</code>と、動かしたあとの中心<code>new</code></li>
 </ul>
 <p><code>((X - c) ** 2).sum(axis=1)</code>は、中心<code>c</code>から142か国それぞれへの距離の2乗です。<code>[… for c in centers]</code>で3つの中心それぞれについて計算し、3本の並びをリストに集めます。それを<code>np.column_stack</code>で横に並べると、142行×3列の表になります。<code>argmin(axis=1)</code>は、行ごとにいちばん小さい列の番号、つまりいちばん近い中心の番号を返します。</p>
-<div id="eb3fc09f" class="cell" data-execution_count="6">
+<div id="b938ea7b" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>centers <span class="op">=</span> X[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]]                    <span class="co"># 最初の3か国の位置を中心に</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>dist <span class="op">=</span> np.column_stack([((X <span class="op">-</span> c) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">for</span> c <span class="kw">in</span> centers])</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> dist.argmin(axis<span class="op">=</span><span class="dv">1</span>)              <span class="co"># いちばん近い中心の番号</span></span>
@@ -2423,7 +2436,7 @@ max      82.60    4.69</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>np.allclose([<span class="fl">1.0</span>, <span class="fl">2.0</span>], [<span class="fl">1.0</span>, <span class="fl">2.0000001</span>])   <span class="co"># True</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">not</span> <span class="va">True</span>                                     <span class="co"># False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>np.allclose(a, b)</code>は、2つの配列がどこも（計算の誤差を除いて）ほぼ等しければ<code>True</code>を返します。<code>not</code>は、<code>True</code>と<code>False</code>を入れかえます。だから<code>not np.allclose(new, centers)</code>は、「新しい中心が、前の中心と等しくない（動いた）」なら<code>True</code>になります。</p>
-<div id="3b25b22d" class="cell" data-execution_count="7">
+<div id="4c1b38e3" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>centers <span class="op">=</span> X[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>moved, n_iter <span class="op">=</span> <span class="va">True</span>, <span class="dv">0</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> moved:                  <span class="co"># 中心が動いたあいだ、くり返す</span></span>
@@ -2454,7 +2467,7 @@ max      82.60    4.69</code></pre>
 <li>出力：2つの分け方の一致度</li>
 </ul>
 <p>2つの分け方が同じかは、ARI（adjusted Rand index）で測ります。グループの番号の付け方が違っても、同じ国どうしが同じグループにいれば1、でたらめに分けたのと同じくらいなら0になります。</p>
-<div id="949060ab" class="cell" data-execution_count="8">
+<div id="91b43f0e" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>km1 <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, init<span class="op">=</span>X[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>]], n_init<span class="op">=</span><span class="dv">1</span>).fit(X)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(km1.n_iter_, adjusted_rand_score(labels, km1.labels_))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2466,7 +2479,7 @@ max      82.60    4.69</code></pre>
 <section id="変えてみる出発点を10通り試す" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる出発点を10通り試す">変えてみる：出発点を10通り試す</h3>
 <p>k-meansの答えは、出発点によって変わることがあります。<code>KMeans</code>に<code>n_init=10</code>を指定すると、乱数（random number）で選んだ出発点（初めの設定では、たがいに離れた点を選びやすい工夫つき）を10通り試し、いちばんよいものを残します。「よい」の物差しは慣性（inertia）です。各点から自分のグループの中心までの距離の2乗の合計で、小さいほどまとまっています。</p>
-<div id="805cb35e" class="cell" data-execution_count="9">
+<div id="c2b55f70" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>km <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">3</span>, n_init<span class="op">=</span><span class="dv">10</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(X)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(km1.inertia_, <span class="dv">2</span>), <span class="bu">round</span>(km.inertia_, <span class="dv">2</span>))</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(adjusted_rand_score(km1.labels_, km.labels_), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2483,7 +2496,7 @@ max      82.60    4.69</code></pre>
 <section id="グループに名前をつける" class="level2">
 <h2 class="anchored" data-anchor-id="グループに名前をつける">4. グループに名前をつける</h2>
 <p>分け方は、10通り試したものに決まりました。では、3つはそれぞれどんなグループでしょうか。クラスタリングの結果は、グループの番号（0・1・2）だけです。番号には意味がありません。中身を要約して、名前をつけます。</p>
-<div id="a97482f3" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="10">
+<div id="53943f67" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2495,7 +2508,7 @@ max      82.60    4.69</code></pre>
 <section id="todo①グループを要約する" class="level3">
 <h3 class="anchored" data-anchor-id="todo①グループを要約する">TODO①：グループを要約する</h3>
 <p><code>d[&#39;cluster&#39;] = km.labels_</code>でグループの番号を表に加え、グループごとの国の数、平均寿命の平均、GDPの平均を表示してください。</p>
-<div id="5485c807" class="cell" data-execution_count="11">
+<div id="f433ea67" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: グループごとの国の数・平均寿命・GDP の平均を表示する</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: d[&#39;cluster&#39;] = km.labels_ のあと、</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         d.groupby(&#39;cluster&#39;).agg(国数=(&#39;country&#39;, &#39;size&#39;), …)</span></span>
@@ -2511,7 +2524,7 @@ max      82.60    4.69</code></pre>
 <section id="todo②標準化せずに分けて比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo②標準化せずに分けて比べる">TODO②：標準化せずに分けて、比べる</h3>
 <p><code>d[[&#39;lifeExp&#39;, &#39;loggdp&#39;]].values</code>（標準化しない値）を<code>KMeans(n_clusters=3, n_init=10, random_state=42)</code>で分け、<code>km.labels_</code>とのARIと、グループごとの平均寿命・GDPの平均を表示してください。</p>
-<div id="ba4b1a29" class="cell" data-execution_count="12">
+<div id="c3166f3d" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 標準化しない値で分けて、ARI とグループの要約を表示する</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: raw = KMeans(…).fit_predict(d[[&#39;lifeExp&#39;, &#39;loggdp&#39;]].values)</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         adjusted_rand_score(km.labels_, raw)</span></span>
@@ -2533,7 +2546,7 @@ max      82.60    4.69</code></pre>
 <li>入力：<code>d[&#39;cluster&#39;]</code>、<code>d[&#39;continent&#39;]</code></li>
 <li>出力：3行×5列の表</li>
 </ul>
-<div id="acba7c99" class="cell" data-execution_count="13">
+<div id="af28c54d" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;cluster&#39;</span>] <span class="op">=</span> km.labels_</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.crosstab(d[<span class="st">&#39;cluster&#39;</span>], d[<span class="st">&#39;continent&#39;</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2549,7 +2562,7 @@ cluster
 <section id="todo③気になる国はどのグループか" class="level3">
 <h3 class="anchored" data-anchor-id="todo③気になる国はどのグループか">TODO③：気になる国は、どのグループか</h3>
 <p>日本・中国・インド・南アフリカ・ボツワナが、どのグループにいるかを、平均寿命とGDPとあわせて表示してください。</p>
-<div id="632d6012" class="cell" data-execution_count="14">
+<div id="7c3cecaa" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5か国のグループと、平均寿命・GDP を表示する</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: pick = [&#39;Japan&#39;, &#39;China&#39;, &#39;India&#39;,</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#                 &#39;South Africa&#39;, &#39;Botswana&#39;]</span></span>
@@ -2561,7 +2574,7 @@ cluster
 <section id="todo④境目にいる国を探す" class="level3">
 <h3 class="anchored" data-anchor-id="todo④境目にいる国を探す">TODO④：境目にいる国を探す</h3>
 <p><code>km.transform(X)</code>は、各国から3つの中心までの距離を返します。行ごとに小さい順に並べ（<code>np.sort(…, axis=1)</code>）、「2番目に近い中心までの距離 − いちばん近い中心までの距離」が小さい5か国を表示してください。この差が小さい国は、2つのグループの境目にいます。</p>
-<div id="f754c817" class="cell" data-execution_count="15">
+<div id="592a649c" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 2つの中心までの距離の差が小さい5か国を表示する</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: dist = np.sort(km.transform(X), axis=1)</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         d[&#39;margin&#39;] = dist[:, 1] - dist[:, 0]</span></span>
