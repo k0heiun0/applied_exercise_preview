@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①大外れの割合" class="slide level2">
 <h2>TODO①：大外れの割合</h2>
-<div id="40cc375b" class="cell" data-execution_count="3">
+<div id="6f8265e7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>err2 <span class="op">=</span> (y_te <span class="op">-</span> m.predict(X_te)) <span class="op">**</span> <span class="dv">2</span></span>
 <span id="cb1-2"><a href aria-label="2"></a>top <span class="op">=</span> np.sort(err2)[::<span class="op">-</span><span class="dv">1</span>][:<span class="bu">len</span>(err2) <span class="op">//</span> <span class="dv">20</span>]      <span class="co"># 大きい順の上位5%</span></span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">len</span>(top), <span class="st">&#39;軒&#39;</span>)</span>
@@ -1086,7 +1086,7 @@ margin-right: 0; }
 </section>
 <section id="todo②2つの式を比べる" class="slide level2">
 <h2>TODO②：2つの式を比べる</h2>
-<div id="896aef8d" class="cell" data-execution_count="4">
+<div id="9744cd92" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>pred_raw <span class="op">=</span> m.predict(X_te)</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;そのまま: MAE&#39;</span>, mae(y_te, pred_raw), <span class="st">&#39; RMSE&#39;</span>, rmse(y_te, pred_raw))</span>
 <span id="cb3-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;対数    : MAE&#39;</span>, mae(y_te, pred_log), <span class="st">&#39; RMSE&#39;</span>, rmse(y_te, pred_log))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1101,7 +1101,7 @@ margin-right: 0; }
 </section>
 <section id="todo③対数の式も並べる" class="slide level2 fit-70">
 <h2>TODO③：対数の式も並べる</h2>
-<div id="20ea7575" class="cell" data-execution_count="5">
+<div id="2138de3a" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>rows <span class="op">=</span> []</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="cf">for</span> k, (a, b) <span class="kw">in</span> <span class="bu">enumerate</span>(kf.split(df)):</span>
 <span id="cb5-3"><a href aria-label="3"></a>    t, s <span class="op">=</span> df.iloc[a], df.iloc[b]      <span class="co"># その回の訓練とテスト</span></span>
@@ -1127,7 +1127,7 @@ dtype: float64</code></pre>
 </section>
 <section id="平均ならどちらでも対数" class="slide level2">
 <h2>平均なら、どちらでも対数</h2>
-<div id="a74121f1" class="cell" data-execution_count="6">
+<div id="04304e32" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>MAE_そのまま     19304.0
 RMSE_そのまま    27004.0
@@ -1141,7 +1141,7 @@ RMSE_対数      22703.0</code></pre>
 </section>
 <section id="todo④6番目の家の査定書" class="slide level2">
 <h2>TODO④：6番目の家の査定書</h2>
-<div id="6d0003ff" class="cell" data-execution_count="7">
+<div id="a0e8cd28" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a>house <span class="op">=</span> te.iloc[[<span class="dv">5</span>]]</span>
 <span id="cb8-2"><a href aria-label="2"></a>contrib <span class="op">=</span> (house[feat].iloc[<span class="dv">0</span>] <span class="op">-</span> X_tr.mean()) <span class="op">*</span> coef   <span class="co"># 押し上げ</span></span>
 <span id="cb8-3"><a href aria-label="3"></a>contrib <span class="op">=</span> contrib.sort_values(key<span class="op">=</span><span class="bu">abs</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
@@ -1162,7 +1162,7 @@ RMSE_対数      22703.0</code></pre>
 </section>
 <section id="応用①車庫の台数を外す" class="slide level2 fit-90">
 <h2>応用①：車庫の台数を外す</h2>
-<div id="9c99eab7" class="cell" data-execution_count="8">
+<div id="827f5e24" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href aria-label="1"></a>feat_no_cars <span class="op">=</span> [f <span class="cf">for</span> f <span class="kw">in</span> feat <span class="cf">if</span> f <span class="op">!=</span> <span class="st">&#39;Garage Cars&#39;</span>]</span>
 <span id="cb10-2"><a href aria-label="2"></a>m_no_cars <span class="op">=</span> LinearRegression().fit(tr[feat_no_cars], y_tr)</span>
 <span id="cb10-3"><a href aria-label="3"></a>area_coef <span class="op">=</span> m_no_cars.coef_[feat_no_cars.index(<span class="st">&#39;Garage Area&#39;</span>)]</span>
@@ -1176,7 +1176,7 @@ MAE: 19060 ドル</code></pre>
 </section>
 <section id="応用②面積の係数は" class="slide level2">
 <h2>応用②：面積の係数は？</h2>
-<div id="3ad4485c" class="cell" data-execution_count="9">
+<div id="3deda6c5" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 360</code></pre>
 </div>

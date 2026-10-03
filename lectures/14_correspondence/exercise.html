@@ -2462,7 +2462,9 @@ window.Quarto = {
 \]</span></p>
 <p>p値は、「関係がない」としたとき、これ以上大きなずれが偶然に起きる確率です。小さいほど、「関係がない」とは考えにくくなります。<code>chi2_contingency</code>は、カイ二乗・p値・自由度・期待度数の4つを返します。</p>
 <div id="3e116784" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span>   <span class="co"># Colab で使うときは公開データの URL に変える（配布時に設定）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
+DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
+            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ct <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/movielens_genre_decade.csv&#39;</span>,</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                 index_col<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>ct.columns <span class="op">=</span> ct.columns.astype(<span class="bu">str</span>)   <span class="co"># 年代の名前を文字に</span></span>

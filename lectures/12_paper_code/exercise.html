@@ -2300,7 +2300,7 @@ vertical-align: -.125em;
 </ul>
 <p>リポジトリ全体は400MB以上あるので、<code>git</code>の機能で必要なファイルだけを取ってきます（数秒・約40MB）。<code>!</code>で始まる行は、Pythonではなく、計算機に直接出す命令です。<code>os.chdir</code>は、作業の場所（フォルダ）を移す関数です。著者のコードはこのフォルダの中で動く前提なので、移しておきます。</p>
 <div id="aa57fe8b" class="cell" data-execution_count="2">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>WORK <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span>   <span class="co"># Colab で使うときは &#39;/content&#39; にする（配布時に設定）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>WORK <span class="op">=</span> <span class="st">&#39;/content&#39;</span>   <span class="co"># Colab の作業場所</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>URL <span class="op">=</span> <span class="st">&#39;https://github.com/emiruz/eigengalaxies.git&#39;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>PICK <span class="op">=</span> (<span class="st">&quot;&#39;/Eigengalaxies.ipynb&#39; &#39;/CANDELS/GDS_[12]???.npy&#39; &quot;</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="st">&quot;&#39;/GDS_RGBs/GDS_0[12]???.png&#39;&quot;</span>)      <span class="co"># 取ってくるファイルの型</span></span>

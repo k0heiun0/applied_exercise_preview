@@ -2458,7 +2458,9 @@ window.Quarto = {
 <li>出力：表<code>df</code>、人数、グループごとの平均</li>
 </ul>
 <div id="34369a05" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span>   <span class="co"># Colab で使うときは公開データの URL に変える（配布時に設定）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
+DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
+            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/heart.csv&#39;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((df[<span class="st">&#39;target&#39;</span>] <span class="op">==</span> <span class="dv">1</span>).<span class="bu">sum</span>(), <span class="st">&#39;人が心臓病あり /&#39;</span>, <span class="bu">len</span>(df), <span class="st">&#39;人&#39;</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;age&#39;</span>, <span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>]</span>

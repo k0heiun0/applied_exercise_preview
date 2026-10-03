@@ -2344,7 +2344,9 @@ var requirejs,require,define;(function(global,setTimeout){var req,s,head,baseEle
 <p><code>df = pd.read_csv(...)</code>は、右で読み込んだ表を、左の名前<code>df</code>にしまっておく書き方です。こうして名前を付けてしまっておくものを変数と呼びます。<code>pd.read_csv</code>は「pandasのread_csv」という関数です。<code>df.head()</code>のように<code>df.</code>に続けて書くのは、表そのものが持っている機能（メソッド）の呼び出しです。</p>
 <div id="3bb5235b" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 自転車シェアの日次データ（1日1行）を読み込む</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span>   <span class="co"># Colab で使うときは公開データの URL に変える（配布時に設定）</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
+DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
+            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/bike_day.csv&#39;</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># instant(通し番号)・dteday(日付)・casual/registered は今回は使わないので落とす</span></span>

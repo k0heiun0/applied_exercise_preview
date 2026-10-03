@@ -1108,7 +1108,7 @@ margin-right: 0; }
 </section>
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いに、どう近づくか</h2>
-<div id="944cf455" class="cell" data-execution_count="2">
+<div id="f95a320a" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1151,11 +1151,13 @@ margin-right: 0; }
 </section>
 <section id="お手本2つのグループを比べる" class="slide level2">
 <h2>お手本：2つのグループを比べる</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span></span>
-<span id="cb1-2"><a href aria-label="2"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/heart.csv&#39;</span>)</span>
-<span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>((df[<span class="st">&#39;target&#39;</span>] <span class="op">==</span> <span class="dv">1</span>).<span class="bu">sum</span>(), <span class="st">&#39;人が心臓病あり /&#39;</span>, <span class="bu">len</span>(df), <span class="st">&#39;人&#39;</span>)</span>
-<span id="cb1-4"><a href aria-label="4"></a>cols <span class="op">=</span> [<span class="st">&#39;age&#39;</span>, <span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>]</span>
-<span id="cb1-5"><a href aria-label="5"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;target&#39;</span>)[cols].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="co"># データはこのリポジトリから読み込む</span></span>
+<span id="cb1-2"><a href aria-label="2"></a>DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span></span>
+<span id="cb1-3"><a href aria-label="3"></a>            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/heart.csv&#39;</span>)</span>
+<span id="cb1-5"><a href aria-label="5"></a><span class="bu">print</span>((df[<span class="st">&#39;target&#39;</span>] <span class="op">==</span> <span class="dv">1</span>).<span class="bu">sum</span>(), <span class="st">&#39;人が心臓病あり /&#39;</span>, <span class="bu">len</span>(df), <span class="st">&#39;人&#39;</span>)</span>
+<span id="cb1-6"><a href aria-label="6"></a>cols <span class="op">=</span> [<span class="st">&#39;age&#39;</span>, <span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>]</span>
+<span id="cb1-7"><a href aria-label="7"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;target&#39;</span>)[cols].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>役割：心臓病あり・なしの人数と、主な検査値の平均を比べる</li>
 </ul>
@@ -1211,7 +1213,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせほぼ半々" class="slide level2">
 <h2>答え合わせ：ほぼ半々</h2>
-<div id="894c8e0d" class="cell" data-execution_count="3">
+<div id="10e8b3d2" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>139 人が心臓病あり / 303 人</code></pre>
 </div>
@@ -1222,7 +1224,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ平均の違い" class="slide level2">
 <h2>答え合わせ：平均の違い</h2>
-<div id="4bc3c6c7" class="cell" data-execution_count="4">
+<div id="80611c00" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>         age  thalach  oldpeak
 target                        
@@ -1236,7 +1238,7 @@ target
 </section>
 <section id="最大心拍数で分けられる" class="slide level2">
 <h2>最大心拍数で、分けられる？</h2>
-<div id="36bf8ead" class="cell" data-execution_count="5">
+<div id="c601778c" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1251,7 +1253,7 @@ target
 </section>
 <section id="本の列では分けきれない" class="slide level2">
 <h2>1本の列では、分けきれない</h2>
-<div id="5cca135b" class="cell" data-execution_count="6">
+<div id="d1d83f3c" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1288,7 +1290,7 @@ target
 </section>
 <section id="からはみ出す" class="slide level2">
 <h2>0〜1から、はみ出す</h2>
-<div id="1a1b8374" class="cell" data-execution_count="7">
+<div id="29ff55d0" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1310,7 +1312,7 @@ target
 </section>
 <section id="シグモイド関数" class="slide level2">
 <h2>シグモイド関数</h2>
-<div id="3ad34bf1" class="cell" data-execution_count="8">
+<div id="0df46f54" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1372,7 +1374,7 @@ target
 </section>
 <section id="答え合わせ先頭5人の確率" class="slide level2">
 <h2>答え合わせ：先頭5人の確率</h2>
-<div id="5d8dda73" class="cell" data-execution_count="9">
+<div id="1b30a21a" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>[0.22 0.71 0.06 0.04 0.54]
 [0.13 0.64 0.02 0.02 0.5 ]</code></pre>
@@ -1443,7 +1445,7 @@ target
 </section>
 <section id="答え合わせ正解率0.869" class="slide level2">
 <h2>答え合わせ：正解率0.869</h2>
-<div id="5af5eef5" class="cell" data-execution_count="10">
+<div id="f2f6a78b" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>[0 1 0 0 1]
 0.869</code></pre>
@@ -1539,7 +1541,7 @@ target
 </section>
 <section id="答え合わせtpとtn" class="slide level2">
 <h2>答え合わせ：TPとTN</h2>
-<div id="221e6ed4" class="cell" data-execution_count="11">
+<div id="bc4e928f" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>TP 26  TN 27</code></pre>
 </div>
@@ -1550,7 +1552,7 @@ target
 </section>
 <section id="答え合わせtodo①" class="slide level2">
 <h2>答え合わせ：TODO①</h2>
-<div id="8950bda2" class="cell" data-execution_count="12">
+<div id="c12be064" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>FP 6  FN 2
 [[27  6]
@@ -1563,7 +1565,7 @@ target
 </section>
 <section id="混同行列を図で見る" class="slide level2">
 <h2>混同行列を、図で見る</h2>
-<div id="7f4ba95e" class="cell" data-execution_count="13">
+<div id="53dabd08" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1578,7 +1580,7 @@ target
 </section>
 <section id="左下が見逃し" class="slide level2">
 <h2>左下が、見逃し</h2>
-<div id="6d9ed4b0" class="cell" data-execution_count="14">
+<div id="1328d5a0" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1593,7 +1595,7 @@ target
 </section>
 <section id="右上が誤検出" class="slide level2">
 <h2>右上が、誤検出</h2>
-<div id="baaaa87f" class="cell" data-execution_count="15">
+<div id="fba24db0" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1656,7 +1658,7 @@ target
 </section>
 <section id="答え合わせtodo②" class="slide level2">
 <h2>答え合わせ：TODO②</h2>
-<div id="cb30df35" class="cell" data-execution_count="16">
+<div id="b6ae5fb7" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>適合率: 0.81
 再現率: 0.93</code></pre>
@@ -1668,7 +1670,7 @@ target
 </section>
 <section id="classification_reportと一致" class="slide level2">
 <h2>classification_reportと一致</h2>
-<div id="ae796931" class="cell" data-execution_count="17">
+<div id="e9fc80b8" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>              precision    recall  f1-score   support
 
@@ -1713,7 +1715,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="誤検出率健康な人のうち" class="slide level2">
 <h2>誤検出率：健康な人のうち</h2>
-<div id="4c13cbe8" class="cell" data-execution_count="18">
+<div id="0ba8e631" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1729,7 +1731,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="検出率心臓病の人のうち" class="slide level2">
 <h2>検出率：心臓病の人のうち</h2>
-<div id="730584f2" class="cell" data-execution_count="19">
+<div id="28c6056c" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1782,7 +1784,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="答え合わせroc曲線" class="slide level2">
 <h2>答え合わせ：ROC曲線</h2>
-<div id="050fce61" class="cell" data-execution_count="20">
+<div id="fd8bebf9" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1797,7 +1799,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="aucは0.951" class="slide level2">
 <h2>AUCは0.951</h2>
-<div id="5cd193fa" class="cell" data-execution_count="21">
+<div id="99e30897" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.951</code></pre>
 </div>
@@ -1808,7 +1810,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="答え合わせtodo③" class="slide level2">
 <h2>答え合わせ：TODO③</h2>
-<div id="159a0ebc" class="cell" data-execution_count="22">
+<div id="dee531c0" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1892,7 +1894,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="答え合わせ見逃し" class="slide level2">
 <h2>答え合わせ：見逃し</h2>
-<div id="52585379" class="cell" data-execution_count="23">
+<div id="06310a6c" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-stdout">
 <pre><code>心臓病の28人のうち26人を見つけ、2人を見逃した（再現率 0.93）</code></pre>
 </div>
@@ -1900,7 +1902,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="答え合わせtodo④" class="slide level2">
 <h2>答え合わせ：TODO④</h2>
-<div id="3d20b596" class="cell" data-execution_count="24">
+<div id="bea4bf33" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-stdout">
 <pre><code>健康な33人のうち6人を、心臓病と判定した（誤検出）</code></pre>
 </div>
@@ -1935,7 +1937,7 @@ weighted avg       0.88      0.87      0.87        61
 </section>
 <section id="今日の歩み" class="slide level2">
 <h2>今日の歩み</h2>
-<div id="4c2d0b05" class="cell" data-execution_count="25">
+<div id="ad63bad2" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

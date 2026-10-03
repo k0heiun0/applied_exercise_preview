@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①誤検出と見逃し" class="slide level2">
 <h2>TODO①：誤検出と見逃し</h2>
-<div id="a214869f" class="cell" data-execution_count="2">
+<div id="c5f0df42" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>fp <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">0</span>)).<span class="bu">sum</span>()    <span class="co"># 判定は心臓病、本当は健康</span></span>
 <span id="cb1-2"><a href aria-label="2"></a>fn <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>()    <span class="co"># 判定は健康、本当は心臓病</span></span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;TP&#39;</span>, tp, <span class="st">&#39; TN&#39;</span>, tn, <span class="st">&#39; FP&#39;</span>, fp, <span class="st">&#39; FN&#39;</span>, fn)</span>
@@ -1086,7 +1086,7 @@ margin-right: 0; }
 </section>
 <section id="todo②適合率と再現率" class="slide level2">
 <h2>TODO②：適合率と再現率</h2>
-<div id="7d5560ac" class="cell" data-execution_count="3">
+<div id="ab9883d1" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;適合率:&#39;</span>, <span class="bu">round</span>(tp <span class="op">/</span> (tp <span class="op">+</span> fp), <span class="dv">2</span>))</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;再現率:&#39;</span>, <span class="bu">round</span>(tp <span class="op">/</span> (tp <span class="op">+</span> fn), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1100,7 +1100,7 @@ margin-right: 0; }
 </section>
 <section id="todo③ldaのauc" class="slide level2">
 <h2>TODO③：LDAのAUC</h2>
-<div id="b7a61f9f" class="cell" data-execution_count="4">
+<div id="510a1018" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;ロジスティック回帰:&#39;</span>, <span class="bu">round</span>(roc_auc_score(y_te, prob), <span class="dv">3</span>))</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;LDA              :&#39;</span>, <span class="bu">round</span>(roc_auc_score(y_te, prob_lda), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1114,7 +1114,7 @@ LDA              : 0.94</code></pre>
 </section>
 <section id="todo④誤検出の文" class="slide level2">
 <h2>TODO④：誤検出の文</h2>
-<div id="de4ccc66" class="cell" data-execution_count="5">
+<div id="f74a602d" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>n_ok <span class="op">=</span> tn <span class="op">+</span> fp                            <span class="co"># 本当は健康な人</span></span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="ss">f&#39;健康な</span><span class="sc">{</span>n_ok<span class="sc">}</span><span class="ss">人のうち</span><span class="sc">{</span>fp<span class="sc">}</span><span class="ss">人を、心臓病と判定した（誤検出）&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1129,7 +1129,7 @@ LDA              : 0.94</code></pre>
 </section>
 <section id="応用①3本だけで当てる" class="slide level2 fit-90">
 <h2>応用①：3本だけで当てる</h2>
-<div id="94ee00fb" class="cell" data-execution_count="6">
+<div id="1e110773" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>feat3 <span class="op">=</span> [<span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>, <span class="st">&#39;age&#39;</span>]     <span class="co"># 3本だけ</span></span>
 <span id="cb9-2"><a href aria-label="2"></a>Z3_tr, Z3_te <span class="op">=</span> prep(tr, tr, feat3), prep(tr, te, feat3)</span>
 <span id="cb9-3"><a href aria-label="3"></a>clf3 <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>).fit(Z3_tr, y_tr)</span>
@@ -1147,7 +1147,7 @@ LDA              : 0.94</code></pre>
 </section>
 <section id="応用②再現率は" class="slide level2">
 <h2>応用②：再現率は？</h2>
-<div id="5052494f" class="cell" data-execution_count="7">
+<div id="2f87bfa1" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 0.79</code></pre>
 </div>

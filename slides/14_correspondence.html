@@ -1107,7 +1107,7 @@ margin-right: 0; }
 </section>
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いに、どう近づくか</h2>
-<div id="dda369bc" class="cell" data-execution_count="2">
+<div id="a18f8026" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1180,13 +1180,15 @@ margin-right: 0; }
 </section>
 <section id="お手本カイ二乗で確かめる" class="slide level2 fit-90">
 <h2>お手本：カイ二乗で確かめる</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span></span>
-<span id="cb1-2"><a href aria-label="2"></a>ct <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/movielens_genre_decade.csv&#39;</span>,</span>
-<span id="cb1-3"><a href aria-label="3"></a>                 index_col<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb1-4"><a href aria-label="4"></a>ct.columns <span class="op">=</span> ct.columns.astype(<span class="bu">str</span>)   <span class="co"># 年代の名前を文字に</span></span>
-<span id="cb1-5"><a href aria-label="5"></a><span class="bu">print</span>(ct)</span>
-<span id="cb1-6"><a href aria-label="6"></a>chi2, p, dof, E <span class="op">=</span> chi2_contingency(ct)</span>
-<span id="cb1-7"><a href aria-label="7"></a><span class="bu">print</span>(<span class="bu">round</span>(chi2, <span class="dv">1</span>), dof, p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="co"># データはこのリポジトリから読み込む</span></span>
+<span id="cb1-2"><a href aria-label="2"></a>DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span></span>
+<span id="cb1-3"><a href aria-label="3"></a>            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>ct <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/movielens_genre_decade.csv&#39;</span>,</span>
+<span id="cb1-5"><a href aria-label="5"></a>                 index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb1-6"><a href aria-label="6"></a>ct.columns <span class="op">=</span> ct.columns.astype(<span class="bu">str</span>)   <span class="co"># 年代の名前を文字に</span></span>
+<span id="cb1-7"><a href aria-label="7"></a><span class="bu">print</span>(ct)</span>
+<span id="cb1-8"><a href aria-label="8"></a>chi2, p, dof, E <span class="op">=</span> chi2_contingency(ct)</span>
+<span id="cb1-9"><a href aria-label="9"></a><span class="bu">print</span>(<span class="bu">round</span>(chi2, <span class="dv">1</span>), dof, p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>chi2_contingency</code>：カイ二乗・p値・自由度・期待度数の4つを返す</li>
 </ul>
@@ -1227,7 +1229,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせクロス表" class="slide level2 fit-80">
 <h2>答え合わせ：クロス表</h2>
-<div id="9854d210" class="cell" data-execution_count="3">
+<div id="987bbb79" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>           1930  1940  1950  1960  1970  1980  1990  2000  2010
 genre                                                          
@@ -1246,7 +1248,7 @@ Thriller     11    32    32    49    95   180   420   654   417</code></pre>
 </section>
 <section id="答え合わせカイ二乗" class="slide level2">
 <h2>答え合わせ：カイ二乗</h2>
-<div id="aebaba58" class="cell" data-execution_count="4">
+<div id="066e2cab" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>548.4 72 1.97641130983306e-74</code></pre>
 </div>
@@ -1265,7 +1267,7 @@ Thriller     11    32    32    49    95   180   420   654   417</code></pre>
 </section>
 <section id="答え合わせtodo①" class="slide level2">
 <h2>答え合わせ：TODO①</h2>
-<div id="d688c8ff" class="cell" data-execution_count="5">
+<div id="4df4f934" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>True</code></pre>
 </div>
@@ -1365,7 +1367,7 @@ Thriller     11    32    32    49    95   180   420   654   417</code></pre>
 </section>
 <section id="答え合わせtodo②" class="slide level2">
 <h2>答え合わせ：TODO②</h2>
-<div id="cbb80987" class="cell" data-execution_count="6">
+<div id="d9f4b223" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>          eigenvalue % of variance % of variance (cumulative)
 component                                                    
@@ -1379,7 +1381,7 @@ component
 </section>
 <section id="まず年代だけ" class="slide level2">
 <h2>まず、年代だけ</h2>
-<div id="87b2437f" class="cell" data-execution_count="7">
+<div id="67eba9eb" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1394,7 +1396,7 @@ component
 </section>
 <section id="次元1は時代の軸" class="slide level2">
 <h2>次元1は、時代の軸</h2>
-<div id="aad59fde" class="cell" data-execution_count="8">
+<div id="a8d876b8" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1409,7 +1411,7 @@ component
 </section>
 <section id="年代は原点の近く" class="slide level2">
 <h2>1990・2000年代は、原点の近く</h2>
-<div id="0d75d2dc" class="cell" data-execution_count="9">
+<div id="c40d0576" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1427,7 +1429,7 @@ component
 <h2>お手本：年代ごとの本数の割合</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a>share <span class="op">=</span> ct.<span class="bu">sum</span>() <span class="op">/</span> ct.values.<span class="bu">sum</span>()     <span class="co"># 年代ごとの、本数の割合</span></span>
 <span id="cb12-2"><a href aria-label="2"></a><span class="bu">print</span>(share.<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="a4f5e910" class="cell" data-execution_count="10">
+<div id="8c7e908f" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>1930    0.013
 1940    0.018
@@ -1443,7 +1445,7 @@ component
 </section>
 <section id="本数の多い年代は平均に近い" class="slide level2">
 <h2>本数の多い年代は、平均に近い</h2>
-<div id="c3a0e7de" class="cell" data-execution_count="11">
+<div id="83fb83ce" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1459,7 +1461,7 @@ component
 </section>
 <section id="ジャンルを重ねる" class="slide level2">
 <h2>ジャンルを重ねる</h2>
-<div id="a40c22fa" class="cell" data-execution_count="12">
+<div id="35cb06ac" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1471,7 +1473,7 @@ component
 </section>
 <section id="古い年代の側" class="slide level2">
 <h2>古い年代の側</h2>
-<div id="aaff8198" class="cell" data-execution_count="13">
+<div id="a333a878" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1486,7 +1488,7 @@ component
 </section>
 <section id="新しい年代の側" class="slide level2">
 <h2>新しい年代の側</h2>
-<div id="e4e77a6c" class="cell" data-execution_count="14">
+<div id="7d0111e6" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1501,7 +1503,7 @@ component
 </section>
 <section id="原点の近くは定番" class="slide level2">
 <h2>原点の近くは、定番</h2>
-<div id="fab2213a" class="cell" data-execution_count="15">
+<div id="2b1098eb" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1583,7 +1585,7 @@ component
 </section>
 <section id="答え合わせ倍率の表" class="slide level2 fit-80">
 <h2>答え合わせ：倍率の表</h2>
-<div id="57fc1a6b" class="cell" data-execution_count="16">
+<div id="2d585c12" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>           1930  1940  1980  2010
 genre                            
@@ -1617,7 +1619,7 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 </section>
 <section id="答え合わせtodo③" class="slide level2">
 <h2>答え合わせ：TODO③</h2>
-<div id="3799ce46" class="cell" data-execution_count="17">
+<div id="1136ba22" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>1950 {&#39;Romance&#39;: 1.65, &#39;Sci-Fi&#39;: 1.47, &#39;Drama&#39;: 1.37}
 1970 {&#39;Horror&#39;: 1.31, &#39;Sci-Fi&#39;: 1.23, &#39;Crime&#39;: 1.18}</code></pre>
@@ -1633,7 +1635,7 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 </section>
 <section id="答え合わせtodo④" class="slide level2">
 <h2>答え合わせ：TODO④</h2>
-<div id="6083a077" class="cell" data-execution_count="18">
+<div id="a7710900" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-stdout">
 <pre><code>1960年代の特集は Adventure（1.38倍）を中心に。Thriller（0.69倍）は少なめでよい。</code></pre>
 </div>
@@ -1672,7 +1674,7 @@ Thriller   0.45  0.94  0.79  1.10</code></pre>
 </section>
 <section id="今日の歩み" class="slide level2">
 <h2>今日の歩み</h2>
-<div id="313771dd" class="cell" data-execution_count="19">
+<div id="5de18dfb" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

@@ -2318,7 +2318,9 @@ vertical-align: -.125em;
 </ul>
 <p>GDPは、277ドルから49357ドルまで、180倍近い開きがあります。そのままでは、豊かな国の違いばかりが目立つので、<code>np.log10</code>で対数にします（第4回）。対数にすると、「10倍の違い」が同じ幅になります。</p>
 <div id="78dd331b" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span>   <span class="co"># Colab で使うときは公開データの URL に変える（配布時に設定）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
+DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
+            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/gapminder.csv&#39;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df[df[<span class="st">&#39;year&#39;</span>] <span class="op">==</span> <span class="dv">2007</span>].copy().reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;loggdp&#39;</span>] <span class="op">=</span> np.log10(d[<span class="st">&#39;gdpPercap&#39;</span>])       <span class="co"># GDP の対数</span></span>

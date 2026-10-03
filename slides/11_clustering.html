@@ -1107,7 +1107,7 @@ margin-right: 0; }
 </section>
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いに、どう近づくか</h2>
-<div id="81d6a658" class="cell" data-execution_count="2">
+<div id="1aecb280" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1150,12 +1150,14 @@ margin-right: 0; }
 </section>
 <section id="お手本2007年の国を取り出す" class="slide level2 fit-90">
 <h2>お手本：2007年の国を取り出す</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span></span>
-<span id="cb1-2"><a href aria-label="2"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/gapminder.csv&#39;</span>)</span>
-<span id="cb1-3"><a href aria-label="3"></a>d <span class="op">=</span> df[df[<span class="st">&#39;year&#39;</span>] <span class="op">==</span> <span class="dv">2007</span>].copy().reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb1-4"><a href aria-label="4"></a>d[<span class="st">&#39;loggdp&#39;</span>] <span class="op">=</span> np.log10(d[<span class="st">&#39;gdpPercap&#39;</span>])       <span class="co"># GDP の対数</span></span>
-<span id="cb1-5"><a href aria-label="5"></a><span class="bu">print</span>(<span class="bu">len</span>(d))</span>
-<span id="cb1-6"><a href aria-label="6"></a><span class="bu">print</span>(d[[<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;loggdp&#39;</span>]].describe().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="co"># データはこのリポジトリから読み込む</span></span>
+<span id="cb1-2"><a href aria-label="2"></a>DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span></span>
+<span id="cb1-3"><a href aria-label="3"></a>            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/gapminder.csv&#39;</span>)</span>
+<span id="cb1-5"><a href aria-label="5"></a>d <span class="op">=</span> df[df[<span class="st">&#39;year&#39;</span>] <span class="op">==</span> <span class="dv">2007</span>].copy().reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-6"><a href aria-label="6"></a>d[<span class="st">&#39;loggdp&#39;</span>] <span class="op">=</span> np.log10(d[<span class="st">&#39;gdpPercap&#39;</span>])       <span class="co"># GDP の対数</span></span>
+<span id="cb1-7"><a href aria-label="7"></a><span class="bu">print</span>(<span class="bu">len</span>(d))</span>
+<span id="cb1-8"><a href aria-label="8"></a><span class="bu">print</span>(d[[<span class="st">&#39;lifeExp&#39;</span>, <span class="st">&#39;loggdp&#39;</span>]].describe().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>役割：2007年の142か国を取り出し、GDPの対数の列を加える</li>
 </ul>
@@ -1191,7 +1193,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ142か国" class="slide level2">
 <h2>答え合わせ：142か国</h2>
-<div id="f773e7dc" class="cell" data-execution_count="3">
+<div id="35f980f9" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1206,7 +1208,7 @@ margin-right: 0; }
 </section>
 <section id="平均0標準偏差1" class="slide level2">
 <h2>平均0、標準偏差1</h2>
-<div id="f912c00b" class="cell" data-execution_count="4">
+<div id="637fcb38" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>(142, 2) [0. 0.] [1. 1.]</code></pre>
 </div>
@@ -1352,7 +1354,7 @@ margin-right: 0; }
 </section>
 <section id="最初の中心" class="slide level2">
 <h2>最初の中心</h2>
-<div id="e3dd8023" class="cell" data-execution_count="5">
+<div id="affdc7ca" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1367,7 +1369,7 @@ margin-right: 0; }
 </section>
 <section id="回目割り当てる" class="slide level2">
 <h2>1回目：割り当てる</h2>
-<div id="920393cb" class="cell" data-execution_count="6">
+<div id="f375674b" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1382,7 +1384,7 @@ margin-right: 0; }
 </section>
 <section id="回目中心を動かす" class="slide level2">
 <h2>1回目：中心を動かす</h2>
-<div id="9300d97c" class="cell" data-execution_count="7">
+<div id="8a61d09a" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1397,7 +1399,7 @@ margin-right: 0; }
 </section>
 <section id="回目" class="slide level2">
 <h2>2回目</h2>
-<div id="0f429eb7" class="cell" data-execution_count="8">
+<div id="10e695a0" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1412,7 +1414,7 @@ margin-right: 0; }
 </section>
 <section id="回目で止まる" class="slide level2">
 <h2>5回目で、止まる</h2>
-<div id="26f3afd5" class="cell" data-execution_count="9">
+<div id="01502661" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1427,7 +1429,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ5回" class="slide level2">
 <h2>答え合わせ：5回</h2>
-<div id="742ee671" class="cell" data-execution_count="10">
+<div id="a9ac023c" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>5 [46 47 49]</code></pre>
 </div>
@@ -1495,7 +1497,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ完全に一致" class="slide level2">
 <h2>答え合わせ：完全に一致</h2>
-<div id="24d1a82c" class="cell" data-execution_count="11">
+<div id="bfc38f4b" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>5 1.0</code></pre>
 </div>
@@ -1507,7 +1509,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ10通り試すと" class="slide level2">
 <h2>答え合わせ：10通り試すと</h2>
-<div id="1898f8c3" class="cell" data-execution_count="12">
+<div id="7aff29eb" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>54.67 53.75
 0.73</code></pre>
@@ -1567,7 +1569,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ3つのグループ" class="slide level2">
 <h2>答え合わせ：3つのグループ</h2>
-<div id="77112d05" class="cell" data-execution_count="13">
+<div id="a5637801" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1579,7 +1581,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせtodo①" class="slide level2">
 <h2>答え合わせ：TODO①</h2>
-<div id="f69359cd" class="cell" data-execution_count="14">
+<div id="f1562822" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>         国数  平均寿命      GDP
 cluster                   
@@ -1638,7 +1640,7 @@ cluster
 </section>
 <section id="答え合わせariは0.41" class="slide level2">
 <h2>答え合わせ：ARIは0.41</h2>
-<div id="303842b5" class="cell" data-execution_count="15">
+<div id="3ee8b3a8" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.41
    lifeExp  gdpPercap
@@ -1653,7 +1655,7 @@ cluster
 </section>
 <section id="どの向きで分かれたか" class="slide level2">
 <h2>どの向きで、分かれたか</h2>
-<div id="f08e9056" class="cell" data-execution_count="16">
+<div id="d95b94ff" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1668,7 +1670,7 @@ cluster
 </section>
 <section id="平均寿命だけで分けている" class="slide level2">
 <h2>平均寿命だけで分けている</h2>
-<div id="2dd4e75b" class="cell" data-execution_count="17">
+<div id="8d72b6b1" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1748,7 +1750,7 @@ cluster
 </section>
 <section id="答え合わせグループと大陸" class="slide level2">
 <h2>答え合わせ：グループと大陸</h2>
-<div id="b240b998" class="cell" data-execution_count="18">
+<div id="86e6d423" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-stdout">
 <pre><code>continent  Africa  Americas  Asia  Europe  Oceania
 cluster                                           
@@ -1768,7 +1770,7 @@ cluster
 </section>
 <section id="答え合わせtodo③" class="slide level2">
 <h2>答え合わせ：TODO③</h2>
-<div id="99ed4c46" class="cell" data-execution_count="19">
+<div id="f8dada90" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>     country  cluster  lifeExp  gdpPercap
     Botswana        0     50.7    12569.9
@@ -1781,7 +1783,7 @@ South Africa        0     49.3     9269.7</code></pre>
 </section>
 <section id="か国はなぜ最貧に" class="slide level2">
 <h2>2か国は、なぜ最貧に？</h2>
-<div id="63619f5b" class="cell" data-execution_count="20">
+<div id="53f793cb" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1796,7 +1798,7 @@ South Africa        0     49.3     9269.7</code></pre>
 </section>
 <section id="寿命の短さで最貧に" class="slide level2">
 <h2>寿命の短さで、最貧に</h2>
-<div id="01b03e49" class="cell" data-execution_count="21">
+<div id="3930c6bb" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1818,7 +1820,7 @@ South Africa        0     49.3     9269.7</code></pre>
 </section>
 <section id="答え合わせtodo④" class="slide level2">
 <h2>答え合わせ：TODO④</h2>
-<div id="cffed94f" class="cell" data-execution_count="22">
+<div id="715f35d1" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-stdout">
 <pre><code>            country  cluster  lifeExp  gdpPercap  margin
 Trinidad and Tobago        1    69.82   18008.51    0.03
@@ -1867,7 +1869,7 @@ Trinidad and Tobago        1    69.82   18008.51    0.03
 </section>
 <section id="今日の歩み" class="slide level2">
 <h2>今日の歩み</h2>
-<div id="21823183" class="cell" data-execution_count="23">
+<div id="282ab38a" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

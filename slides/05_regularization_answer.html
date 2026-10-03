@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①足すと居住面積か" class="slide level2">
 <h2>TODO①：足すと居住面積か</h2>
-<div id="ac63cd90" class="cell" data-execution_count="2">
+<div id="265d2821" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>parts <span class="op">=</span> df[<span class="st">&#39;1st Flr SF&#39;</span>] <span class="op">+</span> df[<span class="st">&#39;2nd Flr SF&#39;</span>] <span class="op">+</span> df[<span class="st">&#39;Low Qual Fin SF&#39;</span>]</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(np.allclose(df[<span class="st">&#39;Gr Liv Area&#39;</span>], parts))</span>
 <span id="cb1-3"><a href aria-label="3"></a>bsmt <span class="op">=</span> df[<span class="st">&#39;BsmtFin SF 1&#39;</span>] <span class="op">+</span> df[<span class="st">&#39;BsmtFin SF 2&#39;</span>] <span class="op">+</span> df[<span class="st">&#39;Bsmt Unf SF&#39;</span>]</span>
@@ -1085,7 +1085,7 @@ True</code></pre>
 </section>
 <section id="todo②αを変えてridge" class="slide level2 fit-90">
 <h2>TODO②：αを変えてRidge</h2>
-<div id="f9ac9483" class="cell" data-execution_count="3">
+<div id="5b192ee4" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="cf">for</span> a <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>]:</span>
 <span id="cb3-2"><a href aria-label="2"></a>    r <span class="op">=</span> Ridge(alpha<span class="op">=</span>a).fit(Z_tr, y_tr)</span>
 <span id="cb3-3"><a href aria-label="3"></a>    c <span class="op">=</span> pd.Series(r.coef_, index<span class="op">=</span>num)</span>
@@ -1104,7 +1104,7 @@ True</code></pre>
 </section>
 <section id="todo③0になる列を数える" class="slide level2 fit-90">
 <h2>TODO③：0になる列を数える</h2>
-<div id="3e11590f" class="cell" data-execution_count="4">
+<div id="cda8ddcc" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a><span class="cf">for</span> a <span class="kw">in</span> [<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">1000</span>, <span class="dv">3000</span>]:</span>
 <span id="cb5-2"><a href aria-label="2"></a>    l <span class="op">=</span> Lasso(alpha<span class="op">=</span>a, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(Z_tr, y_tr)</span>
 <span id="cb5-3"><a href aria-label="3"></a>    zero <span class="op">=</span> (l.coef_ <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>()</span>
@@ -1123,7 +1123,7 @@ True</code></pre>
 </section>
 <section id="todo④元の単位に戻す" class="slide level2">
 <h2>TODO④：元の単位に戻す</h2>
-<div id="3bd09d15" class="cell" data-execution_count="5">
+<div id="f7a5d5ab" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>raw_unit <span class="op">=</span> coef_lasso <span class="op">/</span> sc.scale_</span>
 <span id="cb7-2"><a href aria-label="2"></a>area, qual <span class="op">=</span> raw_unit[<span class="st">&#39;Gr Liv Area&#39;</span>], raw_unit[<span class="st">&#39;Overall Qual&#39;</span>]</span>
 <span id="cb7-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="ss">f&#39;居住面積が1㎡広いと、ほかの条件をそろえたうえで、約</span><span class="sc">{</span>area<span class="sc">:,.0f}</span><span class="ss">ドル高い&#39;</span>)</span>
@@ -1144,7 +1144,7 @@ True</code></pre>
 </section>
 <section id="応用①正則化なしと並べる" class="slide level2">
 <h2>応用①：正則化なしと並べる</h2>
-<div id="8106f1db" class="cell" data-execution_count="6">
+<div id="93c94d74" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>ols_std <span class="op">=</span> LinearRegression().fit(Z_tr, y_tr)</span>
 <span id="cb9-2"><a href aria-label="2"></a>r100 <span class="op">=</span> Ridge(alpha<span class="op">=</span><span class="dv">100</span>).fit(Z_tr, y_tr)</span>
 <span id="cb9-3"><a href aria-label="3"></a>both <span class="op">=</span> pd.DataFrame({<span class="st">&#39;正則化なし&#39;</span>: pd.Series(ols_std.coef_, index<span class="op">=</span>num),</span>
@@ -1162,7 +1162,7 @@ Garage Area  2022.1       2612.7</code></pre>
 </section>
 <section id="応用②台数の係数は" class="slide level2">
 <h2>応用②：台数の係数は？</h2>
-<div id="47ca9435" class="cell" data-execution_count="7">
+<div id="214fe27d" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 1812</code></pre>
 </div>

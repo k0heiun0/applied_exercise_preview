@@ -1086,7 +1086,7 @@ margin-right: 0; }
 </section>
 <section id="人分を取ってくる" class="slide level2">
 <h2>1人分を、取ってくる</h2>
-<div id="5bdb1183" class="cell" data-execution_count="2">
+<div id="e360c417" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="op">!</span>pip install <span class="op">-</span>q nilearn</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="im">from</span> nilearn <span class="im">import</span> datasets, plotting</span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="im">from</span> nilearn.maskers <span class="im">import</span> NiftiMasker</span>
@@ -1099,7 +1099,7 @@ margin-right: 0; }
 </section>
 <section id="回撮った立体" class="slide level2">
 <h2>176回撮った、立体</h2>
-<div id="09094b90" class="cell" data-execution_count="3">
+<div id="2b3ac9c1" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>(61, 73, 61, 176)</code></pre>
 </div>
@@ -1110,7 +1110,7 @@ margin-right: 0; }
 </section>
 <section id="マスクして表にする" class="slide level2">
 <h2>マスクして、表にする</h2>
-<div id="eab52b86" class="cell" data-execution_count="4">
+<div id="2e4489ff" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="co"># 脳の中だけを取り出し（マスク）、少しぼかし、場所ごとに標準化する</span></span>
 <span id="cb3-2"><a href aria-label="2"></a>masker <span class="op">=</span> NiftiMasker(mask_strategy<span class="op">=</span><span class="st">&#39;epi&#39;</span>, smoothing_fwhm<span class="op">=</span><span class="dv">6</span>,</span>
 <span id="cb3-3"><a href aria-label="3"></a>                     standardize<span class="op">=</span><span class="st">&#39;zscore_sample&#39;</span>)</span>
@@ -1128,7 +1128,7 @@ margin-right: 0; }
 </section>
 <section id="の表" class="slide level2">
 <h2>176 × 62,546の表</h2>
-<div id="e872f214" class="cell" data-execution_count="5">
+<div id="6810dd99" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>(176, 62546)</code></pre>
 </div>
@@ -1139,7 +1139,7 @@ margin-right: 0; }
 </section>
 <section id="区画に分ける" class="slide level2 fit-80">
 <h2>区画に分ける</h2>
-<div id="455a839c" class="cell" data-execution_count="6">
+<div id="0f102fc4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a><span class="im">from</span> sklearn.feature_extraction.image <span class="im">import</span> grid_to_graph</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> FeatureAgglomeration</span>
 <span id="cb5-3"><a href aria-label="3"></a></span>
@@ -1169,7 +1169,7 @@ margin-right: 0; }
 </section>
 <section id="ward法で100の区画" class="slide level2">
 <h2>Ward法で、100の区画</h2>
-<div id="b9dd3186" class="cell" data-execution_count="7">
+<div id="f2fe17c0" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1184,7 +1184,7 @@ margin-right: 0; }
 </section>
 <section id="つながりの条件なしなら" class="slide level2">
 <h2>つながりの条件なしなら</h2>
-<div id="5d82e9a5" class="cell" data-execution_count="8">
+<div id="eaed8ab7" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

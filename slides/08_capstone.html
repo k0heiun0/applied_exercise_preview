@@ -1108,7 +1108,7 @@ margin-right: 0; }
 </section>
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いに、どう近づくか</h2>
-<div id="4c7686c9" class="cell" data-execution_count="2">
+<div id="6e185f16" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1152,12 +1152,14 @@ margin-right: 0; }
 </section>
 <section id="お手本種ごとに比べる" class="slide level2 fit-90">
 <h2>お手本：種ごとに比べる</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span></span>
-<span id="cb1-2"><a href aria-label="2"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/penguins.csv&#39;</span>)</span>
-<span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(df[<span class="st">&#39;species&#39;</span>].value_counts())</span>
-<span id="cb1-4"><a href aria-label="4"></a>num <span class="op">=</span> [<span class="st">&#39;bill_length_mm&#39;</span>, <span class="st">&#39;bill_depth_mm&#39;</span>,</span>
-<span id="cb1-5"><a href aria-label="5"></a>       <span class="st">&#39;flipper_length_mm&#39;</span>, <span class="st">&#39;body_mass_g&#39;</span>]</span>
-<span id="cb1-6"><a href aria-label="6"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;species&#39;</span>)[num].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="co"># データはこのリポジトリから読み込む</span></span>
+<span id="cb1-2"><a href aria-label="2"></a>DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span></span>
+<span id="cb1-3"><a href aria-label="3"></a>            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/penguins.csv&#39;</span>)</span>
+<span id="cb1-5"><a href aria-label="5"></a><span class="bu">print</span>(df[<span class="st">&#39;species&#39;</span>].value_counts())</span>
+<span id="cb1-6"><a href aria-label="6"></a>num <span class="op">=</span> [<span class="st">&#39;bill_length_mm&#39;</span>, <span class="st">&#39;bill_depth_mm&#39;</span>,</span>
+<span id="cb1-7"><a href aria-label="7"></a>       <span class="st">&#39;flipper_length_mm&#39;</span>, <span class="st">&#39;body_mass_g&#39;</span>]</span>
+<span id="cb1-8"><a href aria-label="8"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;species&#39;</span>)[num].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>役割：種ごとの羽数と、4本の測定値の平均を比べる</li>
 </ul>
@@ -1191,7 +1193,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ3種の羽数" class="slide level2">
 <h2>答え合わせ：3種の羽数</h2>
-<div id="b622b817" class="cell" data-execution_count="3">
+<div id="10011e49" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>species
 Adelie       152
@@ -1205,7 +1207,7 @@ Chinstrap     68</code></pre>
 </section>
 <section id="答え合わせ種ごとの平均" class="slide level2">
 <h2>答え合わせ：種ごとの平均</h2>
-<div id="f86d967d" class="cell" data-execution_count="4">
+<div id="f1d80367" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>species            Adelie  Chinstrap  Gentoo
 bill_length_mm       38.8       48.8    47.5
@@ -1241,7 +1243,7 @@ body_mass_g        3700.7     3733.1  5076.0</code></pre>
 </section>
 <section id="答え合わせ種と島" class="slide level2">
 <h2>答え合わせ：種と島</h2>
-<div id="66e4d2b8" class="cell" data-execution_count="5">
+<div id="2d646390" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>island     Biscoe  Dream  Torgersen
 species                            
@@ -1261,7 +1263,7 @@ Gentoo        124      0          0</code></pre>
 </section>
 <section id="答え合わせtodo①" class="slide level2">
 <h2>答え合わせ：TODO①</h2>
-<div id="85e6a00b" class="cell" data-execution_count="6">
+<div id="71c5d8a4" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>species               0
 island                0
@@ -1340,7 +1342,7 @@ sex                  11
 </section>
 <section id="答え合わせ275羽と69羽" class="slide level2">
 <h2>答え合わせ：275羽と69羽</h2>
-<div id="deaccad1" class="cell" data-execution_count="7">
+<div id="84a846d4" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>275 69</code></pre>
 </div>
@@ -1351,7 +1353,7 @@ sex                  11
 </section>
 <section id="答え合わせtodo②" class="slide level2">
 <h2>答え合わせ：TODO②</h2>
-<div id="343b98c7" class="cell" data-execution_count="8">
+<div id="b6fd902a" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>num__bill_length_mm
 num__bill_depth_mm
@@ -1434,7 +1436,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="答え合わせ平均0.993" class="slide level2">
 <h2>答え合わせ：平均0.993</h2>
-<div id="db6bbfa5" class="cell" data-execution_count="9">
+<div id="ff119930" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1.    0.982 1.    0.982 1.   ] 0.993</code></pre>
 </div>
@@ -1445,7 +1447,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="答え合わせcは10" class="slide level2">
 <h2>答え合わせ：Cは10</h2>
-<div id="ffa718af" class="cell" data-execution_count="10">
+<div id="4b6a062a" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;model__C&#39;: 10} 0.996</code></pre>
 </div>
@@ -1453,7 +1455,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="答え合わせtodo③" class="slide level2">
 <h2>答え合わせ：TODO③</h2>
-<div id="fe91f08e" class="cell" data-execution_count="11">
+<div id="f1ddf3ef" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>[0.982 0.945 1.    0.964 0.982] 0.975</code></pre>
 </div>
@@ -1521,7 +1523,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="答え合わせ0.986" class="slide level2">
 <h2>答え合わせ：0.986</h2>
-<div id="8849ac6b" class="cell" data-execution_count="12">
+<div id="d441323e" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.986</code></pre>
 </div>
@@ -1532,7 +1534,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="種の混同行列" class="slide level2">
 <h2>3種の混同行列</h2>
-<div id="1b5e8883" class="cell" data-execution_count="13">
+<div id="13832eb4" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1547,7 +1549,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="外した1羽は" class="slide level2">
 <h2>外した1羽は</h2>
-<div id="34926a5d" class="cell" data-execution_count="14">
+<div id="3d25679b" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1562,7 +1564,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="gentooはすべて正解" class="slide level2">
 <h2>Gentooは、すべて正解</h2>
-<div id="6c60adb5" class="cell" data-execution_count="15">
+<div id="18efa3e5" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1656,7 +1658,7 @@ cat__sex_Male</code></pre>
 </section>
 <section id="答え合わせadelieらしさ" class="slide level2">
 <h2>答え合わせ：Adelieらしさ</h2>
-<div id="9c57f2c0" class="cell" data-execution_count="16">
+<div id="b46ef67a" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>num__bill_length_mm      -4.43
 num__bill_depth_mm       +1.88
@@ -1675,7 +1677,7 @@ cat__sex_Male            +0.77</code></pre>
 </section>
 <section id="答え合わせtodo④" class="slide level2">
 <h2>答え合わせ：TODO④</h2>
-<div id="3e62137b" class="cell" data-execution_count="17">
+<div id="28886dbd" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>num__bill_depth_mm       -2.15
 cat__island_Biscoe       +1.65
@@ -1693,7 +1695,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="散布図で目で確かめる" class="slide level2">
 <h2>散布図で、目で確かめる</h2>
-<div id="9eb09f3a" class="cell" data-execution_count="18">
+<div id="5fcab491" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1708,7 +1710,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="adelieは左に固まる" class="slide level2">
 <h2>Adelieは、左に固まる</h2>
-<div id="9b72d01f" class="cell" data-execution_count="19">
+<div id="11d24cb2" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1723,7 +1725,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="gentooは下に固まる" class="slide level2">
 <h2>Gentooは、下に固まる</h2>
-<div id="878ba511" class="cell" data-execution_count="20">
+<div id="faa0a90a" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1738,7 +1740,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="chinstrapは右上に固まる" class="slide level2">
 <h2>Chinstrapは、右上に固まる</h2>
-<div id="002e2265" class="cell" data-execution_count="21">
+<div id="c77c2ff7" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1753,7 +1755,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="本だけでかなり分かれる" class="slide level2">
 <h2>2本だけで、かなり分かれる</h2>
-<div id="a798711c" class="cell" data-execution_count="22">
+<div id="370a21a0" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1942,7 +1944,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="答え合わせ同じ数が3行で" class="slide level2">
 <h2>答え合わせ：同じ数が、3行で</h2>
-<div id="1278d803" class="cell" data-execution_count="23">
+<div id="b8acf649" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-stdout">
 <pre><code>交差検証 0.996</code></pre>
 </div>
@@ -1960,7 +1962,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="答え合わせc0.01" class="slide level2">
 <h2>答え合わせ：C＝0.01</h2>
-<div id="c043024b" class="cell" data-execution_count="24">
+<div id="c8b97a51" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-stdout">
 <pre><code>交差検証 0.924</code></pre>
 </div>
@@ -1978,7 +1980,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="答え合わせ最後のテスト" class="slide level2">
 <h2>答え合わせ：最後のテスト</h2>
-<div id="7b2cfab5" class="cell" data-execution_count="25">
+<div id="2049c855" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-stdout">
 <pre><code>テスト 0.986</code></pre>
 </div>
@@ -2001,7 +2003,7 @@ cat__island_Dream        -1.03</code></pre>
 </section>
 <section id="今日の歩み" class="slide level2">
 <h2>今日の歩み</h2>
-<div id="c3d55a91" class="cell" data-execution_count="26">
+<div id="67bcbc57" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

@@ -1079,7 +1079,7 @@ margin-right: 0; }
 </section>
 <section id="分けてみる" class="slide level2 fit-90">
 <h2>分けてみる</h2>
-<div id="8fbc372b" class="cell" data-execution_count="2">
+<div id="236ab71a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> HDBSCAN</span>
 <span id="cb1-2"><a href aria-label="2"></a></span>
 <span id="cb1-3"><a href aria-label="3"></a>hdb <span class="op">=</span> HDBSCAN(min_cluster_size<span class="op">=</span><span class="dv">8</span>, copy<span class="op">=</span><span class="va">True</span>).fit_predict(X)</span>
@@ -1108,7 +1108,7 @@ hdb
 </section>
 <section id="図で見る" class="slide level2">
 <h2>図で見る</h2>
-<div id="e8c4af7b" class="cell" data-execution_count="3">
+<div id="75868585" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1123,7 +1123,7 @@ hdb
 </section>
 <section id="外れ値はどんな国か" class="slide level2">
 <h2>外れ値は、どんな国か</h2>
-<div id="f80eec35" class="cell" data-execution_count="4">
+<div id="6ad08f43" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>(d[d[<span class="st">&#39;hdb&#39;</span>] <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>][<span class="st">&#39;country&#39;</span>].head(<span class="dv">12</span>).tolist())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;Albania&#39;, &#39;Angola&#39;, &#39;Bahrain&#39;, &#39;Bolivia&#39;, &#39;Botswana&#39;, &#39;Burundi&#39;, &#39;Cameroon&#39;, &#39;Chile&#39;, &#39;Comoros&#39;, &#39;Congo, Dem. Rep.&#39;, &#39;Congo, Rep.&#39;, &#39;Costa Rica&#39;]</code></pre>
@@ -1135,7 +1135,7 @@ hdb
 </section>
 <section id="つ目まばらな場所の国" class="slide level2">
 <h2>1つ目：まばらな場所の国</h2>
-<div id="9a2bf826" class="cell" data-execution_count="5">
+<div id="fb298f35" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1150,7 +1150,7 @@ hdb
 </section>
 <section id="つ目境目の国" class="slide level2">
 <h2>2つ目：境目の国</h2>
-<div id="de849808" class="cell" data-execution_count="6">
+<div id="76b9003e" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

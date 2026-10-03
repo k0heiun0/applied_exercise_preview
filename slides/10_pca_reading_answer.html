@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①pc2と関係の強い列" class="slide level2">
 <h2>TODO①：PC2と関係の強い列</h2>
-<div id="ac48451b" class="cell" data-execution_count="2">
+<div id="f4919aaf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="bu">print</span>(load[<span class="st">&#39;PC2&#39;</span>].<span class="bu">abs</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>acceleration    0.76
@@ -1087,7 +1087,7 @@ Name: PC2, dtype: float64</code></pre>
 </section>
 <section id="todo②相関と矢印" class="slide level2">
 <h2>TODO②：相関と矢印</h2>
-<div id="77f83a23" class="cell" data-execution_count="3">
+<div id="67912c8d" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>r <span class="op">=</span> df[<span class="st">&#39;weight&#39;</span>].corr(df[<span class="st">&#39;displacement&#39;</span>])</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;重さと排気量:&#39;</span>, <span class="bu">round</span>(r, <span class="dv">2</span>))</span>
 <span id="cb3-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;燃費と重さ  :&#39;</span>, <span class="bu">round</span>(df[<span class="st">&#39;mpg&#39;</span>].corr(df[<span class="st">&#39;weight&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1102,7 +1102,7 @@ Name: PC2, dtype: float64</code></pre>
 </section>
 <section id="todo③ホンダシビック" class="slide level2 fit-90">
 <h2>TODO③：ホンダ・シビック</h2>
-<div id="4cb367eb" class="cell" data-execution_count="4">
+<div id="a4c5b2e4" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>civic <span class="op">=</span> cars[cars[<span class="st">&#39;name&#39;</span>].<span class="bu">str</span>.contains(<span class="st">&#39;honda civic&#39;</span>)]</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(civic[[<span class="st">&#39;name&#39;</span>, <span class="st">&#39;model_year&#39;</span>, <span class="st">&#39;PC1&#39;</span>, <span class="st">&#39;PC2&#39;</span>, <span class="st">&#39;mpg&#39;</span>]].<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1123,7 +1123,7 @@ Name: PC2, dtype: float64</code></pre>
 </section>
 <section id="todo④いちばん上の車" class="slide level2">
 <h2>TODO④：いちばん上の車</h2>
-<div id="b7d1bcf6" class="cell" data-execution_count="5">
+<div id="c20e0260" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>top <span class="op">=</span> cars.loc[cars[<span class="st">&#39;PC2&#39;</span>].idxmax()]</span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(top[[<span class="st">&#39;name&#39;</span>, <span class="st">&#39;origin&#39;</span>, <span class="st">&#39;model_year&#39;</span>, <span class="st">&#39;PC1&#39;</span>, <span class="st">&#39;PC2&#39;</span>, <span class="st">&#39;acceleration&#39;</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1153,7 +1153,7 @@ Name: 297, dtype: object</code></pre>
 </section>
 <section id="応用①標準化しないpca" class="slide level2 fit-90">
 <h2>応用①：標準化しないPCA</h2>
-<div id="114faf1a" class="cell" data-execution_count="6">
+<div id="f8907d58" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>pca_raw <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit(df[feat])      <span class="co"># 標準化なし</span></span>
 <span id="cb9-2"><a href aria-label="2"></a><span class="bu">print</span>(pca_raw.explained_variance_ratio_.<span class="bu">round</span>(<span class="dv">4</span>))</span>
 <span id="cb9-3"><a href aria-label="3"></a>coef_raw <span class="op">=</span> pd.DataFrame(pca_raw.components_.T, index<span class="op">=</span>feat,</span>
@@ -1173,7 +1173,7 @@ acceleration -0.001 -0.035</code></pre>
 </section>
 <section id="応用②pc1の寄与率" class="slide level2">
 <h2>応用②：PC1の寄与率</h2>
-<div id="00aae969" class="cell" data-execution_count="7">
+<div id="89f8ee07" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 99.8</code></pre>
 </div>
@@ -1192,7 +1192,7 @@ acceleration -0.001 -0.035</code></pre>
 </section>
 <section id="単位の大きさが違う" class="slide level2">
 <h2>単位の大きさが違う</h2>
-<div id="ccdabd6c" class="cell" data-execution_count="8">
+<div id="356ce072" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a><span class="bu">print</span>(df[feat].std().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mpg               7.8

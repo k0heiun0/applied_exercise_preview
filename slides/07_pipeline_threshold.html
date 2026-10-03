@@ -1108,7 +1108,7 @@ margin-right: 0; }
 </section>
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いに、どう近づくか</h2>
-<div id="12535620" class="cell" data-execution_count="2">
+<div id="cff75f9b" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1152,14 +1152,16 @@ margin-right: 0; }
 </section>
 <section id="お手本数の列と区分の列" class="slide level2 fit-90">
 <h2>お手本：数の列と、区分の列</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span></span>
-<span id="cb1-2"><a href aria-label="2"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/heart.csv&#39;</span>)</span>
-<span id="cb1-3"><a href aria-label="3"></a>num <span class="op">=</span> [<span class="st">&#39;age&#39;</span>, <span class="st">&#39;trestbps&#39;</span>, <span class="st">&#39;chol&#39;</span>, <span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>]       <span class="co"># 数の列</span></span>
-<span id="cb1-4"><a href aria-label="4"></a>cat <span class="op">=</span> [<span class="st">&#39;sex&#39;</span>, <span class="st">&#39;cp&#39;</span>, <span class="st">&#39;fbs&#39;</span>, <span class="st">&#39;restecg&#39;</span>, <span class="st">&#39;exang&#39;</span>, <span class="st">&#39;slope&#39;</span>, <span class="st">&#39;ca&#39;</span>, <span class="st">&#39;thal&#39;</span>]</span>
-<span id="cb1-5"><a href aria-label="5"></a>X, y <span class="op">=</span> df[num <span class="op">+</span> cat], df[<span class="st">&#39;target&#39;</span>].values</span>
-<span id="cb1-6"><a href aria-label="6"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb1-7"><a href aria-label="7"></a>                                          random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y)</span>
-<span id="cb1-8"><a href aria-label="8"></a><span class="bu">print</span>(<span class="bu">len</span>(y_tr), <span class="bu">len</span>(y_te))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="co"># データはこのリポジトリから読み込む</span></span>
+<span id="cb1-2"><a href aria-label="2"></a>DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span></span>
+<span id="cb1-3"><a href aria-label="3"></a>            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
+<span id="cb1-4"><a href aria-label="4"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/heart.csv&#39;</span>)</span>
+<span id="cb1-5"><a href aria-label="5"></a>num <span class="op">=</span> [<span class="st">&#39;age&#39;</span>, <span class="st">&#39;trestbps&#39;</span>, <span class="st">&#39;chol&#39;</span>, <span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>]       <span class="co"># 数の列</span></span>
+<span id="cb1-6"><a href aria-label="6"></a>cat <span class="op">=</span> [<span class="st">&#39;sex&#39;</span>, <span class="st">&#39;cp&#39;</span>, <span class="st">&#39;fbs&#39;</span>, <span class="st">&#39;restecg&#39;</span>, <span class="st">&#39;exang&#39;</span>, <span class="st">&#39;slope&#39;</span>, <span class="st">&#39;ca&#39;</span>, <span class="st">&#39;thal&#39;</span>]</span>
+<span id="cb1-7"><a href aria-label="7"></a>X, y <span class="op">=</span> df[num <span class="op">+</span> cat], df[<span class="st">&#39;target&#39;</span>].values</span>
+<span id="cb1-8"><a href aria-label="8"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb1-9"><a href aria-label="9"></a>                                          random_state<span class="op">=</span><span class="dv">42</span>, stratify<span class="op">=</span>y)</span>
+<span id="cb1-10"><a href aria-label="10"></a><span class="bu">print</span>(<span class="bu">len</span>(y_tr), <span class="bu">len</span>(y_te))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>役割：列を数と区分に分け、訓練とテストに分ける</li>
 </ul>
@@ -1267,7 +1269,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ分けた4本の列" class="slide level2">
 <h2>答え合わせ：分けた4本の列</h2>
-<div id="115e170c" class="cell" data-execution_count="3">
+<div id="3c7ae1df" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>[4.0, 2.0, 2.0]
 [[0. 0. 0. 1.]
@@ -1289,7 +1291,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせaucは0.966" class="slide level2">
 <h2>答え合わせ：AUCは0.966</h2>
-<div id="700ae264" class="cell" data-execution_count="4">
+<div id="6d1e1443" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.966</code></pre>
 </div>
@@ -1397,7 +1399,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ訓練の平均" class="slide level2">
 <h2>答え合わせ：訓練の平均</h2>
-<div id="fb8efbe0" class="cell" data-execution_count="5">
+<div id="23438143" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>[ 54.5 131.  249.8 150.    1. ]</code></pre>
 </div>
@@ -1408,7 +1410,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ一致した" class="slide level2">
 <h2>答え合わせ：一致した</h2>
-<div id="6b65d592" class="cell" data-execution_count="6">
+<div id="3a9e3aea" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>True</code></pre>
 </div>
@@ -1518,7 +1520,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせcは0.1" class="slide level2">
 <h2>答え合わせ：Cは0.1</h2>
-<div id="355111ad" class="cell" data-execution_count="7">
+<div id="981c3e88" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;model__C&#39;: 0.1} 0.898
 0.965</code></pre>
@@ -1544,7 +1546,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせtodo①" class="slide level2">
 <h2>答え合わせ：TODO①</h2>
-<div id="93b54690" class="cell" data-execution_count="8">
+<div id="86e3fd24" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.01 0.879
 0.1 0.898
@@ -1629,7 +1631,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせ3つのしきい値" class="slide level2">
 <h2>答え合わせ：3つのしきい値</h2>
-<div id="4e34e887" class="cell" data-execution_count="9">
+<div id="7265646b" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.3 38 0 10
 0.5 31 2 5
@@ -1663,7 +1665,7 @@ margin-right: 0; }
 </section>
 <section id="答え合わせtodo②" class="slide level2">
 <h2>答え合わせ：TODO②</h2>
-<div id="152008a9" class="cell" data-execution_count="10">
+<div id="dd0d613e" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code> しきい値  精密検査  見逃し  誤検出
   0.1    51    0   23
@@ -1680,7 +1682,7 @@ margin-right: 0; }
 </section>
 <section id="図で見る" class="slide level2">
 <h2>図で見る</h2>
-<div id="0f5214ef" class="cell" data-execution_count="11">
+<div id="a6102d59" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1695,7 +1697,7 @@ margin-right: 0; }
 </section>
 <section id="見逃し0人は0.3まで" class="slide level2">
 <h2>見逃し0人は、0.3まで</h2>
-<div id="3af952cb" class="cell" data-execution_count="12">
+<div id="dc9367fe" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1777,7 +1779,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 </section>
 <section id="答え合わせ同じ重さなら0.5" class="slide level2">
 <h2>答え合わせ：同じ重さなら0.5</h2>
-<div id="52ed5907" class="cell" data-execution_count="13">
+<div id="275fae87" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.5</code></pre>
 </div>
@@ -1792,7 +1794,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 </section>
 <section id="答え合わせtodo③" class="slide level2">
 <h2>答え合わせ：TODO③</h2>
-<div id="fd5bf825" class="cell" data-execution_count="14">
+<div id="b7bd043d" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.2</code></pre>
 </div>
@@ -1803,7 +1805,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 </section>
 <section id="表で読むと" class="slide level2">
 <h2>表で読むと</h2>
-<div id="e1aa752d" class="cell" data-execution_count="15">
+<div id="b0eed8a1" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-stdout">
 <pre><code> しきい値  精密検査  見逃し  誤検出
   0.2    42    0   14
@@ -1918,7 +1920,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 </section>
 <section id="答え合わせ1人目は0.72" class="slide level2">
 <h2>答え合わせ：1人目は0.72</h2>
-<div id="2e3f93f7" class="cell" data-execution_count="16">
+<div id="2d0ff8aa" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1940,7 +1942,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 </section>
 <section id="答え合わせtodo④" class="slide level2">
 <h2>答え合わせ：TODO④</h2>
-<div id="06d4f984" class="cell" data-execution_count="17">
+<div id="786ffe3a" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2003,7 +2005,7 @@ p &gt; t^* = \frac{c_{FP}}{c_{FP} + c_{FN}}
 </section>
 <section id="今日の歩み" class="slide level2">
 <h2>今日の歩み</h2>
-<div id="4f222eac" class="cell" data-execution_count="18">
+<div id="1d9b34fc" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>

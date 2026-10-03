@@ -2321,7 +2321,9 @@ vertical-align: -.125em;
 <li>出力：表<code>df</code></li>
 </ul>
 <div id="ec60fd53" class="cell" data-execution_count="3">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>DATA_DIR <span class="op">=</span> <span class="st">&#39;../../shared/data&#39;</span>   <span class="co"># Colab で使うときは公開データの URL に変える（配布時に設定）</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
+DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
+            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/ames_housing.csv&#39;</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> raw[<span class="st">&#39;Sale Condition&#39;</span>] <span class="op">==</span> <span class="st">&#39;Normal&#39;</span>         <span class="co"># ふつうの売買</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> raw[<span class="st">&#39;Gr Liv Area&#39;</span>] <span class="op">&lt;=</span> <span class="dv">4000</span>                 <span class="co"># 広すぎない家</span></span>
