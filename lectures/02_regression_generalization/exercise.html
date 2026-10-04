@@ -3259,7 +3259,7 @@ window.Quarto = {
 <section id="手元のデータ" class="level3">
 <h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
 <p>前回と同じ、ある自転車シェアの2011〜2012年の記録です（UCI Machine Learning RepositoryのBike Sharing Dataset）。1行が1日で、731日ぶんあります。季節・年・月・天気・気温・湿度・風速などが並びます。</p>
-<p>答えの列は、その日の利用台数<code>cnt</code>です。今日はおもに、気温<code>temp</code>（0〜1に縮めた値。1が約41℃）と<code>cnt</code>の2列を使います。</p>
+<p>答えの列は<code>台数</code>（その日の利用台数）です。今日はおもに、<code>気温</code>（0〜1に縮めた値。1が約41℃）と<code>台数</code>の2列を使います。</p>
 </section>
 <section id="最後に出す答え" class="level3">
 <h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
@@ -3285,12 +3285,12 @@ window.Quarto = {
 <section id="最初に実行する道具を呼び出す設定のセル" class="level3">
 <h3 class="anchored" data-anchor-id="最初に実行する道具を呼び出す設定のセル">最初に実行する：道具を呼び出す設定のセル</h3>
 <ul>
-<li>役割：このノートで使う道具（ライブラリ）を呼び出し、データを読み込む</li>
+<li>役割：このノートで使う道具（ライブラリ）を呼び出し、データを読み込んで、列名を日本語に付け替える</li>
 <li>入力：なし</li>
-<li>出力：「セットアップ完了」の表示と、表<code>df</code></li>
+<li>出力：「セットアップ完了」の表示と、列名が日本語の表<code>df</code></li>
 </ul>
-<p>今日は、表のpandasと図のmatplotlibに加えて、数の並びをまとめて計算するnumpyと、回帰の道具が入ったscikit-learn（<code>sklearn</code>）を使います。</p>
-<div id="619f5721" class="cell" data-execution_count="1">
+<p>今日は、表のpandasと図のmatplotlibに加えて、数の並びをまとめて計算するnumpyと、回帰の道具が入ったscikit-learn（<code>sklearn</code>）を使います。列名の付け替えは、第1回の1節と同じ前処理です（<code>season</code>→<code>季節</code>、<code>temp</code>→<code>気温</code>、<code>cnt</code>→<code>台数</code>など）。</p>
+<div id="89e88fa4" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -3321,7 +3321,15 @@ window.Quarto = {
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/bike_day.csv&#39;</span>)</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;セットアップ完了&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 列名を日本語に付け替える（第1回の1節と同じ前処理）</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>ja_names <span class="op">=</span> {<span class="st">&#39;instant&#39;</span>: <span class="st">&#39;番号&#39;</span>, <span class="st">&#39;dteday&#39;</span>: <span class="st">&#39;日付&#39;</span>, <span class="st">&#39;season&#39;</span>: <span class="st">&#39;季節&#39;</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;yr&#39;</span>: <span class="st">&#39;年&#39;</span>, <span class="st">&#39;mnth&#39;</span>: <span class="st">&#39;月&#39;</span>, <span class="st">&#39;holiday&#39;</span>: <span class="st">&#39;祝日&#39;</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;weekday&#39;</span>: <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;workingday&#39;</span>: <span class="st">&#39;平日&#39;</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;weathersit&#39;</span>: <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;temp&#39;</span>: <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;atemp&#39;</span>: <span class="st">&#39;体感気温&#39;</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;hum&#39;</span>: <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;windspeed&#39;</span>: <span class="st">&#39;風速&#39;</span>, <span class="st">&#39;casual&#39;</span>: <span class="st">&#39;一般客&#39;</span>,</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;registered&#39;</span>: <span class="st">&#39;会員&#39;</span>, <span class="st">&#39;cnt&#39;</span>: <span class="st">&#39;台数&#39;</span>}</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>ja_names)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;セットアップ完了&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>セットアップ完了</code></pre>
 </div>
@@ -3359,7 +3367,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="おさらい列を選ぶ" class="level3">
 <h3 class="anchored" data-anchor-id="おさらい列を選ぶ">おさらい：列を選ぶ</h3>
 <p>表から1つの列を取り出すには、<code>[ ]</code>に列名を入れます。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;cnt&#39;</span>]        <span class="co"># 台数の列だけ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;台数&#39;</span>]        <span class="co"># 台数の列だけ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>取り出したものは、日付の番号つきの列（Series）です。</p>
 </section>
 <section id="お手本列を配列にして1日目を見る" class="level3">
@@ -3370,9 +3378,9 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：配列<code>x</code>（気温）と<code>y</code>（台数）</li>
 </ul>
 <p><code>.values</code>を付けると、列がnumpyの配列（array）になります。配列は<code>x[0]</code>のように番号で1つずつ取り出せます。番号は0から数えます。</p>
-<div id="d0f1f54b" class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> df[<span class="st">&#39;temp&#39;</span>].values     <span class="co"># 気温（731日ぶん）</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">&#39;cnt&#39;</span>].values      <span class="co"># 台数（731日ぶん）</span></span>
+<div id="00296b04" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> df[<span class="st">&#39;気温&#39;</span>].values     <span class="co"># 気温（731日ぶん）</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> df[<span class="st">&#39;台数&#39;</span>].values      <span class="co"># 台数（731日ぶん）</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(x))             <span class="co"># いくつ並んでいるか</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x[<span class="dv">0</span>])               <span class="co"># 1日目の気温</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y[<span class="dv">0</span>])               <span class="co"># 1日目の台数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3402,9 +3410,9 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <h2 class="anchored" data-anchor-id="日目を直線で予測すると">2. 1日目を、直線で予測すると？</h2>
 <p>1節で、1日目の気温と台数を取り出せました。前回の段の代わりに、いちばん単純な式を考えます。直線です。</p>
 <p><span class="math display">\[
-\text{台数} \approx a \times \text{temp} + b
+\text{台数} \approx a \times \text{気温} + b
 \]</span></p>
-<p><code>temp</code>は、気温（℃）を41で割って0〜1に縮めた値です。a（傾き）は、<code>temp</code>が1増えたときに台数がいくら増えるか。<code>temp</code>の1は約41℃なので、1℃あたりの増え方はa ÷ 41です（a=6600なら1℃で約160台）。b（切片）は、<code>temp</code>が0のときの台数です。aとbの2つの数を決めれば、式が完成します。でも、aとbの組み合わせは無数にあります。どれが「良い直線」なのでしょうか。まずは適当なaとbで、1日目だけを予測してみます。</p>
+<p><code>気温</code>は、実際の気温（℃）を41で割って0〜1に縮めた値です。a（傾き）は、<code>気温</code>が1増えたときに台数がいくら増えるか。<code>気温</code>の1は約41℃なので、1℃あたりの増え方はa ÷ 41です（a=6600なら1℃で約160台）。b（切片）は、<code>気温</code>が0のときの台数です。aとbの2つの数を決めれば、式が完成します。でも、aとbの組み合わせは無数にあります。どれが「良い直線」なのでしょうか。まずは適当なaとbで、1日目だけを予測してみます。</p>
 <section id="お手本1日目の予測と外れ" class="level3">
 <h3 class="anchored" data-anchor-id="お手本1日目の予測と外れ">お手本：1日目の予測と外れ</h3>
 <ul>
@@ -3590,10 +3598,10 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </section>
 <section id="答え合わせlinearregressionと比べる" class="level3">
 <h3 class="anchored" data-anchor-id="答え合わせlinearregressionと比べる">答え合わせ：LinearRegressionと比べる</h3>
-<p>scikit-learnの<code>LinearRegression</code>は、この最小二乗法を中でやってくれる道具です。<code>fit</code>で学ばせ、<code>coef_</code>（傾き）と<code>intercept_</code>（切片）で結果を見ます。列は<code>df[[&#39;temp&#39;]]</code>のように二重のかっこ（表の形）で渡します。</p>
-<div id="42d72e4d" class="cell" data-execution_count="15">
+<p>scikit-learnの<code>LinearRegression</code>は、この最小二乗法を中でやってくれる道具です。<code>fit</code>で学ばせ、<code>coef_</code>（傾き）と<code>intercept_</code>（切片）で結果を見ます。列は<code>df[[&#39;気温&#39;]]</code>のように二重のかっこ（表の形）で渡します。</p>
+<div id="bd439fb3" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_temp <span class="op">=</span> LinearRegression()</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model_temp.fit(df[[<span class="st">&#39;temp&#39;</span>]], y)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model_temp.fit(df[[<span class="st">&#39;気温&#39;</span>]], y)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.coef_[<span class="dv">0</span>])           <span class="co"># 傾き a</span></span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.intercept_)         <span class="co"># 切片 b</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3606,12 +3614,12 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <section id="変えてみるr²を自分で計算する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるr²を自分で計算する">変えてみる：R²を自分で計算する</h3>
 <p>当たり具合の物差しとして、R²（決定係数）を使います。「毎日平均と答えたときの二乗和（基準）のうち、直線でどれだけ減らせたか」の割合で、1に近いほどよく当たります。</p>
-<div id="1458fd87" class="cell" data-execution_count="16">
+<div id="35b1af01" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pred_line <span class="op">=</span> a_best <span class="op">*</span> x <span class="op">+</span> b_best</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sse_line <span class="op">=</span> ((y <span class="op">-</span> pred_line) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()      <span class="co"># 直線の二乗和</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sst <span class="op">=</span> ((y <span class="op">-</span> y.mean()) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()            <span class="co"># 基準の二乗和</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">1</span> <span class="op">-</span> sse_line <span class="op">/</span> sst)                    <span class="co"># R²</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.score(df[[<span class="st">&#39;temp&#39;</span>]], y))     <span class="co"># 答え合わせ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.score(df[[<span class="st">&#39;気温&#39;</span>]], y))     <span class="co"># 答え合わせ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.3937487313729241
 0.3937487313729241</code></pre>
@@ -3619,12 +3627,12 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </div>
 <p>R²は0.394。基準の二乗和のうち、約4割を気温の直線で減らせました。</p>
 <p>実は、前回の気温帯の段のR²は0.439で、直線より少し上です。散布図で見たとおり、台数は暑すぎると頭打ちになるので、まっすぐな直線では右端を外してしまうのです。それでも直線には、境目で跳ばない、1本の式で書ける、という良さがあります。</p>
-<p>手がかりを増やすこともできます。<code>df[[&#39;temp&#39;, &#39;yr&#39;]]</code>のように列を並べるだけで、気温と年を両方使う式（重回帰、multiple regression）になります。</p>
-<div id="760e954c" class="cell" data-execution_count="17">
+<p>手がかりを増やすこともできます。<code>df[[&#39;気温&#39;, &#39;年&#39;]]</code>のように列を並べるだけで、気温と年を両方使う式（重回帰、multiple regression）になります。</p>
+<div id="4f0e1a19" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression()</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>model_ty.fit(df[[<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;yr&#39;</span>]], y)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>model_ty.fit(df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]], y)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_ty.coef_, model_ty.intercept_)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_ty.score(df[[<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;yr&#39;</span>]], y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_ty.score(df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]], y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[6369.64490081 2083.23997526] 305.8787327748878
 0.6825991406100751</code></pre>
@@ -3638,31 +3646,31 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <h2 class="anchored" data-anchor-id="自己採点は甘くないか">6. 自己採点は、甘くないか</h2>
 <p>ここまでのR²は、式を作るのに使った731日で測っていました。第1回の最後で見たとおり、作るのに使った日で採点すると、成績は甘く出ます。本当の実力は、まだ見ていない日で測る必要があります。</p>
 <p>そこで、データを2つに分けます。式を作るのに使う訓練データ（過去問）と、最後まで取っておくテストデータ（本番）です。まず、第1回の段で試してみます。</p>
-<div id="4b751c53" class="cell" data-execution_count="18">
+<div id="b639d427" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title 第1回の段を、作った日と、まだ見ていない日で採点する</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df.copy()</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;気温帯&#39;</span>] <span class="op">=</span> pd.cut(d[<span class="st">&#39;temp&#39;</span>] <span class="op">*</span> <span class="dv">41</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;気温帯&#39;</span>] <span class="op">=</span> pd.cut(d[<span class="st">&#39;気温&#39;</span>] <span class="op">*</span> <span class="dv">41</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
 <span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> keys <span class="kw">in</span> [[<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;yr&#39;</span>], [<span class="st">&#39;mnth&#39;</span>, <span class="st">&#39;yr&#39;</span>, <span class="st">&#39;weathersit&#39;</span>, <span class="st">&#39;weekday&#39;</span>]]:</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> tr.groupby(keys, observed<span class="op">=</span><span class="va">True</span>)[<span class="st">&#39;cnt&#39;</span>].mean().rename(<span class="st">&#39;答え&#39;</span>)</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> keys <span class="kw">in</span> [[<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;年&#39;</span>], [<span class="st">&#39;月&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;曜日&#39;</span>]]:</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> tr.groupby(keys, observed<span class="op">=</span><span class="va">True</span>)[<span class="st">&#39;台数&#39;</span>].mean().rename(<span class="st">&#39;答え&#39;</span>)</span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    pred_tr <span class="op">=</span> tr.join(means, on<span class="op">=</span>keys)[<span class="st">&#39;答え&#39;</span>]</span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    pred_te <span class="op">=</span> te.join(means, on<span class="op">=</span>keys)[<span class="st">&#39;答え&#39;</span>]</span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    no_ans <span class="op">=</span> pred_te.isna()          <span class="co"># 訓練に同じ組み合わせがない日</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    pred_te <span class="op">=</span> pred_te.fillna(tr[<span class="st">&#39;cnt&#39;</span>].mean())</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    err_tr <span class="op">=</span> np.<span class="bu">abs</span>(tr[<span class="st">&#39;cnt&#39;</span>] <span class="op">-</span> pred_tr)</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    err_te <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;cnt&#39;</span>] <span class="op">-</span> pred_te)</span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    pred_te <span class="op">=</span> pred_te.fillna(tr[<span class="st">&#39;台数&#39;</span>].mean())</span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    err_tr <span class="op">=</span> np.<span class="bu">abs</span>(tr[<span class="st">&#39;台数&#39;</span>] <span class="op">-</span> pred_tr)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    err_te <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;台数&#39;</span>] <span class="op">-</span> pred_te)</span>
 <span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(keys)</span>
 <span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  作った日        :&#39;</span>, <span class="bu">round</span>(err_tr.mean()), <span class="st">&#39;台&#39;</span>)</span>
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  まだ見ていない日:&#39;</span>, <span class="bu">round</span>(err_te.mean()), <span class="st">&#39;台&#39;</span>)</span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  答えのない日    :&#39;</span>, <span class="bu">int</span>(no_ans.<span class="bu">sum</span>()), <span class="st">&#39;日&#39;</span>)</span>
 <span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  答えのある日だけ:&#39;</span>, <span class="bu">round</span>(err_te[<span class="op">~</span>no_ans].mean()), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[&#39;気温帯&#39;, &#39;yr&#39;]
+<pre><code>[&#39;気温帯&#39;, &#39;年&#39;]
   作った日        : 766 台
   まだ見ていない日: 773 台
   答えのない日    : 0 日
   答えのある日だけ: 773 台
-[&#39;mnth&#39;, &#39;yr&#39;, &#39;weathersit&#39;, &#39;weekday&#39;]
+[&#39;月&#39;, &#39;年&#39;, &#39;天気&#39;, &#39;曜日&#39;]
   作った日        : 393 台
   まだ見ていない日: 1008 台
   答えのない日    : 45 日
@@ -3679,9 +3687,9 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <li>出力：<code>X_tr</code>・<code>X_te</code>・<code>y_tr</code>・<code>y_te</code></li>
 </ul>
 <p><code>train_test_split</code>は、行をばらばらに混ぜてから分ける関数です。<code>test_size=0.2</code>でテストを2割に、<code>random_state=42</code>で混ぜ方を固定します（何度やっても同じ分け方になる）。</p>
-<div id="c9749d32" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;season&#39;</span>, <span class="st">&#39;yr&#39;</span>, <span class="st">&#39;mnth&#39;</span>, <span class="st">&#39;holiday&#39;</span>, <span class="st">&#39;weekday&#39;</span>, <span class="st">&#39;workingday&#39;</span>,</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;weathersit&#39;</span>, <span class="st">&#39;temp&#39;</span>, <span class="st">&#39;atemp&#39;</span>, <span class="st">&#39;hum&#39;</span>, <span class="st">&#39;windspeed&#39;</span>]</span>
+<div id="f09e19bd" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[cols].values</span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                                          random_state<span class="op">=</span><span class="dv">42</span>)</span>
@@ -3716,8 +3724,8 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </ul>
 <p><code>X_tr[:, [7]]</code>の<code>:</code>はすべての行、<code>[7]</code>は8本目の列（番号は0から）を表します。<code>[7]</code>とかっこで囲むと、1列の表の形のまま取り出せます。<code>fit</code>は手がかりを表の形で受け取るので、この形にしておきます。</p>
 <p><code>PolynomialFeatures(3)</code>は気温から2乗・3乗の列を作る部品、<code>Pipeline</code>は部品を順につなぐ道具です。</p>
-<div id="f7e9f3d1" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>x1_tr <span class="op">=</span> X_tr[:, [<span class="dv">7</span>]]    <span class="co"># 8本目の列（temp）だけ</span></span>
+<div id="7e40add0" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>x1_tr <span class="op">=</span> X_tr[:, [<span class="dv">7</span>]]    <span class="co"># 8本目の列（気温）だけ</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>x1_te <span class="op">=</span> X_te[:, [<span class="dv">7</span>]]</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(<span class="dv">3</span>)),</span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                   (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
@@ -3814,8 +3822,8 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <section id="明日は何台-本当の実力で答える" class="level2">
 <h2 class="anchored" data-anchor-id="明日は何台-本当の実力で答える">9. 明日は何台？　本当の実力で答える</h2>
 <p>8節で測ったR²およそ0.78は、11本の列を使った式の実力です。ただ、明日の湿度や風速は、まだ分かりません。明日に答えるのは、5節の気温と年の2つを使った式にします。まず、この式の実力も交差検証で測ります。8節のお手本の<code>X</code>を、2本の列の<code>Xty</code>に変えただけです。</p>
-<div id="15c301b2" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> df[[<span class="st">&#39;temp&#39;</span>, <span class="st">&#39;yr&#39;</span>]].values</span>
+<div id="1a81c523" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]].values</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>scores_ty <span class="op">=</span> cross_val_score(LinearRegression(), Xty, y, cv<span class="op">=</span>kf,</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>                            scoring<span class="op">=</span><span class="st">&#39;r2&#39;</span>)</span>
 <span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(scores_ty.mean().<span class="bu">round</span>(<span class="dv">3</span>), scores_ty.std().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3939,11 +3947,11 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 時系列分割  : [-4.526  0.249 -0.425 -0.182  0.6  ]  平均 -0.857</code></pre>
 </div>
 </div>
-<div id="5daec4d6" class="cell" data-execution_count="32">
+<div id="2bf75539" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 時系列分割の各回で「どの期間で学び、どの期間を当てたか」を見る</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (tr_idx, te_idx) <span class="kw">in</span> <span class="bu">enumerate</span>(tss.split(X), start<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">回目: 訓練 </span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39; → テスト </span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;dteday&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">回目: 訓練 </span><span class="sc">{</span>df[<span class="st">&quot;日付&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;日付&quot;</span>]<span class="sc">.</span>iloc[tr_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39; → テスト </span><span class="sc">{</span>df[<span class="st">&quot;日付&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="dv">0</span>]]<span class="sc">}</span><span class="ss">〜</span><span class="sc">{</span>df[<span class="st">&quot;日付&quot;</span>]<span class="sc">.</span>iloc[te_idx[<span class="op">-</span><span class="dv">1</span>]]<span class="sc">}</span><span class="ss">&#39;</span></span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f&#39;  R²=</span><span class="sc">{</span>s_tss[i <span class="op">-</span> <span class="dv">1</span>]<span class="sc">:.3f}</span><span class="ss">&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1回目: 訓練 2011-01-01〜2011-05-06 → テスト 2011-05-07〜2011-09-04  R²=-4.526

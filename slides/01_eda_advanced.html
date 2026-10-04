@@ -1080,7 +1080,7 @@ margin-right: 0; }
 </section>
 <section id="レポートを作る" class="slide level2 fit-90">
 <h2>レポートを作る</h2>
-<div id="bb8efddd" class="cell" data-execution_count="2">
+<div id="aa5dbaba" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="im">from</span> data_profiling <span class="im">import</span> ProfileReport</span>
 <span id="cb1-2"><a href aria-label="2"></a>prof <span class="op">=</span> ProfileReport(df, title<span class="op">=</span><span class="st">&#39;bike_day の自動EDA&#39;</span>, minimal<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb1-3"><a href aria-label="3"></a>                     correlations<span class="op">=</span>{<span class="st">&#39;auto&#39;</span>: {<span class="st">&#39;calculate&#39;</span>: <span class="va">True</span>}},</span>
@@ -1099,14 +1099,14 @@ margin-right: 0; }
 </section>
 <section id="alertsは何を言っている" class="slide level2">
 <h2>Alertsは、何を言っている？</h2>
-<div id="7a9b694d" class="cell" data-execution_count="3">
+<div id="95d91c32" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
-<pre><code>HIGH_CORRELATION  atemp      
-HIGH_CORRELATION  temp       
-ZEROS             yr         
-ZEROS             holiday    
-ZEROS             weekday    
-ZEROS             workingday </code></pre>
+<pre><code>HIGH_CORRELATION  体感気温       
+HIGH_CORRELATION  気温         
+ZEROS             年          
+ZEROS             祝日         
+ZEROS             曜日         
+ZEROS             平日         </code></pre>
 </div>
 </div>
 <ul>
@@ -1115,34 +1115,34 @@ ZEROS             workingday </code></pre>
 </section>
 <section id="high-correlationは当たり" class="slide level2">
 <h2>High correlationは、当たり</h2>
-<div id="615342c2" class="cell" data-execution_count="4">
+<div id="6998a48d" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
-<pre><code>HIGH_CORRELATION  atemp      
-HIGH_CORRELATION  temp       
-ZEROS             yr         
-ZEROS             holiday    
-ZEROS             weekday    
-ZEROS             workingday </code></pre>
+<pre><code>HIGH_CORRELATION  体感気温       
+HIGH_CORRELATION  気温         
+ZEROS             年          
+ZEROS             祝日         
+ZEROS             曜日         
+ZEROS             平日         </code></pre>
 </div>
 </div>
 <ul>
-<li><code>temp</code>と<code>atemp</code>の相関（0.99）。TODO①で自分の目で見つけた2列を、道具も拾った</li>
+<li><code>気温</code>と<code>体感気温</code>の相関（0.99）。TODO①で自分の目で見つけた2列を、道具も拾った</li>
 </ul>
 </section>
 <section id="zerosは空振り" class="slide level2">
 <h2>Zerosは、空振り</h2>
-<div id="3e305c2f" class="cell" data-execution_count="5">
+<div id="d4521929" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
-<pre><code>HIGH_CORRELATION  atemp      
-HIGH_CORRELATION  temp       
-ZEROS             yr         
-ZEROS             holiday    
-ZEROS             weekday    
-ZEROS             workingday </code></pre>
+<pre><code>HIGH_CORRELATION  体感気温       
+HIGH_CORRELATION  気温         
+ZEROS             年          
+ZEROS             祝日         
+ZEROS             曜日         
+ZEROS             平日         </code></pre>
 </div>
 </div>
 <ul>
-<li><code>yr</code>・<code>holiday</code>・<code>workingday</code>は0/1、<code>weekday</code>は曜日番号。ゼロが多いのは当たり前</li>
+<li><code>年</code>・<code>祝日</code>・<code>平日</code>は0/1、<code>曜日</code>は曜日番号。ゼロが多いのは当たり前</li>
 </ul>
 </section>
 <section id="見分けるのは人間の仕事" class="slide level2">
@@ -1157,7 +1157,7 @@ ZEROS             workingday </code></pre>
 </section>
 <section id="落とした4列を戻すと" class="slide level2 fit-90">
 <h2>落とした4列を戻すと？</h2>
-<div id="5201f587" class="cell" data-execution_count="6">
+<div id="d3f87efe" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href aria-label="1"></a>prof_raw <span class="op">=</span> ProfileReport(raw, minimal<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb6-2"><a href aria-label="2"></a>                         correlations<span class="op">=</span>{<span class="st">&#39;auto&#39;</span>: {<span class="st">&#39;calculate&#39;</span>: <span class="va">True</span>}},</span>
 <span id="cb6-3"><a href aria-label="3"></a>                         progress_bar<span class="op">=</span><span class="va">False</span>)</span>
@@ -1165,12 +1165,12 @@ ZEROS             workingday </code></pre>
 <span id="cb6-5"><a href aria-label="5"></a>    <span class="cf">if</span> a.alert_type.name <span class="op">!=</span> <span class="st">&#39;ZEROS&#39;</span>:</span>
 <span id="cb6-6"><a href aria-label="6"></a>        <span class="bu">print</span>(<span class="ss">f&#39;</span><span class="sc">{</span>a<span class="sc">.</span>alert_type<span class="sc">.</span>name<span class="sc">:17s}</span><span class="ss"> </span><span class="sc">{</span>a<span class="sc">.</span>column_name<span class="sc">:11s}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>HIGH_CORRELATION  atemp      
-HIGH_CORRELATION  cnt        
-HIGH_CORRELATION  registered 
-HIGH_CORRELATION  temp       
-UNIQUE            instant    
-UNIQUE            dteday     </code></pre>
+<pre><code>HIGH_CORRELATION  会員         
+HIGH_CORRELATION  体感気温       
+HIGH_CORRELATION  台数         
+HIGH_CORRELATION  気温         
+UNIQUE            番号         
+UNIQUE            日付         </code></pre>
 </div>
 </div>
 <ul>
@@ -1179,48 +1179,48 @@ UNIQUE            dteday     </code></pre>
 </section>
 <section id="道具も同じ列を指摘した" class="slide level2">
 <h2>道具も、同じ列を指摘した</h2>
-<div id="1f41392f" class="cell" data-execution_count="7">
+<div id="f6ab8c99" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
-<pre><code>HIGH_CORRELATION  atemp      
-HIGH_CORRELATION  cnt        
-HIGH_CORRELATION  registered 
-HIGH_CORRELATION  temp       
-UNIQUE            instant    
-UNIQUE            dteday     </code></pre>
+<pre><code>HIGH_CORRELATION  会員         
+HIGH_CORRELATION  体感気温       
+HIGH_CORRELATION  台数         
+HIGH_CORRELATION  気温         
+UNIQUE            番号         
+UNIQUE            日付         </code></pre>
 </div>
 </div>
 <ul>
-<li>Unique：<code>instant</code>（通し番号）と<code>dteday</code>（日付）。手がかりにならない</li>
-<li>High correlation：<code>cnt</code>と<code>registered</code>。内訳で、答えが最初から分かる列</li>
+<li>Unique：<code>番号</code>（通し番号）と<code>日付</code>。手がかりにならない</li>
+<li>High correlation：<code>台数</code>と<code>会員</code>。内訳で、答えが最初から分かる列</li>
 </ul>
 </section>
 <section id="相関の表も入っている" class="slide level2">
 <h2>相関の表も入っている</h2>
-<div id="cd00db87" class="cell" data-execution_count="8">
+<div id="5ef1e416" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>auto <span class="op">=</span> desc.correlations[<span class="st">&#39;auto&#39;</span>]</span>
-<span id="cb9-2"><a href aria-label="2"></a>r <span class="op">=</span> auto[<span class="st">&#39;cnt&#39;</span>].drop(<span class="st">&#39;cnt&#39;</span>).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-2"><a href aria-label="2"></a>r <span class="op">=</span> auto[<span class="st">&#39;台数&#39;</span>].drop(<span class="st">&#39;台数&#39;</span>).sort_values(ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb9-3"><a href aria-label="3"></a><span class="bu">print</span>(r.<span class="bu">round</span>(<span class="dv">2</span>).head(<span class="dv">5</span>).to_string())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>atemp     0.62
-temp      0.62
-yr        0.57
-season    0.40
-mnth      0.27</code></pre>
+<pre><code>体感気温    0.62
+気温      0.62
+年       0.57
+季節      0.40
+月       0.27</code></pre>
 </div>
 </div>
 <ul>
-<li>上位はatemp・temp 0.62、yr 0.57</li>
+<li>上位は体感気温・気温0.62、年0.57</li>
 </ul>
 </section>
 <section id="節と少し違う" class="slide level2">
 <h2>5節と、少し違う？</h2>
-<div id="fca36613" class="cell" data-execution_count="9">
+<div id="9045d307" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
-<pre><code>atemp     0.62
-temp      0.62
-yr        0.57
-season    0.40
-mnth      0.27</code></pre>
+<pre><code>体感気温    0.62
+気温      0.62
+年       0.57
+季節      0.40
+月       0.27</code></pre>
 </div>
 </div>
 <ul>
@@ -1230,31 +1230,33 @@ mnth      0.27</code></pre>
 </section>
 <section id="試すなら時間別データ" class="slide level2 fit-90">
 <h2>試すなら：時間別データ</h2>
-<div id="7fda94a3" class="cell" data-execution_count="10">
+<div id="0a816b0d" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a>hour <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/bike_hour.csv&#39;</span>)</span>
-<span id="cb12-2"><a href aria-label="2"></a>prof_h <span class="op">=</span> ProfileReport(hour, minimal<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb12-3"><a href aria-label="3"></a>                       correlations<span class="op">=</span>{<span class="st">&#39;auto&#39;</span>: {<span class="st">&#39;calculate&#39;</span>: <span class="va">True</span>}},</span>
-<span id="cb12-4"><a href aria-label="4"></a>                       progress_bar<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb12-5"><a href aria-label="5"></a><span class="cf">for</span> a <span class="kw">in</span> prof_h.get_description().alerts:</span>
-<span id="cb12-6"><a href aria-label="6"></a>    <span class="cf">if</span> a.column_name <span class="kw">in</span> (<span class="st">&#39;hr&#39;</span>, <span class="st">&#39;windspeed&#39;</span>):</span>
-<span id="cb12-7"><a href aria-label="7"></a>        <span class="bu">print</span>(a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-2"><a href aria-label="2"></a>hour <span class="op">=</span> hour.rename(columns<span class="op">=</span>ja_names)        <span class="co"># 1節と同じ前処理</span></span>
+<span id="cb12-3"><a href aria-label="3"></a>hour <span class="op">=</span> hour.rename(columns<span class="op">=</span>{<span class="st">&#39;hr&#39;</span>: <span class="st">&#39;時刻&#39;</span>})   <span class="co"># 時間別だけにある列</span></span>
+<span id="cb12-4"><a href aria-label="4"></a>prof_h <span class="op">=</span> ProfileReport(hour, minimal<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb12-5"><a href aria-label="5"></a>                       correlations<span class="op">=</span>{<span class="st">&#39;auto&#39;</span>: {<span class="st">&#39;calculate&#39;</span>: <span class="va">True</span>}},</span>
+<span id="cb12-6"><a href aria-label="6"></a>                       progress_bar<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-7"><a href aria-label="7"></a><span class="cf">for</span> a <span class="kw">in</span> prof_h.get_description().alerts:</span>
+<span id="cb12-8"><a href aria-label="8"></a>    <span class="cf">if</span> a.column_name <span class="kw">in</span> (<span class="st">&#39;時刻&#39;</span>, <span class="st">&#39;風速&#39;</span>):</span>
+<span id="cb12-9"><a href aria-label="9"></a>        <span class="bu">print</span>(a)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[hr] has 726 (4.2%) zeros
-[windspeed] has 2180 (12.5%) zeros</code></pre>
+<pre><code>[時刻] has 726 (4.2%) zeros
+[風速] has 2180 (12.5%) zeros</code></pre>
 </div>
 </div>
 </section>
 <section id="風速のゼロは疑う価値がある" class="slide level2">
 <h2>風速のゼロは、疑う価値がある</h2>
-<div id="a74543ab" class="cell" data-execution_count="11">
+<div id="54af7419" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
-<pre><code>[hr] has 726 (4.2%) zeros
-[windspeed] has 2180 (12.5%) zeros</code></pre>
+<pre><code>[時刻] has 726 (4.2%) zeros
+[風速] has 2180 (12.5%) zeros</code></pre>
 </div>
 </div>
 <ul>
-<li><code>hr</code>のZerosは、0時があるだけの空振り</li>
-<li><code>windspeed</code>のゼロ12.5%は、本当に無風か？ 当たりの候補</li>
+<li><code>時刻</code>のZerosは、0時があるだけの空振り</li>
+<li><code>風速</code>のゼロ12.5%は、本当に無風か？ 当たりの候補</li>
 </ul>
 
 </section>
