@@ -1073,7 +1073,7 @@ margin-right: 0; }
 <h2>それは、未来を覗いている</h2>
 <ul>
 <li>運営者が本当にやりたいのは、昨日までのデータで明日を当てること</li>
-<li>未来の日で学んだ式は、その場面では使えない</li>
+<li>未来の日で学んで採点すると、明日を当てる力を甘く見積もる</li>
 </ul>
 </section>
 <section id="日付順に分ける" class="slide level2">
@@ -1085,7 +1085,7 @@ margin-right: 0; }
 </section>
 <section id="お手本日付順に分ける" class="slide level2 fit-90">
 <h2>お手本：日付順に分ける</h2>
-<div id="f6b42069" class="cell" data-execution_count="2">
+<div id="b380acdc" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>X_tr2, X_te2, y_tr2, y_te2 <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
 <span id="cb1-2"><a href aria-label="2"></a>                                              shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb1-3"><a href aria-label="3"></a>n <span class="op">=</span> <span class="bu">len</span>(y_tr2)</span>
@@ -1105,7 +1105,7 @@ margin-right: 0; }
 </section>
 <section id="日付順だとテストのr²は0.61" class="slide level2">
 <h2>日付順だと、テストのR²は0.61</h2>
-<div id="16e36f7b" class="cell" data-execution_count="3">
+<div id="456d6ec6" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練  : 2011-01-01 〜 2012-08-06
 テスト: 2012-08-07 〜 2012-12-31
@@ -1118,23 +1118,24 @@ margin-right: 0; }
 </section>
 <section id="変えてみる外れ幅でも比べる" class="slide level2">
 <h2>変えてみる：外れ幅でも比べる</h2>
-<div id="661be7ee" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>err1 <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> m1.predict(X_te)).mean()       <span class="co"># 混ぜて分けた</span></span>
-<span id="cb4-2"><a href aria-label="2"></a>err2 <span class="op">=</span> np.<span class="bu">abs</span>(y_te2 <span class="op">-</span> m2.predict(X_te2)).mean()     <span class="co"># 日付順に分けた</span></span>
-<span id="cb4-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;混ぜて分けた:&#39;</span>, <span class="bu">round</span>(err1), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb4-4"><a href aria-label="4"></a><span class="bu">print</span>(<span class="st">&#39;日付順      :&#39;</span>, <span class="bu">round</span>(err2), <span class="st">&#39;台&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="cc660626" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>m1 <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)           <span class="co"># 6節の式</span></span>
+<span id="cb4-2"><a href aria-label="2"></a>err1 <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> m1.predict(X_te)).mean()       <span class="co"># 混ぜて分けた</span></span>
+<span id="cb4-3"><a href aria-label="3"></a>err2 <span class="op">=</span> np.<span class="bu">abs</span>(y_te2 <span class="op">-</span> m2.predict(X_te2)).mean()     <span class="co"># 日付順に分けた</span></span>
+<span id="cb4-4"><a href aria-label="4"></a><span class="bu">print</span>(<span class="st">&#39;混ぜて分けた:&#39;</span>, <span class="bu">round</span>(err1), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb4-5"><a href aria-label="5"></a><span class="bu">print</span>(<span class="st">&#39;日付順      :&#39;</span>, <span class="bu">round</span>(err2), <span class="st">&#39;台&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>混ぜて分けた: 617 台
 日付順      : 864 台</code></pre>
 </div>
 </div>
 <ul>
-<li><code>m1</code>・<code>X_te</code>・<code>y_te</code>は、6節の混ぜて分けたほう</li>
+<li><code>X_tr</code>・<code>X_te</code>などは、6節の混ぜて分けたほう</li>
 </ul>
 </section>
 <section id="外れ幅は617台から864台へ" class="slide level2">
 <h2>外れ幅は、617台から864台へ</h2>
-<div id="053d3257" class="cell" data-execution_count="5">
+<div id="f802ff68" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>混ぜて分けた: 617 台
 日付順      : 864 台</code></pre>
@@ -1147,8 +1148,9 @@ margin-right: 0; }
 <section id="なぜ当たりにくい" class="slide level2">
 <h2>なぜ、当たりにくい？</h2>
 <ul>
-<li>テストは2012年8月7日からの秋と冬。2年目の秋冬は、訓練に1日も入っていない</li>
-<li>見たことのない季節と年の組み合わせを、当てさせられている</li>
+<li>テストは2012年8月7日から年末まで。2年目の9〜12月は、訓練に1日もない</li>
+<li>秋から冬の台数の動きは、1年目の秋冬からしか学べていない</li>
+<li>テストの日も6節とは違う。差には、採点する日の違いも入っている</li>
 </ul>
 </section>
 <section id="どちらの採点が正しい" class="slide level2">
