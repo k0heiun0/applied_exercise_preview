@@ -3419,7 +3419,11 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <p><span class="math display">\[
 \text{台数} \approx a \times \text{気温} + b
 \]</span></p>
-<p><code>気温</code>は、実際の気温（℃）を41で割って0〜1に縮めた値です。a（傾き）は、<code>気温</code>が1増えたときに台数がいくら増えるか。<code>気温</code>の1は約41℃なので、1℃あたりの増え方はa ÷ 41です（a=6600なら1℃で約160台）。b（切片）は、<code>気温</code>が0のときの台数です。aとbの2つの数を決めれば、式が完成します。このように直線（1次式）の式で当てることを、線形回帰（linear regression）と呼びます。でも、aとbの組み合わせは無数にあります。どれが「良い直線」なのでしょうか。まずは適当なaとbで、1日目だけを予測してみます。</p>
+<p>記号で書くと、<span class="math inline">\(i\)</span>日目の気温（0〜1に縮めた値）を<span class="math inline">\(x_i\)</span>、台数を<span class="math inline">\(y_i\)</span>、直線による予測を<span class="math inline">\(\hat{y}_i\)</span>（ワイ・ハット。ハットは「予測」の印）として、</p>
+<p><span class="math display">\[
+\hat{y}_i = a\,x_i + b \qquad (i = 1, 2, \dots, 731)
+\]</span></p>
+<p><code>気温</code>は、実際の気温（℃）を41で割って0〜1に縮めた値です。実際の気温を<span class="math inline">\(t_i\)</span>とすると<span class="math inline">\(x_i = t_i/41\)</span>なので、<span class="math inline">\(\hat{y}_i = \frac{a}{41}\,t_i + b\)</span>と書けます。a（傾き）は、<code>気温</code>が1増えたときに台数がいくら増えるか。1℃あたりの増え方は<span class="math inline">\(a/41\)</span>です（a=6600なら1℃で約160台）。b（切片）は、<code>気温</code>が0のときの台数です。aとbの2つの数を決めれば、式が完成します。このように直線（1次式）の式で当てることを、線形回帰（linear regression）と呼びます。でも、aとbの組み合わせは無数にあります。どれが「良い直線」なのでしょうか。まずは適当なaとbで、1日目だけを予測してみます。</p>
 <section id="お手本1日目の予測と外れ" class="level3">
 <h3 class="anchored" data-anchor-id="お手本1日目の予測と外れ">お手本：1日目の予測と外れ</h3>
 <ul>
@@ -3427,7 +3431,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>入力：<code>x[0]</code>・<code>y[0]</code>と、a・b</li>
 <li>出力：予測・外れ・外れの二乗</li>
 </ul>
-<p>予測が実際からどれだけずれたかを残差（residual）と呼びます。外れは多すぎても少なすぎても困るので、符号を消すために二乗します。二乗にはもう1つ良さがあります。二乗の和は、aやbを動かすとなめらかな谷の形になるので、あとで見るように谷底を式一発で求められるのです（4節・5節）。大きく外れた日ほど重く数えられる、という性質もあります。</p>
+<p>予測が実際からどれだけずれたか、<span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>を残差（residual）と呼びます。外れは多すぎても少なすぎても困るので、符号を消すために二乗します。二乗にはもう1つ良さがあります。二乗の和は、aやbを動かすとなめらかな谷の形になるので、あとで見るように谷底を式一発で求められるのです（4節・5節）。大きく外れた日ほど重く数えられる、という性質もあります。</p>
 <div id="107418ca" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">9000</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">0</span></span>
@@ -3460,6 +3464,10 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="日ぶんを足し上げる" class="level2">
 <h2 class="anchored" data-anchor-id="日ぶんを足し上げる">3. 731日ぶんを、足し上げる</h2>
 <p>直線の良さを測るには、1日だけでなく、全部の日の外れを見る必要があります。外れの二乗を全日で足した二乗和を、直線の物差しにします。小さいほど、よく当たる直線です。</p>
+<p><span class="math display">\[
+S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
+\]</span></p>
+<p><span class="math inline">\(\sum\)</span>は、<span class="math inline">\(i=1\)</span>から731までを足し上げる記号です。aとbを決めると二乗和が1つに決まるので、<span class="math inline">\(S(a, b)\)</span>と書きます。下の<code>for</code>文は、この<span class="math inline">\(\sum\)</span>の1項ずつを足していきます。</p>
 <section id="お手本for文で足し上げる" class="level3">
 <h3 class="anchored" data-anchor-id="お手本for文で足し上げる">お手本：for文で足し上げる</h3>
 <ul>
@@ -3574,7 +3582,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 <section id="谷底を式一発で求める" class="level2">
 <h2 class="anchored" data-anchor-id="谷底を式一発で求める">5. 谷底を、式一発で求める</h2>
-<p>総当たりは、刻みを細かくするほど時間がかかります。実は、二乗和の谷底は式一発で求められます。二乗和をaとbで微分して0とおくと、次の式が出てきます（<span class="math inline">\(\bar{x}\)</span>・<span class="math inline">\(\bar{y}\)</span> は平均）。</p>
+<p>総当たりは、刻みを細かくするほど時間がかかります。実は、二乗和の谷底は式一発で求められます。<span class="math inline">\(S(a, b)\)</span>をaとbで微分して0とおくと、次の式が出てきます（<span class="math inline">\(\bar{x} = \frac{1}{731}\sum_i x_i\)</span> は気温の平均、<span class="math inline">\(\bar{y}\)</span> は台数の平均）。</p>
 <p><span class="math display">\[
 a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b = \bar{y} - a\,\bar{x}
 \]</span></p>
@@ -3621,6 +3629,10 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <section id="変えてみるr²を自分で計算する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるr²を自分で計算する">変えてみる：R²を自分で計算する</h3>
 <p>当たり具合の物差しとして、R²（決定係数）を使います。「毎日平均と答えたときの二乗和（基準）のうち、直線でどれだけ減らせたか」の割合で、1に近いほどよく当たります。</p>
+<p><span class="math display">\[
+R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
+\]</span></p>
+<p>分子が直線の二乗和、分母が毎日平均<span class="math inline">\(\bar{y}\)</span>と答えたときの二乗和です。直線が平均より外れれば、分数が1を超えて、R²はマイナスになります。</p>
 <div id="35b1af01" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pred_line <span class="op">=</span> a_best <span class="op">*</span> x <span class="op">+</span> b_best</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sse_line <span class="op">=</span> ((y <span class="op">-</span> pred_line) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()      <span class="co"># 直線の二乗和</span></span>
@@ -3634,7 +3646,7 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </div>
 <p>R²は0.394。基準の二乗和のうち、約4割を気温の直線で減らせました。</p>
 <p>実は、前回の、気温帯だけで分けた段（外れ幅1211台）をR²で測ると0.439で、直線より少し上です。前回の散布図で見たとおり、台数は暑すぎると頭打ちになるので、まっすぐな直線では右端を外してしまうのです。それでも直線には、境目で跳ばない、1本の式で書ける、という良さがあります。</p>
-<p>手がかりを増やすこともできます。<code>df[[&#39;気温&#39;, &#39;年&#39;]]</code>のように列を並べるだけで、気温と年を両方使う式（重回帰、multiple regression）になります。</p>
+<p>手がかりを増やすこともできます。<code>df[[&#39;気温&#39;, &#39;年&#39;]]</code>のように列を並べるだけで、気温と年を両方使う式（重回帰、multiple regression）になります。年を<span class="math inline">\(x_{i2}\)</span>とすると、<span class="math inline">\(\hat{y}_i = a_1 x_{i1} + a_2 x_{i2} + b\)</span>です。</p>
 <div id="4f0e1a19" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>model_ty.fit(df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]], y)</span>
@@ -3732,14 +3744,14 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 <pre><code>テスト R²: 1.0</code></pre>
 </div>
 </div>
-<p>まだ見ていないテストでも、R²は1.0。1日の狂いもなく当たりました。一般客＋会員＝台数なので、答えそのものを手がかりに入れていたのです。このように、答え（やそれに近い情報）が手がかりに漏れ込むことを、リーク（leakage、情報の漏れ）と呼びます。訓練とテストに分けても、両方に同じ漏れがあるので見抜けません。</p>
+<p>まだ見ていないテストでも、R²は1.0。1日の狂いもなく当たりました。台数＝一般客＋会員なので、一般客と会員の係数を1、ほかを0にすれば、外れは0になります。答えそのものを手がかりに入れていたのです。このように、答え（やそれに近い情報）が手がかりに漏れ込むことを、リーク（leakage、情報の漏れ）と呼びます。訓練とテストに分けても、両方に同じ漏れがあるので見抜けません。</p>
 <p>明日の一般客と会員の数は、明日が来るまで分かりません。この式は、明日の台数を当てるのには使えないのです。テストの成績が良すぎるときは、まずリークを疑います。</p>
 <hr>
 </section>
 </section>
 <section id="式を曲げすぎると" class="level2">
 <h2 class="anchored" data-anchor-id="式を曲げすぎると">7. 式を曲げすぎると？</h2>
-<p>6節で、直線の式は訓練とテストでほぼ同じくらい当たると分かりました。直線が暑い日の頭打ちを外すなら、式を曲げればよいのでは？ 気温の2乗、3乗……を足していくと、式は曲線になります（多項式回帰）。何乗まで使うかを次数と呼びます。曲げるほど、訓練データにはよく当たるはずです。では、テストデータには？</p>
+<p>6節で、直線の式は訓練とテストでほぼ同じくらい当たると分かりました。直線が暑い日の頭打ちを外すなら、式を曲げればよいのでは？ 気温の2乗、3乗……を足していくと、式は曲線になります（多項式回帰）。<span class="math inline">\(\hat{y} = b + a_1 x + a_2 x^2 + \cdots + a_d x^d\)</span>の、何乗まで使うか（<span class="math inline">\(d\)</span>）を次数と呼びます。曲げるほど、訓練データにはよく当たるはずです。では、テストデータには？</p>
 <section id="お手本3次の曲線を当てはめる" class="level3">
 <h3 class="anchored" data-anchor-id="お手本3次の曲線を当てはめる">お手本：3次の曲線を当てはめる</h3>
 <ul>
@@ -3836,7 +3848,7 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 </div>
 </div>
 <p>テストのR²は0.713で、11本の列の0.828より低くなりました。手がかりを減らしたぶん、外れます。その代わり、明日に使える式になりました。</p>
-<p>次に、作った日と、まだ見ていない日の外れ幅を測ります。明日が27℃・2年目なら、何台でしょうか。</p>
+<p>次に、作った日と、まだ見ていない日の外れ幅の平均<span class="math inline">\(\frac{1}{n}\sum_i |y_i - \hat{y}_i|\)</span>を測ります。明日が27℃・2年目なら、何台でしょうか。</p>
 <div id="bf91821e" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>err_tr <span class="op">=</span> np.<span class="bu">abs</span>(y_tr <span class="op">-</span> model_ty.predict(Xty_tr)).mean()</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>err_te <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> model_ty.predict(Xty_te)).mean()</span>
@@ -3850,7 +3862,7 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 明日（27℃・2年目）: 6565 台</code></pre>
 </div>
 </div>
-<p><code>predict</code>に手がかりの表を渡すと、予測が返ります。<code>[[27 / 41, 1]]</code>は1行の表で、気温は41で割った値、年は2年目なので1です。予測は並びで返るので、<code>[0]</code>で1つ目を取り出します。</p>
+<p><code>predict</code>に手がかりの表を渡すと、予測が返ります。<code>[[27 / 41, 1]]</code>は1行の表で、気温は41で割った値、年は2年目なので1です。式に代入しているだけで、<span class="math inline">\(\hat{y} = a_1 \cdot \frac{27}{41} + a_2 \cdot 1 + b\)</span>を計算しています。予測は並びで返るので、<code>[0]</code>で1つ目を取り出します。</p>
 <p>答えは「およそ6600台。まだ見ていない日での外れ幅は、平均840台くらい」です。</p>
 <p>第1回の答え（およそ7200台）より低いのは、半分ほどが天気の違いです。第1回は25〜30℃・2年目の晴れの日（54日）だけの平均でしたが、今日の式は天気を入れていないので、晴れも雨も混ぜた見積もりになっています。25〜30℃・2年目の日を天気を混ぜて84日で平均すると6843台で、晴れの54日の7198台より355台少なくなります。差の633台の残り278台は、直線が頭打ちの曲がり方をなぞれないぶんです。</p>
 <p>外れ幅も、同じ物差しで比べる必要があります。第1回の「500台前後」は、晴れの54日の中で、作った日で測った外れ幅でした。同じテスト147日で比べると、気温帯×年の段（6節）は773台、今日の直線は837台です。直線は境目で跳ばない代わりに、暑い日の頭打ちを外すぶん、少し外れます。</p>
