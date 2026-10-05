@@ -3036,6 +3036,7 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 </div>
 </div>
 <p>最初の3日ぶんは、2節とTODO①で1日ずつ計算した値と同じです。二乗和も<code>for</code>文の答えと一致しました。<code>for</code>文で書いたことを、numpyは1行でやってくれていたのです。</p>
+<p>実務では、<code>for</code>文で1日ずつ足し上げることはしません。numpyの1行のほうが速く、書き間違いも少ないからです。ここで<code>for</code>文で書いたのは、<span class="math inline">\(\sum\)</span>の1項ずつを目で見るためでした。</p>
 <hr>
 </section>
 </section>
@@ -3116,6 +3117,8 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 </section>
 <section id="谷底を式一発で求める" class="level2">
 <h2 class="anchored" data-anchor-id="谷底を式一発で求める">5. 谷底を、式一発で求める</h2>
+<p>谷底への道は2つあります。正規方程式という式で解く道と、<code>fit()</code>に任せる道です。着くのは同じ谷底です。この節では一度だけ式の道を通り、<code>fit()</code>と同じ所に着くことを確かめます。</p>
+<p>同じ二乗和の計算を、ここまでに<code>for</code>文（1日ずつ）とnumpy（まとめて）で書きました。この節の正規方程式と<code>fit()</code>の1行を合わせると、書き方は4段の階段になります。上の段ほど書く量が少なく、中身はライブラリに任せます。どの段でも、答えは同じです。</p>
 <p>総当たりは、刻みを細かくするほど時間がかかります。実は、二乗和の谷底は式一発で求められます。谷底では、aやbを少し動かしても二乗和は変わりません。つまり、<span class="math inline">\(S(a, b)\)</span>をaで微分しても、bで微分しても0になります（<span class="math inline">\(\partial\)</span>は、ほかの文字を止めて微分する、という印）。</p>
 <p><span class="math display">\[
 \frac{\partial S}{\partial a} = \sum_{i=1}^{731} -2\,x_i\,\bigl(y_i - a\,x_i - b\bigr) = 0, \qquad
@@ -3152,7 +3155,7 @@ n\,b + \Bigl(\sum_i x_i\Bigr)\,a &amp;= \sum_i y_i \\
 <li>出力：<span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>（<code>beta</code>）と、切片<code>b_best</code>・傾き<code>a_best</code></li>
 </ul>
 <p>転置<span class="math inline">\(\mathbf{X}^\top\)</span>は<code>X1.T</code>、行列の積は<code>@</code>、逆行列は<code>np.linalg.inv</code>です。<code>np.ones(731)</code>は1が731個並んだ配列で、<code>np.column_stack</code>は配列を列として横に並べ、表（行列）にします。</p>
-<div id="5b148601" class="cell" data-execution_count="16">
+<div id="be7653cd" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(x)), x])  <span class="co"># 1の列と、気温の列</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> X1.T <span class="op">@</span> X1                 <span class="co"># XᵀX</span></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> X1.T <span class="op">@</span> y                  <span class="co"># Xᵀy</span></span>
@@ -3168,7 +3171,7 @@ n\,b + \Bigl(\sum_i x_i\Bigr)\,a &amp;= \sum_i y_i \\
 <section id="fit-の中身も同じ谷底" class="level3">
 <h3 class="anchored" data-anchor-id="fit-の中身も同じ谷底">fit() の中身も、同じ谷底</h3>
 <p>scikit-learnの<code>LinearRegression</code>も、この最小二乗法を中でやってくれる道具です。<code>LinearRegression()</code>で式の入れ物を作り、<code>fit</code>で学ばせ、<code>coef_</code>（傾き）と<code>intercept_</code>（切片）で結果を見ます。列は<code>df[[&#39;気温&#39;]]</code>のように二重のかっこで渡します。外のかっこが列を選ぶ<code>[ ]</code>、中のかっこが列名の並び（リスト）です。1列でも表の形のまま取り出せます。<code>fit</code>は手がかりを表の形で受け取るので、この形にします。</p>
-<div id="fb61d649" class="cell" data-execution_count="17">
+<div id="92ed9d1e" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>model_temp <span class="op">=</span> LinearRegression()</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>model_temp.fit(df[[<span class="st">&#39;気温&#39;</span>]], y)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.coef_[<span class="dv">0</span>])           <span class="co"># 傾き a</span></span>
@@ -3187,7 +3190,7 @@ n\,b + \Bigl(\sum_i x_i\Bigr)\,a &amp;= \sum_i y_i \\
 R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 \]</span></p>
 <p>分子が直線の二乗和、分母が毎日平均<span class="math inline">\(\bar{y}\)</span>と答えたときの二乗和です。直線が平均より外れれば、分数が1を超えて、R²はマイナスになります。コードの<code>y.mean()</code>は、配列の平均を出すメソッドです。<code>score</code>は、渡したデータでのR²を返します。</p>
-<div id="0d067360" class="cell" data-execution_count="18">
+<div id="7c7ce26c" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pred_line <span class="op">=</span> a_best <span class="op">*</span> x <span class="op">+</span> b_best</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>sse_line <span class="op">=</span> ((y <span class="op">-</span> pred_line) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()      <span class="co"># 直線の二乗和</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>sst <span class="op">=</span> ((y <span class="op">-</span> y.mean()) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()            <span class="co"># 基準の二乗和</span></span>
@@ -3201,7 +3204,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <p>R²は0.394。基準の二乗和のうち、約4割を気温の直線で減らせました。</p>
 <p>実は、気温帯だけで分けた平均の段（外れ幅1211台）をR²で測ると0.439で、直線より少し上です。導入の散布図で見たとおり、台数は暑すぎると頭打ちになるので、まっすぐな直線では右端を外してしまうのです。それでも直線には、境目で跳ばず、1本の式で書けるという良さがあります。</p>
 <p>手がかりを増やすこともできます。<code>df[[&#39;気温&#39;, &#39;年&#39;]]</code>のように列を並べるだけで、気温と年を両方使う式（重回帰、multiple regression）になります。年を<span class="math inline">\(x_{i2}\)</span>とすると、<span class="math inline">\(\hat{y}_i = a_1 x_{i1} + a_2 x_{i2} + b\)</span>です。</p>
-<div id="e8403d37" class="cell" data-execution_count="19">
+<div id="2886aaec" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression()</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>model_ty.fit(df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]], y)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_ty.coef_, model_ty.intercept_)</span>
@@ -3216,7 +3219,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="変えてみる11本の列の表を作る" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる11本の列の表を作る">変えてみる：11本の列の表を作る</h3>
 <p>列を11本に増やしても、変わるのは<span class="math inline">\(\mathbf{X}\)</span>の列の数だけです（731×12）。正規方程式のコードは、そのまま使えます。1の列に11本の列を並べた表を作ります。<code>df[cols].values</code>で、11列をまとめて配列にします。</p>
-<div id="04080110" class="cell" data-execution_count="20">
+<div id="b563af8a" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>X11 <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(y)), df[cols].values])</span>
@@ -3229,7 +3232,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="todo③11本の列で正規方程式を解く" class="level3">
 <h3 class="anchored" data-anchor-id="todo③11本の列で正規方程式を解く">TODO③：11本の列で正規方程式を解く</h3>
 <p><code>X11</code>で正規方程式を作り、お手本と同じ<code>np.linalg.inv</code>で<span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>を求めて表示してください。出てくる係数は12個（切片1個と、11本の列の係数）です。</p>
-<div id="a8e7e9d6" class="cell" data-execution_count="21">
+<div id="d638b337" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: X11 で正規方程式を作り、β を求めて表示する</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の X1 を X11 に変え、最後に print する</span></span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3238,7 +3241,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="変えてみる同じことを1行で" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる同じことを1行で">変えてみる：同じことを1行で</h3>
 <p><code>LinearRegression</code>なら、1の列を自分で足してくれるので、<code>df[cols]</code>を渡すだけです。</p>
-<div id="a6dd3b32" class="cell" data-execution_count="22">
+<div id="0e852adf" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model11 <span class="op">=</span> LinearRegression().fit(df[cols], y)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(model11.intercept_, <span class="dv">2</span>))</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model11.coef_.<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3249,6 +3252,12 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </div>
 </div>
 <p>正規方程式を自分で書いた12個の係数と、1行の答えが一致します。中で何をしているかを知ったうえで、1行で済ませられる。これがライブラリの便利さです。</p>
+</section>
+<section id="式の道は何のため" class="level3">
+<h3 class="anchored" data-anchor-id="式の道は何のため">式の道は、何のため？</h3>
+<p>普段のデータ解析なら、<code>fit()</code>の1行で十分です。6節から先は、<code>fit()</code>で進みます。</p>
+<p>では、式の道を通ったのは何のためでしょうか。この節でやったのは、式の記号をコードに1対1で写すことでした。これができると、式とコードを行き来できます。結果がおかしいとき、<code>fit()</code>の中で何が起きたかを疑えます。教科書や論文の式を読んで、コードで確かめることもできます。</p>
+<p><code>fit()</code>の中身も、誰かが式からこうして書いたものです。新しい手法やライブラリを作る人は、この対応づけを毎回やっています。使うだけなら<code>fit()</code>、作るなら式からコードへ、です。</p>
 <hr>
 </section>
 </section>
@@ -3256,7 +3265,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <h2 class="anchored" data-anchor-id="自己採点は甘くないか">6. 自己採点は、甘くないか</h2>
 <p>ここまでのR²は、式を作るのに使った731日で測っていました。導入で見たとおり、作るのに使った日で採点すると、成績は甘く出ます。本当の実力は、まだ見ていない日で測る必要があります。</p>
 <p>そこで、データを2つに分けます。式を作るのに使う訓練データ（過去問）と、最後まで取っておくテストデータ（本番）です。まず、導入で見た似た日の平均の段で試してみます。</p>
-<div id="d98de693" class="cell" data-execution_count="23">
+<div id="8f40542a" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title 似た日の平均の段を、作った日と、まだ見ていない日で採点する</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df.copy()</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;気温帯&#39;</span>] <span class="op">=</span> pd.cut(d[<span class="st">&#39;気温&#39;</span>] <span class="op">*</span> <span class="dv">41</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
@@ -3298,7 +3307,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <li>出力：<code>X_tr</code>・<code>X_te</code>・<code>y_tr</code>・<code>y_te</code></li>
 </ul>
 <p><code>train_test_split</code>は、行をばらばらに混ぜてから分ける関数です。<code>test_size=0.2</code>でテストを2割に、<code>random_state=42</code>で混ぜ方を固定します（何度やっても同じ分け方になる）。</p>
-<div id="0e8e637b" class="cell" data-execution_count="24">
+<div id="a37115e6" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[cols].values</span>
@@ -3314,7 +3323,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="todo④訓練で学び訓練とテストのr²を比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo④訓練で学び訓練とテストのr²を比べる">TODO④：訓練で学び、訓練とテストのR²を比べる</h3>
 <p><code>LinearRegression</code>を訓練データだけで<code>fit</code>し、<code>score</code>で訓練データのR²とテストデータのR²を表示してください。</p>
-<div id="f043ac84" class="cell" data-execution_count="25">
+<div id="8d919a26" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 訓練データだけで fit し、訓練の R² とテストの R² を表示する</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: model = LinearRegression().fit(X_tr, y_tr) のあと、</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         model.score(X_tr, y_tr) と model.score(X_te, y_te)</span></span>
@@ -3330,7 +3339,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="変えてみるリークを再現する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるリークを再現する">変えてみる：リークを再現する</h3>
 <p>導入で見たとおり、<code>一般客</code>と<code>会員</code>は、足すとちょうど台数になる内訳です。わざとこの2列を手がかりに足すと、どうなるでしょうか。上のお手本の<code>cols</code>に<code>+</code>で2列をつなぎ、分け方も同じにします。</p>
-<div id="330bd422" class="cell" data-execution_count="26">
+<div id="03ea799f" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>cols_leak <span class="op">=</span> cols <span class="op">+</span> [<span class="st">&#39;一般客&#39;</span>, <span class="st">&#39;会員&#39;</span>]</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>X_leak <span class="op">=</span> df[cols_leak].values</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>XL_tr, XL_te, yL_tr, yL_te <span class="op">=</span> train_test_split(</span>
@@ -3358,7 +3367,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </ul>
 <p><code>X_tr[:, [7]]</code>の<code>:</code>はすべての行、<code>[7]</code>は8本目の列（番号は0から）を表します。<code>[7]</code>とかっこで囲むと、1列の表の形のまま取り出せます。<code>fit</code>は手がかりを表の形で受け取るので、この形にしておきます。</p>
 <p><code>PolynomialFeatures(3)</code>は気温から2乗・3乗の列を作る部品、<code>Pipeline</code>は部品を順につなぐ道具です。</p>
-<div id="e0415c08" class="cell" data-execution_count="27">
+<div id="4d7dc7d9" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>x1_tr <span class="op">=</span> X_tr[:, [<span class="dv">7</span>]]    <span class="co"># 8本目の列（気温）だけ</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>x1_te <span class="op">=</span> X_te[:, [<span class="dv">7</span>]]</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(<span class="dv">3</span>)),</span>
@@ -3369,7 +3378,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <pre><code>0.4720415505498843 0.4137499258721813</code></pre>
 </div>
 </div>
-<div id="9955b26e" class="cell" data-cellview="form" data-quarto-private-1="{&quot;key&quot;:&quot;jupyter&quot;,&quot;value&quot;:{&quot;source_hidden&quot;:true}}" data-tags="[&quot;remove-input&quot;]" data-execution_count="28">
+<div id="6d22a0ee" class="cell" data-cellview="form" data-quarto-private-1="{&quot;key&quot;:&quot;jupyter&quot;,&quot;value&quot;:{&quot;source_hidden&quot;:true}}" data-tags="[&quot;remove-input&quot;]" data-execution_count="28">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3382,7 +3391,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="todo⑤次数を変えて訓練とテストのr²を並べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo⑤次数を変えて訓練とテストのr²を並べる">TODO⑤：次数を変えて、訓練とテストのR²を並べる</h3>
 <p><code>for</code>文で次数を1・3・8・15と変えながら、お手本のセルと同じことをして、次数ごとの訓練のR²とテストのR²を表示してください。</p>
-<div id="c2e45b2f" class="cell" data-execution_count="29">
+<div id="42ac656d" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: for deg in [1, 3, 8, 15]: として、次数ごとの</span></span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       訓練 R² とテスト R² を表示する</span></span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の PolynomialFeatures(3) の 3 を deg に変え、</span></span>
@@ -3405,7 +3414,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <li>出力：次数ごとの、訓練のR²とテストのR²</li>
 </ul>
 <p><code>[:20]</code>は、3節で見たスライスです。番号0〜19の20日を取り出します。テストは同じ147日のままです。</p>
-<div id="3c54b099" class="cell" data-execution_count="30">
+<div id="92960d63" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>x20 <span class="op">=</span> x1_tr[:<span class="dv">20</span>]     <span class="co"># 訓練の最初の20日だけ</span></span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>y20 <span class="op">=</span> y_tr[:<span class="dv">20</span>]</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> deg <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">8</span>]:</span>
@@ -3420,7 +3429,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 8 次: 0.499 -28.353</code></pre>
 </div>
 </div>
-<div id="7dc9b948" class="cell" data-cellview="form" data-quarto-private-1="{&quot;key&quot;:&quot;jupyter&quot;,&quot;value&quot;:{&quot;source_hidden&quot;:true}}" data-tags="[&quot;remove-input&quot;]" data-execution_count="31">
+<div id="f09a578b" class="cell" data-cellview="form" data-quarto-private-1="{&quot;key&quot;:&quot;jupyter&quot;,&quot;value&quot;:{&quot;source_hidden&quot;:true}}" data-tags="[&quot;remove-input&quot;]" data-execution_count="31">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3437,7 +3446,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="明日は何台" class="level2">
 <h2 class="anchored" data-anchor-id="明日は何台">8. 明日は何台？</h2>
 <p>6節で、11本の列の式は、まだ見ていない日にも同じくらい当たると分かりました。ただ、明日の湿度や風速は、まだ分かりません。明日に答えるのは、5節の気温と年の2つを使った式にします。まず、この式も6節と同じ分け方で測ります。6節のお手本の<code>X</code>を、2本の列の<code>Xty</code>に変えただけです。</p>
-<div id="c6a73b42" class="cell" data-execution_count="32">
+<div id="e1398f78" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]].values</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>Xty_tr, Xty_te, yty_tr, yty_te <span class="op">=</span> train_test_split(</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    Xty, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
@@ -3451,7 +3460,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </div>
 <p>テストのR²は0.713で、11本の列の0.828より低くなりました。手がかりを減らしたぶん、外れます。その代わり、明日に使える式になりました。</p>
 <p>次に、作った日と、まだ見ていない日の外れ幅の平均<span class="math inline">\(\frac{1}{n}\sum_i |y_i - \hat{y}_i|\)</span>を測ります。明日が27℃・2年目なら、何台でしょうか。</p>
-<div id="828ef9e6" class="cell" data-execution_count="33">
+<div id="395124a5" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>err_tr <span class="op">=</span> np.<span class="bu">abs</span>(yty_tr <span class="op">-</span> model_ty.predict(Xty_tr)).mean()</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>err_te <span class="op">=</span> np.<span class="bu">abs</span>(yty_te <span class="op">-</span> model_ty.predict(Xty_te)).mean()</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;作った日の外れ幅  :&#39;</span>, <span class="bu">round</span>(err_tr), <span class="st">&#39;台&#39;</span>)</span>
