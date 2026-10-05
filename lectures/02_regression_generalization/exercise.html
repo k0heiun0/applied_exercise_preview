@@ -2916,7 +2916,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 </section>
 <section id="列を数の並びとして取り出す" class="level2">
-<h2 class="anchored" data-anchor-id="列を数の並びとして取り出す">1. 列を、数の並びとして取り出す</h2>
+<h2 class="anchored" data-anchor-id="列を数の並びとして取り出す">1. 列を数の並びとして取り出す</h2>
 <p>表が読めました。今日は、似た日の平均の段を1本の式に置き換えます。式を立てるには、気温と台数を「1日ずつの数の並び」として扱えると便利です。</p>
 <section id="表から列を1本選ぶ" class="level3">
 <h3 class="anchored" data-anchor-id="表から列を1本選ぶ">表から、列を1本選ぶ</h3>
@@ -2949,7 +2949,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 </section>
 <section id="日目を直線で予測すると" class="level2">
-<h2 class="anchored" data-anchor-id="日目を直線で予測すると">2. 1日目を、直線で予測すると？</h2>
+<h2 class="anchored" data-anchor-id="日目を直線で予測すると">2. 1日目を直線で予測すると？</h2>
 <p>1節で、1日目の気温と台数を取り出せました。似た日の平均の段の代わりに、いちばん単純な式を考えます。直線です。</p>
 <p><span class="math display">\[
 \text{台数} \approx a \times \text{気温} + b
@@ -2997,7 +2997,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 </section>
 <section id="日ぶんを足し上げる" class="level2">
-<h2 class="anchored" data-anchor-id="日ぶんを足し上げる">3. 731日ぶんを、足し上げる</h2>
+<h2 class="anchored" data-anchor-id="日ぶんを足し上げる">3. 731日ぶんを足し上げる</h2>
 <p>直線の良さを測るには、1日だけでなく、全部の日の外れを見る必要があります。外れの二乗を全日で足した二乗和を、直線の物差しにします。小さいほど、よく当たる直線です。</p>
 <p><span class="math display">\[
 S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
@@ -3117,7 +3117,7 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 </section>
 </section>
 <section id="谷底を式一発で求める" class="level2">
-<h2 class="anchored" data-anchor-id="谷底を式一発で求める">5. 谷底を、式一発で求める</h2>
+<h2 class="anchored" data-anchor-id="谷底を式一発で求める">5. 谷底を式一発で求める</h2>
 <p>谷底への道は2つあります。正規方程式という式で解く道と、<code>fit()</code>に任せる道です。着くのは同じ谷底です。この節では一度だけ式の道を通り、<code>fit()</code>と同じ所に着くことを確かめます。</p>
 <p>同じ二乗和の計算を、ここまでに<code>for</code>文（1日ずつ）とnumpy（まとめて）で書きました。この節の正規方程式と<code>fit()</code>の1行を合わせると、書き方は4段の階段になります。上の段ほど書く量が少なく、中身はライブラリに任せます。どの段でも、答えは同じです。</p>
 <p>総当たりは、刻みを細かくするほど時間がかかります。実は、二乗和の谷底は式一発で求められます。谷底では、aやbを少し動かしても二乗和は変わりません。つまり、<span class="math inline">\(S(a, b)\)</span>をaで微分しても、bで微分しても0になります（<span class="math inline">\(\partial\)</span>は、ほかの文字を止めて微分する、という印）。</p>
@@ -3263,7 +3263,7 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </section>
 </section>
 <section id="自己採点は甘くないか" class="level2">
-<h2 class="anchored" data-anchor-id="自己採点は甘くないか">6. 自己採点は、甘くないか</h2>
+<h2 class="anchored" data-anchor-id="自己採点は甘くないか">6. 自己採点は甘くないか</h2>
 <p>ここまでのR²は、式を作るのに使った731日で測っていました。導入で見たとおり、作るのに使った日で採点すると、成績は甘く出ます。本当の実力は、まだ見ていない日で測る必要があります。</p>
 <p>そこで、データを2つに分けます。式を作るのに使う訓練データ（過去問）と、最後まで取っておくテストデータ（本番）です。まず、導入で見た似た日の平均の段で試してみます。</p>
 <div id="8f40542a" class="cell" data-execution_count="23">

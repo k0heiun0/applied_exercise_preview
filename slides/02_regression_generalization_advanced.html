@@ -1109,21 +1109,21 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">第2回 発展<br>日付順に分ける・solveで解く</h1>
-  <p class="subtitle">未来を覗かない分け方と、逆行列を作らない解き方</p>
+  <p class="subtitle">未来を覗かない分け方と逆行列を作らない解き方</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section id="節の分け方は混ぜて分けた" class="slide level2">
-<h2>6節の分け方は、混ぜて分けた</h2>
+<section id="節は混ぜてから分けた" class="slide level2">
+<h2>6節は混ぜてから分けた</h2>
 <ul>
 <li><code>train_test_split</code>は、行をばらばらに混ぜてから、訓練とテストに分ける</li>
 <li>すると、2012年の日で学んで、2011年の日を当てることも混ざる</li>
 </ul>
 </section>
 <section id="それは未来を覗いている" class="slide level2">
-<h2>それは、未来を覗いている</h2>
+<h2>それは未来を覗いている</h2>
 <ul>
 <li>運営者が本当にやりたいのは、昨日までのデータで明日を当てること</li>
 <li>未来の日で学んで採点すると、明日を当てる力を甘く見積もる</li>
@@ -1138,7 +1138,7 @@ margin-right: 0; }
 </section>
 <section id="お手本日付順に分ける" class="slide level2 fit-90">
 <h2>お手本：日付順に分ける</h2>
-<div id="911dfb34" class="cell" data-execution_count="2">
+<div id="c4ee3649" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>X_tr2, X_te2, y_tr2, y_te2 <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
 <span id="cb1-2"><a href aria-label="2"></a>                                              shuffle<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb1-3"><a href aria-label="3"></a>n <span class="op">=</span> <span class="bu">len</span>(y_tr2)</span>
@@ -1156,9 +1156,9 @@ margin-right: 0; }
 <li>6節のお手本の<code>random_state=42</code>を、<code>shuffle=False</code>に変えただけ</li>
 </ul>
 </section>
-<section id="日付順だとテストのr²は0.61" class="slide level2">
-<h2>日付順だと、テストのR²は0.61</h2>
-<div id="a7e2cc22" class="cell" data-execution_count="3">
+<section id="日付順ならテストのr²は0.61" class="slide level2">
+<h2>日付順ならテストのR²は0.61</h2>
+<div id="1e47b3b1" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練  : 2011-01-01 〜 2012-08-06
 テスト: 2012-08-07 〜 2012-12-31
@@ -1171,7 +1171,7 @@ margin-right: 0; }
 </section>
 <section id="変えてみる外れ幅でも比べる" class="slide level2">
 <h2>変えてみる：外れ幅でも比べる</h2>
-<div id="e08f52e1" class="cell" data-execution_count="4">
+<div id="26fe5a95" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>m1 <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)           <span class="co"># 6節の式</span></span>
 <span id="cb4-2"><a href aria-label="2"></a>err1 <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> m1.predict(X_te)).mean()       <span class="co"># 混ぜて分けた</span></span>
 <span id="cb4-3"><a href aria-label="3"></a>err2 <span class="op">=</span> np.<span class="bu">abs</span>(y_te2 <span class="op">-</span> m2.predict(X_te2)).mean()     <span class="co"># 日付順に分けた</span></span>
@@ -1187,8 +1187,8 @@ margin-right: 0; }
 </ul>
 </section>
 <section id="外れ幅は617台から864台へ" class="slide level2">
-<h2>外れ幅は、617台から864台へ</h2>
-<div id="b272441a" class="cell" data-execution_count="5">
+<h2>外れ幅は617台から864台へ</h2>
+<div id="4982a9df" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-stdout">
 <pre><code>混ぜて分けた: 617 台
 日付順      : 864 台</code></pre>
@@ -1199,7 +1199,7 @@ margin-right: 0; }
 </ul>
 </section>
 <section id="なぜ当たりにくい" class="slide level2">
-<h2>なぜ、当たりにくい？</h2>
+<h2>なぜ当たりにくい？</h2>
 <ul>
 <li>テストは2012年8月7日から年末まで。2年目の9〜12月は、訓練に1日もない</li>
 <li>秋から冬の台数の動きは、1年目の秋冬からしか学べていない</li>
@@ -1227,7 +1227,7 @@ margin-right: 0; }
 
 </section>
 <section id="本編ではinvで解いた" class="slide level2">
-<h2>本編では、invで解いた</h2>
+<h2>本編ではinvで解いた</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>X1 <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(x)), x])  <span class="co"># 1の列と、気温の列</span></span>
 <span id="cb7-2"><a href aria-label="2"></a>A <span class="op">=</span> X1.T <span class="op">@</span> X1                 <span class="co"># XᵀX</span></span>
 <span id="cb7-3"><a href aria-label="3"></a>c <span class="op">=</span> X1.T <span class="op">@</span> y                  <span class="co"># Xᵀy</span></span>
@@ -1238,7 +1238,7 @@ margin-right: 0; }
 </section>
 <section id="お手本solveで解く" class="slide level2">
 <h2>お手本：solveで解く</h2>
-<div id="6a8d9c20" class="cell" data-execution_count="6">
+<div id="90e076e1" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a>beta_s <span class="op">=</span> np.linalg.solve(A, c)   <span class="co"># A β = c を、そのまま解く</span></span>
 <span id="cb8-2"><a href aria-label="2"></a><span class="bu">print</span>(beta)                      <span class="co"># 本編の inv の答え</span></span>
 <span id="cb8-3"><a href aria-label="3"></a><span class="bu">print</span>(beta_s)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1252,8 +1252,8 @@ margin-right: 0; }
 </ul>
 </section>
 <section id="答えは同じ" class="slide level2">
-<h2>答えは、同じ</h2>
-<div id="99fa9084" class="cell" data-execution_count="7">
+<h2>答えは同じ</h2>
+<div id="09819dd3" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1214.64211903 6640.70999855]
 [1214.64211903 6640.70999855]</code></pre>
@@ -1264,7 +1264,7 @@ margin-right: 0; }
 </ul>
 </section>
 <section id="invは誤差が広がりやすい" class="slide level2">
-<h2>invは、誤差が広がりやすい</h2>
+<h2>invは誤差が広がりやすい</h2>
 <ul>
 <li><code>inv</code>は、逆行列を作る途中で、計算の誤差が広がりやすい</li>
 <li>列がほぼ重なると、その誤差が大きくなる</li>
@@ -1273,7 +1273,7 @@ margin-right: 0; }
 </section>
 <section id="変えてみる条件数を測る" class="slide level2 fit-90">
 <h2>変えてみる：条件数を測る</h2>
-<div id="8d10a51e" class="cell" data-execution_count="8">
+<div id="8f016c80" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href aria-label="1"></a>A11 <span class="op">=</span> X11.T <span class="op">@</span> X11</span>
 <span id="cb11-2"><a href aria-label="2"></a>c11 <span class="op">=</span> X11.T <span class="op">@</span> y</span>
 <span id="cb11-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;気温だけ :&#39;</span>, <span class="bu">round</span>(np.linalg.cond(A)))</span>
@@ -1291,8 +1291,8 @@ inv と solve の差: 2.017486622207798e-09</code></pre>
 </ul>
 </section>
 <section id="条件数は47から約31万へ" class="slide level2">
-<h2>条件数は、47から約31万へ</h2>
-<div id="d20f0377" class="cell" data-execution_count="9">
+<h2>条件数は47から約31万へ</h2>
+<div id="81e3ab0b" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>気温だけ : 47
 11本の列 : 315255
