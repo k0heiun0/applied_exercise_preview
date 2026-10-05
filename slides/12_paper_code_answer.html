@@ -1069,12 +1069,12 @@ margin-right: 0; }
 </section>
 <section id="todo①コードのセルの1行目" class="slide level2 fit-80">
 <h2>TODO①：コードのセルの1行目</h2>
-<div id="fa29d4ab" class="cell" data-execution_count="2">
+<div id="3520a61c" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="cf">for</span> i, cell <span class="kw">in</span> <span class="bu">enumerate</span>(nb[<span class="st">&#39;cells&#39;</span>]):</span>
 <span id="cb1-2"><a href aria-label="2"></a>    <span class="cf">if</span> cell[<span class="st">&#39;cell_type&#39;</span>] <span class="op">==</span> <span class="st">&#39;code&#39;</span>:</span>
 <span id="cb1-3"><a href aria-label="3"></a>        <span class="bu">print</span>(i, cell[<span class="st">&#39;source&#39;</span>][<span class="dv">0</span>].strip())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="35b5da81" class="cell" data-execution_count="3">
+<div id="d76d6d74" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>1 import re,os                      3 SHP=(30,30,3)
 5 def rescale(a):                   7 import matplotlib.image as mpi
@@ -1098,7 +1098,7 @@ margin-right: 0; }
 </section>
 <section id="todo②外す条件" class="slide level2">
 <h2>TODO②：外す条件</h2>
-<div id="fed085b5" class="cell" data-execution_count="4">
+<div id="5acd6c9a" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>([x[:, :, i].<span class="bu">max</span>() <span class="op">==</span> <span class="dv">0</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>)])</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(x.std() <span class="op">!=</span> <span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1112,7 +1112,7 @@ True</code></pre>
 </section>
 <section id="todo③90は3個" class="slide level2">
 <h2>TODO③：90%は3個</h2>
-<div id="e5619d14" class="cell" data-execution_count="5">
+<div id="0c077b8c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>cum <span class="op">=</span> np.cumsum(PCA().fit(norm_data).explained_variance_ratio_)</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(np.argmax(cum <span class="op">&gt;=</span> <span class="fl">0.9</span>) <span class="op">+</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1125,7 +1125,7 @@ True</code></pre>
 </section>
 <section id="todo④2番目のグループ" class="slide level2">
 <h2>TODO④：2番目のグループ</h2>
-<div id="0d508545" class="cell" data-execution_count="6">
+<div id="c501be39" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>second <span class="op">=</span> indexes[clust.labels_ <span class="op">==</span> sizes.index[<span class="dv">1</span>]]</span>
 <span id="cb7-2"><a href aria-label="2"></a>make_image(second[:<span class="dv">30</span>], (<span class="dv">5</span>, <span class="dv">6</span>))</span>
 <span id="cb7-3"><a href aria-label="3"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1141,7 +1141,7 @@ True</code></pre>
 </section>
 <section id="応用①回転をそろえない" class="slide level2 fit-80">
 <h2>応用①：回転をそろえない</h2>
-<div id="4d32dd49" class="cell" data-execution_count="7">
+<div id="90f2b834" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a>L, U <span class="op">=</span> np.quantile(raw_data, [<span class="dv">0</span>, <span class="fl">.99</span>])</span>
 <span id="cb8-2"><a href aria-label="2"></a>clip_only <span class="op">=</span> np.clip(raw_data, L, U)        <span class="co"># 回転をそろえない</span></span>
 <span id="cb8-3"><a href aria-label="3"></a>pca_r <span class="op">=</span> PCA(<span class="fl">.96</span>).fit(clip_only)</span>
@@ -1161,7 +1161,7 @@ True</code></pre>
 </section>
 <section id="応用②主成分の数" class="slide level2">
 <h2>応用②：主成分の数</h2>
-<div id="4d648aaa" class="cell" data-execution_count="8">
+<div id="52e12adc" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 14</code></pre>
 </div>
@@ -1173,7 +1173,7 @@ True</code></pre>
 </section>
 <section id="回転をそろえたとき" class="slide level2">
 <h2>回転をそろえたとき</h2>
-<div id="aae6df94" class="cell" data-execution_count="9">
+<div id="64d4a781" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1188,7 +1188,7 @@ True</code></pre>
 </section>
 <section id="そろえないとき" class="slide level2">
 <h2>そろえないとき</h2>
-<div id="5c9e9fd4" class="cell" data-execution_count="10">
+<div id="142b0d56" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2228,8 +2228,6 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
-  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
-</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2397,27 +2395,9 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①pc2と関係の強い列" class="slide level2">
 <h2>TODO①：PC2と関係の強い列</h2>
-<div id="2db3a6b6" class="cell" data-execution_count="2">
+<div id="6da909cd" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a><span class="bu">print</span>(load[<span class="st">&#39;PC2&#39;</span>].<span class="bu">abs</span>().sort_values(ascending<span class="op">=</span><span class="va">False</span>).<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>acceleration    0.76
@@ -1087,7 +1087,7 @@ Name: PC2, dtype: float64</code></pre>
 </section>
 <section id="todo②相関と矢印" class="slide level2">
 <h2>TODO②：相関と矢印</h2>
-<div id="e79dc4ed" class="cell" data-execution_count="3">
+<div id="10c4382c" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>r <span class="op">=</span> df[<span class="st">&#39;weight&#39;</span>].corr(df[<span class="st">&#39;displacement&#39;</span>])</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;重さと排気量:&#39;</span>, <span class="bu">round</span>(r, <span class="dv">2</span>))</span>
 <span id="cb3-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;燃費と重さ  :&#39;</span>, <span class="bu">round</span>(df[<span class="st">&#39;mpg&#39;</span>].corr(df[<span class="st">&#39;weight&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1102,7 +1102,7 @@ Name: PC2, dtype: float64</code></pre>
 </section>
 <section id="todo③ホンダシビック" class="slide level2 fit-90">
 <h2>TODO③：ホンダ・シビック</h2>
-<div id="93d11d3a" class="cell" data-execution_count="4">
+<div id="0d58af50" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>civic <span class="op">=</span> cars[cars[<span class="st">&#39;name&#39;</span>].<span class="bu">str</span>.contains(<span class="st">&#39;honda civic&#39;</span>)]</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(civic[[<span class="st">&#39;name&#39;</span>, <span class="st">&#39;model_year&#39;</span>, <span class="st">&#39;PC1&#39;</span>, <span class="st">&#39;PC2&#39;</span>, <span class="st">&#39;mpg&#39;</span>]].<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1123,7 +1123,7 @@ Name: PC2, dtype: float64</code></pre>
 </section>
 <section id="todo④いちばん上の車" class="slide level2">
 <h2>TODO④：いちばん上の車</h2>
-<div id="05f244cd" class="cell" data-execution_count="5">
+<div id="22726742" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>top <span class="op">=</span> cars.loc[cars[<span class="st">&#39;PC2&#39;</span>].idxmax()]</span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(top[[<span class="st">&#39;name&#39;</span>, <span class="st">&#39;origin&#39;</span>, <span class="st">&#39;model_year&#39;</span>, <span class="st">&#39;PC1&#39;</span>, <span class="st">&#39;PC2&#39;</span>, <span class="st">&#39;acceleration&#39;</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1153,7 +1153,7 @@ Name: 297, dtype: object</code></pre>
 </section>
 <section id="応用①標準化しないpca" class="slide level2 fit-90">
 <h2>応用①：標準化しないPCA</h2>
-<div id="f5e469e0" class="cell" data-execution_count="6">
+<div id="13b41d6d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>pca_raw <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit(df[feat])      <span class="co"># 標準化なし</span></span>
 <span id="cb9-2"><a href aria-label="2"></a><span class="bu">print</span>(pca_raw.explained_variance_ratio_.<span class="bu">round</span>(<span class="dv">4</span>))</span>
 <span id="cb9-3"><a href aria-label="3"></a>coef_raw <span class="op">=</span> pd.DataFrame(pca_raw.components_.T, index<span class="op">=</span>feat,</span>
@@ -1173,7 +1173,7 @@ acceleration -0.001 -0.035</code></pre>
 </section>
 <section id="応用②pc1の寄与率" class="slide level2">
 <h2>応用②：PC1の寄与率</h2>
-<div id="4f170fe4" class="cell" data-execution_count="7">
+<div id="ac5857d4" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 99.8</code></pre>
 </div>
@@ -1192,7 +1192,7 @@ acceleration -0.001 -0.035</code></pre>
 </section>
 <section id="単位の大きさが違う" class="slide level2">
 <h2>単位の大きさが違う</h2>
-<div id="8005a2ff" class="cell" data-execution_count="8">
+<div id="114e5ac2" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a><span class="bu">print</span>(df[feat].std().<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>mpg               7.8
@@ -2228,8 +2228,6 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
-  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
-</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2397,27 +2395,9 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

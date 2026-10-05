@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①誤検出と見逃し" class="slide level2">
 <h2>TODO①：誤検出と見逃し</h2>
-<div id="c0baf59c" class="cell" data-execution_count="2">
+<div id="8d20e580" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>fp <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">0</span>)).<span class="bu">sum</span>()    <span class="co"># 判定は心臓病、本当は健康</span></span>
 <span id="cb1-2"><a href aria-label="2"></a>fn <span class="op">=</span> ((pred <span class="op">==</span> <span class="dv">0</span>) <span class="op">&amp;</span> (y_te <span class="op">==</span> <span class="dv">1</span>)).<span class="bu">sum</span>()    <span class="co"># 判定は健康、本当は心臓病</span></span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;TP&#39;</span>, tp, <span class="st">&#39; TN&#39;</span>, tn, <span class="st">&#39; FP&#39;</span>, fp, <span class="st">&#39; FN&#39;</span>, fn)</span>
@@ -1086,7 +1086,7 @@ margin-right: 0; }
 </section>
 <section id="todo②適合率と再現率" class="slide level2">
 <h2>TODO②：適合率と再現率</h2>
-<div id="f52c6b16" class="cell" data-execution_count="3">
+<div id="c0260b01" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;適合率:&#39;</span>, <span class="bu">round</span>(tp <span class="op">/</span> (tp <span class="op">+</span> fp), <span class="dv">2</span>))</span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;再現率:&#39;</span>, <span class="bu">round</span>(tp <span class="op">/</span> (tp <span class="op">+</span> fn), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1100,7 +1100,7 @@ margin-right: 0; }
 </section>
 <section id="todo③ldaのauc" class="slide level2">
 <h2>TODO③：LDAのAUC</h2>
-<div id="ef8c9226" class="cell" data-execution_count="4">
+<div id="9735f099" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;ロジスティック回帰:&#39;</span>, <span class="bu">round</span>(roc_auc_score(y_te, prob), <span class="dv">3</span>))</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;LDA              :&#39;</span>, <span class="bu">round</span>(roc_auc_score(y_te, prob_lda), <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1114,7 +1114,7 @@ LDA              : 0.94</code></pre>
 </section>
 <section id="todo④誤検出の文" class="slide level2">
 <h2>TODO④：誤検出の文</h2>
-<div id="e92cffa0" class="cell" data-execution_count="5">
+<div id="91e1f30b" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>n_ok <span class="op">=</span> tn <span class="op">+</span> fp                            <span class="co"># 本当は健康な人</span></span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="ss">f&#39;健康な</span><span class="sc">{</span>n_ok<span class="sc">}</span><span class="ss">人のうち</span><span class="sc">{</span>fp<span class="sc">}</span><span class="ss">人を、心臓病と判定した（誤検出）&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1129,7 +1129,7 @@ LDA              : 0.94</code></pre>
 </section>
 <section id="応用①3本だけで当てる" class="slide level2 fit-90">
 <h2>応用①：3本だけで当てる</h2>
-<div id="36ecda51" class="cell" data-execution_count="6">
+<div id="33062a42" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>feat3 <span class="op">=</span> [<span class="st">&#39;thalach&#39;</span>, <span class="st">&#39;oldpeak&#39;</span>, <span class="st">&#39;age&#39;</span>]     <span class="co"># 3本だけ</span></span>
 <span id="cb9-2"><a href aria-label="2"></a>Z3_tr, Z3_te <span class="op">=</span> prep(tr, tr, feat3), prep(tr, te, feat3)</span>
 <span id="cb9-3"><a href aria-label="3"></a>clf3 <span class="op">=</span> LogisticRegression(max_iter<span class="op">=</span><span class="dv">5000</span>).fit(Z3_tr, y_tr)</span>
@@ -1147,7 +1147,7 @@ LDA              : 0.94</code></pre>
 </section>
 <section id="応用②再現率は" class="slide level2">
 <h2>応用②：再現率は？</h2>
-<div id="96d73d7a" class="cell" data-execution_count="7">
+<div id="323483a1" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 0.79</code></pre>
 </div>
@@ -2185,8 +2185,6 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
-  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
-</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2354,27 +2352,9 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

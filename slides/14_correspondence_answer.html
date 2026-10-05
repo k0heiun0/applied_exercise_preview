@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①期待度数を自分で" class="slide level2">
 <h2>TODO①：期待度数を自分で</h2>
-<div id="ac21acc2" class="cell" data-execution_count="2">
+<div id="7aa0b541" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>E2 <span class="op">=</span> np.outer(ct.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">1</span>), ct.<span class="bu">sum</span>(axis<span class="op">=</span><span class="dv">0</span>)) <span class="op">/</span> ct.values.<span class="bu">sum</span>()</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(np.allclose(E, E2))</span>
 <span id="cb1-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">round</span>(E2[ct.index.get_loc(<span class="st">&#39;Romance&#39;</span>), <span class="dv">0</span>], <span class="dv">1</span>))   <span class="co"># ロマンスの1930年代</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1084,7 +1084,7 @@ margin-right: 0; }
 </section>
 <section id="todo②寄与率" class="slide level2">
 <h2>TODO②：寄与率</h2>
-<div id="cecb2a86" class="cell" data-execution_count="3">
+<div id="8f5179df" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a><span class="bu">print</span>(ca.eigenvalues_summary)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          eigenvalue % of variance % of variance (cumulative)
@@ -1099,7 +1099,7 @@ component
 </section>
 <section id="todo③上位3ジャンル" class="slide level2">
 <h2>TODO③：上位3ジャンル</h2>
-<div id="42c05bc0" class="cell" data-execution_count="4">
+<div id="410430c6" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>top3 <span class="op">=</span> {}</span>
 <span id="cb5-2"><a href aria-label="2"></a><span class="cf">for</span> dec <span class="kw">in</span> [<span class="st">&#39;1950&#39;</span>, <span class="st">&#39;1970&#39;</span>]:</span>
 <span id="cb5-3"><a href aria-label="3"></a>    top3[dec] <span class="op">=</span> ratio[dec].sort_values(ascending<span class="op">=</span><span class="va">False</span>).head(<span class="dv">3</span>).to_dict()</span>
@@ -1114,7 +1114,7 @@ component
 </section>
 <section id="todo④企画書の一文" class="slide level2">
 <h2>TODO④：企画書の一文</h2>
-<div id="a845e03d" class="cell" data-execution_count="5">
+<div id="25784f55" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>r <span class="op">=</span> ratio[<span class="st">&#39;1960&#39;</span>].sort_values()</span>
 <span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="ss">f&#39;1960年代の特集は </span><span class="sc">{</span>r<span class="sc">.</span>index[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">（</span><span class="sc">{</span>r<span class="sc">.</span>iloc[<span class="op">-</span><span class="dv">1</span>]<span class="sc">}</span><span class="ss">倍）を中心に。&#39;</span></span>
 <span id="cb7-3"><a href aria-label="3"></a>      <span class="ss">f&#39;</span><span class="sc">{</span>r<span class="sc">.</span>index[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">（</span><span class="sc">{</span>r<span class="sc">.</span>iloc[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">倍）は少なめでよい。&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1133,7 +1133,7 @@ component
 </section>
 <section id="応用①1990年代以降に絞る" class="slide level2 fit-80">
 <h2>応用①：1990年代以降に絞る</h2>
-<div id="3da2ca2d" class="cell" data-execution_count="6">
+<div id="5464ccc4" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a>ct_new <span class="op">=</span> ct[[<span class="st">&#39;1990&#39;</span>, <span class="st">&#39;2000&#39;</span>, <span class="st">&#39;2010&#39;</span>]]         <span class="co"># 1990年代以降</span></span>
 <span id="cb9-2"><a href aria-label="2"></a>ca_new <span class="op">=</span> prince.CA(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit(ct_new)</span>
 <span id="cb9-3"><a href aria-label="3"></a>rows_new <span class="op">=</span> ca_new.row_coordinates(ct_new)</span>
@@ -1146,7 +1146,7 @@ component
 </section>
 <section id="応用②次元1の寄与率" class="slide level2">
 <h2>応用②：次元1の寄与率</h2>
-<div id="2f5155ca" class="cell" data-execution_count="7">
+<div id="8f0a573c" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>答え: 88.8</code></pre>
 </div>
@@ -1157,7 +1157,7 @@ component
 </section>
 <section id="つの地図を並べる" class="slide level2">
 <h2>2つの地図を並べる</h2>
-<div id="d773f27a" class="cell" data-execution_count="8">
+<div id="6a688c2f" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2211,8 +2211,6 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
-  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
-</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2380,27 +2378,9 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

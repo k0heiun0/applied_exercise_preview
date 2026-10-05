@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①気になる列の例" class="slide level2">
 <h2>TODO①：気になる列の例</h2>
-<div id="78fab702" class="cell" data-execution_count="2">
+<div id="9505bf09" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-stdout">
 <pre><code>        気温  体感気温
 mean  0.50  0.47
@@ -1083,7 +1083,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="todo①もう1つの癖" class="slide level2">
 <h2>TODO①：もう1つの癖</h2>
-<div id="02bbb3f8" class="cell" data-execution_count="3">
+<div id="53f37282" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>季節
 1    181
@@ -1098,7 +1098,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="todo②湿度で描いた例" class="slide level2">
 <h2>TODO②：湿度で描いた例</h2>
-<div id="a07c3a28" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="4">
+<div id="64bdca02" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>plt.scatter(df[<span class="st">&#39;湿度&#39;</span>], df[<span class="st">&#39;台数&#39;</span>], s<span class="op">=</span><span class="dv">8</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
 <span id="cb3-2"><a href aria-label="2"></a>plt.xlabel(<span class="st">&#39;湿度 湿度（0〜1）&#39;</span>)</span>
 <span id="cb3-3"><a href aria-label="3"></a>plt.ylabel(<span class="st">&#39;利用台数 台数&#39;</span>)</span>
@@ -1114,7 +1114,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="湿度と台数はどんな関係" class="slide level2">
 <h2>湿度と台数は、どんな関係？</h2>
-<div id="d57615cf" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="5">
+<div id="9714dba5" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1129,7 +1129,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="右端だけ少ない" class="slide level2">
 <h2>右端だけ、少ない</h2>
-<div id="f4bf0dec" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="6">
+<div id="6957a0eb" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1144,7 +1144,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="右端は曇りか雨雪の日" class="slide level2">
 <h2>右端は、曇りか雨・雪の日</h2>
-<div id="7ac82b25" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="7">
+<div id="9967c5db" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1159,7 +1159,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="全体では相関は弱い" class="slide level2">
 <h2>全体では、相関は弱い</h2>
-<div id="df244e25" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="8">
+<div id="472a4358" class="cell" data-fig-height="3.2" data-fig-width="8" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1174,7 +1174,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="todo③晴れと雨雪" class="slide level2">
 <h2>TODO③：晴れと雨・雪</h2>
-<div id="2d6377c9" class="cell" data-execution_count="9">
+<div id="b16d6005" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>sunny <span class="op">=</span> df[df[<span class="st">&#39;天気&#39;</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
 <span id="cb4-2"><a href aria-label="2"></a>rainy <span class="op">=</span> df[df[<span class="st">&#39;天気&#39;</span>] <span class="op">==</span> <span class="dv">3</span>]</span>
 <span id="cb4-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;晴れ   日数:&#39;</span>, <span class="bu">len</span>(sunny), <span class="st">&#39; 平均台数:&#39;</span>, <span class="bu">round</span>(sunny[<span class="st">&#39;台数&#39;</span>].mean()))</span>
@@ -1190,7 +1190,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="雨雪の日は晴れの日の半分以下" class="slide level2">
 <h2>雨・雪の日は、晴れの日の半分以下</h2>
-<div id="ed23e4b3" class="cell" data-execution_count="10">
+<div id="a0b58c92" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>晴れ   日数: 463  平均台数: 4877
 雨・雪 日数: 21  平均台数: 1803</code></pre>
@@ -1202,7 +1202,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="でも雨雪の日は21日だけ" class="slide level2">
 <h2>でも、雨・雪の日は21日だけ</h2>
-<div id="7d0e3d36" class="cell" data-execution_count="11">
+<div id="03aa36da" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>晴れ   日数: 463  平均台数: 4877
 雨・雪 日数: 21  平均台数: 1803</code></pre>
@@ -1214,7 +1214,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="todo④分け方の例" class="slide level2">
 <h2>TODO④：分け方の例</h2>
-<div id="58f0cb03" class="cell" data-execution_count="12">
+<div id="b7cb1424" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href aria-label="1"></a><span class="cf">for</span> keys <span class="kw">in</span> [[<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>],</span>
 <span id="cb8-2"><a href aria-label="2"></a>             [<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;季節&#39;</span>],</span>
 <span id="cb8-3"><a href aria-label="3"></a>             [<span class="st">&#39;月&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;天気&#39;</span>]]:</span>
@@ -1231,7 +1231,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="todo④どこまで縮む" class="slide level2">
 <h2>TODO④：どこまで縮む？</h2>
-<div id="eb5381c2" class="cell" data-execution_count="13">
+<div id="22f38e87" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-stdout">
 <pre><code>4 列 → 408 台 ／ 1日だけのグループ 101 個
 5 列 → 214 台 ／ 1日だけのグループ 323 個</code></pre>
@@ -1243,7 +1243,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="縮むほど疑う" class="slide level2">
 <h2>縮むほど、疑う</h2>
-<div id="d0549982" class="cell" data-execution_count="14">
+<div id="c6531cb0" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>4 列 → 408 台 ／ 1日だけのグループ 101 個
 5 列 → 214 台 ／ 1日だけのグループ 323 個</code></pre>
@@ -1261,7 +1261,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="応用①時刻ごとに集計する" class="slide level2 fit-90">
 <h2>応用①：時刻ごとに集計する</h2>
-<div id="4aec9943" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="15">
+<div id="196e454b" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a>hour <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/bike_hour.csv&#39;</span>)</span>
 <span id="cb12-2"><a href aria-label="2"></a>hour <span class="op">=</span> hour.rename(columns<span class="op">=</span>ja_names)        <span class="co"># 1節と同じ前処理</span></span>
 <span id="cb12-3"><a href aria-label="3"></a>hour <span class="op">=</span> hour.rename(columns<span class="op">=</span>{<span class="st">&#39;hr&#39;</span>: <span class="st">&#39;時刻&#39;</span>})   <span class="co"># 時間別だけにある列</span></span>
@@ -1281,7 +1281,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="日の中でどう変わる" class="slide level2">
 <h2>1日の中で、どう変わる？</h2>
-<div id="279e4531" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="16">
+<div id="b5df7d95" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1296,7 +1296,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="山が2つある" class="slide level2">
 <h2>山が2つある</h2>
-<div id="a9f8e652" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="17">
+<div id="4ce094bf" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1311,7 +1311,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="応用②最も多い時刻" class="slide level2">
 <h2>応用②：最も多い時刻</h2>
-<div id="48351210" class="cell" data-execution_count="18">
+<div id="c203d772" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;最大の平均台数:&#39;</span>, <span class="bu">round</span>(by_hr.<span class="bu">max</span>(), <span class="dv">1</span>))</span>
 <span id="cb13-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;答え:&#39;</span>, <span class="bu">int</span>(by_hr.idxmax()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1325,7 +1325,7 @@ std   0.18  0.16</code></pre>
 </section>
 <section id="目で見ずコードで取り出す" class="slide level2">
 <h2>目で見ず、コードで取り出す</h2>
-<div id="0c9cfd5b" class="cell" data-execution_count="19">
+<div id="863522c9" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>時刻
 16    312.0
@@ -2365,8 +2365,6 @@ window.QuartoSupport = function () {
 	 * Copyright (C) 2011-2014 Hakim El Hattab, http://hakim.se
 	 */return()=>e}));
 </script>
-  <script>!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):(t="undefined"!=typeof globalThis?globalThis:t||self).RevealMath=e()}(this,(function(){"use strict";const t=()=>{let t,e={messageStyle:"none",tex2jax:{inlineMath:[["$","$"],["\\(","\\)"]],skipTags:["script","noscript","style","textarea","pre"]},skipStartupTypeset:!0};return{id:"mathjax2",init:function(n){t=n;let a=t.getConfig().mathjax2||t.getConfig().math||{},i={...e,...a},s=(i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js")+"?config="+(i.config||"TeX-AMS_HTML-full");i.tex2jax={...e.tex2jax,...a.tex2jax},i.mathjax=i.config=null,function(t,e){let n=document.querySelector("head"),a=document.createElement("script");a.type="text/javascript",a.src=t;let i=()=>{"function"==typeof e&&(e.call(),e=null)};a.onload=i,a.onreadystatechange=()=>{"loaded"===this.readyState&&i()},n.appendChild(a)}(s,(function(){MathJax.Hub.Config(i),MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.getRevealElement()]),MathJax.Hub.Queue(t.layout),t.on("slidechanged",(function(t){MathJax.Hub.Queue(["Typeset",MathJax.Hub,t.currentSlide])}))}))}}},e=t;return Plugin=Object.assign(e(),{KaTeX:()=>{let t,e={version:"latest",delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}],ignoredTags:["script","noscript","style","textarea","pre"]};const n=t=>new Promise(((e,n)=>{const a=document.createElement("script");a.type="text/javascript",a.onload=e,a.onerror=n,a.src=t,document.head.append(a)}));return{id:"katex",init:function(a){t=a;let i=t.getConfig().katex||{},s={...e,...i};const{local:o,version:l,extensions:r,...c}=s;let d=s.local||"https://cdn.jsdelivr.net/npm/katex",u=s.local?"":"@"+s.version,p=d+u+"/dist/katex.min.css",h=d+u+"/dist/contrib/mhchem.min.js",x=d+u+"/dist/contrib/auto-render.min.js",m=[d+u+"/dist/katex.min.js"];s.extensions&&s.extensions.includes("mhchem")&&m.push(h),m.push(x);const f=()=>{renderMathInElement(a.getSlidesElement(),c),t.layout()};(t=>{let e=document.createElement("link");e.rel="stylesheet",e.href=t,document.head.appendChild(e)})(p),async function(t){for(const e of t)await n(e)}(m).then((()=>{t.isReady()?f():t.on("ready",f.bind(this))}))}}},MathJax2:t,MathJax3:()=>{let t,e={tex:{inlineMath:[["$","$"],["\\(","\\)"]]},options:{skipHtmlTags:["script","noscript","style","textarea","pre"]},startup:{ready:()=>{MathJax.startup.defaultReady(),MathJax.startup.promise.then((()=>{t.layout()}))}}};return{id:"mathjax3",init:function(n){t=n;let a=t.getConfig().mathjax3||{},i={...e,...a};i.tex={...e.tex,...a.tex},i.options={...e.options,...a.options},i.startup={...e.startup,...a.startup};let s=i.mathjax||"https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js";i.mathjax=null,window.MathJax=i,function(t,e){let n=document.createElement("script");n.type="text/javascript",n.id="MathJax-script",n.src=t,n.async=!0,n.onload=()=>{"function"==typeof e&&(e.call(),e=null)},document.head.appendChild(n)}(s,(function(){t.addEventListener("slidechanged",(function(t){MathJax.typeset()}))}))}}}})}));
-</script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -2534,27 +2532,9 @@ window.QuartoSupport = function () {
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom
