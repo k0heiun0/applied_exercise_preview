@@ -3250,7 +3250,7 @@ window.Quarto = {
 <section id="今日の分析目標" class="level2">
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>気温を入れると台数が出てくる1本の式を立て、その式がまだ来ていない日にどれだけ当たるかを測る。</p>
-<p>1日ぶんの計算から始め、731日ぶん・総当たり・式一発と積み上げて「良い直線」を選びます。そのあと、データを分けて本当の実力を測ります。最後の「目標に答えられたか」で振り返りましょう。</p>
+<p>1日ぶんの計算から始め、731日ぶん・総当たり・正規方程式と積み上げて「良い直線」を選び、最後に<code>LinearRegression</code>の1行と比べます。そのあと、データを分けて本当の実力を測ります。最後の「目標に答えられたか」で振り返りましょう。</p>
 <section id="場面" class="level3">
 <h3 class="anchored" data-anchor-id="場面">場面</h3>
 <p>場面は前回と同じです。あなたは自転車シェアの運営者で、毎晩、明日に向けて自転車を何台用意するかを決めます。</p>
@@ -3258,8 +3258,9 @@ window.Quarto = {
 </section>
 <section id="手元のデータ" class="level3">
 <h3 class="anchored" data-anchor-id="手元のデータ">手元のデータ</h3>
-<p>前回と同じ、ある自転車シェアの2011〜2012年の記録です（UCI Machine Learning RepositoryのBike Sharing Dataset）。1行が1日で、731日ぶんあります。季節・年・月・天気・気温・湿度・風速などが並びます。</p>
-<p>答えの列は<code>台数</code>（その日の利用台数）です。今日はおもに、<code>気温</code>（0〜1に縮めた値。1が約41℃）と<code>台数</code>の2列を使います。</p>
+<p>前回と同じ、ある自転車シェアの2011年1月1日から2012年12月31日までの記録です（UCI Machine Learning RepositoryのBike Sharing Dataset）。1行が1日で、731日ぶんあります。行は日付の順に、過去から未来へ並んでいます。毎晩当てたかったのは、その日の台数（<code>台数</code>）です。</p>
+<p>前回、この表から2つのことが分かりました。気温が高い日ほど台数が多く、ただし暑すぎると頭打ちになります。同じ気温でも、2年目のほうが多くなります。今日はおもに、<code>気温</code>（0〜1に縮めた値。1が約41℃）と<code>年</code>、そして<code>台数</code>を使います。</p>
+<p>表をもう一度よく見ると、気になる列が2つあります。1つは<code>一般客</code>と<code>会員</code>の列で、足すと731日すべてでちょうど<code>台数</code>になります。明日の一般客と会員の数は、明日が来るまで分かりません。もう1つは<code>日付</code>で、表は過去から未来へ並んでいます。明日を当てたいのに、未来の日を見て学んでしまわないか、気をつける必要があります。この2つの列には、今日の後半で戻ってきます。</p>
 </section>
 <section id="最後に出す答え" class="level3">
 <h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
@@ -3273,7 +3274,7 @@ window.Quarto = {
 <ul>
 <li>1日ぶんの予測・外れ・外れの二乗を計算し、<code>for</code>文で731日ぶん足し上げられる</li>
 <li><code>for</code>文と<code>if</code>文の総当たりで二乗和の谷底を探し、最小二乗法（least squares）の考え方を説明できる</li>
-<li>谷底を式一発で求め、<code>LinearRegression</code>の答えと一致することを確かめられる</li>
+<li>二乗和を微分して正規方程式を導き、numpyの行列の計算（<code>@</code>・<code>.T</code>・<code>np.linalg.solve</code>）でコードにできる。<code>LinearRegression</code>の答えと一致することを確かめられる</li>
 <li>R²を「毎日平均と答える基準から、外れの二乗和をどれだけ減らせたか」として計算できる</li>
 <li>データを訓練用とテスト用に分け、作るのに使ったデータでの成績と、まだ見ていないデータでの成績（汎化性能）を比べられる</li>
 <li>答えに近い情報が手がかりに漏れ込む「リーク」を再現し、テストの成績が良すぎるときに疑える</li>
@@ -3398,18 +3399,6 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </div>
 </div>
 <p>731個の数が並んでいます。1日目は、気温0.344（41を掛けると約14.1℃）で、台数は985台でした。</p>
-</section>
-<section id="変えてみる2日目を見る" class="level3">
-<h3 class="anchored" data-anchor-id="変えてみる2日目を見る">変えてみる：2日目を見る</h3>
-<p><code>[0]</code>を<code>[1]</code>に変えれば、2日目です。</p>
-<div id="026815b8" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(x[<span class="dv">1</span>])               <span class="co"># 2日目の気温</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y[<span class="dv">1</span>])               <span class="co"># 2日目の台数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>0.363478
-801</code></pre>
-</div>
-</div>
 <hr>
 </section>
 </section>
@@ -3432,14 +3421,14 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：予測・外れ・外れの二乗</li>
 </ul>
 <p>予測が実際からどれだけずれたか、<span class="math inline">\(e_i = y_i - \hat{y}_i\)</span>を残差（residual）と呼びます。外れは多すぎても少なすぎても困るので、符号を消すために二乗します。二乗にはもう1つ良さがあります。aやbを動かすと、二乗の和はなめらかな谷の形になります。そのため、あとで見るように谷底を式一発で求められるのです（4節・5節）。大きく外れた日ほど重く数えられるという性質もあります。</p>
-<div id="107418ca" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">9000</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> a <span class="op">*</span> x[<span class="dv">0</span>] <span class="op">+</span> b       <span class="co"># 1日目の予測</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> y[<span class="dv">0</span>] <span class="op">-</span> pred         <span class="co"># 外れ（実際 − 予測）</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(err)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(err <span class="op">**</span> <span class="dv">2</span>)           <span class="co"># 外れの二乗</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b5f1e450" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="dv">9000</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> a <span class="op">*</span> x[<span class="dv">0</span>] <span class="op">+</span> b       <span class="co"># 1日目の予測</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pred)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> y[<span class="dv">0</span>] <span class="op">-</span> pred         <span class="co"># 外れ（実際 − 予測）</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(err)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(err <span class="op">**</span> <span class="dv">2</span>)           <span class="co"># 外れの二乗</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>3097.503
 -2112.503
@@ -3451,11 +3440,11 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <section id="todo①2日目と3日目も同じように計算する" class="level3">
 <h3 class="anchored" data-anchor-id="todo①2日目と3日目も同じように計算する">TODO①：2日目と3日目も、同じように計算する</h3>
 <p>上のお手本のセルをコピーして、<code>x[0]</code>・<code>y[0]</code>を2日目（<code>[1]</code>）と3日目（<code>[2]</code>）に変え、予測・外れ・外れの二乗を表示してください。</p>
-<div id="5d53357c" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 上のセルをコピーして、[0] を [1]（2日目）と</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       [2]（3日目）に変えて表示する</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: 2日目の分と3日目の分を、続けて書けばよい</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e80e7077" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 上のセルをコピーして、[0] を [1]（2日目）と</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       [2]（3日目）に変えて表示する</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: 2日目の分と3日目の分を、続けて書けばよい</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>2日目の外れは −2470.3、3日目は −418.3です。同じことを731日ぶん書くのは大変です。次の節で、繰り返しを書く方法を使います。</p>
 <hr>
@@ -3476,12 +3465,12 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 <li>出力：二乗和<code>total</code></li>
 </ul>
 <p><code>for i in range(len(x)):</code>は、「<code>i</code>を0, 1, 2, …, 730と変えながら、下の字下げした行を繰り返す」という書き方です（for文）。字下げ（行の頭のすきま）が、繰り返す範囲の目印です。<code>total = total + …</code>は、「いまの合計に足して、合計を更新する」という意味です。</p>
-<div id="943dc591" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(x)):</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> a <span class="op">*</span> x[i] <span class="op">+</span> b                  <span class="co"># その日の予測</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> total <span class="op">+</span> (y[i] <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>   <span class="co"># 外れの二乗を足す</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4832fbfd" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(x)):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> a <span class="op">*</span> x[i] <span class="op">+</span> b                  <span class="co"># その日の予測</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    total <span class="op">=</span> total <span class="op">+</span> (y[i] <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>   <span class="co"># 外れの二乗を足す</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1798539709.665675</code></pre>
 </div>
@@ -3492,10 +3481,10 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 <h3 class="anchored" data-anchor-id="変えてみるnumpyでまとめて計算する">変えてみる：numpyで、まとめて計算する</h3>
 <p>numpyの配列は、<code>for</code>文を書かなくてもまとめて計算できます。<code>a * x + b</code>と書くと、731日ぶんの予測が一度に出ます。<code>.sum()</code>は全部を足すメソッドです。</p>
 <p><code>residual[:3]</code>は、配列の番号0・1・2の3つを取り出す書き方です（スライス）。<code>[始め:終わり]</code>の形で、始めを省くと0から、終わりの番号は含みません。</p>
-<div id="021311c2" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> y <span class="op">-</span> (a <span class="op">*</span> x <span class="op">+</span> b)       <span class="co"># 731日ぶんの外れを、まとめて</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(residual[:<span class="dv">3</span>])              <span class="co"># 最初の3日ぶん</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((residual <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>())     <span class="co"># 二乗して、全部足す</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8c611140" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>residual <span class="op">=</span> y <span class="op">-</span> (a <span class="op">*</span> x <span class="op">+</span> b)       <span class="co"># 731日ぶんの外れを、まとめて</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(residual[:<span class="dv">3</span>])              <span class="co"># 最初の3日ぶん</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((residual <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>())     <span class="co"># 二乗して、全部足す</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[-2112.503 -2470.302  -418.276]
 1798539709.665673</code></pre>
@@ -3516,9 +3505,9 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 <li>出力：いちばん良いaと、そのときの二乗和</li>
 </ul>
 <p><code>range(5000, 8001, 100)</code>のように数を3つ渡すと、<code>range(始め, 終わり, 刻み)</code>の意味になり、始めから刻みずつ増えていきます。終わりの数は含まないので、8000まで入れたいときは8001と書きます。まず、小さな範囲で確かめてみましょう。</p>
-<div id="daeda56b" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>, <span class="dv">5301</span>, <span class="dv">100</span>):</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)          <span class="co"># 5000, 5100, 5200, 5300 と表示される</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="daf268c2" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>, <span class="dv">5301</span>, <span class="dv">100</span>):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(a)          <span class="co"># 5000, 5100, 5200, 5300 と表示される</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5000
 5100
@@ -3527,21 +3516,21 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 </div>
 </div>
 <p><code>if</code>文は「条件が成り立つときだけ、下の字下げした行を実行する」書き方です（if文）。ここでは「これまでの最小より小さければ、覚え直す」に使います。<code>None</code>は「まだ何も入っていない」という印で、1回目は必ず覚えます。<code>A or B</code>は「AとBのどちらかが成り立てば成り立つ」という意味です。1回目は<code>best_sse is None</code>で成り立ち、2回目からは<code>s &lt; best_sse</code>で決まります。</p>
-<div id="622cd20f" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best_a <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>best_sse <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>, <span class="dv">8001</span>, <span class="dv">100</span>):              <span class="co"># 5000, 5100, …, 8000</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> ((y <span class="op">-</span> (a <span class="op">*</span> x <span class="op">+</span> <span class="dv">1200</span>)) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()     <span class="co"># この a の二乗和</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> best_sse <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> s <span class="op">&lt;</span> best_sse:      <span class="co"># 小さければ覚え直す</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        best_a <span class="op">=</span> a</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        best_sse <span class="op">=</span> s</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_a, best_sse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="73805183" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>best_a <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>best_sse <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>, <span class="dv">8001</span>, <span class="dv">100</span>):              <span class="co"># 5000, 5100, …, 8000</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> ((y <span class="op">-</span> (a <span class="op">*</span> x <span class="op">+</span> <span class="dv">1200</span>)) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()     <span class="co"># この a の二乗和</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> best_sse <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> s <span class="op">&lt;</span> best_sse:      <span class="co"># 小さければ覚え直す</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        best_a <span class="op">=</span> a</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        best_sse <span class="op">=</span> s</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_a, best_sse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>6700 1661091384.2666712</code></pre>
 </div>
 </div>
 <p>a=6700のとき、二乗和が最小になりました。aを動かしたときの二乗和を図にすると、谷底が1つだけのU字になります。</p>
-<div id="e6f61ebc" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
+<div id="cc4cd6bc" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3554,14 +3543,14 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 <section id="変えてみるbも動かすfor文を二重に" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるbも動かすfor文を二重に">変えてみる：bも動かす（for文を二重に）</h3>
 <p>上のセルの<code>1200</code>を、もう1つの<code>for</code>文の<code>b</code>に変えます。<code>for</code>文の中に<code>for</code>文を入れると、aとbのすべての組み合わせを試せます。<code>best</code>には (a, b, 二乗和) の3つをまとめて覚えます。<code>best[2]</code>は3つ目、つまり二乗和です。</p>
-<div id="78cad791" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> <span class="va">None</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>, <span class="dv">8001</span>, <span class="dv">100</span>):</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">2001</span>, <span class="dv">100</span>):          <span class="co"># b も動かす</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        s <span class="op">=</span> ((y <span class="op">-</span> (a <span class="op">*</span> x <span class="op">+</span> b)) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> best <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> s <span class="op">&lt;</span> best[<span class="dv">2</span>]:</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            best <span class="op">=</span> (a, b, s)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ead52603" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>best <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5000</span>, <span class="dv">8001</span>, <span class="dv">100</span>):</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">2001</span>, <span class="dv">100</span>):          <span class="co"># b も動かす</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        s <span class="op">=</span> ((y <span class="op">-</span> (a <span class="op">*</span> x <span class="op">+</span> b)) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> best <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> s <span class="op">&lt;</span> best[<span class="dv">2</span>]:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>            best <span class="op">=</span> (a, b, s)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(6700, 1200, np.float64(1661091384.2666712))</code></pre>
 </div>
@@ -3571,50 +3560,86 @@ S(a, b) = \sum_{i=1}^{731} \bigl(y_i - (a\,x_i + b)\bigr)^2
 <section id="todo②範囲を狭めて刻みを細かくする" class="level3">
 <h3 class="anchored" data-anchor-id="todo②範囲を狭めて刻みを細かくする">TODO②：範囲を狭めて、刻みを細かくする</h3>
 <p>上の二重の<code>for</code>文のセルをコピーして、aを6400〜6800、bを1000〜1400の範囲で、どちらも10ずつ試すように変えてください。</p>
-<div id="bca76df8" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 上のセルをコピーして、a を range(6400, 6801, 10)、</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       b を range(1000, 1401, 10) にする</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: 変えるのは range の中の数だけ</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="82b490c6" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 上のセルをコピーして、a を range(6400, 6801, 10)、</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       b を range(1000, 1401, 10) にする</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: 変えるのは range の中の数だけ</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
 </section>
 </section>
 <section id="谷底を式一発で求める" class="level2">
 <h2 class="anchored" data-anchor-id="谷底を式一発で求める">5. 谷底を、式一発で求める</h2>
-<p>総当たりは、刻みを細かくするほど時間がかかります。実は、二乗和の谷底は式一発で求められます。<span class="math inline">\(S(a, b)\)</span>をaとbで微分して0とおくと、次の式が出てきます（<span class="math inline">\(\bar{x} = \frac{1}{731}\sum_i x_i\)</span> は気温の平均、<span class="math inline">\(\bar{y}\)</span> は台数の平均）。</p>
+<p>総当たりは、刻みを細かくするほど時間がかかります。実は、二乗和の谷底は式一発で求められます。谷底では、aやbを少し動かしても二乗和は変わりません。つまり、<span class="math inline">\(S(a, b)\)</span>をaで微分しても、bで微分しても0になります。</p>
+<p>aで微分すると（<span class="math inline">\((y_i - a x_i - b)^2\)</span>をaで微分すると<span class="math inline">\(-2x_i(y_i - a x_i - b)\)</span>になる、合成関数の微分）、</p>
 <p><span class="math display">\[
-a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b = \bar{y} - a\,\bar{x}
+\frac{\partial S}{\partial a} = \sum_{i=1}^{731} -2\,x_i\,\bigl(y_i - a\,x_i - b\bigr) = 0
 \]</span></p>
-<p>外れの二乗和を最小にしてaとbを決めるこのやり方を、最小二乗法と呼びます。</p>
-<section id="お手本式をfor文で計算する" class="level3">
-<h3 class="anchored" data-anchor-id="お手本式をfor文で計算する">お手本：式をfor文で計算する</h3>
-<ul>
-<li>役割：上の式の分子と分母を<code>for</code>文で足し上げ、谷底のaとbを出す</li>
-<li>入力：配列<code>x</code>・<code>y</code></li>
-<li>出力：谷底の<code>a_best</code>・<code>b_best</code></li>
-</ul>
-<div id="3e3b4444" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>x_mean <span class="op">=</span> x.mean()</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>y_mean <span class="op">=</span> y.mean()</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> <span class="dv">0</span>     <span class="co"># 分子</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>den <span class="op">=</span> <span class="dv">0</span>     <span class="co"># 分母</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(x)):</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> num <span class="op">+</span> (x[i] <span class="op">-</span> x_mean) <span class="op">*</span> (y[i] <span class="op">-</span> y_mean)</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    den <span class="op">=</span> den <span class="op">+</span> (x[i] <span class="op">-</span> x_mean) <span class="op">**</span> <span class="dv">2</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>a_best <span class="op">=</span> num <span class="op">/</span> den</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>b_best <span class="op">=</span> y_mean <span class="op">-</span> a_best <span class="op">*</span> x_mean</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a_best, b_best)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>6640.709998548638 1214.6421190294009</code></pre>
-</div>
-</div>
-<p>a=6640.71、b=1214.64。TODO②の総当たりの谷底（6650, 1210）のすぐ近くです。</p>
+<p>bで微分すると、</p>
+<p><span class="math display">\[
+\frac{\partial S}{\partial b} = \sum_{i=1}^{731} -2\,\bigl(y_i - a\,x_i - b\bigr) = 0
+\]</span></p>
+<p>です（<span class="math inline">\(\partial\)</span>は、ほかの文字を止めて微分する、という印）。<span class="math inline">\(-2\)</span>で割って、aとbを含む項を左に集めると、2本の式になります（<span class="math inline">\(n = 731\)</span>）。</p>
+<p><span class="math display">\[
+\begin{aligned}
+n\,b + \Bigl(\sum_i x_i\Bigr)\,a &amp;= \sum_i y_i \\
+\Bigl(\sum_i x_i\Bigr)\,b + \Bigl(\sum_i x_i^2\Bigr)\,a &amp;= \sum_i x_i\,y_i
+\end{aligned}
+\]</span></p>
+<p>知りたいのはaとbの2つで、式も2本です。連立方程式として解けます。</p>
+<section id="行列で書く正規方程式" class="level3">
+<h3 class="anchored" data-anchor-id="行列で書く正規方程式">行列で書く：正規方程式</h3>
+<p>この2本の式は、行列で1本にまとめられます。台数を縦に並べた<span class="math inline">\(\mathbf{y}\)</span>（731×1）、1の列と気温の列を並べた表<span class="math inline">\(\mathbf{X}\)</span>（731×2）、切片と傾きを並べた<span class="math inline">\(\boldsymbol{\beta} = (b, a)^\top\)</span>（2×1）を使うと、予測は<span class="math inline">\(\mathbf{X}\boldsymbol{\beta}\)</span>で731日ぶんがまとめて出ます。そして、上の2本の式は</p>
+<p><span class="math display">\[
+\underbrace{\begin{pmatrix} n &amp; \sum_i x_i \\ \sum_i x_i &amp; \sum_i x_i^2 \end{pmatrix}}_{\mathbf{X}^\top\mathbf{X}}
+\begin{pmatrix} b \\ a \end{pmatrix}
+=
+\underbrace{\begin{pmatrix} \sum_i y_i \\ \sum_i x_i\,y_i \end{pmatrix}}_{\mathbf{X}^\top\mathbf{y}}
+\]</span></p>
+<p>を書き下したものです。これを<span class="math inline">\(\mathbf{X}^\top\mathbf{X}\boldsymbol{\beta} = \mathbf{X}^\top\mathbf{y}\)</span>と書き、正規方程式（normal equation）と呼びます。答えは</p>
+<p><span class="math display">\[
+\hat{\boldsymbol{\beta}} = \bigl(\mathbf{X}^\top\mathbf{X}\bigr)^{-1}\mathbf{X}^\top\mathbf{y}
+\]</span></p>
+<p>の1行です。<span class="math inline">\((\cdot)^{-1}\)</span>は逆行列（inverse matrix）で、掛けると1にあたる行列（単位行列）になる行列です。<span class="math inline">\(\mathbf{X}\)</span>の列が何本になっても、同じ式で谷底が出ます。外れの二乗和を最小にして係数を決めるこのやり方を、最小二乗法と呼びます。</p>
 </section>
-<section id="答え合わせlinearregressionと比べる" class="level3">
-<h3 class="anchored" data-anchor-id="答え合わせlinearregressionと比べる">答え合わせ：LinearRegressionと比べる</h3>
-<p>scikit-learnの<code>LinearRegression</code>は、この最小二乗法を中でやってくれる道具です。<code>fit</code>で学ばせ、<code>coef_</code>（傾き）と<code>intercept_</code>（切片）で結果を見ます。列は<code>df[[&#39;気温&#39;]]</code>のように二重のかっこ（表の形）で渡します。</p>
-<div id="bd439fb3" class="cell" data-execution_count="15">
+<section id="お手本正規方程式をコードにする" class="level3">
+<h3 class="anchored" data-anchor-id="お手本正規方程式をコードにする">お手本：正規方程式をコードにする</h3>
+<ul>
+<li>役割：正規方程式を、記号と1対1でコードにする</li>
+<li>入力：配列<code>x</code>・<code>y</code></li>
+<li>出力：<span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>（<code>beta</code>）と、切片<code>b_best</code>・傾き<code>a_best</code></li>
+</ul>
+<p>転置<span class="math inline">\(\mathbf{X}^\top\)</span>は<code>X1.T</code>、行列の積は<code>@</code>、逆行列は<code>np.linalg.inv</code>です。<code>np.ones(731)</code>は1が731個並んだ配列で、<code>np.column_stack</code>は配列を列として横に並べ、表（行列）にします。</p>
+<div id="ddf41595" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>X1 <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(x)), x])  <span class="co"># 1の列と、気温の列</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> X1.T <span class="op">@</span> X1                 <span class="co"># XᵀX</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> X1.T <span class="op">@</span> y                  <span class="co"># Xᵀy</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> np.linalg.inv(A) <span class="op">@</span> c   <span class="co"># (XᵀX)⁻¹ Xᵀy</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>b_best, a_best <span class="op">=</span> beta         <span class="co"># 切片と傾き</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(beta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1214.64211903 6640.70999855]</code></pre>
+</div>
+</div>
+<p>b=1214.64、a=6640.71。TODO②の総当たりの谷底（6650, 1210）のすぐ近くが、正確な谷底でした。</p>
+</section>
+<section id="変えてみるsolveで解く" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみるsolveで解く">変えてみる：solveで解く</h3>
+<p><code>np.linalg.solve(A, c)</code>は、逆行列を作らずに、連立方程式<span class="math inline">\(\mathbf{A}\boldsymbol{\beta} = \mathbf{c}\)</span>を直接解きます。</p>
+<div id="c74f6e45" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>beta_s <span class="op">=</span> np.linalg.solve(A, c)   <span class="co"># A β = c を、そのまま解く</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(beta_s)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1214.64211903 6640.70999855]</code></pre>
+</div>
+</div>
+<p>答えは同じです。それでも実務では<code>solve</code>を使います。<code>inv</code>は逆行列を作る途中で、計算の誤差が広がりやすいからです。列がほぼ重なると、その誤差が大きくなります。逆行列の作りにくさの目安を条件数と呼びます。気温だけの<span class="math inline">\(\mathbf{X}^\top\mathbf{X}\)</span>では約47ですが、気温と体感気温（相関0.992）を両方含む11本の列にすると、約31万に跳ね上がります。このデータでの<code>inv</code>と<code>solve</code>の差はまだ<span class="math inline">\(10^{-9}\)</span>ほどとわずかですが、列が重なるほど広がります。</p>
+</section>
+<section id="fit-の中身も同じ谷底" class="level3">
+<h3 class="anchored" data-anchor-id="fit-の中身も同じ谷底">fit() の中身も、同じ谷底</h3>
+<p>scikit-learnの<code>LinearRegression</code>も、この最小二乗法を中でやってくれる道具です。<code>fit</code>で学ばせ、<code>coef_</code>（傾き）と<code>intercept_</code>（切片）で結果を見ます。列は<code>df[[&#39;気温&#39;]]</code>のように二重のかっこ（表の形）で渡します。</p>
+<div id="b7be7891" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_temp <span class="op">=</span> LinearRegression()</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model_temp.fit(df[[<span class="st">&#39;気温&#39;</span>]], y)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.coef_[<span class="dv">0</span>])           <span class="co"># 傾き a</span></span>
@@ -3624,7 +3649,7 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 1214.6421190294031</code></pre>
 </div>
 </div>
-<p>式一発の答えと一致しました。<code>fit()</code>の一行の中身は、今日ここまでやってきた計算そのものです。</p>
+<p>自分で書いた正規方程式の答えと一致しました。<code>fit()</code>の1行の中身は、いま自分で書いた計算と同じ谷底です。</p>
 </section>
 <section id="変えてみるr²を自分で計算する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるr²を自分で計算する">変えてみる：R²を自分で計算する</h3>
@@ -3633,21 +3658,21 @@ a = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sum (x_i - \bar{x})^2}, \qquad b
 R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 \]</span></p>
 <p>分子が直線の二乗和、分母が毎日平均<span class="math inline">\(\bar{y}\)</span>と答えたときの二乗和です。直線が平均より外れれば、分数が1を超えて、R²はマイナスになります。</p>
-<div id="35b1af01" class="cell" data-execution_count="16">
+<div id="5d6d5c58" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pred_line <span class="op">=</span> a_best <span class="op">*</span> x <span class="op">+</span> b_best</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>sse_line <span class="op">=</span> ((y <span class="op">-</span> pred_line) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()      <span class="co"># 直線の二乗和</span></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>sst <span class="op">=</span> ((y <span class="op">-</span> y.mean()) <span class="op">**</span> <span class="dv">2</span>).<span class="bu">sum</span>()            <span class="co"># 基準の二乗和</span></span>
 <span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="dv">1</span> <span class="op">-</span> sse_line <span class="op">/</span> sst)                    <span class="co"># R²</span></span>
 <span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_temp.score(df[[<span class="st">&#39;気温&#39;</span>]], y))     <span class="co"># 答え合わせ</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.3937487313729241
+<pre><code>0.3937487313729242
 0.3937487313729241</code></pre>
 </div>
 </div>
 <p>R²は0.394。基準の二乗和のうち、約4割を気温の直線で減らせました。</p>
 <p>実は、前回の気温帯だけで分けた段（外れ幅1211台）をR²で測ると0.439で、直線より少し上です。前回の散布図で見たとおり、台数は暑すぎると頭打ちになるので、まっすぐな直線では右端を外してしまうのです。それでも直線には、境目で跳ばず、1本の式で書けるという良さがあります。</p>
 <p>手がかりを増やすこともできます。<code>df[[&#39;気温&#39;, &#39;年&#39;]]</code>のように列を並べるだけで、気温と年を両方使う式（重回帰、multiple regression）になります。年を<span class="math inline">\(x_{i2}\)</span>とすると、<span class="math inline">\(\hat{y}_i = a_1 x_{i1} + a_2 x_{i2} + b\)</span>です。</p>
-<div id="4f0e1a19" class="cell" data-execution_count="17">
+<div id="ae2a8b86" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression()</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>model_ty.fit(df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]], y)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model_ty.coef_, model_ty.intercept_)</span>
@@ -3658,6 +3683,43 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </div>
 </div>
 <p>気温と年を使うと、R²は0.68まで上がりました。<code>coef_</code>に並ぶ各列に掛かる数（直線の傾きaにあたる数）を、係数と呼びます。</p>
+</section>
+<section id="変えてみる11本の列の表を作る" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみる11本の列の表を作る">変えてみる：11本の列の表を作る</h3>
+<p>列を11本に増やしても、変わるのは<span class="math inline">\(\mathbf{X}\)</span>の列の数だけです（731×12）。正規方程式のコードは、そのまま使えます。1の列に11本の列を並べた表を作ります。<code>df[cols].values</code>で、11列をまとめて配列にします。</p>
+<div id="2dfa9d34" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>X11 <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(y)), df[cols].values])</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X11.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(731, 12)</code></pre>
+</div>
+</div>
+</section>
+<section id="todo③11本の列で正規方程式を解く" class="level3">
+<h3 class="anchored" data-anchor-id="todo③11本の列で正規方程式を解く">TODO③：11本の列で正規方程式を解く</h3>
+<p><code>X11</code>で正規方程式を作り、<code>np.linalg.solve</code>で<span class="math inline">\(\hat{\boldsymbol{\beta}}\)</span>を求めて表示してください。出てくる係数は12個（切片1個と、11本の列の係数）です。</p>
+<div id="3cd9bb6f" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: X11 で正規方程式を作り、np.linalg.solve で β を求める</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の X1 を X11 に変え、inv の代わりに solve を使う</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="変えてみる同じことを1行で" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみる同じことを1行で">変えてみる：同じことを1行で</h3>
+<p><code>LinearRegression</code>なら、1の列を自分で足してくれるので、<code>df[cols]</code>を渡すだけです。</p>
+<div id="29f0fc01" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>model11 <span class="op">=</span> LinearRegression().fit(df[cols], y)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(model11.intercept_, <span class="dv">2</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model11.coef_.<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1469.0
+[  509.78  2040.7    -38.98  -518.99    69.06   120.36  -610.99  2028.92
+  3573.27 -1018.86 -2557.57]</code></pre>
+</div>
+</div>
+<p>正規方程式を自分で書いた12個の係数と、1行の答えが一致します。中で何をしているかを知ったうえで、1行で済ませられる。これがライブラリの便利さです。</p>
 <hr>
 </section>
 </section>
@@ -3665,39 +3727,40 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <h2 class="anchored" data-anchor-id="自己採点は甘くないか">6. 自己採点は、甘くないか</h2>
 <p>ここまでのR²は、式を作るのに使った731日で測っていました。第1回の最後で見たとおり、作るのに使った日で採点すると、成績は甘く出ます。本当の実力は、まだ見ていない日で測る必要があります。</p>
 <p>そこで、データを2つに分けます。式を作るのに使う訓練データ（過去問）と、最後まで取っておくテストデータ（本番）です。まず、第1回の段で試してみます。</p>
-<div id="b639d427" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title 第1回の段を、作った日と、まだ見ていない日で採点する</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df.copy()</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;気温帯&#39;</span>] <span class="op">=</span> pd.cut(d[<span class="st">&#39;気温&#39;</span>] <span class="op">*</span> <span class="dv">41</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> keys <span class="kw">in</span> [[<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;年&#39;</span>], [<span class="st">&#39;月&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;曜日&#39;</span>]]:</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> tr.groupby(keys, observed<span class="op">=</span><span class="va">True</span>)[<span class="st">&#39;台数&#39;</span>].mean().rename(<span class="st">&#39;答え&#39;</span>)</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    pred_tr <span class="op">=</span> tr.join(means, on<span class="op">=</span>keys)[<span class="st">&#39;答え&#39;</span>]</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    pred_te <span class="op">=</span> te.join(means, on<span class="op">=</span>keys)[<span class="st">&#39;答え&#39;</span>]</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>    no_ans <span class="op">=</span> pred_te.isna()          <span class="co"># 訓練に同じ組み合わせがない日</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    pred_te <span class="op">=</span> pred_te.fillna(tr[<span class="st">&#39;台数&#39;</span>].mean())</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    err_tr <span class="op">=</span> np.<span class="bu">abs</span>(tr[<span class="st">&#39;台数&#39;</span>] <span class="op">-</span> pred_tr)</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    err_te <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;台数&#39;</span>] <span class="op">-</span> pred_te)</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(keys)</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  作った日        :&#39;</span>, <span class="bu">round</span>(err_tr.mean()), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  まだ見ていない日:&#39;</span>, <span class="bu">round</span>(err_te.mean()), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  答えのない日    :&#39;</span>, <span class="bu">int</span>(no_ans.<span class="bu">sum</span>()), <span class="st">&#39;日&#39;</span>)</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  答えのある日だけ:&#39;</span>, <span class="bu">round</span>(err_te[<span class="op">~</span>no_ans].mean()), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="58335cf9" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title 第1回の段を、作った日と、まだ見ていない日で採点する</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> df.copy()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>d[<span class="st">&#39;気温帯&#39;</span>] <span class="op">=</span> pd.cut(d[<span class="st">&#39;気温&#39;</span>] <span class="op">*</span> <span class="dv">41</span>, bins<span class="op">=</span>[<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">40</span>])</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> keys <span class="kw">in</span> [[<span class="st">&#39;気温帯&#39;</span>, <span class="st">&#39;年&#39;</span>], [<span class="st">&#39;月&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;曜日&#39;</span>]]:</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>    means <span class="op">=</span> tr.groupby(keys, observed<span class="op">=</span><span class="va">True</span>)[<span class="st">&#39;台数&#39;</span>].mean().rename(<span class="st">&#39;答え&#39;</span>)</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>    pred_tr <span class="op">=</span> tr.join(means, on<span class="op">=</span>keys)[<span class="st">&#39;答え&#39;</span>]</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>    pred_te <span class="op">=</span> te.join(means, on<span class="op">=</span>keys)[<span class="st">&#39;答え&#39;</span>]</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> pred_te.notna()             <span class="co"># 訓練に同じ組み合わせがあり、答えを出せた日</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>    err_tr <span class="op">=</span> np.<span class="bu">abs</span>(tr[<span class="st">&#39;台数&#39;</span>] <span class="op">-</span> pred_tr)</span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>    err_te <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;台数&#39;</span>] <span class="op">-</span> pred_te)</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(keys)</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  作った日          :&#39;</span>, <span class="bu">round</span>(err_tr.mean()), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  答えを出せない日  :&#39;</span>, <span class="bu">int</span>((<span class="op">~</span>ok).<span class="bu">sum</span>()), <span class="st">&#39;日&#39;</span>)</span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;  答えを出せた日    :&#39;</span>, <span class="bu">round</span>(err_te[ok].mean()), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;気温帯&#39;, &#39;年&#39;]
-  作った日        : 766 台
-  まだ見ていない日: 773 台
-  答えのない日    : 0 日
-  答えのある日だけ: 773 台
+  作った日          : 766 台
+  答えを出せない日  : 0 日
+  答えを出せた日    : 773 台
 [&#39;月&#39;, &#39;年&#39;, &#39;天気&#39;, &#39;曜日&#39;]
-  作った日        : 393 台
-  まだ見ていない日: 1008 台
-  答えのない日    : 45 日
-  答えのある日だけ: 665 台</code></pre>
+  作った日          : 393 台
+  答えを出せない日  : 45 日
+  答えを出せた日    : 665 台</code></pre>
 </div>
 </div>
-<p>気温帯×年の段は、作った日でも見ていない日でも、外れ幅は770台ほどで変わりません（訓練の584日だけで段を作り直したので、731日すべてで作った前回の762台とは少し違います）。ところが、月×年×天気×曜日の細かい段は、作った日では393台なのに、まだ見ていない日では1008台も外れました。</p>
-<p>そのわけの1つは、答えのない日があることです。テスト147日のうち45日は、訓練に同じ組み合わせ（同じ月・年・天気・曜日）の日が1日もありません。答えのない日は、訓練全体の平均で代用しました（<code>fillna</code>）。これが大きく外れます。答えのある102日だけで見ても外れ幅は665台あり、作った日の393台よりずっと大きくなります。細かく分けた段は、作った日の台数を覚えていただけで、新しい組み合わせの日には答えそのものがなかったのです。（<code>~no_ans</code>の<code>~</code>は、TrueとFalseを入れかえる記号です。）</p>
+<p>気温帯×年の段は、作った日でも見ていない日でも、外れ幅は770台ほどで変わりません（訓練の584日だけで段を作り直したので、731日すべてで作った前回の762台とは少し違います）。</p>
+<section id="考えてみよう細かい段はどうなる" class="level3">
+<h3 class="anchored" data-anchor-id="考えてみよう細かい段はどうなる">考えてみよう：細かい段は、どうなる？</h3>
+<p>月×年×天気×曜日の細かい段は、作った日では393台しか外れません。上の出力の下半分を見る前に、まだ見ていない147日で試すと何が起きそうかを予想して、下に書いてください。</p>
+<p>（ここに予想を書く）</p>
+<p>テスト147日のうち45日は、訓練に同じ組み合わせ（同じ月・年・天気・曜日）の日が1日もありません。その日には、段の答えそのものが出せないのです。答えを出せた102日だけで見ても、外れ幅は665台あり、作った日の393台よりずっと大きくなります。細かく分けた段は、作った日の台数を覚えていただけで、新しい組み合わせの日には答えを持っていなかったのです。（<code>~ok</code>の<code>~</code>は、TrueとFalseを入れかえる記号です。）</p>
+</section>
 <section id="お手本データを訓練とテストに分ける" class="level3">
 <h3 class="anchored" data-anchor-id="お手本データを訓練とテストに分ける">お手本：データを訓練とテストに分ける</h3>
 <ul>
@@ -3706,40 +3769,45 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <li>出力：<code>X_tr</code>・<code>X_te</code>・<code>y_tr</code>・<code>y_te</code></li>
 </ul>
 <p><code>train_test_split</code>は、行をばらばらに混ぜてから分ける関数です。<code>test_size=0.2</code>でテストを2割に、<code>random_state=42</code>で混ぜ方を固定します（何度やっても同じ分け方になる）。</p>
-<div id="f09e19bd" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[cols].values</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>                                          random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(X_tr), <span class="bu">len</span>(X_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3767e17c" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> df[cols].values</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                                          random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(X_tr), <span class="bu">len</span>(X_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>584 147</code></pre>
 </div>
 </div>
 <p>訓練が584日、テストが147日になりました。まだ見ていないテストでの当たり具合を、汎化性能（generalization performance）と呼びます。</p>
 </section>
-<section id="todo③訓練で学び訓練とテストのr²を比べる" class="level3">
-<h3 class="anchored" data-anchor-id="todo③訓練で学び訓練とテストのr²を比べる">TODO③：訓練で学び、訓練とテストのR²を比べる</h3>
+<section id="todo④訓練で学び訓練とテストのr²を比べる" class="level3">
+<h3 class="anchored" data-anchor-id="todo④訓練で学び訓練とテストのr²を比べる">TODO④：訓練で学び、訓練とテストのR²を比べる</h3>
 <p><code>LinearRegression</code>を訓練データだけで<code>fit</code>し、<code>score</code>で訓練データのR²とテストデータのR²を表示してください。</p>
-<div id="46572295" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 訓練データだけで fit し、訓練の R² とテストの R² を表示する</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: model = LinearRegression().fit(X_tr, y_tr) のあと、</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         model.score(X_tr, y_tr) と model.score(X_te, y_te)</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8e022e49" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 訓練データだけで fit し、訓練の R² とテストの R² を表示する</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: model = LinearRegression().fit(X_tr, y_tr) のあと、</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         model.score(X_tr, y_tr) と model.score(X_te, y_te)</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>訓練のR²は0.791、テストのR²は0.828です。2つがほぼ同じです（テストがたまたま少し高い）。つまり、この直線の式は作った日を覚えすぎておらず、まだ見ていない日にも同じくらい当たるということです。汎化性能は、訓練並みです。</p>
+</section>
+<section id="考えてみよう完璧すぎる式" class="level3">
+<h3 class="anchored" data-anchor-id="考えてみよう完璧すぎる式">考えてみよう：完璧すぎる式</h3>
+<p>11本の列に、ある2列を足すと、まだ見ていないテストのR²がちょうど1.0になります。どの日もぴったり当たるのです。どの2列で、なぜそうなるのか、どこがおかしいのかを、導入の「手元のデータ」を思い出して予想し、下に書いてください。</p>
+<p>（ここに予想を書く）</p>
 </section>
 <section id="変えてみるリークを再現する" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみるリークを再現する">変えてみる：リークを再現する</h3>
 <p>第1回で、<code>一般客</code>と<code>会員</code>の列を「足すとちょうど台数になる内訳なので、残すと答えが最初から分かってしまう」として落としました。わざとこの2列を手がかりに足すと、どうなるでしょうか。上のお手本の<code>cols</code>に<code>+</code>で2列をつなぎ、分け方も同じにします。</p>
-<div id="c500fa20" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>cols_leak <span class="op">=</span> cols <span class="op">+</span> [<span class="st">&#39;一般客&#39;</span>, <span class="st">&#39;会員&#39;</span>]</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>X_leak <span class="op">=</span> df[cols_leak].values</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>XL_tr, XL_te, yL_tr, yL_te <span class="op">=</span> train_test_split(</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    X_leak, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>model_leak <span class="op">=</span> LinearRegression().fit(XL_tr, yL_tr)</span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, model_leak.score(XL_te, yL_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="eed75d91" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>cols_leak <span class="op">=</span> cols <span class="op">+</span> [<span class="st">&#39;一般客&#39;</span>, <span class="st">&#39;会員&#39;</span>]</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>X_leak <span class="op">=</span> df[cols_leak].values</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>XL_tr, XL_te, yL_tr, yL_te <span class="op">=</span> train_test_split(</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    X_leak, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>model_leak <span class="op">=</span> LinearRegression().fit(XL_tr, yL_tr)</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, model_leak.score(XL_te, yL_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>テスト R²: 1.0</code></pre>
 </div>
@@ -3761,18 +3829,18 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </ul>
 <p><code>X_tr[:, [7]]</code>の<code>:</code>はすべての行、<code>[7]</code>は8本目の列（番号は0から）を表します。<code>[7]</code>とかっこで囲むと、1列の表の形のまま取り出せます。<code>fit</code>は手がかりを表の形で受け取るので、この形にしておきます。</p>
 <p><code>PolynomialFeatures(3)</code>は気温から2乗・3乗の列を作る部品、<code>Pipeline</code>は部品を順につなぐ道具です。</p>
-<div id="87f8d4b1" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>x1_tr <span class="op">=</span> X_tr[:, [<span class="dv">7</span>]]    <span class="co"># 8本目の列（気温）だけ</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>x1_te <span class="op">=</span> X_te[:, [<span class="dv">7</span>]]</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(<span class="dv">3</span>)),</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>                   (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>model3.fit(x1_tr, y_tr)</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model3.score(x1_tr, y_tr), model3.score(x1_te, y_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="34be5516" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>x1_tr <span class="op">=</span> X_tr[:, [<span class="dv">7</span>]]    <span class="co"># 8本目の列（気温）だけ</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>x1_te <span class="op">=</span> X_te[:, [<span class="dv">7</span>]]</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>model3 <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(<span class="dv">3</span>)),</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>                   (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>model3.fit(x1_tr, y_tr)</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(model3.score(x1_tr, y_tr), model3.score(x1_te, y_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.4720415505498843 0.4137499258721813</code></pre>
 </div>
 </div>
-<div id="2dd2cef7" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="23">
+<div id="be23225f" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3782,18 +3850,23 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </div>
 </div>
 </section>
-<section id="todo④次数を変えて訓練とテストのr²を並べる" class="level3">
-<h3 class="anchored" data-anchor-id="todo④次数を変えて訓練とテストのr²を並べる">TODO④：次数を変えて、訓練とテストのR²を並べる</h3>
+<section id="todo⑤次数を変えて訓練とテストのr²を並べる" class="level3">
+<h3 class="anchored" data-anchor-id="todo⑤次数を変えて訓練とテストのr²を並べる">TODO⑤：次数を変えて、訓練とテストのR²を並べる</h3>
 <p><code>for</code>文で次数を1・3・8・15と変えながら、お手本のセルと同じことをして、次数ごとの訓練のR²とテストのR²を表示してください。</p>
-<div id="380e4c9a" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: for deg in [1, 3, 8, 15]: として、次数ごとの</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       訓練 R² とテスト R² を表示する</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の PolynomialFeatures(3) の 3 を deg に変え、</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         4つの行を for の中に入れる</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="39a5957f" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: for deg in [1, 3, 8, 15]: として、次数ごとの</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="co">#       訓練 R² とテスト R² を表示する</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: お手本の PolynomialFeatures(3) の 3 を deg に変え、</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co">#         4つの行を for の中に入れる</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>訓練のR²は次数とともに上がっていきます（0.388 → 0.472 → 0.476 → 0.481）。テストのR²は0.404 → 0.414 → 0.408 → 0.407で、3次がいちばん高いものの、ほぼ横ばいです。訓練が584日もあると、曲線は1日1日の偶然の揺れに振り回されにくく、曲げすぎてもテストの成績はほとんど崩れません。</p>
 <p>では、データが少なかったらどうでしょう。</p>
+</section>
+<section id="考えてみよう20日だけなら" class="level3">
+<h3 class="anchored" data-anchor-id="考えてみよう20日だけなら">考えてみよう：20日だけなら？</h3>
+<p>訓練を584日から20日に減らし、テストは同じ147日のままで、1次・3次・8次と曲げていきます。訓練のR²とテストのR²は、それぞれどう動くと思いますか。予想を下に書いてから、次のセルを実行してください。</p>
+<p>（ここに予想を書く）</p>
 </section>
 <section id="変えてみる訓練を20日だけにする" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる訓練を20日だけにする">変えてみる：訓練を20日だけにする</h3>
@@ -3803,22 +3876,22 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <li>出力：次数ごとの、訓練のR²とテストのR²</li>
 </ul>
 <p><code>[:20]</code>は、3節で見たスライスです。番号0〜19の20日を取り出します。テストは同じ147日のままです。</p>
-<div id="c666a735" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>x20 <span class="op">=</span> x1_tr[:<span class="dv">20</span>]     <span class="co"># 訓練の最初の20日だけ</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>y20 <span class="op">=</span> y_tr[:<span class="dv">20</span>]</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> deg <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">8</span>]:</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(deg)),</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    m.fit(x20, y20)</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(deg, <span class="st">&#39;次:&#39;</span>, <span class="bu">round</span>(m.score(x20, y20), <span class="dv">3</span>),</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>          <span class="bu">round</span>(m.score(x1_te, y_te), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ef9bd4d7" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>x20 <span class="op">=</span> x1_tr[:<span class="dv">20</span>]     <span class="co"># 訓練の最初の20日だけ</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>y20 <span class="op">=</span> y_tr[:<span class="dv">20</span>]</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> deg <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">8</span>]:</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(deg)),</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    m.fit(x20, y20)</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(deg, <span class="st">&#39;次:&#39;</span>, <span class="bu">round</span>(m.score(x20, y20), <span class="dv">3</span>),</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>          <span class="bu">round</span>(m.score(x1_te, y_te), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 次: 0.228 0.362
 3 次: 0.444 -0.288
 8 次: 0.499 -28.353</code></pre>
 </div>
 </div>
-<div id="05d7c52c" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="26">
+<div id="212836eb" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="29">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3835,13 +3908,13 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="明日は何台" class="level2">
 <h2 class="anchored" data-anchor-id="明日は何台">8. 明日は何台？</h2>
 <p>6節で、11本の列の式は、まだ見ていない日にも同じくらい当たると分かりました。ただ、明日の湿度や風速は、まだ分かりません。明日に答えるのは、5節の気温と年の2つを使った式にします。まず、この式も6節と同じ分け方で測ります。6節のお手本の<code>X</code>を、2本の列の<code>Xty</code>に変えただけです。</p>
-<div id="19f7d8cf" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]].values</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>Xty_tr, Xty_te, yty_tr, yty_te <span class="op">=</span> train_test_split(</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    Xty, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression().fit(Xty_tr, yty_tr)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練 R²  :&#39;</span>, model_ty.score(Xty_tr, yty_tr))</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, model_ty.score(Xty_te, yty_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b535c659" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>Xty <span class="op">=</span> df[[<span class="st">&#39;気温&#39;</span>, <span class="st">&#39;年&#39;</span>]].values</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>Xty_tr, Xty_te, yty_tr, yty_te <span class="op">=</span> train_test_split(</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    Xty, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>model_ty <span class="op">=</span> LinearRegression().fit(Xty_tr, yty_tr)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練 R²  :&#39;</span>, model_ty.score(Xty_tr, yty_tr))</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, model_ty.score(Xty_te, yty_te))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練 R²  : 0.6727204673783596
 テスト R²: 0.7128404660904721</code></pre>
@@ -3849,13 +3922,13 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 </div>
 <p>テストのR²は0.713で、11本の列の0.828より低くなりました。手がかりを減らしたぶん、外れます。その代わり、明日に使える式になりました。</p>
 <p>次に、作った日と、まだ見ていない日の外れ幅の平均<span class="math inline">\(\frac{1}{n}\sum_i |y_i - \hat{y}_i|\)</span>を測ります。明日が27℃・2年目なら、何台でしょうか。</p>
-<div id="05c4e77f" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>err_tr <span class="op">=</span> np.<span class="bu">abs</span>(yty_tr <span class="op">-</span> model_ty.predict(Xty_tr)).mean()</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>err_te <span class="op">=</span> np.<span class="bu">abs</span>(yty_te <span class="op">-</span> model_ty.predict(Xty_te)).mean()</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;作った日の外れ幅  :&#39;</span>, <span class="bu">round</span>(err_tr), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;まだ見ていない日  :&#39;</span>, <span class="bu">round</span>(err_te), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>pred_t <span class="op">=</span> model_ty.predict([[<span class="dv">27</span> <span class="op">/</span> <span class="dv">41</span>, <span class="dv">1</span>]])[<span class="dv">0</span>]     <span class="co"># 27℃・2年目</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;明日（27℃・2年目）:&#39;</span>, <span class="bu">round</span>(pred_t), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="aab4941a" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>err_tr <span class="op">=</span> np.<span class="bu">abs</span>(yty_tr <span class="op">-</span> model_ty.predict(Xty_tr)).mean()</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>err_te <span class="op">=</span> np.<span class="bu">abs</span>(yty_te <span class="op">-</span> model_ty.predict(Xty_te)).mean()</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;作った日の外れ幅  :&#39;</span>, <span class="bu">round</span>(err_tr), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;まだ見ていない日  :&#39;</span>, <span class="bu">round</span>(err_te), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>pred_t <span class="op">=</span> model_ty.predict([[<span class="dv">27</span> <span class="op">/</span> <span class="dv">41</span>, <span class="dv">1</span>]])[<span class="dv">0</span>]     <span class="co"># 27℃・2年目</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;明日（27℃・2年目）:&#39;</span>, <span class="bu">round</span>(pred_t), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>作った日の外れ幅  : 859 台
 まだ見ていない日  : 837 台
@@ -3880,14 +3953,16 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <ul>
 <li>今日の目標は「1本の式を立て、まだ来ていない日にどれだけ当たるかを測る」ことでした。8節の答えは何台で、まだ見ていない日での外れ幅は何台でしたか？</li>
 <li>4節の総当たりと5節の式一発で、谷底のa・bはどれくらい近かったでしょうか？<code>LinearRegression</code>の答えとは一致しましたか？</li>
-<li>TODO③で、訓練のR²とテストのR²はどれくらい違いましたか？6節の細かい段と比べて、何が違いますか？</li>
-<li>TODO④で、次数を上げると訓練とテストのR²はどう動きましたか？</li>
+<li>TODO④で、訓練のR²とテストのR²はどれくらい違いましたか？6節の細かい段と比べて、何が違いますか？</li>
+<li>TODO⑤で、次数を上げると訓練とテストのR²はどう動きましたか？</li>
 </ul>
 <hr>
 </section>
 <section id="今日の要点" class="level2">
 <h2 class="anchored" data-anchor-id="今日の要点">今日の要点</h2>
 <ul>
+<li>今日、持ち帰る1文：作るのに使ったデータの成績は信じない。まだ見ていないデータで測り、良すぎたら漏れを疑う</li>
+<li>二乗和を最小にする係数は、正規方程式<span class="math inline">\(\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}\)</span>で求まる。総当たり（<code>for</code>・<code>if</code>）、正規方程式（<code>@</code>・<code>.T</code>・<code>solve</code>）、<code>LinearRegression</code>の1行は、同じ谷底にたどり着く</li>
 <li>直線の良さは、外れの二乗和で測る。二乗和を最小にするa・bを選ぶのが最小二乗法で、<code>LinearRegression</code>の中身そのもの</li>
 <li><code>for</code>文で1日ずつ足した二乗和と、numpyのまとめて計算は一致する。総当たりは<code>for</code>文と<code>if</code>文（小さければ覚え直す）で書ける</li>
 <li>R²は、毎日平均と答える基準から、二乗和をどれだけ減らせたかの割合</li>
@@ -3910,9 +3985,9 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>6節では<code>random_state=42</code>で1回だけ分けて、テストのR²を測りました。今度は分け方を変えて、同じことを5回くり返します。</p>
 <p><code>for</code>文で<code>random_state</code>を0, 1, 2, 3, 4と変えながら、11本の列の<code>X</code>と<code>y</code>を訓練8割・テスト2割に分けてください。それぞれの分け方で<code>LinearRegression</code>を訓練データで学び、テストのR²を5つ表示してください。5つの値は、あとで使うのでリスト<code>r2_list</code>にためておきます（<code>r2_list.append(値)</code>で1つ足せます）。</p>
-<div id="14f559b2" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="14f559b2" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
 <summary>
@@ -3924,9 +3999,9 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①の5つのテストのR²のうち、最大と最小の差はいくつですか。丸めていない値で差を計算し、小数第2位に丸めて答えてください（例: 0.12）。</p>
-<div id="954a8b96" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="954a8b96" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
 <summary>
@@ -3948,26 +4023,26 @@ R^2 = 1 - \frac{\sum_i (y_i - \hat{y}_i)^2}{\sum_i (y_i - \bar{y})^2}
 <h3 class="anchored" data-anchor-id="日付順に分ける未来を覗かない">日付順に分ける：未来を覗かない</h3>
 <p>6節の<code>train_test_split</code>は、行をばらばらに混ぜてから分けました。でも、自転車シェアの台数は日付順に並んだデータです。混ぜて分けると、2012年の日で学んで2011年の日を当てるという「未来を覗いた」採点が混ざります。</p>
 <p><code>shuffle=False</code>を付けると、行を混ぜずに上から順に分けます。表は日付順なので、前の8割で学び、後ろの2割を当てることになります。運営者が本当にやりたいのは、昨日までのデータで明日を当てることなので、こちらのほうが実際に近い採点です。</p>
-<div id="871e9cd3" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>X_tr2, X_te2, y_tr2, y_te2 <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>                                              shuffle<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(y_tr2)</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練  :&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[<span class="dv">0</span>], <span class="st">&#39;〜&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[n <span class="op">-</span> <span class="dv">1</span>])</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト:&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[n], <span class="st">&#39;〜&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> LinearRegression().fit(X_tr2, y_tr2)</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, <span class="bu">round</span>(m2.score(X_te2, y_te2), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="871e9cd3" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>X_tr2, X_te2, y_tr2, y_te2 <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>                                              shuffle<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(y_tr2)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練  :&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[<span class="dv">0</span>], <span class="st">&#39;〜&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[n <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト:&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[n], <span class="st">&#39;〜&#39;</span>, df[<span class="st">&#39;日付&#39;</span>].iloc[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>m2 <span class="op">=</span> LinearRegression().fit(X_tr2, y_tr2)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, <span class="bu">round</span>(m2.score(X_te2, y_te2), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練  : 2011-01-01 〜 2012-08-06
 テスト: 2012-08-07 〜 2012-12-31
 テスト R²: 0.613</code></pre>
 </div>
 </div>
-<div id="4c6487b6" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)           <span class="co"># 6節の式</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>err1 <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> m1.predict(X_te)).mean()       <span class="co"># 混ぜて分けた</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>err2 <span class="op">=</span> np.<span class="bu">abs</span>(y_te2 <span class="op">-</span> m2.predict(X_te2)).mean()     <span class="co"># 日付順に分けた</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;混ぜて分けた:&#39;</span>, <span class="bu">round</span>(err1), <span class="st">&#39;台&#39;</span>)</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;日付順      :&#39;</span>, <span class="bu">round</span>(err2), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4c6487b6" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)           <span class="co"># 6節の式</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>err1 <span class="op">=</span> np.<span class="bu">abs</span>(y_te <span class="op">-</span> m1.predict(X_te)).mean()       <span class="co"># 混ぜて分けた</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>err2 <span class="op">=</span> np.<span class="bu">abs</span>(y_te2 <span class="op">-</span> m2.predict(X_te2)).mean()     <span class="co"># 日付順に分けた</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;混ぜて分けた:&#39;</span>, <span class="bu">round</span>(err1), <span class="st">&#39;台&#39;</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;日付順      :&#39;</span>, <span class="bu">round</span>(err2), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>混ぜて分けた: 617 台
 日付順      : 864 台</code></pre>

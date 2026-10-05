@@ -1056,7 +1056,7 @@ margin-right: 0; }
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">第2回<br>課題の答え合わせ</h1>
-  <p class="subtitle">基本TODO①〜④と応用①②③</p>
+  <p class="subtitle">基本TODO①〜⑤と応用①②③</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -1069,7 +1069,7 @@ margin-right: 0; }
 </section>
 <section id="todo①2日目と3日目" class="slide level2">
 <h2>TODO①：2日目と3日目</h2>
-<div id="6821d169" class="cell" data-execution_count="2">
+<div id="692093b0" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>pred <span class="op">=</span> a <span class="op">*</span> x[<span class="dv">1</span>] <span class="op">+</span> b</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="bu">print</span>(pred, y[<span class="dv">1</span>] <span class="op">-</span> pred, (y[<span class="dv">1</span>] <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>)</span>
 <span id="cb1-3"><a href aria-label="3"></a>pred <span class="op">=</span> a <span class="op">*</span> x[<span class="dv">2</span>] <span class="op">+</span> b</span>
@@ -1085,7 +1085,7 @@ margin-right: 0; }
 </section>
 <section id="todo②10ずつの総当たり" class="slide level2">
 <h2>TODO②：10ずつの総当たり</h2>
-<div id="07f05697" class="cell" data-execution_count="3">
+<div id="37769afa" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href aria-label="1"></a>best <span class="op">=</span> <span class="va">None</span></span>
 <span id="cb3-2"><a href aria-label="2"></a><span class="cf">for</span> a <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6400</span>, <span class="dv">6801</span>, <span class="dv">10</span>):</span>
 <span id="cb3-3"><a href aria-label="3"></a>    <span class="cf">for</span> b <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1000</span>, <span class="dv">1401</span>, <span class="dv">10</span>):</span>
@@ -1101,12 +1101,29 @@ margin-right: 0; }
 <li>a=6650・b=1210。式一発の谷底（6640.71, 1214.64）のすぐ近く</li>
 </ul>
 </section>
-<section id="todo③訓練とテストのr²" class="slide level2">
-<h2>TODO③：訓練とテストのR²</h2>
-<div id="f79afc26" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>model <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)</span>
-<span id="cb5-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;訓練 R²  :&#39;</span>, model.score(X_tr, y_tr))</span>
-<span id="cb5-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, model.score(X_te, y_te))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="todo③11本の列で正規方程式" class="slide level2 fit-90">
+<h2>TODO③：11本の列で正規方程式</h2>
+<div id="1423eff0" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href aria-label="1"></a>cols <span class="op">=</span> [<span class="st">&#39;季節&#39;</span>, <span class="st">&#39;年&#39;</span>, <span class="st">&#39;月&#39;</span>, <span class="st">&#39;祝日&#39;</span>, <span class="st">&#39;曜日&#39;</span>, <span class="st">&#39;平日&#39;</span>,</span>
+<span id="cb5-2"><a href aria-label="2"></a>        <span class="st">&#39;天気&#39;</span>, <span class="st">&#39;気温&#39;</span>, <span class="st">&#39;体感気温&#39;</span>, <span class="st">&#39;湿度&#39;</span>, <span class="st">&#39;風速&#39;</span>]</span>
+<span id="cb5-3"><a href aria-label="3"></a>X11 <span class="op">=</span> np.column_stack([np.ones(<span class="bu">len</span>(y)), df[cols].values])</span>
+<span id="cb5-4"><a href aria-label="4"></a>beta11 <span class="op">=</span> np.linalg.solve(X11.T <span class="op">@</span> X11, X11.T <span class="op">@</span> y)</span>
+<span id="cb5-5"><a href aria-label="5"></a><span class="bu">print</span>(beta11.<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[ 1469.     509.78  2040.7    -38.98  -518.99    69.06   120.36  -610.99
+  2028.92  3573.27 -1018.86 -2557.57]</code></pre>
+</div>
+</div>
+<ul>
+<li>お手本の<code>X1</code>を<code>X11</code>に、<code>inv</code>を<code>solve</code>に変えるだけ。先頭が切片</li>
+</ul>
+</section>
+<section id="todo④訓練とテストのr²" class="slide level2">
+<h2>TODO④：訓練とテストのR²</h2>
+<div id="7a014066" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a>model <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)</span>
+<span id="cb7-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;訓練 R²  :&#39;</span>, model.score(X_tr, y_tr))</span>
+<span id="cb7-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="st">&#39;テスト R²:&#39;</span>, model.score(X_te, y_te))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練 R²  : 0.7910851850465888
 テスト R²: 0.8276670090367212</code></pre>
@@ -1123,15 +1140,15 @@ margin-right: 0; }
 <li>1回の分け方の値は、運で上下するかもしれない（応用①で確かめる）</li>
 </ul>
 </section>
-<section id="todo④次数ごとのr²" class="slide level2">
-<h2>TODO④：次数ごとのR²</h2>
-<div id="d4ff8a78" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href aria-label="1"></a><span class="cf">for</span> deg <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">15</span>]:</span>
-<span id="cb7-2"><a href aria-label="2"></a>    m <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(deg)),</span>
-<span id="cb7-3"><a href aria-label="3"></a>                  (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
-<span id="cb7-4"><a href aria-label="4"></a>    m.fit(x1_tr, y_tr)</span>
-<span id="cb7-5"><a href aria-label="5"></a>    <span class="bu">print</span>(deg, <span class="st">&#39;次:&#39;</span>, <span class="bu">round</span>(m.score(x1_tr, y_tr), <span class="dv">4</span>),</span>
-<span id="cb7-6"><a href aria-label="6"></a>          <span class="bu">round</span>(m.score(x1_te, y_te), <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="todo⑤次数ごとのr²" class="slide level2">
+<h2>TODO⑤：次数ごとのR²</h2>
+<div id="044ad77e" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href aria-label="1"></a><span class="cf">for</span> deg <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">8</span>, <span class="dv">15</span>]:</span>
+<span id="cb9-2"><a href aria-label="2"></a>    m <span class="op">=</span> Pipeline([(<span class="st">&#39;poly&#39;</span>, PolynomialFeatures(deg)),</span>
+<span id="cb9-3"><a href aria-label="3"></a>                  (<span class="st">&#39;lr&#39;</span>, LinearRegression())])</span>
+<span id="cb9-4"><a href aria-label="4"></a>    m.fit(x1_tr, y_tr)</span>
+<span id="cb9-5"><a href aria-label="5"></a>    <span class="bu">print</span>(deg, <span class="st">&#39;次:&#39;</span>, <span class="bu">round</span>(m.score(x1_tr, y_tr), <span class="dv">4</span>),</span>
+<span id="cb9-6"><a href aria-label="6"></a>          <span class="bu">round</span>(m.score(x1_te, y_te), <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 次: 0.3881 0.4037
 3 次: 0.472 0.4137
@@ -1142,7 +1159,7 @@ margin-right: 0; }
 </section>
 <section id="訓練は上がりテストは頭打ち" class="slide level2">
 <h2>訓練は上がり、テストは頭打ち</h2>
-<div id="7facd351" class="cell" data-execution_count="6">
+<div id="cac20982" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>1 次: 0.3881 0.4037
 3 次: 0.472 0.4137
@@ -1162,15 +1179,15 @@ margin-right: 0; }
 </section>
 <section id="応用①5通りの分け方" class="slide level2 fit-90">
 <h2>応用①：5通りの分け方</h2>
-<div id="e78646a4" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href aria-label="1"></a>r2_list <span class="op">=</span> []</span>
-<span id="cb10-2"><a href aria-label="2"></a><span class="cf">for</span> rs <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]:</span>
-<span id="cb10-3"><a href aria-label="3"></a>    X_tr_r, X_te_r, y_tr_r, y_te_r <span class="op">=</span> train_test_split(</span>
-<span id="cb10-4"><a href aria-label="4"></a>        X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>rs)</span>
-<span id="cb10-5"><a href aria-label="5"></a>    model_r <span class="op">=</span> LinearRegression().fit(X_tr_r, y_tr_r)</span>
-<span id="cb10-6"><a href aria-label="6"></a>    r2 <span class="op">=</span> model_r.score(X_te_r, y_te_r)</span>
-<span id="cb10-7"><a href aria-label="7"></a>    r2_list.append(r2)</span>
-<span id="cb10-8"><a href aria-label="8"></a>    <span class="bu">print</span>(<span class="st">&#39;random_state =&#39;</span>, rs, <span class="st">&#39; テスト R² =&#39;</span>, <span class="bu">round</span>(r2, <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="9a098674" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href aria-label="1"></a>r2_list <span class="op">=</span> []</span>
+<span id="cb12-2"><a href aria-label="2"></a><span class="cf">for</span> rs <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]:</span>
+<span id="cb12-3"><a href aria-label="3"></a>    X_tr_r, X_te_r, y_tr_r, y_te_r <span class="op">=</span> train_test_split(</span>
+<span id="cb12-4"><a href aria-label="4"></a>        X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>rs)</span>
+<span id="cb12-5"><a href aria-label="5"></a>    model_r <span class="op">=</span> LinearRegression().fit(X_tr_r, y_tr_r)</span>
+<span id="cb12-6"><a href aria-label="6"></a>    r2 <span class="op">=</span> model_r.score(X_te_r, y_te_r)</span>
+<span id="cb12-7"><a href aria-label="7"></a>    r2_list.append(r2)</span>
+<span id="cb12-8"><a href aria-label="8"></a>    <span class="bu">print</span>(<span class="st">&#39;random_state =&#39;</span>, rs, <span class="st">&#39; テスト R² =&#39;</span>, <span class="bu">round</span>(r2, <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>random_state = 0  テスト R² = 0.8046
 random_state = 1  テスト R² = 0.8257
@@ -1182,7 +1199,7 @@ random_state = 4  テスト R² = 0.7532</code></pre>
 </section>
 <section id="分け方だけでこんなに動く" class="slide level2">
 <h2>分け方だけで、こんなに動く</h2>
-<div id="bde3a2be" class="cell" data-execution_count="8">
+<div id="3dea3227" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>random_state = 0  テスト R² = 0.8046
 random_state = 1  テスト R² = 0.8257
@@ -1197,11 +1214,11 @@ random_state = 4  テスト R² = 0.7532</code></pre>
 </section>
 <section id="応用②最大と最小の差" class="slide level2">
 <h2>応用②：最大と最小の差</h2>
-<div id="fb69aceb" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href aria-label="1"></a>r2_arr <span class="op">=</span> np.array(r2_list)</span>
-<span id="cb13-2"><a href aria-label="2"></a>diff <span class="op">=</span> r2_arr.<span class="bu">max</span>() <span class="op">-</span> r2_arr.<span class="bu">min</span>()</span>
-<span id="cb13-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">round</span>(r2_arr.<span class="bu">max</span>(), <span class="dv">4</span>), <span class="bu">round</span>(r2_arr.<span class="bu">min</span>(), <span class="dv">4</span>), <span class="bu">round</span>(diff, <span class="dv">4</span>))</span>
-<span id="cb13-4"><a href aria-label="4"></a><span class="bu">print</span>(<span class="st">&#39;答え:&#39;</span>, <span class="ss">f&#39;</span><span class="sc">{</span>diff<span class="sc">:.2f}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3dbb56bc" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href aria-label="1"></a>r2_arr <span class="op">=</span> np.array(r2_list)</span>
+<span id="cb15-2"><a href aria-label="2"></a>diff <span class="op">=</span> r2_arr.<span class="bu">max</span>() <span class="op">-</span> r2_arr.<span class="bu">min</span>()</span>
+<span id="cb15-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">round</span>(r2_arr.<span class="bu">max</span>(), <span class="dv">4</span>), <span class="bu">round</span>(r2_arr.<span class="bu">min</span>(), <span class="dv">4</span>), <span class="bu">round</span>(diff, <span class="dv">4</span>))</span>
+<span id="cb15-4"><a href aria-label="4"></a><span class="bu">print</span>(<span class="st">&#39;答え:&#39;</span>, <span class="ss">f&#39;</span><span class="sc">{</span>diff<span class="sc">:.2f}</span><span class="ss">&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.8257 0.7532 0.0725
 答え: 0.07</code></pre>
