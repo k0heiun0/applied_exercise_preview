@@ -3750,7 +3750,7 @@ Shared room       3424.0    311
 <p>欠けた値があると、式が作れませんでした。すぐに埋めたくなりますが、その前に、どの列がどれだけ、なぜ欠けたのかを確かめます。欠けた理由によって、扱い方が変わるからです。</p>
 <section id="todo①列ごとの欠測の数と割合を表示する" class="level3">
 <h3 class="anchored" data-anchor-id="todo①列ごとの欠測の数と割合を表示する">TODO①：列ごとの欠測の数と割合を表示する</h3>
-<p><code>tr.isna()</code>は、各マスが欠けているかをTrue/Falseで表します。<code>.sum()</code>で列ごとにTrueの数を、<code>.mean()</code>でTrueの割合を出せます（Trueは1、Falseは0として数えます）。訓練データ<code>tr</code>について、欠測の数と割合（%）を表示してください。</p>
+<p><code>tr.isna()</code>は、各マスが欠けているかをTrue/Falseで表します。<code>.sum()</code>で列ごとにTrueの数を、<code>.mean()</code>でTrueの割合を出せます（Trueは1、Falseは0として数えます）。欠測の割合は、欠けたマスの数を行の数<span class="math inline">\(n\)</span>で割ったものです。訓練データ<code>tr</code>について、欠測の数と割合（%）を表示してください。</p>
 <div id="edc4c72a" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 訓練データ tr の、列ごとの欠測の数と割合（%）を表示する</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: tr.isna().sum() と tr.isna().mean() * 100</span></span>
@@ -3845,6 +3845,11 @@ Name: count, dtype: int64</code></pre>
 <li>出力：バスルーム数の欠けが埋まった表</li>
 </ul>
 <p>いま作った<code>bath_num</code>を、表の列全体に当てます。</p>
+<p>欠けを補う処理は、どのやり方でも次の1本の式で書けます。<span class="math inline">\(x_i\)</span>は<span class="math inline">\(i\)</span>番目の部屋の値、<span class="math inline">\(\hat{x}_i\)</span>は欠けたときに入れる値（埋める値）、<span class="math inline">\(\tilde{x}_i\)</span>は補ったあとの値です。</p>
+<p><span class="math display">\[
+\tilde{x}_i = \begin{cases} x_i &amp; (\text{値がある}) \\ \hat{x}_i &amp; (\text{欠けている}) \end{cases}
+\]</span></p>
+<p>ここでの<span class="math inline">\(\hat{x}_i\)</span>は、表記から読んだ数です。コードの<code>fillna(from_text)</code>が、この式そのものです。値があればそのまま、欠けていれば<code>from_text</code>の値にします。</p>
 <ul>
 <li><code>d.copy()</code>：受け取った表の写しを作る。関数の外の表を、知らないうちに書き換えないため</li>
 <li><code>map(bath_num)</code>：列の中身を1つずつ<code>bath_num</code>に通した列を返す</li>
@@ -3891,8 +3896,8 @@ True   2.0  15948.0
 </div>
 <p>寝室数が欠けた部屋（True）は、定員の中央値が2人、料金が15,948円です。欠けていない部屋（False）は4人・20,358円です。欠けた部屋は、小さくて安い部屋に偏っています。ベッド数でも同じように調べると、欠けた部屋の定員の中央値は3人で、欠けていない部屋の4人より小さくなります。「ほかの列（定員）しだいで欠ける」形です。</p>
 </section>
-<section id="考えてみよう寝室数0の部屋が1件もない" class="level3">
-<h3 class="anchored" data-anchor-id="考えてみよう寝室数0の部屋が1件もない">考えてみよう：寝室数0の部屋が、1件もない</h3>
+<section id="問い寝室数0の部屋が1件もない" class="level3">
+<h3 class="anchored" data-anchor-id="問い寝室数0の部屋が1件もない">問い：寝室数0の部屋が、1件もない</h3>
 <p>寝室数が0の部屋は、1件もありません。寝室数が欠けた部屋は、定員2人の小さい部屋に偏っていました。この欠けは何を意味していそうでしょうか。予想を下に書いてください。</p>
 <p>（ここに予想を書く）</p>
 <p>ワンルーム（寝室として区切られた部屋がない）を、「0」ではなく欠けとして登録した部屋が混ざっているのかもしれません。もしそうなら、「その値自身（0）が理由で欠ける」形も混ざっています。</p>
@@ -3913,7 +3918,11 @@ True   2.0  15948.0
 </ul>
 <p>これは練習用の道具です。役割・入力・出力と、次の1点だけ押さえれば、中身は読み飛ばしてかまいません。</p>
 <p><code>seed=0</code>のように、引数に<code>=</code>で値を書いておくと、呼び出すときに省いた場合はその値が使われます（既定値）。下の<code>make_missing(full, &#39;ベッド数&#39;, 0.2)</code>は、<code>seed</code>を書いていないので<code>seed=0</code>で動きます。</p>
-<p>中身が気になる人へ：<code>rng.random(len(d))</code>で0〜1の乱数を部屋の数だけ出し、それが<code>rate * 4 / d[&#39;定員&#39;]</code>より小さい部屋を隠します。隠す確率は、定員4人の部屋で<code>rate</code>、2人でその2倍、8人で半分です。<code>d.loc[hide, col] = np.nan</code>は、<code>hide</code>がTrueの行の列<code>col</code>のマスを、欠けた値<code>np.nan</code>で書き換えます。</p>
+<p>中身が気になる人へ：部屋<span class="math inline">\(i\)</span>を隠す確率を<span class="math inline">\(p_i\)</span>、欠けの率の目安を<span class="math inline">\(r\)</span>（<code>rate</code>）とすると、</p>
+<p><span class="math display">\[
+p_i = \frac{4r}{\text{定員}_i}
+\]</span></p>
+<p>です。<code>rng.random(len(d))</code>で0〜1の乱数を部屋の数だけ出し、それが<span class="math inline">\(p_i\)</span>（<code>rate * 4 / d[&#39;定員&#39;]</code>）より小さい部屋を隠します。隠す確率は、定員4人の部屋で<code>rate</code>、2人でその2倍、8人で半分です。<code>d.loc[hide, col] = np.nan</code>は、<code>hide</code>がTrueの行の列<code>col</code>のマスを、欠けた値<code>np.nan</code>で書き換えます。</p>
 <div id="1964d5d0" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_missing(d, col, rate, seed<span class="op">=</span><span class="dv">0</span>):</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d.copy()</span>
@@ -3941,6 +3950,14 @@ True   2.0  15948.0
 <li>入力：練習用の表<code>practice</code>と、本当の値の表<code>full</code></li>
 <li>出力：埋めた値と、隠した部屋での外れの平均</li>
 </ul>
+<p>平均で埋めるのは、補完の式の<span class="math inline">\(\hat{x}_i\)</span>に、値の残った部屋（<span class="math inline">\(O\)</span>）の平均を入れることです。部屋によらず、同じ値になります。</p>
+<p><span class="math display">\[
+\hat{x}_i = \bar{x} = \frac{1}{|O|}\sum_{k \in O} x_k
+\]</span></p>
+<p>採点は、隠した部屋（<span class="math inline">\(M\)</span>）だけで、埋めた値<span class="math inline">\(\tilde{x}_i\)</span>と本当の値<span class="math inline">\(x_i\)</span>の差の大きさを平均します。2節の外れ幅の平均と同じ形です。</p>
+<p><span class="math display">\[
+\frac{1}{|M|}\sum_{i \in M} \lvert \tilde{x}_i - x_i \rvert
+\]</span></p>
 <p><code>fillna(値)</code>は、欠けたマスを1つの値で置き換えます。<code>[miss]</code>で、隠した部屋だけを取り出して外れを測ります。</p>
 <div id="c4462a12" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>avg <span class="op">=</span> practice[<span class="st">&#39;ベッド数&#39;</span>].mean()               <span class="co"># 残った部屋の平均</span></span>
@@ -4097,8 +4114,8 @@ True   2.0  15948.0
 </table>
 <p>欠けが増えるほど、平均で埋めた値は大きく外れ、相関は本当の0.848から離れていきます。定員から推測した外れは、欠けの率によらず0.58台前後のままです。</p>
 </section>
-<section id="考えてみよう埋める平均がだんだん大きくなる" class="level3">
-<h3 class="anchored" data-anchor-id="考えてみよう埋める平均がだんだん大きくなる">考えてみよう：埋める平均が、だんだん大きくなる</h3>
+<section id="問い埋める平均がだんだん大きくなる" class="level3">
+<h3 class="anchored" data-anchor-id="問い埋める平均がだんだん大きくなる">問い：埋める平均が、だんだん大きくなる</h3>
 <p>欠けを増やすと、平均で埋める値そのものが3.10台 → 3.27台 → 3.70台と大きくなりました。全部の部屋の本当の平均は3.05台です。なぜ、欠けが増えるほど平均が大きくなるのでしょうか。下に書いてください。</p>
 <p>（ここに予想を書く）</p>
 <p>小さい部屋ほど多く隠したからです。隠した部屋の本当の平均は2.26台ほどで、残った部屋は大きめの部屋に偏ります。残った部屋の平均は、全体の平均より大きくなり、それで小さい部屋の欠けを埋めることになります。</p>
@@ -4184,8 +4201,8 @@ True   2.0  15948.0
 </div>
 </div>
 </section>
-<section id="考えてみよう全体ではほとんど同じ" class="level3">
-<h3 class="anchored" data-anchor-id="考えてみよう全体ではほとんど同じ">考えてみよう：全体では、ほとんど同じ</h3>
+<section id="問い全体ではほとんど同じ" class="level3">
+<h3 class="anchored" data-anchor-id="問い全体ではほとんど同じ">問い：全体では、ほとんど同じ</h3>
 <p>テストの全部の部屋で見ると、外れ幅は推測で8,907円、平均で8,911円と、4円しか違いません。それなら、平均で埋めてもよいのでしょうか。下に書いてください。</p>
 <p>（ここに予想を書く）</p>
 </section>
@@ -4327,7 +4344,11 @@ dtype: float64</code></pre>
 ホストの掲載数    -2.0  -156.0</code></pre>
 </div>
 </div>
-<p>外れ幅は8,907円で、標準化する前と1円も変わりません。線形回帰は、列ごとの係数が目盛りを吸収するからです。たとえば予約可能日数を「日」で測っても「年」で測っても、係数が365倍違うだけで、予測は同じになります。</p>
+<p>外れ幅は8,907円で、標準化する前と1円も変わりません。線形回帰は、列ごとの係数が目盛りを吸収するからです。式で書くと、<span class="math inline">\(z_j = (x_j - \bar{x}_j)/s_j\)</span>を入れても</p>
+<p><span class="math display">\[
+\hat{y} = b_0 + \sum_j b_j x_j = b&#39;_0 + \sum_j b&#39;_j z_j, \qquad b&#39;_j = b_j\,s_j
+\]</span></p>
+<p>となり、係数が標準偏差<span class="math inline">\(s_j\)</span>倍になるだけです。たとえば予約可能日数を「日」で測っても「年」で測っても、係数が365倍違うだけで、予測は同じになります。</p>
 <p>変わるのは係数です。</p>
 <p>そのままの係数では、バスルーム数が1室あたり3,537円と、定員の1人あたり1,507円より大きく見えます。でも、バスルーム数は0.4室しか散らばらない列でした。標準化すると、どの係数も「その列が標準偏差1つぶん増えたら、料金が何円変わるか」という同じ目盛りになり、定員4,395円、寝室数2,959円、バスルーム数1,414円の順に並びます。</p>
 <p>予測には効かなくても、列どうしを同じ物差しで比べたいときには、目盛りをそろえておく必要があります。そして、その物差し（平均と標準偏差）も、訓練データだけで決めます。</p>
@@ -4467,8 +4488,8 @@ dtype: float64</code></pre>
 </div>
 <p>あなたの部屋の値段は、3万円で切ると18,629円、外さないと27,358円と、9千円近く動きます。5節で見た補い方の違い（全体で4円、欠けた部屋で300円）よりずっと大きく、どの部屋を相場に入れるかが、値段をいちばん動かす判断でした。</p>
 </section>
-<section id="考えてみよう外れ幅がどんどん小さくなる" class="level3">
-<h3 class="anchored" data-anchor-id="考えてみよう外れ幅がどんどん小さくなる">考えてみよう：外れ幅が、どんどん小さくなる</h3>
+<section id="問い外れ幅がどんどん小さくなる" class="level3">
+<h3 class="anchored" data-anchor-id="問い外れ幅がどんどん小さくなる">問い：外れ幅が、どんどん小さくなる</h3>
 <p>外れ幅も、外さないときの19,157円から、3万円で切ると4,173円まで縮みます。線を厳しくするほど、式は良くなったのでしょうか。下に書いてください。</p>
 <p>（ここに予想を書く）</p>
 <p>良くなったとは言えません。線を変えると、テストの部屋そのものが変わるからです。3万円で切ると、当てにくい高い部屋がテストからも消え、3万円以下の部屋だけで採点しています。物差しの部屋が違う外れ幅は、比べられません。第2回で見た「採点が甘い」と同じ落とし穴です。</p>
@@ -4560,6 +4581,10 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="推測に揺らぎを足して補う多重代入の考え方">推測に揺らぎを足して補う：多重代入の考え方</h3>
 <p>4節で、定員から推測して補うと、相関が本当の0.848より強めに出ました（<code>rate=0.2</code>で0.863）。推測した値は、どれも1本の線の上にぴったり乗るからです。本当のベッド数は、同じ定員でも部屋ごとに散らばっています。推測で補った部屋だけ、散らばりが消えているのです。</p>
 <p>そこで、推測した値に、本当の値と推測の外れと同じくらいの揺らぎを足して補います。</p>
+<p><span class="math display">\[
+\tilde{x}_i = \hat{x}_i + \varepsilon_i, \qquad \varepsilon_i \sim N(0,\, s^2)
+\]</span></p>
+<p><span class="math inline">\(\hat{x}_i\)</span>は推測、<span class="math inline">\(\varepsilon_i\)</span>は平均0・標準偏差<span class="math inline">\(s\)</span>の正規分布に従う乱数です。<span class="math inline">\(s\)</span>は、値の分かる部屋での推測の外れ<span class="math inline">\(x_k - \hat{x}_k\)</span>の標準偏差にします。</p>
 <ul>
 <li>役割：推測の外れの散らばりを測り、その大きさの乱数を推測に足して補う</li>
 <li>入力：4節の<code>full</code>と<code>make_missing</code>・<code>fill_reg</code></li>
