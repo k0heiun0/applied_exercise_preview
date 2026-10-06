@@ -3635,7 +3635,7 @@ Name: 料金, dtype: float64</code></pre>
 </div>
 <p>料金の中央値（50%の行）は約2万円なのに、最大は545万円です。ヒストグラムは2万円あたりに山が1つあり、右に長い尾が伸びています（30万円より先にも、545万円まで続きます）。</p>
 <p>1泊数十万〜数百万円の部屋としては、一棟貸しの大きな家や、特定の日だけ値段を上げた掲載などが考えられます。ふつうの部屋とは別の市場にあると考えたほうがよさそうです。「新しいホストが、ふつうの部屋に値段を付ける」という今日の目標の手がかりになりません。</p>
-<p>外すときの約束は2つです。外す理由を目標から説明できること。そして、どこで線を引いたかを書き残すことです。今日は「1泊10万円以下」に絞ります。外れるのは902件（2.8%）です。</p>
+<p>外すときの約束は2つです。外す理由を目標から説明できること。そして、どこで線を引いたかを書き残すことです。今日は「1泊10万円以下」に絞ります。</p>
 </section>
 <section id="おさらい条件で絞る" class="level3">
 <h3 class="anchored" data-anchor-id="おさらい条件で絞る">おさらい：条件で絞る</h3>
@@ -3650,25 +3650,29 @@ Name: 料金, dtype: float64</code></pre>
 <li>出力：絞った表<code>df</code>と、その件数</li>
 </ul>
 <p><code>groupby(&#39;部屋のタイプ&#39;)</code>で部屋のタイプごとに分け、<code>agg([&#39;median&#39;, &#39;count&#39;])</code>で料金の中央値と件数を並べます。<code>reset_index(drop=True)</code>は、行の番号を0から振り直すメソッドです。</p>
-<div id="23adcf82" class="cell" data-execution_count="6">
+<div id="62447663" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw[raw[<span class="st">&#39;料金&#39;</span>] <span class="op">&lt;=</span> <span class="dv">100000</span>]                <span class="co"># 10万円以下の部屋だけ</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;部屋のタイプ&#39;</span>)[<span class="st">&#39;料金&#39;</span>].agg([<span class="st">&#39;median&#39;</span>, <span class="st">&#39;count&#39;</span>]))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&#39;部屋のタイプ&#39;</span>] <span class="op">==</span> <span class="st">&#39;Entire home/apt&#39;</span>]  <span class="co"># 貸切の部屋だけ</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&#39;最低宿泊数&#39;</span>].notna()]   <span class="co"># 最低宿泊数の欠けた3件を外す</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)                   <span class="co"># 行の番号を振り直す</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df), <span class="st">&#39;件&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(raw) <span class="op">-</span> <span class="bu">len</span>(df), <span class="st">&#39;件を外した&#39;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;部屋のタイプ&#39;</span>)[<span class="st">&#39;料金&#39;</span>].agg([<span class="st">&#39;median&#39;</span>, <span class="st">&#39;count&#39;</span>]))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&#39;部屋のタイプ&#39;</span>] <span class="op">==</span> <span class="st">&#39;Entire home/apt&#39;</span>]  <span class="co"># 貸切の部屋だけ</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;最低宿泊数&#39;</span>].isna().<span class="bu">sum</span>(), <span class="st">&#39;件は最低宿泊数が欠けている&#39;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">&#39;最低宿泊数&#39;</span>].notna()]   <span class="co"># その部屋を外す</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.reset_index(drop<span class="op">=</span><span class="va">True</span>)                   <span class="co"># 行の番号を振り直す</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df), <span class="st">&#39;件&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>                  median  count
+<pre><code>902 件を外した
+                  median  count
 部屋のタイプ                         
 Entire home/apt  20092.0  26433
 Hotel room       10875.0    110
 Private room     14580.0   4605
 Shared room       3424.0    311
+3 件は最低宿泊数が欠けている
 26430 件</code></pre>
 </div>
 </div>
-<p>貸切（<code>Entire home/apt</code>）の中央値は約2万円、相部屋（<code>Shared room</code>）は3千円台です。同じ「1泊の料金」でも、別の商品です。あなたが出したいのは貸切の部屋なので、貸切だけに絞ります。目標に照らして使う行を決めるのも、前処理です。</p>
-<p><code>最低宿泊数</code>が欠けた部屋は、貸切の中に3件だけありました。理由は分かりませんが、2万6千件のうちの3件なので外します。<code>notna()</code>は、欠けていないマスをTrueにするメソッドです（3節でくわしく扱います）。残ったのは26,430件です。</p>
+<p>10万円を超えて外れたのは902件で、全体の2.8%です。貸切（<code>Entire home/apt</code>）の中央値は約2万円、相部屋（<code>Shared room</code>）は3千円台です。同じ「1泊の料金」でも、別の商品です。あなたが出したいのは貸切の部屋なので、貸切だけに絞ります。目標に照らして使う行を決めるのも、前処理です。</p>
+<p><code>最低宿泊数</code>が欠けた部屋は、貸切の中に3件だけありました（出力の2つ目の件数）。理由は分かりませんが、2万6千件のうちの3件なので外します。<code>notna()</code>は、欠けていないマスをTrueにするメソッドです（3節でくわしく扱います）。残ったのは26,430件です。</p>
 </section>
 <section id="お手本先に訓練とテストに分ける" class="level3">
 <h3 class="anchored" data-anchor-id="お手本先に訓練とテストに分ける">お手本：先に、訓練とテストに分ける</h3>
@@ -3814,7 +3818,7 @@ Half-bath      15
 Name: count, dtype: int64</code></pre>
 </div>
 </div>
-<p>欠けた1,322件のどれにも、<code>1 bath</code>・<code>1.5 baths</code>・<code>Half-bath</code>のように表記が書いてあります。数の列だけが空欄になっていたのです。それなら、推測するより、文字から本当の値を戻すほうが確かです。</p>
+<p>表記ごとの件数を足すと1,322件で、欠けた件数と同じです。欠けた部屋のどれにも、<code>1 bath</code>・<code>1.5 baths</code>・<code>Half-bath</code>のように表記が書いてあります。数の列だけが空欄になっていたのです。それなら、推測するより、文字から本当の値を戻すほうが確かです。</p>
 </section>
 <section id="変えてみる文字1つを数1つに直す関数" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる文字1つを数1つに直す関数">変えてみる：文字1つを数1つに直す関数</h3>
@@ -3877,24 +3881,30 @@ Name: count, dtype: int64</code></pre>
 <section id="変えてみる寝室数とベッド数はどんな部屋で欠けた" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる寝室数とベッド数はどんな部屋で欠けた">変えてみる：寝室数とベッド数は、どんな部屋で欠けた？</h3>
 <ul>
-<li>役割：寝室数が欠けた部屋と欠けていない部屋で、定員と料金の中央値を比べる</li>
+<li>役割：寝室数が欠けた部屋と欠けていない部屋で、定員と料金の中央値を比べる。ベッド数でも定員を比べる</li>
 <li>入力：訓練の表<code>tr</code></li>
-<li>出力：2行の表と、寝室数が0の部屋の数</li>
+<li>出力：2つの表と、寝室数が0の部屋の数</li>
 </ul>
 <p><code>groupby</code>に、True/Falseの並びを渡すと、欠けた部屋（True）と欠けていない部屋（False）に分けて集計できます。</p>
-<div id="23a55744" class="cell" data-execution_count="16">
+<div id="8be2b245" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>miss_bed <span class="op">=</span> tr[<span class="st">&#39;寝室数&#39;</span>].isna()           <span class="co"># 寝室数が欠けた部屋は True</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr.groupby(miss_bed)[[<span class="st">&#39;定員&#39;</span>, <span class="st">&#39;料金&#39;</span>]].median())</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;寝室数が0の部屋:&#39;</span>, (tr[<span class="st">&#39;寝室数&#39;</span>] <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;寝室数が0の部屋:&#39;</span>, (tr[<span class="st">&#39;寝室数&#39;</span>] <span class="op">==</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>miss_beds <span class="op">=</span> tr[<span class="st">&#39;ベッド数&#39;</span>].isna()        <span class="co"># ベッド数が欠けた部屋は True</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr.groupby(miss_beds)[<span class="st">&#39;定員&#39;</span>].median())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        定員       料金
 寝室数                
 False  4.0  20358.0
 True   2.0  15948.0
-寝室数が0の部屋: 0 件</code></pre>
+寝室数が0の部屋: 0 件
+ベッド数
+False    4.0
+True     3.0
+Name: 定員, dtype: float64</code></pre>
 </div>
 </div>
-<p>寝室数が欠けた部屋（True）は、定員の中央値が2人、料金が15,948円です。欠けていない部屋（False）は4人・20,358円です。欠けた部屋は、小さくて安い部屋に偏っています。ベッド数でも同じように調べると、欠けた部屋の定員の中央値は3人で、欠けていない部屋の4人より小さくなります。「ほかの列（定員）しだいで欠ける」形です。</p>
+<p>寝室数が欠けた部屋（True）は、定員の中央値が2人、料金が15,948円です。欠けていない部屋（False）は4人・20,358円です。欠けた部屋は、小さくて安い部屋に偏っています。ベッド数でも、欠けた部屋（True）の定員の中央値は3人で、欠けていない部屋の4人より小さくなります。「ほかの列（定員）しだいで欠ける」形です。</p>
 </section>
 <section id="問い寝室数0の部屋が1件もない" class="level3">
 <h3 class="anchored" data-anchor-id="問い寝室数0の部屋が1件もない">問い：寝室数0の部屋が、1件もない</h3>
@@ -4118,7 +4128,23 @@ p_i = \frac{4r}{\text{定員}_i}
 <h3 class="anchored" data-anchor-id="問い埋める平均がだんだん大きくなる">問い：埋める平均が、だんだん大きくなる</h3>
 <p>欠けを増やすと、平均で埋める値そのものが3.10台 → 3.27台 → 3.70台と大きくなりました。全部の部屋の本当の平均は3.05台です。なぜ、欠けが増えるほど平均が大きくなるのでしょうか。下に書いてください。</p>
 <p>（ここに予想を書く）</p>
-<p>小さい部屋ほど多く隠したからです。隠した部屋の本当の平均は2.26台ほどで、残った部屋は大きめの部屋に偏ります。残った部屋の平均は、全体の平均より大きくなり、それで小さい部屋の欠けを埋めることになります。</p>
+</section>
+<section id="確かめる3つの平均" class="level3">
+<h3 class="anchored" data-anchor-id="確かめる3つの平均">確かめる：3つの平均</h3>
+<p><code>rate=0.4</code>で隠したとき、全部の部屋・残った部屋・隠した部屋で、本当のベッド数の平均を比べます。<code>~</code>は、TrueとFalseを入れかえる記号です（<code>~miss</code>は残った部屋）。</p>
+<div id="16c918c5" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>practice4 <span class="op">=</span> make_missing(full, <span class="st">&#39;ベッド数&#39;</span>, <span class="fl">0.4</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>miss4 <span class="op">=</span> practice4[<span class="st">&#39;ベッド数&#39;</span>].isna()</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;全部の部屋:&#39;</span>, <span class="bu">round</span>(truth.mean(), <span class="dv">2</span>))</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;残った部屋:&#39;</span>, <span class="bu">round</span>(truth[<span class="op">~</span>miss4].mean(), <span class="dv">2</span>))</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;隠した部屋:&#39;</span>, <span class="bu">round</span>(truth[miss4].mean(), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>全部の部屋: 3.05
+残った部屋: 3.7
+隠した部屋: 2.26</code></pre>
+</div>
+</div>
+<p>小さい部屋ほど多く隠したからです。隠した部屋の本当の平均は2.26台で、残った部屋は大きめの部屋に偏ります。残った部屋の平均は、全体の平均より大きくなり、それで小さい部屋の欠けを埋めることになります。</p>
 <p>「ほかの列しだいで欠ける」ときは、残った部屋の平均そのものがずれます。平均で埋めてはいけない、いちばんの理由です。欠けの率が低くても、外れは1.5台あり、平均で埋めてよいことにはなりません。</p>
 <hr>
 </section>
@@ -4135,17 +4161,17 @@ p_i = \frac{4r}{\text{定員}_i}
 <li>出力：欠けを埋めた表</li>
 </ul>
 <p>中身は、4節のお手本と同じです。違うのは、表を2つ受け取ることです。推測の式は<code>base</code>で作り、欠けを埋めるのは<code>d</code>です。テストを埋めるときも、推測の式は訓練で作りたいからです。テストは、まだ見ていない部屋の代わりです。</p>
-<div id="917a156d" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fill_reg(base, d, col):     <span class="co"># 欠けを、定員からの推測で埋める</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> base[base[col].notna()]                  <span class="co"># 値の分かる部屋</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(ok[[<span class="st">&#39;定員&#39;</span>]], ok[col])</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d.copy()</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    d[<span class="st">&#39;推測&#39;</span>] <span class="op">=</span> m.predict(d[[<span class="st">&#39;定員&#39;</span>]])            <span class="co"># どの部屋も推測</span></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    d[col] <span class="op">=</span> d[col].fillna(d[<span class="st">&#39;推測&#39;</span>])             <span class="co"># 欠けだけ差し替え</span></span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d</span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>by_reg2 <span class="op">=</span> fill_reg(practice, practice, <span class="st">&#39;ベッド数&#39;</span>)[<span class="st">&#39;ベッド数&#39;</span>]</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;外れ:&#39;</span>, <span class="bu">round</span>(np.<span class="bu">abs</span>(by_reg2 <span class="op">-</span> truth)[miss].mean(), <span class="dv">2</span>), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d6714075" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fill_reg(base, d, col):     <span class="co"># 欠けを、定員からの推測で埋める</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    ok <span class="op">=</span> base[base[col].notna()]                  <span class="co"># 値の分かる部屋</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(ok[[<span class="st">&#39;定員&#39;</span>]], ok[col])</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d.copy()</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    d[<span class="st">&#39;推測&#39;</span>] <span class="op">=</span> m.predict(d[[<span class="st">&#39;定員&#39;</span>]])            <span class="co"># どの部屋も推測</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    d[col] <span class="op">=</span> d[col].fillna(d[<span class="st">&#39;推測&#39;</span>])             <span class="co"># 欠けだけ差し替え</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>by_reg2 <span class="op">=</span> fill_reg(practice, practice, <span class="st">&#39;ベッド数&#39;</span>)[<span class="st">&#39;ベッド数&#39;</span>]</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;外れ:&#39;</span>, <span class="bu">round</span>(np.<span class="bu">abs</span>(by_reg2 <span class="op">-</span> truth)[miss].mean(), <span class="dv">2</span>), <span class="st">&#39;台&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>外れ: 0.58 台</code></pre>
 </div>
@@ -4160,15 +4186,15 @@ p_i = \frac{4r}{\text{定員}_i}
 <li>出力：補った表<code>tr_f</code>・<code>te_f</code>と、テストでの外れ幅</li>
 </ul>
 <p>最初の引数は、4行とも訓練<code>tr</code>です。</p>
-<div id="708f7b98" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>tr_f <span class="op">=</span> fill_reg(tr, tr, <span class="st">&#39;寝室数&#39;</span>)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>tr_f <span class="op">=</span> fill_reg(tr, tr_f, <span class="st">&#39;ベッド数&#39;</span>)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>te_f <span class="op">=</span> fill_reg(tr, te, <span class="st">&#39;寝室数&#39;</span>)</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>te_f <span class="op">=</span> fill_reg(tr, te_f, <span class="st">&#39;ベッド数&#39;</span>)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr_f[cols].isna().<span class="bu">sum</span>().<span class="bu">sum</span>(), te_f[cols].isna().<span class="bu">sum</span>().<span class="bu">sum</span>())</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression().fit(tr_f[cols], tr_f[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], model.predict(te_f[cols])), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="25b81114" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>tr_f <span class="op">=</span> fill_reg(tr, tr, <span class="st">&#39;寝室数&#39;</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>tr_f <span class="op">=</span> fill_reg(tr, tr_f, <span class="st">&#39;ベッド数&#39;</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>te_f <span class="op">=</span> fill_reg(tr, te, <span class="st">&#39;寝室数&#39;</span>)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>te_f <span class="op">=</span> fill_reg(tr, te_f, <span class="st">&#39;ベッド数&#39;</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr_f[cols].isna().<span class="bu">sum</span>().<span class="bu">sum</span>(), te_f[cols].isna().<span class="bu">sum</span>().<span class="bu">sum</span>())</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression().fit(tr_f[cols], tr_f[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], model.predict(te_f[cols])), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0 0
 8907 円</code></pre>
@@ -4184,17 +4210,17 @@ p_i = \frac{4r}{\text{定員}_i}
 <li>出力：2つの式の外れ幅</li>
 </ul>
 <p><code>for col in [...]</code>は、第2回の<code>for</code>文と同じで、並びの中身を1つずつ<code>col</code>に入れながら、字下げした行を繰り返します。</p>
-<div id="36ceb6b4" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>tr_m <span class="op">=</span> tr.copy()</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>te_m <span class="op">=</span> te.copy()</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">&#39;寝室数&#39;</span>, <span class="st">&#39;ベッド数&#39;</span>]:</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    tr_m[col] <span class="op">=</span> tr[col].fillna(tr[col].mean())    <span class="co"># 訓練の平均で埋める</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    te_m[col] <span class="op">=</span> te[col].fillna(tr[col].mean())</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>model_m <span class="op">=</span> LinearRegression().fit(tr_m[cols], tr_m[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>pred_f <span class="op">=</span> model.predict(te_f[cols])</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>pred_m <span class="op">=</span> model_m.predict(te_m[cols])</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;推測&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>], pred_f))</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;平均&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>], pred_m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a49848c0" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>tr_m <span class="op">=</span> tr.copy()</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>te_m <span class="op">=</span> te.copy()</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> col <span class="kw">in</span> [<span class="st">&#39;寝室数&#39;</span>, <span class="st">&#39;ベッド数&#39;</span>]:</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    tr_m[col] <span class="op">=</span> tr[col].fillna(tr[col].mean())    <span class="co"># 訓練の平均で埋める</span></span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    te_m[col] <span class="op">=</span> te[col].fillna(tr[col].mean())</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>model_m <span class="op">=</span> LinearRegression().fit(tr_m[cols], tr_m[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>pred_f <span class="op">=</span> model.predict(te_f[cols])</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>pred_m <span class="op">=</span> model_m.predict(te_m[cols])</span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;推測&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>], pred_f))</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;平均&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>], pred_m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>推測 8907
 平均 8911</code></pre>
@@ -4214,24 +4240,24 @@ p_i = \frac{4r}{\text{定員}_i}
 <li>出力：欠けのあった部屋の数と、2つの外れ幅</li>
 </ul>
 <p><code>|</code>は「または」です。寝室数かベッド数のどちらかが欠けていた部屋がTrueになります。</p>
-<div id="e8cf5702" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>had <span class="op">=</span> te[<span class="st">&#39;寝室数&#39;</span>].isna() <span class="op">|</span> te[<span class="st">&#39;ベッド数&#39;</span>].isna()   <span class="co"># 欠けのあった部屋</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(had.<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;推測&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>][had], pred_f[had]),</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39; 平均&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>][had], pred_m[had]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e70fe03d" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>had <span class="op">=</span> te[<span class="st">&#39;寝室数&#39;</span>].isna() <span class="op">|</span> te[<span class="st">&#39;ベッド数&#39;</span>].isna()   <span class="co"># 欠けのあった部屋</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(had.<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;推測&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>][had], pred_f[had]),</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">&#39; 平均&#39;</span>, mae(te[<span class="st">&#39;料金&#39;</span>][had], pred_m[had]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>448 件
 推測 7759  平均 8060</code></pre>
 </div>
 </div>
-<p>テストの5,286件のうち、寝室数かベッド数が欠けていたのは448件（8%）だけです。残りの9割は補う必要がなく、どちらのやり方でも同じ予測になります。だから全体の平均では、差が薄まって見えません。</p>
+<p>テストの5,286件のうち、寝室数かベッド数が欠けていたのは448件（約8%）だけです。残りの9割は補う必要がなく、どちらのやり方でも同じ予測になります。だから全体の平均では、差が薄まって見えません。</p>
 <p>欠けのあった448件だけで比べると、推測で7,759円、平均で8,060円と、300円ほど差が出ます。補い方の差は、補った部屋に出るのです。そして4節で見たとおり、欠けが増えるほど、平均で埋めた害は大きくなります。全体の点数だけを見て「平均でも同じ」と判断せず、補った値そのものを確かめることが大切です。</p>
 <hr>
 </section>
 </section>
 <section id="目盛りをそろえる" class="level2">
 <h2 class="anchored" data-anchor-id="目盛りをそろえる">6. 目盛りをそろえる</h2>
-<p>欠けが補えて、料金の式ができました。8本の手がかりの列は、目盛りがばらばらです。予約可能日数は0〜365日、バスルーム数は0〜4室ほど。列どうしを同じ物差しで比べられるよう、目盛りをそろえます。</p>
+<p>欠けが補えて、料金の式ができました。8本の手がかりの列は、日数・件数・部屋の数と、単位も目盛りもばらばらです。どれくらい違うかを標準偏差で比べ、列どうしを同じ物差しで比べられるよう、目盛りをそろえます。</p>
 <section id="お手本列ごとのばらつきを見る" class="level3">
 <h3 class="anchored" data-anchor-id="お手本列ごとのばらつきを見る">お手本：列ごとのばらつきを見る</h3>
 <ul>
@@ -4244,10 +4270,10 @@ p_i = \frac{4r}{\text{定員}_i}
 s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2}
 \]</span></p>
 <p>平均からの外れを二乗して平均し、平方根で元の単位に戻したものです（pandasの<code>.std()</code>は<span class="math inline">\(n-1\)</span>で割ります）。</p>
-<div id="90c03a4b" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>X_tr <span class="op">=</span> tr_f[cols]</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>X_te <span class="op">=</span> te_f[cols]</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_tr.std().<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4eac4934" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>X_tr <span class="op">=</span> tr_f[cols]</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>X_te <span class="op">=</span> te_f[cols]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_tr.std().<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>定員          2.9
 寝室数         0.9
@@ -4260,7 +4286,7 @@ s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2}
 dtype: float64</code></pre>
 </div>
 </div>
-<p>予約可能日数は92、ホストの掲載数は75、レビュー数は67日・件ほど散らばる一方、寝室数は0.9、バスルーム数は0.4しか散らばりません。</p>
+<p>予約可能日数は92日、ホストの掲載数は75件、レビュー数は67件ほど散らばる一方、寝室数は0.9室、バスルーム数は0.4室しか散らばりません。</p>
 </section>
 <section id="お手本標準化の関数" class="level3">
 <h3 class="anchored" data-anchor-id="お手本標準化の関数">お手本：標準化の関数</h3>
@@ -4274,15 +4300,15 @@ dtype: float64</code></pre>
 z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 \]</span></p>
 <p>どの列も「平均0・標準偏差1」の目盛りにそろい、値は「平均から標準偏差いくつぶん離れているか」を表します。平均と標準偏差は、訓練データだけで決めます。<code>X_tr.mean()</code>のように表に<code>.mean()</code>を付けると、列ごとの平均が並んで返ります。</p>
-<div id="a1516465" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mean, std):</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (X <span class="op">-</span> mean) <span class="op">/</span> std</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>mean_tr <span class="op">=</span> X_tr.mean()            <span class="co"># 列ごとの平均（訓練だけ）</span></span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>std_tr <span class="op">=</span> X_tr.std()              <span class="co"># 列ごとの標準偏差（訓練だけ）</span></span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>Z_tr <span class="op">=</span> standardize(X_tr, mean_tr, std_tr)</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Z_tr.mean().<span class="bu">round</span>(<span class="dv">2</span>))      <span class="co"># どの列も平均0になったか</span></span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Z_tr.std().<span class="bu">round</span>(<span class="dv">2</span>))       <span class="co"># どの列も標準偏差1になったか</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7a41bcb1" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mean, std):</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (X <span class="op">-</span> mean) <span class="op">/</span> std</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>mean_tr <span class="op">=</span> X_tr.mean()            <span class="co"># 列ごとの平均（訓練だけ）</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>std_tr <span class="op">=</span> X_tr.std()              <span class="co"># 列ごとの標準偏差（訓練だけ）</span></span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>Z_tr <span class="op">=</span> standardize(X_tr, mean_tr, std_tr)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Z_tr.mean().<span class="bu">round</span>(<span class="dv">2</span>))      <span class="co"># どの列も平均0になったか</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(Z_tr.std().<span class="bu">round</span>(<span class="dv">2</span>))       <span class="co"># どの列も標準偏差1になったか</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>定員         0.0
 寝室数        0.0
@@ -4309,11 +4335,11 @@ dtype: float64</code></pre>
 <section id="todo③テストも訓練の物差しで標準化する" class="level3">
 <h3 class="anchored" data-anchor-id="todo③テストも訓練の物差しで標準化する">TODO③：テストも、訓練の物差しで標準化する</h3>
 <p>テストも、訓練の平均<code>mean_tr</code>と標準偏差<code>std_tr</code>で標準化して<code>Z_te</code>を作り、列ごとの平均を表示してください。</p>
-<div id="559819d0" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Z_te を作り、列ごとの平均を表示する</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: Z_te = standardize(X_te, mean_tr, std_tr)</span></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         上のお手本と同じく .mean().round(2) で表示する</span></span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8061a435" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: Z_te を作り、列ごとの平均を表示する</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: Z_te = standardize(X_te, mean_tr, std_tr)</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         上のお手本と同じく .mean().round(2) で表示する</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>テストの列ごとの平均は、0に近いものの、ぴったり0にはなりません（たとえば0.01や−0.02）。テストの平均ではなく、訓練の平均を引いたからです。ぴったり0にならないことが、訓練の物差しを使った証拠です。</p>
 </section>
@@ -4324,13 +4350,13 @@ dtype: float64</code></pre>
 <li>入力：<code>Z_tr</code>と、テストの<code>X_te</code>、5節の<code>model</code></li>
 <li>出力：外れ幅と、標準化する前と後の係数の表</li>
 </ul>
-<div id="309a1d9f" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>model_z <span class="op">=</span> LinearRegression().fit(Z_tr, tr_f[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>pred_z <span class="op">=</span> model_z.predict(standardize(X_te, mean_tr, std_tr))</span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], pred_z), <span class="st">&#39;円&#39;</span>)</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.DataFrame({<span class="st">&#39;そのまま&#39;</span>: model.coef_,</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;標準化後&#39;</span>: model_z.coef_}, index<span class="op">=</span>cols)</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="798be006" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>model_z <span class="op">=</span> LinearRegression().fit(Z_tr, tr_f[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>pred_z <span class="op">=</span> model_z.predict(standardize(X_te, mean_tr, std_tr))</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], pred_z), <span class="st">&#39;円&#39;</span>)</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.DataFrame({<span class="st">&#39;そのまま&#39;</span>: model.coef_,</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;標準化後&#39;</span>: model_z.coef_}, index<span class="op">=</span>cols)</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>8907 円
            そのまま    標準化後
@@ -4366,29 +4392,29 @@ dtype: float64</code></pre>
 <li>出力：欠けのない8本の列の表</li>
 </ul>
 <p>関数の中で、3節の<code>fill_bath</code>と5節の<code>fill_reg</code>を呼んでいます。小さな関数を組み合わせて、大きな処理を作るのです。</p>
-<div id="153dab68" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep(base, d):           <span class="co"># 補い方は base で決め、d を整える</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_bath(d)</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;寝室数&#39;</span>)</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;ベッド数&#39;</span>)</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d[cols]</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression().fit(prep(tr, tr), tr[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], model.predict(prep(tr, te)))</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練で決めた:&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f3915873" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep(base, d):           <span class="co"># 補い方は base で決め、d を整える</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_bath(d)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;寝室数&#39;</span>)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;ベッド数&#39;</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d[cols]</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression().fit(prep(tr, tr), tr[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], model.predict(prep(tr, te)))</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練で決めた:&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練で決めた: 8907 円</code></pre>
 </div>
 </div>
-<p>5節と同じ8,907円です。5節の8行が、<code>prep</code>の1行ずつになりました。</p>
+<p>5節と同じ8,907円です。3節の<code>fill_bath</code>と5節の<code>fill_reg</code>の4行が、<code>prep(tr, tr)</code>と<code>prep(tr, te)</code>の2つの呼び出しになりました。</p>
 </section>
 <section id="変えてみる全データで補い方を決めると" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる全データで補い方を決めると">変えてみる：全データで補い方を決めると</h3>
 <p><code>prep</code>の最初の引数を、訓練<code>tr</code>から全データ<code>df</code>に変えるだけです。テストの部屋も含めて、推測の式を作ることになります。</p>
-<div id="6335e341" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>model_l <span class="op">=</span> LinearRegression().fit(prep(df, tr), tr[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>err_l <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], model_l.predict(prep(df, te)))</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;全データで決めた:&#39;</span>, err_l, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3aae0983" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>model_l <span class="op">=</span> LinearRegression().fit(prep(df, tr), tr[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>err_l <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], model_l.predict(prep(df, te)))</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;全データで決めた:&#39;</span>, err_l, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>全データで決めた: 8907 円</code></pre>
 </div>
@@ -4409,14 +4435,14 @@ dtype: float64</code></pre>
 <li>出力：1泊の値段（円）</li>
 </ul>
 <p>例えば「定員4人、寝室2・ベッド2・バスルーム1」の貸切の部屋です。レビューはまだ0件、最低宿泊数は2泊、この先1年で200日予約を受け付け、ホストの掲載はこの1件だけとします。新しい部屋にも、訓練で決めた同じ整え方を当てます。<code>prep</code>の2つ目の引数に、新しい部屋を渡すだけです。<code>pd.DataFrame({列名: [値], ...})</code>で、1行の表を作れます。</p>
-<div id="ad3c5869" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>my_room <span class="op">=</span> pd.DataFrame({<span class="st">&#39;定員&#39;</span>: [<span class="dv">4</span>], <span class="st">&#39;寝室数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;ベッド数&#39;</span>: [<span class="dv">2</span>],</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルーム数&#39;</span>: [<span class="dv">1</span>],</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルームの表記&#39;</span>: [<span class="st">&#39;1 bath&#39;</span>],</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;最低宿泊数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;予約可能日数&#39;</span>: [<span class="dv">200</span>],</span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;レビュー数&#39;</span>: [<span class="dv">0</span>], <span class="st">&#39;ホストの掲載数&#39;</span>: [<span class="dv">1</span>]})</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>price <span class="op">=</span> model.predict(prep(tr, my_room))[<span class="dv">0</span>]</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(price), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="48db7eda" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>my_room <span class="op">=</span> pd.DataFrame({<span class="st">&#39;定員&#39;</span>: [<span class="dv">4</span>], <span class="st">&#39;寝室数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;ベッド数&#39;</span>: [<span class="dv">2</span>],</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルーム数&#39;</span>: [<span class="dv">1</span>],</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルームの表記&#39;</span>: [<span class="st">&#39;1 bath&#39;</span>],</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;最低宿泊数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;予約可能日数&#39;</span>: [<span class="dv">200</span>],</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;レビュー数&#39;</span>: [<span class="dv">0</span>], <span class="st">&#39;ホストの掲載数&#39;</span>: [<span class="dv">1</span>]})</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>price <span class="op">=</span> model.predict(prep(tr, my_room))[<span class="dv">0</span>]</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(price), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>24830 円</code></pre>
 </div>
@@ -4426,11 +4452,11 @@ dtype: float64</code></pre>
 <section id="todo④あなたの番自分の部屋を値付けする" class="level3">
 <h3 class="anchored" data-anchor-id="todo④あなたの番自分の部屋を値付けする">TODO④：あなたの番。自分の部屋を値付けする</h3>
 <p>定員・寝室数などを自分で決めて、1泊の値付けの目安を出してください。寝室数が分からない部屋なら、<code>np.nan</code>（欠けた値）を入れてもかまいません。<code>prep</code>が、訓練で作った式で補ってくれます。</p>
-<div id="fcd5e938" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: my_room の条件を変えた部屋を作り、prep と model で値付けする</span></span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: room2 = my_room.assign(定員=2, 寝室数=1, ベッド数=1)</span></span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         のように、assign で列の値を変えた表を作れる</span></span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c44804a8" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: my_room の条件を変えた部屋を作り、prep と model で値付けする</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: room2 = my_room.assign(定員=2, 寝室数=1, ベッド数=1)</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         のように、assign で列の値を変えた表を作れる</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>定員2人・寝室1・ベッド1なら約1万8千円、定員4人で寝室数を<code>np.nan</code>にすると、寝室数を定員から推測して約2万3千円になります。</p>
 <hr>
@@ -4454,18 +4480,18 @@ dtype: float64</code></pre>
 <li>値付けして採点する（3行）：8節の値付けと、2節の<code>mae</code></li>
 </ol>
 <p><code>cut=100000</code>のように既定値を書いておくと、<code>price_for()</code>とかっこだけで呼べば10万円で、<code>price_for(50000)</code>と書けば5万円で動きます。</p>
-<div id="0e8a4a2c" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> price_for(cut<span class="op">=</span><span class="dv">100000</span>):</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> raw[raw[<span class="st">&#39;料金&#39;</span>] <span class="op">&lt;=</span> cut]</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;部屋のタイプ&#39;</span>] <span class="op">==</span> <span class="st">&#39;Entire home/apt&#39;</span>]</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;最低宿泊数&#39;</span>].notna()]</span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>    tr2, te2 <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(prep(tr2, tr2), tr2[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> m.predict(prep(tr2, my_room))[<span class="dv">0</span>]</span>
-<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> mae(te2[<span class="st">&#39;料金&#39;</span>], m.predict(prep(tr2, te2)))</span>
-<span id="cb62-9"><a href="#cb62-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cut, <span class="st">&#39;円まで:&#39;</span>, <span class="bu">round</span>(p), <span class="st">&#39;円  外れ幅&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span>
-<span id="cb62-10"><a href="#cb62-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-11"><a href="#cb62-11" aria-hidden="true" tabindex="-1"></a>price_for()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9680652c" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> price_for(cut<span class="op">=</span><span class="dv">100000</span>):</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> raw[raw[<span class="st">&#39;料金&#39;</span>] <span class="op">&lt;=</span> cut]</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;部屋のタイプ&#39;</span>] <span class="op">==</span> <span class="st">&#39;Entire home/apt&#39;</span>]</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;最低宿泊数&#39;</span>].notna()]</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    tr2, te2 <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(prep(tr2, tr2), tr2[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> m.predict(prep(tr2, my_room))[<span class="dv">0</span>]</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> mae(te2[<span class="st">&#39;料金&#39;</span>], m.predict(prep(tr2, te2)))</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cut, <span class="st">&#39;円まで:&#39;</span>, <span class="bu">round</span>(p), <span class="st">&#39;円  外れ幅&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>price_for()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>100000 円まで: 24830 円  外れ幅 8907 円</code></pre>
 </div>
@@ -4475,9 +4501,9 @@ dtype: float64</code></pre>
 <section id="変えてみる線を動かす" class="level3">
 <h3 class="anchored" data-anchor-id="変えてみる線を動かす">変えてみる：線を動かす</h3>
 <p><code>for</code>文で、外す線を3万円から1千万円（実質、外さない）まで変えて呼びます。</p>
-<div id="1af05ab4" class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cut <span class="kw">in</span> [<span class="dv">30000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">300000</span>, <span class="dv">10000000</span>]:</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    price_for(cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cd76f1eb" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cut <span class="kw">in</span> [<span class="dv">30000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">300000</span>, <span class="dv">10000000</span>]:</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    price_for(cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>30000 円まで: 18629 円  外れ幅 4173 円
 50000 円まで: 22363 円  外れ幅 6225 円
@@ -4543,9 +4569,9 @@ dtype: float64</code></pre>
 <section id="応用①変形" class="level3">
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>4節では、ベッド数を隠して、平均で埋めた場合と、定員から推測した場合を採点しました。同じことを、寝室数でやってください。寝室数が分かっている訓練の部屋<code>full_bed</code>から、<code>make_missing</code>で<code>rate=0.2</code>の欠けを作り、平均で埋めたときと<code>fill_reg</code>で推測したときの、隠した部屋での外れの平均を表示してください。</p>
-<div id="c9baa70c" class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c9baa70c" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
 <summary>
@@ -4557,9 +4583,9 @@ dtype: float64</code></pre>
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①で、寝室数を平均で埋めたとき、隠した部屋での外れの平均は何室ですか。小数第2位まで答えてください（例: 0.12）。</p>
-<div id="d9ea1549" class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d9ea1549" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
 <summary>
@@ -4591,36 +4617,38 @@ dtype: float64</code></pre>
 <li>出力：揺らぎを足したときの相関と標準偏差</li>
 </ul>
 <p><code>rng.normal(0, s, 個数)</code>は、平均0・標準偏差<code>s</code>の正規分布に従う乱数を、指定した個数だけ出します。</p>
-<div id="48e6289b" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> full[<span class="st">&#39;ベッド数&#39;</span>]</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>practice <span class="op">=</span> make_missing(full, <span class="st">&#39;ベッド数&#39;</span>, <span class="fl">0.2</span>)</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>miss <span class="op">=</span> practice[<span class="st">&#39;ベッド数&#39;</span>].isna()</span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> practice[practice[<span class="st">&#39;ベッド数&#39;</span>].notna()]</span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(ok[[<span class="st">&#39;定員&#39;</span>]], ok[<span class="st">&#39;ベッド数&#39;</span>])</span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 推測の外れの散らばり（標準偏差）</span></span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> (ok[<span class="st">&#39;ベッド数&#39;</span>] <span class="op">-</span> m.predict(ok[[<span class="st">&#39;定員&#39;</span>]])).std()</span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;推測の外れの標準偏差:&#39;</span>, <span class="bu">round</span>(s, <span class="dv">2</span>))</span>
-<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>by_reg <span class="op">=</span> fill_reg(practice, practice, <span class="st">&#39;ベッド数&#39;</span>)[<span class="st">&#39;ベッド数&#39;</span>]</span>
-<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
-<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>by_noise <span class="op">=</span> by_reg.copy()</span>
-<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a>by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
-<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, val <span class="kw">in</span> [(<span class="st">&#39;本当の値&#39;</span>, truth), (<span class="st">&#39;推測&#39;</span>, by_reg),</span>
-<span id="cb68-15"><a href="#cb68-15" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">&#39;推測＋揺らぎ&#39;</span>, by_noise)]:</span>
-<span id="cb68-16"><a href="#cb68-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(val), <span class="dv">3</span>),</span>
-<span id="cb68-17"><a href="#cb68-17" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 標準偏差&#39;</span>, <span class="bu">round</span>(val.std(), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f4e7160a" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> full[<span class="st">&#39;ベッド数&#39;</span>]</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>practice <span class="op">=</span> make_missing(full, <span class="st">&#39;ベッド数&#39;</span>, <span class="fl">0.2</span>)</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>miss <span class="op">=</span> practice[<span class="st">&#39;ベッド数&#39;</span>].isna()</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> practice[practice[<span class="st">&#39;ベッド数&#39;</span>].notna()]</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(ok[[<span class="st">&#39;定員&#39;</span>]], ok[<span class="st">&#39;ベッド数&#39;</span>])</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 推測の外れの散らばり（標準偏差）</span></span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> (ok[<span class="st">&#39;ベッド数&#39;</span>] <span class="op">-</span> m.predict(ok[[<span class="st">&#39;定員&#39;</span>]])).std()</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;推測の外れの標準偏差:&#39;</span>, <span class="bu">round</span>(s, <span class="dv">2</span>))</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>by_reg <span class="op">=</span> fill_reg(practice, practice, <span class="st">&#39;ベッド数&#39;</span>)[<span class="st">&#39;ベッド数&#39;</span>]</span>
+<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
+<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>by_noise <span class="op">=</span> by_reg.copy()</span>
+<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
+<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, val <span class="kw">in</span> [(<span class="st">&#39;本当の値&#39;</span>, truth), (<span class="st">&#39;推測&#39;</span>, by_reg),</span>
+<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">&#39;推測＋揺らぎ&#39;</span>, by_noise)]:</span>
+<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(val), <span class="dv">3</span>),</span>
+<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 標準偏差&#39;</span>, <span class="bu">round</span>(val.std(), <span class="dv">2</span>))</span>
+<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;0より小さい値:&#39;</span>, (by_noise[miss] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>推測の外れの標準偏差: 1.21
 本当の値  相関 0.848  標準偏差 2.16
 推測  相関 0.863  標準偏差 2.11
-推測＋揺らぎ  相関 0.833  標準偏差 2.19</code></pre>
+推測＋揺らぎ  相関 0.833  標準偏差 2.19
+0より小さい値: 342 件</code></pre>
 </div>
 </div>
-<div id="211e9936" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(full[<span class="st">&#39;定員&#39;</span>][miss], by_noise[miss], s<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;定員&#39;</span>)</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;揺らぎを足して補ったベッド数&#39;</span>)</span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="211e9936" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(full[<span class="st">&#39;定員&#39;</span>][miss], by_noise[miss], s<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;定員&#39;</span>)</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;揺らぎを足して補ったベッド数&#39;</span>)</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4629,15 +4657,16 @@ dtype: float64</code></pre>
 </div>
 </div>
 </div>
-<p>読み方　揺らぎを足すと、相関も標準偏差も本当の値に近づきます。図の点も、1本の線ではなく、本当の値のように散らばります。ただし、0より小さいベッド数も出てしまいます。正規分布の揺らぎをそのまま足しただけの、単純なやり方の弱点です。</p>
-<p>ただし、足した揺らぎは乱数なので、種を変えれば補った値も変わります。そこで、種を変えて補ったデータを何通りも作り、それぞれで同じ分析をして、結果をまとめます。補った値の不確かさを、結果の幅として残せるのです。この方法を多重代入（multiple imputation）と呼びます。</p>
-<div id="c36545cd" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>    by_noise <span class="op">=</span> by_reg.copy()</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>    by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(seed, by_noise[miss].head(<span class="dv">3</span>).<span class="bu">round</span>(<span class="dv">1</span>).values,</span>
-<span id="cb71-6"><a href="#cb71-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(by_noise), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>読み方　推測だけのときは、相関0.863・標準偏差2.11で、本当の値（0.848・2.16）より揃いすぎていました。揺らぎを足すと、今度は相関0.833・標準偏差2.19と、反対側にずれます。図の点も1本の線ではなくなりますが、0より小さいベッド数が342件も出てしまいます。</p>
+<p>散らばりすぎる理由は、どの部屋にも同じ大きさの揺らぎを足したことです。本当のベッド数は、定員の小さい部屋ではあまり散らばらず、大きい部屋ではよく散らばります。それなのに、小さい部屋にも大きい部屋と同じ<span class="math inline">\(s=1.21\)</span>の揺らぎを足しました。本格的な方法では、揺らぎの大きさも部屋に合わせてデータから決めます。</p>
+<p>それでも、揺らぎを足すという考え方には意味があります。足した揺らぎは乱数なので、種を変えれば補った値も変わります。そこで、種を変えて補ったデータを何通りも作り、それぞれで同じ分析をして、結果をまとめます。補った値の不確かさを、結果の幅として残せるのです。この方法を多重代入（multiple imputation）と呼びます。</p>
+<div id="c36545cd" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>    by_noise <span class="op">=</span> by_reg.copy()</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>    by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(seed, by_noise[miss].head(<span class="dv">3</span>).<span class="bu">round</span>(<span class="dv">1</span>).values,</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(by_noise), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0 [3.4 1.8 3.4]  相関 0.833
 1 [3.6 3.  3. ]  相関 0.833
@@ -4646,7 +4675,7 @@ dtype: float64</code></pre>
 4 [2.4 1.8 4.6]  相関 0.833</code></pre>
 </div>
 </div>
-<p>隠した部屋の最初の3件に入る値は、種ごとに違います。それでも相関は、どの種でも0.833で、本当の0.848に近いままです。試すなら、<code>rate</code>を0.4に上げて、推測だけで補ったときと、揺らぎを足したときの相関を比べてみましょう。</p>
+<p>隠した部屋の最初の3件に入る値は、種ごとに違います。補った値がどれくらい不確かかが、種による違いとして見えるのです。試すなら、<code>rate</code>を0.4に上げて、推測だけのとき・揺らぎを足したときの相関と標準偏差が、本当の値からどちらにどれだけずれるかを比べてみましょう。</p>
 </section>
 </section>
 
