@@ -1235,6 +1235,25 @@ display: block;
 margin-left: auto;
 margin-right: 0; }
 </style>
+  <script>
+  // Quarto は Jupyter の出力のために require.js を読み込む。require.js があると、KaTeX は
+  // window.katex を作らずに AMD のモジュールとして登録され、数式が描かれない（\text{…} が
+  // そのまま出る）。KaTeX を読み込むあいだだけ define を隠し、window.katex ができたら戻す。
+  (function () {
+    document.addEventListener('DOMContentLoaded', function () {
+      if (!(window.define && window.define.amd) || window.katex) return;
+      var saved = window.define;
+      window.define = undefined;
+      var tries = 0;
+      var timer = setInterval(function () {
+        if (window.katex || ++tries > 400) {
+          window.define = saved;
+          clearInterval(timer);
+        }
+      }, 25);
+    });
+  })();
+  </script>
   <script>var requirejs,require,define;!function(global,setTimeout){var req,s,head,baseElement,dataMain,src,interactiveScript,currentlyAddingScript,mainScript,subPath,version="2.3.6",commentRegExp=/\/\*[\s\S]*?\*\/|([^:"'=]|^)\/\/.*$/gm,cjsRequireRegExp=/[^.]\s*require\s*\(\s*["']([^'"\s]+)["']\s*\)/g,jsSuffixRegExp=/\.js$/,currDirRegExp=/^\.\//,op=Object.prototype,ostring=op.toString,hasOwn=op.hasOwnProperty,isBrowser=!("undefined"==typeof window||"undefined"==typeof navigator||!window.document),isWebWorker=!isBrowser&&"undefined"!=typeof importScripts,readyRegExp=isBrowser&&"PLAYSTATION 3"===navigator.platform?/^complete$/:/^(complete|loaded)$/,defContextName="_",isOpera="undefined"!=typeof opera&&"[object Opera]"===opera.toString(),contexts={},cfg={},globalDefQueue=[],useInteractive=!1;function commentReplace(e,t){return t||""}function isFunction(e){return"[object Function]"===ostring.call(e)}function isArray(e){return"[object Array]"===ostring.call(e)}function each(e,t){var i;if(e)for(i=0;i<e.length&&(!e[i]||!t(e[i],i,e));i+=1);}function eachReverse(e,t){var i;if(e)for(i=e.length-1;-1<i&&(!e[i]||!t(e[i],i,e));i-=1);}function hasProp(e,t){return hasOwn.call(e,t)}function getOwn(e,t){return hasProp(e,t)&&e[t]}function eachProp(e,t){var i;for(i in e)if(hasProp(e,i)&&t(e[i],i))break}function mixin(i,e,r,n){return e&&eachProp(e,function(e,t){!r&&hasProp(i,t)||(!n||"object"!=typeof e||!e||isArray(e)||isFunction(e)||e instanceof RegExp?i[t]=e:(i[t]||(i[t]={}),mixin(i[t],e,r,n)))}),i}function bind(e,t){return function(){return t.apply(e,arguments)}}function scripts(){return document.getElementsByTagName("script")}function defaultOnError(e){throw e}function getGlobal(e){if(!e)return e;var t=global;return each(e.split("."),function(e){t=t[e]}),t}function makeError(e,t,i,r){var n=new Error(t+"\nhttps://requirejs.org/docs/errors.html#"+e);return n.requireType=e,n.requireModules=r,i&&(n.originalError=i),n}if(void 0===define){if(void 0!==requirejs){if(isFunction(requirejs))return;cfg=requirejs,requirejs=void 0}void 0===require||isFunction(require)||(cfg=require,require=void 0),req=requirejs=function(e,t,i,r){var n,o,a=defContextName;return isArray(e)||"string"==typeof e||(o=e,isArray(t)?(e=t,t=i,i=r):e=[]),o&&o.context&&(a=o.context),(n=getOwn(contexts,a))||(n=contexts[a]=req.s.newContext(a)),o&&n.configure(o),n.require(e,t,i)},req.config=function(e){return req(e)},req.nextTick=void 0!==setTimeout?function(e){setTimeout(e,4)}:function(e){e()},require||(require=req),req.version=version,req.jsExtRegExp=/^\/|:|\?|\.js$/,req.isBrowser=isBrowser,s=req.s={contexts:contexts,newContext:newContext},req({}),each(["toUrl","undef","defined","specified"],function(t){req[t]=function(){var e=contexts[defContextName];return e.require[t].apply(e,arguments)}}),isBrowser&&(head=s.head=document.getElementsByTagName("head")[0],baseElement=document.getElementsByTagName("base")[0],baseElement&&(head=s.head=baseElement.parentNode)),req.onError=defaultOnError,req.createNode=function(e,t,i){var r=e.xhtml?document.createElementNS("http://www.w3.org/1999/xhtml","html:script"):document.createElement("script");return r.type=e.scriptType||"text/javascript",r.charset="utf-8",r.async=!0,r},req.load=function(t,i,r){var e,n=t&&t.config||{};if(isBrowser)return(e=req.createNode(n,i,r)).setAttribute("data-requirecontext",t.contextName),e.setAttribute("data-requiremodule",i),!e.attachEvent||e.attachEvent.toString&&e.attachEvent.toString().indexOf("[native code")<0||isOpera?(e.addEventListener("load",t.onScriptLoad,!1),e.addEventListener("error",t.onScriptError,!1)):(useInteractive=!0,e.attachEvent("onreadystatechange",t.onScriptLoad)),e.src=r,n.onNodeCreated&&n.onNodeCreated(e,n,i,r),currentlyAddingScript=e,baseElement?head.insertBefore(e,baseElement):head.appendChild(e),currentlyAddingScript=null,e;if(isWebWorker)try{setTimeout(function(){},0),importScripts(r),t.completeLoad(i)}catch(e){t.onError(makeError("importscripts","importScripts failed for "+i+" at "+r,e,[i]))}},isBrowser&&!cfg.skipDataMain&&eachReverse(scripts(),function(e){if(head||(head=e.parentNode),dataMain=e.getAttribute("data-main"))return mainScript=dataMain,cfg.baseUrl||-1!==mainScript.indexOf("!")||(mainScript=(src=mainScript.split("/")).pop(),subPath=src.length?src.join("/")+"/":"./",cfg.baseUrl=subPath),mainScript=mainScript.replace(jsSuffixRegExp,""),req.jsExtRegExp.test(mainScript)&&(mainScript=dataMain),cfg.deps=cfg.deps?cfg.deps.concat(mainScript):[mainScript],!0}),define=function(e,i,t){var r,n;"string"!=typeof e&&(t=i,i=e,e=null),isArray(i)||(t=i,i=null),!i&&isFunction(t)&&(i=[],t.length&&(t.toString().replace(commentRegExp,commentReplace).replace(cjsRequireRegExp,function(e,t){i.push(t)}),i=(1===t.length?["require"]:["require","exports","module"]).concat(i))),useInteractive&&(r=currentlyAddingScript||getInteractiveScript())&&(e||(e=r.getAttribute("data-requiremodule")),n=contexts[r.getAttribute("data-requirecontext")]),n?(n.defQueue.push([e,i,t]),n.defQueueMap[e]=!0):globalDefQueue.push([e,i,t])},define.amd={jQuery:!0},req.exec=function(text){return eval(text)},req(cfg)}function newContext(u){var i,e,l,c,d,g={waitSeconds:7,baseUrl:"./",paths:{},bundles:{},pkgs:{},shim:{},config:{}},p={},f={},r={},h=[],m={},n={},v={},x=1,b=1;function q(e,t,i){var r,n,o,a,s,u,c,d,p,f,l=t&&t.split("/"),h=g.map,m=h&&h["*"];if(e&&(u=(e=e.split("/")).length-1,g.nodeIdCompat&&jsSuffixRegExp.test(e[u])&&(e[u]=e[u].replace(jsSuffixRegExp,"")),"."===e[0].charAt(0)&&l&&(e=l.slice(0,l.length-1).concat(e)),function(e){var t,i;for(t=0;t<e.length;t++)if("."===(i=e[t]))e.splice(t,1),t-=1;else if(".."===i){if(0===t||1===t&&".."===e[2]||".."===e[t-1])continue;0<t&&(e.splice(t-1,2),t-=2)}}(e),e=e.join("/")),i&&h&&(l||m)){e:for(o=(n=e.split("/")).length;0<o;o-=1){if(s=n.slice(0,o).join("/"),l)for(a=l.length;0<a;a-=1)if((r=getOwn(h,l.slice(0,a).join("/")))&&(r=getOwn(r,s))){c=r,d=o;break e}!p&&m&&getOwn(m,s)&&(p=getOwn(m,s),f=o)}!c&&p&&(c=p,d=f),c&&(n.splice(0,d,c),e=n.join("/"))}return getOwn(g.pkgs,e)||e}function E(t){isBrowser&&each(scripts(),function(e){if(e.getAttribute("data-requiremodule")===t&&e.getAttribute("data-requirecontext")===l.contextName)return e.parentNode.removeChild(e),!0})}function w(e){var t=getOwn(g.paths,e);if(t&&isArray(t)&&1<t.length)return t.shift(),l.require.undef(e),l.makeRequire(null,{skipMap:!0})([e]),!0}function y(e){var t,i=e?e.indexOf("!"):-1;return-1<i&&(t=e.substring(0,i),e=e.substring(i+1,e.length)),[t,e]}function S(e,t,i,r){var n,o,a,s,u=null,c=t?t.name:null,d=e,p=!0,f="";return e||(p=!1,e="_@r"+(x+=1)),u=(s=y(e))[0],e=s[1],u&&(u=q(u,c,r),o=getOwn(m,u)),e&&(u?f=i?e:o&&o.normalize?o.normalize(e,function(e){return q(e,c,r)}):-1===e.indexOf("!")?q(e,c,r):e:(u=(s=y(f=q(e,c,r)))[0],f=s[1],i=!0,n=l.nameToUrl(f))),{prefix:u,name:f,parentMap:t,unnormalized:!!(a=!u||o||i?"":"_unnormalized"+(b+=1)),url:n,originalName:d,isDefine:p,id:(u?u+"!"+f:f)+a}}function k(e){var t=e.id,i=getOwn(p,t);return i||(i=p[t]=new l.Module(e)),i}function M(e,t,i){var r=e.id,n=getOwn(p,r);!hasProp(m,r)||n&&!n.defineEmitComplete?(n=k(e)).error&&"error"===t?i(n.error):n.on(t,i):"defined"===t&&i(m[r])}function O(i,e){var t=i.requireModules,r=!1;e?e(i):(each(t,function(e){var t=getOwn(p,e);t&&(t.error=i,t.events.error&&(r=!0,t.emit("error",i)))}),r||req.onError(i))}function j(){globalDefQueue.length&&(each(globalDefQueue,function(e){var t=e[0];"string"==typeof t&&(l.defQueueMap[t]=!0),h.push(e)}),globalDefQueue=[])}function P(e){delete p[e],delete f[e]}function R(){var e,r,t=1e3*g.waitSeconds,n=t&&l.startTime+t<(new Date).getTime(),o=[],a=[],s=!1,u=!0;if(!i){if(i=!0,eachProp(f,function(e){var t=e.map,i=t.id;if(e.enabled&&(t.isDefine||a.push(e),!e.error))if(!e.inited&&n)w(i)?s=r=!0:(o.push(i),E(i));else if(!e.inited&&e.fetched&&t.isDefine&&(s=!0,!t.prefix))return u=!1}),n&&o.length)return(e=makeError("timeout","Load timeout for modules: "+o,null,o)).contextName=l.contextName,O(e);u&&each(a,function(e){!function n(o,a,s){var e=o.map.id;o.error?o.emit("error",o.error):(a[e]=!0,each(o.depMaps,function(e,t){var i=e.id,r=getOwn(p,i);!r||o.depMatched[t]||s[i]||(getOwn(a,i)?(o.defineDep(t,m[i]),o.check()):n(r,a,s))}),s[e]=!0)}(e,{},{})}),n&&!r||!s||!isBrowser&&!isWebWorker||d||(d=setTimeout(function(){d=0,R()},50)),i=!1}}function a(e){hasProp(m,e[0])||k(S(e[0],null,!0)).init(e[1],e[2])}function o(e,t,i,r){e.detachEvent&&!isOpera?r&&e.detachEvent(r,t):e.removeEventListener(i,t,!1)}function s(e){var t=e.currentTarget||e.srcElement;return o(t,l.onScriptLoad,"load","onreadystatechange"),o(t,l.onScriptError,"error"),{node:t,id:t&&t.getAttribute("data-requiremodule")}}function T(){var e;for(j();h.length;){if(null===(e=h.shift())[0])return O(makeError("mismatch","Mismatched anonymous define() module: "+e[e.length-1]));a(e)}l.defQueueMap={}}return c={require:function(e){return e.require?e.require:e.require=l.makeRequire(e.map)},exports:function(e){if(e.usingExports=!0,e.map.isDefine)return e.exports?m[e.map.id]=e.exports:e.exports=m[e.map.id]={}},module:function(e){return e.module?e.module:e.module={id:e.map.id,uri:e.map.url,config:function(){return getOwn(g.config,e.map.id)||{}},exports:e.exports||(e.exports={})}}},(e=function(e){this.events=getOwn(r,e.id)||{},this.map=e,this.shim=getOwn(g.shim,e.id),this.depExports=[],this.depMaps=[],this.depMatched=[],this.pluginMaps={},this.depCount=0}).prototype={init:function(e,t,i,r){r=r||{},this.inited||(this.factory=t,i?this.on("error",i):this.events.error&&(i=bind(this,function(e){this.emit("error",e)})),this.depMaps=e&&e.slice(0),this.errback=i,this.inited=!0,this.ignore=r.ignore,r.enabled||this.enabled?this.enable():this.check())},defineDep:function(e,t){this.depMatched[e]||(this.depMatched[e]=!0,this.depCount-=1,this.depExports[e]=t)},fetch:function(){if(!this.fetched){this.fetched=!0,l.startTime=(new Date).getTime();var e=this.map;if(!this.shim)return e.prefix?this.callPlugin():this.load();l.makeRequire(this.map,{enableBuildCallback:!0})(this.shim.deps||[],bind(this,function(){return e.prefix?this.callPlugin():this.load()}))}},load:function(){var e=this.map.url;n[e]||(n[e]=!0,l.load(this.map.id,e))},check:function(){if(this.enabled&&!this.enabling){var t,e,i=this.map.id,r=this.depExports,n=this.exports,o=this.factory;if(this.inited){if(this.error)this.emit("error",this.error);else if(!this.defining){if(this.defining=!0,this.depCount<1&&!this.defined){if(isFunction(o)){if(this.events.error&&this.map.isDefine||req.onError!==defaultOnError)try{n=l.execCb(i,o,r,n)}catch(e){t=e}else n=l.execCb(i,o,r,n);if(this.map.isDefine&&void 0===n&&((e=this.module)?n=e.exports:this.usingExports&&(n=this.exports)),t)return t.requireMap=this.map,t.requireModules=this.map.isDefine?[this.map.id]:null,t.requireType=this.map.isDefine?"define":"require",O(this.error=t)}else n=o;if(this.exports=n,this.map.isDefine&&!this.ignore&&(m[i]=n,req.onResourceLoad)){var a=[];each(this.depMaps,function(e){a.push(e.normalizedMap||e)}),req.onResourceLoad(l,this.map,a)}P(i),this.defined=!0}this.defining=!1,this.defined&&!this.defineEmitted&&(this.defineEmitted=!0,this.emit("defined",this.exports),this.defineEmitComplete=!0)}}else hasProp(l.defQueueMap,i)||this.fetch()}},callPlugin:function(){var u=this.map,c=u.id,e=S(u.prefix);this.depMaps.push(e),M(e,"defined",bind(this,function(e){var o,t,i,r=getOwn(v,this.map.id),n=this.map.name,a=this.map.parentMap?this.map.parentMap.name:null,s=l.makeRequire(u.parentMap,{enableBuildCallback:!0});return this.map.unnormalized?(e.normalize&&(n=e.normalize(n,function(e){return q(e,a,!0)})||""),M(t=S(u.prefix+"!"+n,this.map.parentMap,!0),"defined",bind(this,function(e){this.map.normalizedMap=t,this.init([],function(){return e},null,{enabled:!0,ignore:!0})})),void((i=getOwn(p,t.id))&&(this.depMaps.push(t),this.events.error&&i.on("error",bind(this,function(e){this.emit("error",e)})),i.enable()))):r?(this.map.url=l.nameToUrl(r),void this.load()):((o=bind(this,function(e){this.init([],function(){return e},null,{enabled:!0})})).error=bind(this,function(e){this.inited=!0,(this.error=e).requireModules=[c],eachProp(p,function(e){0===e.map.id.indexOf(c+"_unnormalized")&&P(e.map.id)}),O(e)}),o.fromText=bind(this,function(e,t){var i=u.name,r=S(i),n=useInteractive;t&&(e=t),n&&(useInteractive=!1),k(r),hasProp(g.config,c)&&(g.config[i]=g.config[c]);try{req.exec(e)}catch(e){return O(makeError("fromtexteval","fromText eval for "+c+" failed: "+e,e,[c]))}n&&(useInteractive=!0),this.depMaps.push(r),l.completeLoad(i),s([i],o)}),void e.load(u.name,s,o,g))})),l.enable(e,this),this.pluginMaps[e.id]=e},enable:function(){(f[this.map.id]=this).enabled=!0,this.enabling=!0,each(this.depMaps,bind(this,function(e,t){var i,r,n;if("string"==typeof e){if(e=S(e,this.map.isDefine?this.map:this.map.parentMap,!1,!this.skipMap),this.depMaps[t]=e,n=getOwn(c,e.id))return void(this.depExports[t]=n(this));this.depCount+=1,M(e,"defined",bind(this,function(e){this.undefed||(this.defineDep(t,e),this.check())})),this.errback?M(e,"error",bind(this,this.errback)):this.events.error&&M(e,"error",bind(this,function(e){this.emit("error",e)}))}i=e.id,r=p[i],hasProp(c,i)||!r||r.enabled||l.enable(e,this)})),eachProp(this.pluginMaps,bind(this,function(e){var t=getOwn(p,e.id);t&&!t.enabled&&l.enable(e,this)})),this.enabling=!1,this.check()},on:function(e,t){var i=this.events[e];i||(i=this.events[e]=[]),i.push(t)},emit:function(e,t){each(this.events[e],function(e){e(t)}),"error"===e&&delete this.events[e]}},(l={config:g,contextName:u,registry:p,defined:m,urlFetched:n,defQueue:h,defQueueMap:{},Module:e,makeModuleMap:S,nextTick:req.nextTick,onError:O,configure:function(e){if(e.baseUrl&&"/"!==e.baseUrl.charAt(e.baseUrl.length-1)&&(e.baseUrl+="/"),"string"==typeof e.urlArgs){var i=e.urlArgs;e.urlArgs=function(e,t){return(-1===t.indexOf("?")?"?":"&")+i}}var r=g.shim,n={paths:!0,bundles:!0,config:!0,map:!0};eachProp(e,function(e,t){n[t]?(g[t]||(g[t]={}),mixin(g[t],e,!0,!0)):g[t]=e}),e.bundles&&eachProp(e.bundles,function(e,t){each(e,function(e){e!==t&&(v[e]=t)})}),e.shim&&(eachProp(e.shim,function(e,t){isArray(e)&&(e={deps:e}),!e.exports&&!e.init||e.exportsFn||(e.exportsFn=l.makeShimExports(e)),r[t]=e}),g.shim=r),e.packages&&each(e.packages,function(e){var t;t=(e="string"==typeof e?{name:e}:e).name,e.location&&(g.paths[t]=e.location),g.pkgs[t]=e.name+"/"+(e.main||"main").replace(currDirRegExp,"").replace(jsSuffixRegExp,"")}),eachProp(p,function(e,t){e.inited||e.map.unnormalized||(e.map=S(t,null,!0))}),(e.deps||e.callback)&&l.require(e.deps||[],e.callback)},makeShimExports:function(t){return function(){var e;return t.init&&(e=t.init.apply(global,arguments)),e||t.exports&&getGlobal(t.exports)}},makeRequire:function(o,a){function s(e,t,i){var r,n;return a.enableBuildCallback&&t&&isFunction(t)&&(t.__requireJsBuild=!0),"string"==typeof e?isFunction(t)?O(makeError("requireargs","Invalid require call"),i):o&&hasProp(c,e)?c[e](p[o.id]):req.get?req.get(l,e,o,s):(r=S(e,o,!1,!0).id,hasProp(m,r)?m[r]:O(makeError("notloaded",'Module name "'+r+'" has not been loaded yet for context: '+u+(o?"":". Use require([])")))):(T(),l.nextTick(function(){T(),(n=k(S(null,o))).skipMap=a.skipMap,n.init(e,t,i,{enabled:!0}),R()}),s)}return a=a||{},mixin(s,{isBrowser:isBrowser,toUrl:function(e){var t,i=e.lastIndexOf("."),r=e.split("/")[0];return-1!==i&&(!("."===r||".."===r)||1<i)&&(t=e.substring(i,e.length),e=e.substring(0,i)),l.nameToUrl(q(e,o&&o.id,!0),t,!0)},defined:function(e){return hasProp(m,S(e,o,!1,!0).id)},specified:function(e){return e=S(e,o,!1,!0).id,hasProp(m,e)||hasProp(p,e)}}),o||(s.undef=function(i){j();var e=S(i,o,!0),t=getOwn(p,i);t.undefed=!0,E(i),delete m[i],delete n[e.url],delete r[i],eachReverse(h,function(e,t){e[0]===i&&h.splice(t,1)}),delete l.defQueueMap[i],t&&(t.events.defined&&(r[i]=t.events),P(i))}),s},enable:function(e){getOwn(p,e.id)&&k(e).enable()},completeLoad:function(e){var t,i,r,n=getOwn(g.shim,e)||{},o=n.exports;for(j();h.length;){if(null===(i=h.shift())[0]){if(i[0]=e,t)break;t=!0}else i[0]===e&&(t=!0);a(i)}if(l.defQueueMap={},r=getOwn(p,e),!t&&!hasProp(m,e)&&r&&!r.inited){if(!(!g.enforceDefine||o&&getGlobal(o)))return w(e)?void 0:O(makeError("nodefine","No define call for "+e,null,[e]));a([e,n.deps||[],n.exportsFn])}R()},nameToUrl:function(e,t,i){var r,n,o,a,s,u,c=getOwn(g.pkgs,e);if(c&&(e=c),u=getOwn(v,e))return l.nameToUrl(u,t,i);if(req.jsExtRegExp.test(e))a=e+(t||"");else{for(r=g.paths,o=(n=e.split("/")).length;0<o;o-=1)if(s=getOwn(r,n.slice(0,o).join("/"))){isArray(s)&&(s=s[0]),n.splice(0,o,s);break}a=n.join("/"),a=("/"===(a+=t||(/^data\:|^blob\:|\?/.test(a)||i?"":".js")).charAt(0)||a.match(/^[\w\+\.\-]+:/)?"":g.baseUrl)+a}return g.urlArgs&&!/^blob\:/.test(a)?a+g.urlArgs(e,a):a},load:function(e,t){req.load(l,e,t)},execCb:function(e,t,i,r){return t.apply(r,i)},onScriptLoad:function(e){if("load"===e.type||readyRegExp.test((e.currentTarget||e.srcElement).readyState)){interactiveScript=null;var t=s(e);l.completeLoad(t.id)}},onScriptError:function(e){var i=s(e);if(!w(i.id)){var r=[];return eachProp(p,function(e,t){0!==t.indexOf("_@r")&&each(e.depMaps,function(e){if(e.id===i.id)return r.push(t),!0})}),O(makeError("scripterror",'Script error for "'+i.id+(r.length?'", needed by: '+r.join(", "):'"'),e,[i.id]))}}}).require=l.makeRequire(),l}function getInteractiveScript(){return interactiveScript&&"interactive"===interactiveScript.readyState||eachReverse(scripts(),function(e){if("interactive"===e.readyState)return interactiveScript=e}),interactiveScript}}(this,"undefined"==typeof setTimeout?void 0:setTimeout);</script>
   
   <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -1268,7 +1287,7 @@ margin-right: 0; }
 <section id="決めたいこと" class="slide level2">
 <h2>決めたいこと</h2>
 <div class="block-tag"><span class="block-name">① 場面</span><span class="block-dots">●●</span></div>
-<div id="54efce6d" class="cell" data-execution_count="2">
+<div id="ee58fa89" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1294,7 +1313,7 @@ margin-right: 0; }
 <section id="データをのぞく" class="slide level2 fit-80">
 <h2>データをのぞく</h2>
 <div class="block-tag"><span class="block-name">② 手元のデータ</span><span class="block-dots">●●</span></div>
-<div id="d9a7c124" class="cell" data-execution_count="3">
+<div id="aa7f8122" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 <style scoped>
@@ -1386,7 +1405,7 @@ text-align: right;
 <section id="第2回のデータとの違い" class="slide level2">
 <h2>第2回のデータとの違い</h2>
 <div class="block-tag block-start"><span class="block-name">③ 困りごと</span><span class="block-dots">●○</span></div>
-<div id="4977a47c" class="cell" data-execution_count="4">
+<div id="2ebf09e2" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1403,7 +1422,7 @@ text-align: right;
 <section id="そのままでは式に入らない" class="slide level2">
 <h2>そのままでは式に入らない</h2>
 <div class="block-tag"><span class="block-name">③ 困りごと</span><span class="block-dots">●●</span></div>
-<div id="4a9a9873" class="cell" data-execution_count="5">
+<div id="716d6e9e" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1420,7 +1439,7 @@ text-align: right;
 <section id="最後に出す答え" class="slide level2">
 <h2>最後に出す答え</h2>
 <div class="block-tag block-start"><span class="block-name">④ 今日の問い</span><span class="block-dots">●○○○○○○</span></div>
-<div id="b2aff71a" class="cell" data-execution_count="6">
+<div id="df89b8a9" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1456,7 +1475,7 @@ text-align: right;
 <section id="もう1つのねらい関数" class="slide level2">
 <h2>もう1つのねらい：関数</h2>
 <div class="block-tag"><span class="block-name">④ 今日の問い</span><span class="block-dots">●●●●○○○</span></div>
-<div id="3bf11c2a" class="cell" data-execution_count="7">
+<div id="bf1f9f1c" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1472,7 +1491,7 @@ text-align: right;
 <section id="関数を3段で育てる" class="slide level2">
 <h2>関数を3段で育てる</h2>
 <div class="block-tag"><span class="block-name">④ 今日の問い</span><span class="block-dots">●●●●●○○</span></div>
-<div id="4eb976c0" class="cell" data-execution_count="8">
+<div id="e8ada617" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1489,7 +1508,7 @@ text-align: right;
 <section id="この問いにどう近づくか" class="slide level2">
 <h2>この問いにどう近づくか</h2>
 <div class="block-tag"><span class="block-name">④ 今日の問い</span><span class="block-dots">●●●●●●○</span></div>
-<div id="bf6664dc" class="cell" data-execution_count="9">
+<div id="096753f8" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1503,7 +1522,7 @@ text-align: right;
 <section id="今日の道筋" class="slide level2">
 <h2>今日の道筋</h2>
 <div class="block-tag"><span class="block-name">④ 今日の問い</span><span class="block-dots">●●●●●●●</span></div>
-<div id="234d2c18" class="cell" data-execution_count="10">
+<div id="4d1b6460" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1575,7 +1594,7 @@ text-align: right;
 <section id="列名が日本語になった" class="slide level2 fit-80">
 <h2>列名が日本語になった</h2>
 <div class="block-tag"><span class="block-name">0節 ① 道具とデータ</span><span class="block-dots">●●●●</span></div>
-<div id="c5093e1f" class="cell" data-execution_count="11">
+<div id="31ccd29a" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display" data-execution_count="11">
 <div>
 <style scoped>
@@ -1691,7 +1710,7 @@ text-align: right;
 </section>
 <section id="どんな部屋が並んでいる" class="slide level2">
 <h2>どんな部屋が並んでいる？</h2>
-<div id="c4b8212d" class="cell" data-execution_count="12">
+<div id="13bd3f96" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1722,7 +1741,7 @@ text-align: right;
 <section id="万円に山が1つ" class="slide level2">
 <h2>2万円に山が1つ</h2>
 <div class="block-tag"><span class="block-name">1節 ① 料金の形</span><span class="block-dots">●●○</span></div>
-<div id="c0c2680f" class="cell" data-execution_count="13">
+<div id="182000a4" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1738,7 +1757,7 @@ text-align: right;
 <section id="最大は545万円" class="slide level2">
 <h2>最大は545万円</h2>
 <div class="block-tag"><span class="block-name">1節 ① 料金の形</span><span class="block-dots">●●●</span></div>
-<div id="e83822f0" class="cell" data-execution_count="14">
+<div id="20ae2c2e" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>count      32361.0
 mean       31085.0
@@ -1779,7 +1798,7 @@ max      5449800.0</code></pre>
 <section id="泊10万円以下に絞る" class="slide level2">
 <h2>1泊10万円以下に絞る</h2>
 <div class="block-tag"><span class="block-name">1節 ② 外す線</span><span class="block-dots">●●●●</span></div>
-<div id="454587c6" class="cell" data-execution_count="15">
+<div id="87f2a0ce" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1803,7 +1822,7 @@ max      5449800.0</code></pre>
 <section id="何を外すか" class="slide level2">
 <h2>何を外すか</h2>
 <div class="block-tag"><span class="block-name">1節 ③ 貸切に絞る</span><span class="block-dots">●●○○○○</span></div>
-<div id="dae765e2" class="cell" data-execution_count="16">
+<div id="dcf1ec12" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1841,7 +1860,7 @@ max      5449800.0</code></pre>
 <section id="部屋のタイプで水準が違う" class="slide level2 fit-90">
 <h2>部屋のタイプで水準が違う</h2>
 <div class="block-tag"><span class="block-name">1節 ③ 貸切に絞る</span><span class="block-dots">●●●●●○</span></div>
-<div id="f25c8cbb" class="cell" data-execution_count="17">
+<div id="98d2cf39" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>902 件を外した
                   median  count
@@ -1859,7 +1878,7 @@ Shared room       3424.0    311</code></pre>
 <section id="貸切だけで26430件" class="slide level2">
 <h2>貸切だけで26,430件</h2>
 <div class="block-tag"><span class="block-name">1節 ③ 貸切に絞る</span><span class="block-dots">●●●●●●</span></div>
-<div id="85f67460" class="cell" data-execution_count="18">
+<div id="3743812e" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-stdout">
 <pre><code>3 件は最低宿泊数が欠けている
 26430 件</code></pre>
@@ -1873,7 +1892,7 @@ Shared room       3424.0    311</code></pre>
 <section id="分けてから整える" class="slide level2">
 <h2>分けてから整える</h2>
 <div class="block-tag block-start"><span class="block-name">1節 ④ 先に分ける</span><span class="block-dots">●○</span></div>
-<div id="d3a30c95" class="cell" data-execution_count="19">
+<div id="ffb52807" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1919,7 +1938,7 @@ Shared room       3424.0    311</code></pre>
 </section>
 <section id="何度も測るので関数に" class="slide level2">
 <h2>何度も測るので関数に</h2>
-<div id="140568a2" class="cell" data-execution_count="20">
+<div id="f3671efb" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1957,7 +1976,7 @@ Shared room       3424.0    311</code></pre>
 <section id="defの読み方" class="slide level2">
 <h2>defの読み方</h2>
 <div class="block-tag"><span class="block-name">2節 ① defで関数</span><span class="block-dots">●●●○○</span></div>
-<div id="cad2f7e1" class="cell" data-execution_count="21">
+<div id="201c5d47" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2000,7 +2019,7 @@ Shared room       3424.0    311</code></pre>
 <section id="基準は10860円" class="slide level2">
 <h2>基準は10,860円</h2>
 <div class="block-tag"><span class="block-name">2節 ② 基準を測る</span><span class="block-dots">●●</span></div>
-<div id="4750afde" class="cell" data-execution_count="22">
+<div id="1145eeda" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-stdout">
 <pre><code>20009.5
 10860 円</code></pre>
@@ -2060,7 +2079,7 @@ Shared room       3424.0    311</code></pre>
 </section>
 <section id="すぐには埋めない" class="slide level2">
 <h2>すぐには埋めない</h2>
-<div id="6f23a886" class="cell" data-execution_count="23">
+<div id="5959172a" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2077,7 +2096,7 @@ Shared room       3424.0    311</code></pre>
 <section id="欠けを数える仕組み" class="slide level2">
 <h2>欠けを数える仕組み</h2>
 <div class="block-tag block-start"><span class="block-name">3節 ① 欠けを数える</span><span class="block-dots">●○○○○</span></div>
-<div id="e9ad59b5" class="cell" data-execution_count="24">
+<div id="708beda5" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2120,7 +2139,7 @@ Shared room       3424.0    311</code></pre>
 <section id="答え合わせtodo①" class="slide level2 fit-80">
 <h2>答え合わせ：TODO①</h2>
 <div class="block-tag"><span class="block-name">3節 ① 欠けを数える</span><span class="block-dots">●●●●○</span></div>
-<div id="a882178e" class="cell" data-execution_count="25">
+<div id="a6576dec" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-stdout">
 <pre><code>           欠測の数    割合
 寝室数        1025   4.8
@@ -2138,7 +2157,7 @@ Shared room       3424.0    311</code></pre>
 <section id="欠け方の3つの形" class="slide level2">
 <h2>欠け方の3つの形</h2>
 <div class="block-tag"><span class="block-name">3節 ① 欠けを数える</span><span class="block-dots">●●●●●</span></div>
-<div id="a5dfe450" class="cell" data-execution_count="26">
+<div id="58c282c2" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2166,7 +2185,7 @@ Shared room       3424.0    311</code></pre>
 <section id="つとも2310件" class="slide level2">
 <h2>3つとも2,310件</h2>
 <div class="block-tag"><span class="block-name">3節 ② レビューの点数</span><span class="block-dots">●●○○</span></div>
-<div id="73a3abfb" class="cell" data-execution_count="27">
+<div id="10126f0e" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-stdout">
 <pre><code>2310 2310
 2310</code></pre>
@@ -2179,7 +2198,7 @@ Shared room       3424.0    311</code></pre>
 <section id="値が存在しない欠け" class="slide level2">
 <h2>値が存在しない欠け</h2>
 <div class="block-tag"><span class="block-name">3節 ② レビューの点数</span><span class="block-dots">●●●○</span></div>
-<div id="6ba32835" class="cell" data-execution_count="28">
+<div id="1886608c" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2213,7 +2232,7 @@ Shared room       3424.0    311</code></pre>
 <section id="表記は全部に書いてある" class="slide level2 fit-80">
 <h2>表記は全部に書いてある</h2>
 <div class="block-tag"><span class="block-name">3節 ③ バスルーム数</span><span class="block-dots">●●○○○○○○○○○○○○○</span></div>
-<div id="f200d6a8" class="cell" data-execution_count="29">
+<div id="862f1230" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-stdout">
 <pre><code>1322 件
 バスルームの表記
@@ -2244,7 +2263,7 @@ Half-bath      15
 <section id="文字を数に直す手順" class="slide level2">
 <h2>文字を数に直す手順</h2>
 <div class="block-tag"><span class="block-name">3節 ③ バスルーム数</span><span class="block-dots">●●●●○○○○○○○○○○○</span></div>
-<div id="c82576db" class="cell" data-execution_count="30">
+<div id="3a2c97d2" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2293,7 +2312,7 @@ Half-bath      15
 <section id="と0.5が出た" class="slide level2">
 <h2>1.5と0.5が出た</h2>
 <div class="block-tag"><span class="block-name">3節 ③ バスルーム数</span><span class="block-dots">●●●●●●●●○○○○○○○</span></div>
-<div id="1eebe90c" class="cell" data-execution_count="31">
+<div id="92ba1882" class="cell" data-execution_count="31">
 <div class="cell-output cell-output-stdout">
 <pre><code>1.5 0.5</code></pre>
 </div>
@@ -2316,7 +2335,7 @@ Half-bath      15
 <section id="表で見ると" class="slide level2">
 <h2>表で見ると</h2>
 <div class="block-tag"><span class="block-name">3節 ③ バスルーム数</span><span class="block-dots">●●●●●●●●●●○○○○○</span></div>
-<div id="96de5451" class="cell" data-execution_count="32">
+<div id="f2a14146" class="cell" data-execution_count="32">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2368,7 +2387,7 @@ Half-bath      15
 <section id="欠けは0件になった" class="slide level2">
 <h2>欠けは0件になった</h2>
 <div class="block-tag"><span class="block-name">3節 ③ バスルーム数</span><span class="block-dots">●●●●●●●●●●●●●●○</span></div>
-<div id="56da349c" class="cell" data-execution_count="33">
+<div id="98723d7e" class="cell" data-execution_count="33">
 <div class="cell-output cell-output-stdout">
 <pre><code>0
 0</code></pre>
@@ -2404,7 +2423,7 @@ Half-bath      15
 <section id="欠けたのは小さく安い部屋" class="slide level2">
 <h2>欠けたのは小さく安い部屋</h2>
 <div class="block-tag"><span class="block-name">3節 ④ 寝室数とベッド数</span><span class="block-dots">●●○○○○○</span></div>
-<div id="545a6261" class="cell" data-execution_count="34">
+<div id="84fc6ae2" class="cell" data-execution_count="34">
 <div class="cell-output cell-output-stdout">
 <pre><code>        定員       料金
 寝室数                
@@ -2420,7 +2439,7 @@ True   2.0  15948.0
 <section id="ベッド数も小さい部屋で" class="slide level2">
 <h2>ベッド数も小さい部屋で</h2>
 <div class="block-tag"><span class="block-name">3節 ④ 寝室数とベッド数</span><span class="block-dots">●●●○○○○</span></div>
-<div id="c142d7aa" class="cell" data-execution_count="35">
+<div id="037eceaf" class="cell" data-execution_count="35">
 <div class="cell-output cell-output-stdout">
 <pre><code>ベッド数
 False    4.0
@@ -2434,7 +2453,7 @@ True     3.0</code></pre>
 <section id="ほかの列しだいで欠ける" class="slide level2">
 <h2>ほかの列しだいで欠ける</h2>
 <div class="block-tag"><span class="block-name">3節 ④ 寝室数とベッド数</span><span class="block-dots">●●●●○○○</span></div>
-<div id="c6e1b7d4" class="cell" data-execution_count="36">
+<div id="0b71fe34" class="cell" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2494,7 +2513,7 @@ True     3.0</code></pre>
 </section>
 <section id="補った値は当たったか" class="slide level2">
 <h2>補った値は当たったか？</h2>
-<div id="ef984d19" class="cell" data-execution_count="37">
+<div id="125db85c" class="cell" data-execution_count="37">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2511,7 +2530,7 @@ True     3.0</code></pre>
 <section id="答えの分かる欠けを作る" class="slide level2">
 <h2>答えの分かる欠けを作る</h2>
 <div class="block-tag block-start"><span class="block-name">4節 ① 欠けを作る</span><span class="block-dots">●○○○○○○○</span></div>
-<div id="45e2d895" class="cell" data-execution_count="38">
+<div id="9627a503" class="cell" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2547,7 +2566,7 @@ p_i = \frac{4r}{\text{定員}_i}
 <section id="隠す部屋を表で見る" class="slide level2">
 <h2>隠す部屋を表で見る</h2>
 <div class="block-tag"><span class="block-name">4節 ① 欠けを作る</span><span class="block-dots">●●●●○○○○</span></div>
-<div id="d939763e" class="cell" data-execution_count="39">
+<div id="b56610ab" class="cell" data-execution_count="39">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2599,7 +2618,7 @@ p_i = \frac{4r}{\text{定員}_i}
 <section id="件を隠した" class="slide level2">
 <h2>4,631件を隠した</h2>
 <div class="block-tag"><span class="block-name">4節 ① 欠けを作る</span><span class="block-dots">●●●●●●●●</span></div>
-<div id="be9ce7cd" class="cell" data-execution_count="40">
+<div id="f2932354" class="cell" data-execution_count="40">
 <div class="cell-output cell-output-stdout">
 <pre><code>20306 件のうち 4631 件を隠した
 22.8 %</code></pre>
@@ -2623,7 +2642,7 @@ p_i = \frac{4r}{\text{定員}_i}
 <section id="平均で埋める表" class="slide level2">
 <h2>平均で埋める表</h2>
 <div class="block-tag"><span class="block-name">4節 ② 平均で埋める</span><span class="block-dots">●●○○○○○○○</span></div>
-<div id="c8ebd12e" class="cell" data-execution_count="41">
+<div id="cb024f48" class="cell" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2663,7 +2682,7 @@ p_i = \frac{4r}{\text{定員}_i}
 <section id="外れは1.63台" class="slide level2">
 <h2>外れは1.63台</h2>
 <div class="block-tag"><span class="block-name">4節 ② 平均で埋める</span><span class="block-dots">●●●●●○○○○</span></div>
-<div id="16ad41b4" class="cell" data-execution_count="42">
+<div id="060e95a2" class="cell" data-execution_count="42">
 <div class="cell-output cell-output-stdout">
 <pre><code>埋めた値: 3.27
 外れ: 1.63 台</code></pre>
@@ -2676,7 +2695,7 @@ p_i = \frac{4r}{\text{定員}_i}
 <section id="どこに入ったか" class="slide level2">
 <h2>どこに入ったか</h2>
 <div class="block-tag"><span class="block-name">4節 ② 平均で埋める</span><span class="block-dots">●●●●●●○○○</span></div>
-<div id="12eb4105" class="cell" data-execution_count="43">
+<div id="1c68246e" class="cell" data-execution_count="43">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2693,7 +2712,7 @@ p_i = \frac{4r}{\text{定員}_i}
 <section id="定員を無視して一直線" class="slide level2">
 <h2>定員を無視して一直線</h2>
 <div class="block-tag"><span class="block-name">4節 ② 平均で埋める</span><span class="block-dots">●●●●●●●○○</span></div>
-<div id="46961a98" class="cell" data-execution_count="44">
+<div id="6d403014" class="cell" data-execution_count="44">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2722,7 +2741,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <div class="block-tag"><span class="block-name">4節 ② 平均で埋める</span><span class="block-dots">●●●●●●●●●</span></div>
 <div class="sourceCode" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href></a><span class="bu">print</span>(<span class="st">&#39;本当の値  :&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(truth), <span class="dv">3</span>))</span>
 <span id="cb39-2"><a href></a><span class="bu">print</span>(<span class="st">&#39;平均で埋めた:&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(by_mean), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="6f1f37f4" class="cell" data-execution_count="45">
+<div id="1317e8da" class="cell" data-execution_count="45">
 <div class="cell-output cell-output-stdout">
 <pre><code>本当の値  : 0.848
 平均で埋めた: 0.762</code></pre>
@@ -2754,7 +2773,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <section id="推測で埋める表" class="slide level2">
 <h2>推測で埋める表</h2>
 <div class="block-tag"><span class="block-name">4節 ③ 推測して補う</span><span class="block-dots">●●●○○○○</span></div>
-<div id="d1f760df" class="cell" data-execution_count="46">
+<div id="4ca42032" class="cell" data-execution_count="46">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2794,7 +2813,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <section id="外れは0.58台" class="slide level2">
 <h2>外れは0.58台</h2>
 <div class="block-tag"><span class="block-name">4節 ③ 推測して補う</span><span class="block-dots">●●●●●●○</span></div>
-<div id="62519b26" class="cell" data-execution_count="47">
+<div id="81a90e7a" class="cell" data-execution_count="47">
 <div class="cell-output cell-output-stdout">
 <pre><code>外れ: 0.58 台
 相関: 0.863</code></pre>
@@ -2808,7 +2827,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <section id="つを並べると" class="slide level2">
 <h2>3つを並べると</h2>
 <div class="block-tag"><span class="block-name">4節 ③ 推測して補う</span><span class="block-dots">●●●●●●●</span></div>
-<div id="0522d5f3" class="cell" data-execution_count="48">
+<div id="6f182b5e" class="cell" data-execution_count="48">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2825,7 +2844,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <section id="gradeの中で起きること" class="slide level2">
 <h2>gradeの中で起きること</h2>
 <div class="block-tag block-start"><span class="block-name">4節 ④ 採点を関数に</span><span class="block-dots">●○○○○</span></div>
-<div id="f1ff6c7b" class="cell" data-execution_count="49">
+<div id="cff7a53e" class="cell" data-execution_count="49">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2879,7 +2898,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <section id="grade0.2はお手本と同じ" class="slide level2">
 <h2>grade(0.2)はお手本と同じ</h2>
 <div class="block-tag"><span class="block-name">4節 ④ 採点を関数に</span><span class="block-dots">●●●●●</span></div>
-<div id="d8ce52c7" class="cell" data-execution_count="50">
+<div id="b58eef66" class="cell" data-execution_count="50">
 <div class="cell-output cell-output-stdout">
 <pre><code>欠けの率 22.8 %  埋めた平均 3.27
  平均 1.63  相関 0.762
@@ -2918,7 +2937,7 @@ r = \frac{\sum_i (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_i (x_i - \bar{x})^2}
 <section id="答え合わせtodo②" class="slide level2 fit-90">
 <h2>答え合わせ：TODO②</h2>
 <div class="block-tag"><span class="block-name">4節 ⑤ 欠けを増やす</span><span class="block-dots">●●●○</span></div>
-<div id="46fcc7b9" class="cell" data-execution_count="51">
+<div id="05dcff55" class="cell" data-execution_count="51">
 <div class="cell-output cell-output-display" data-execution_count="51">
 <div>
 <style scoped>
@@ -2992,7 +3011,7 @@ text-align: right;
 <section id="欠けが増えるほど崩れる" class="slide level2 fit-90">
 <h2>欠けが増えるほど崩れる</h2>
 <div class="block-tag"><span class="block-name">4節 ⑤ 欠けを増やす</span><span class="block-dots">●●●●</span></div>
-<div id="4a97431c" class="cell" data-execution_count="52">
+<div id="4e476ea1" class="cell" data-execution_count="52">
 <div class="cell-output cell-output-display" data-execution_count="52">
 <div>
 <style scoped>
@@ -3083,7 +3102,7 @@ text-align: right;
 <span id="cb47-3"><a href></a><span class="bu">print</span>(<span class="st">&#39;全部の部屋:&#39;</span>, <span class="bu">round</span>(truth.mean(), <span class="dv">2</span>))</span>
 <span id="cb47-4"><a href></a><span class="bu">print</span>(<span class="st">&#39;残った部屋:&#39;</span>, <span class="bu">round</span>(truth[<span class="op">~</span>miss4].mean(), <span class="dv">2</span>))</span>
 <span id="cb47-5"><a href></a><span class="bu">print</span>(<span class="st">&#39;隠した部屋:&#39;</span>, <span class="bu">round</span>(truth[miss4].mean(), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="0e3560c1" class="cell" data-execution_count="53">
+<div id="f0c08c38" class="cell" data-execution_count="53">
 <div class="cell-output cell-output-stdout">
 <pre><code>全部の部屋: 3.05
 残った部屋: 3.7
@@ -3097,7 +3116,7 @@ text-align: right;
 <section id="小さい部屋ほど隠したから" class="slide level2">
 <h2>小さい部屋ほど隠したから</h2>
 <div class="block-tag"><span class="block-name">4節 ⑥ 平均がずれる</span><span class="block-dots">●●●○○</span></div>
-<div id="1d3286fb" class="cell" data-execution_count="54">
+<div id="0b9773a2" class="cell" data-execution_count="54">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3113,7 +3132,7 @@ text-align: right;
 <section id="残った部屋の平均はずれる" class="slide level2">
 <h2>残った部屋の平均はずれる</h2>
 <div class="block-tag"><span class="block-name">4節 ⑥ 平均がずれる</span><span class="block-dots">●●●●○</span></div>
-<div id="e8b40ff1" class="cell" data-execution_count="55">
+<div id="ce4012c4" class="cell" data-execution_count="55">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3142,7 +3161,7 @@ text-align: right;
 </section>
 <section id="推測を本番の欠けへ" class="slide level2">
 <h2>推測を本番の欠けへ</h2>
-<div id="79386e2e" class="cell" data-execution_count="56">
+<div id="19712a2a" class="cell" data-execution_count="56">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3181,7 +3200,7 @@ text-align: right;
 <section id="決める表と埋める表" class="slide level2">
 <h2>決める表と埋める表</h2>
 <div class="block-tag"><span class="block-name">5節 ① 関数にする</span><span class="block-dots">●●●○</span></div>
-<div id="1bed121c" class="cell" data-execution_count="57">
+<div id="5a3c49f4" class="cell" data-execution_count="57">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3198,7 +3217,7 @@ text-align: right;
 <section id="節と同じ0.58台" class="slide level2">
 <h2>4節と同じ0.58台</h2>
 <div class="block-tag"><span class="block-name">5節 ① 関数にする</span><span class="block-dots">●●●●</span></div>
-<div id="23577636" class="cell" data-execution_count="58">
+<div id="1c6fb44a" class="cell" data-execution_count="58">
 <div class="cell-output cell-output-stdout">
 <pre><code>外れ: 0.58 台</code></pre>
 </div>
@@ -3210,7 +3229,7 @@ text-align: right;
 <section id="訓練の式で両方を埋める" class="slide level2">
 <h2>訓練の式で両方を埋める</h2>
 <div class="block-tag block-start"><span class="block-name">5節 ② 実データを補う</span><span class="block-dots">●○○○</span></div>
-<div id="f076a242" class="cell" data-execution_count="59">
+<div id="89e86f33" class="cell" data-execution_count="59">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3247,7 +3266,7 @@ text-align: right;
 <section id="外れ幅は8907円" class="slide level2">
 <h2>外れ幅は8,907円</h2>
 <div class="block-tag"><span class="block-name">5節 ② 実データを補う</span><span class="block-dots">●●●●</span></div>
-<div id="cf5e683a" class="cell" data-execution_count="60">
+<div id="0c0809ec" class="cell" data-execution_count="60">
 <div class="cell-output cell-output-stdout">
 <pre><code>0 0
 8907 円</code></pre>
@@ -3284,7 +3303,7 @@ text-align: right;
 <section id="全体の差は4円" class="slide level2">
 <h2>全体の差は4円</h2>
 <div class="block-tag"><span class="block-name">5節 ③ 平均と比べる</span><span class="block-dots">●●●</span></div>
-<div id="600bde82" class="cell" data-execution_count="61">
+<div id="1f95dbf5" class="cell" data-execution_count="61">
 <div class="cell-output cell-output-stdout">
 <pre><code>推測 8907
 平均 8911</code></pre>
@@ -3316,7 +3335,7 @@ text-align: right;
 <section id="欠けた部屋は1割足らず" class="slide level2">
 <h2>欠けた部屋は1割足らず</h2>
 <div class="block-tag"><span class="block-name">5節 ④ 欠けた部屋で比べる</span><span class="block-dots">●●●○○</span></div>
-<div id="79117e21" class="cell" data-execution_count="62">
+<div id="65d54692" class="cell" data-execution_count="62">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3332,7 +3351,7 @@ text-align: right;
 <section id="欠けた部屋では300円" class="slide level2">
 <h2>欠けた部屋では300円</h2>
 <div class="block-tag"><span class="block-name">5節 ④ 欠けた部屋で比べる</span><span class="block-dots">●●●●○</span></div>
-<div id="a70436b7" class="cell" data-execution_count="63">
+<div id="896375ca" class="cell" data-execution_count="63">
 <div class="cell-output cell-output-stdout">
 <pre><code>448 件
 推測 7759  平均 8060</code></pre>
@@ -3372,7 +3391,7 @@ text-align: right;
 </section>
 <section id="列の目盛りがばらばら" class="slide level2">
 <h2>列の目盛りがばらばら</h2>
-<div id="1dcff710" class="cell" data-execution_count="64">
+<div id="a075e0f3" class="cell" data-execution_count="64">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3410,7 +3429,7 @@ s = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n} (x_i - \bar{x})^2}
 <section id="日と0.4室" class="slide level2">
 <h2>92日と0.4室</h2>
 <div class="block-tag"><span class="block-name">6節 ① 目盛りを見る</span><span class="block-dots">●●●</span></div>
-<div id="8ef3e3db" class="cell" data-execution_count="65">
+<div id="528c3116" class="cell" data-execution_count="65">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3437,7 +3456,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="標準化を表で見る" class="slide level2">
 <h2>標準化を表で見る</h2>
 <div class="block-tag"><span class="block-name">6節 ② 標準化</span><span class="block-dots">●●○○○○○○</span></div>
-<div id="5d37336a" class="cell" data-execution_count="66">
+<div id="1cda3e95" class="cell" data-execution_count="66">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3465,7 +3484,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="平均0標準偏差1" class="slide level2 fit-80">
 <h2>平均0・標準偏差1</h2>
 <div class="block-tag"><span class="block-name">6節 ② 標準化</span><span class="block-dots">●●●●○○○○</span></div>
-<div id="76a1a3a0" class="cell" data-execution_count="67">
+<div id="28ed6c34" class="cell" data-execution_count="67">
 <div class="cell-output cell-output-stdout">
 <pre><code>          平均  標準偏差
 定員       0.0   1.0
@@ -3512,7 +3531,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="答え合わせtodo③" class="slide level2 fit-80">
 <h2>答え合わせ：TODO③</h2>
 <div class="block-tag"><span class="block-name">6節 ② 標準化</span><span class="block-dots">●●●●●●●○</span></div>
-<div id="49bdb16d" class="cell" data-execution_count="68">
+<div id="a8077972" class="cell" data-execution_count="68">
 <div class="cell-output cell-output-stdout">
 <pre><code>定員         0.03
 寝室数        0.01
@@ -3552,7 +3571,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="外れ幅は1円も変わらない" class="slide level2">
 <h2>外れ幅は1円も変わらない</h2>
 <div class="block-tag"><span class="block-name">6節 ③ 予測と係数</span><span class="block-dots">●●○○○○</span></div>
-<div id="5f9f242f" class="cell" data-execution_count="69">
+<div id="af9ad050" class="cell" data-execution_count="69">
 <div class="cell-output cell-output-stdout">
 <pre><code>8907 円</code></pre>
 </div>
@@ -3575,7 +3594,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="変わるのは係数" class="slide level2">
 <h2>変わるのは係数</h2>
 <div class="block-tag"><span class="block-name">6節 ③ 予測と係数</span><span class="block-dots">●●●●○○</span></div>
-<div id="5b099b11" class="cell" data-execution_count="70">
+<div id="0e997eab" class="cell" data-execution_count="70">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3592,7 +3611,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="同じ目盛りで並ぶ" class="slide level2">
 <h2>同じ目盛りで並ぶ</h2>
 <div class="block-tag"><span class="block-name">6節 ③ 予測と係数</span><span class="block-dots">●●●●●○</span></div>
-<div id="3260044e" class="cell" data-execution_count="71">
+<div id="b608606a" class="cell" data-execution_count="71">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3621,7 +3640,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="何度も同じ整え方を" class="slide level2">
 <h2>何度も同じ整え方を</h2>
-<div id="b7189c72" class="cell" data-execution_count="72">
+<div id="8e8a6e41" class="cell" data-execution_count="72">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3646,7 +3665,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="prepの中を通る順" class="slide level2">
 <h2>prepの中を通る順</h2>
 <div class="block-tag"><span class="block-name">7節 ① prepにまとめる</span><span class="block-dots">●●○○○○</span></div>
-<div id="bc16ddda" class="cell" data-execution_count="73">
+<div id="e4d9cc3a" class="cell" data-execution_count="73">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3685,7 +3704,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="決める表と整える表" class="slide level2">
 <h2>決める表と整える表</h2>
 <div class="block-tag"><span class="block-name">7節 ① prepにまとめる</span><span class="block-dots">●●●●●○</span></div>
-<div id="2aa789d9" class="cell" data-execution_count="74">
+<div id="13fde06f" class="cell" data-execution_count="74">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3702,7 +3721,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="節と同じ8907円" class="slide level2">
 <h2>5節と同じ8,907円</h2>
 <div class="block-tag"><span class="block-name">7節 ① prepにまとめる</span><span class="block-dots">●●●●●●</span></div>
-<div id="17ddc0ca" class="cell" data-execution_count="75">
+<div id="a1b49e76" class="cell" data-execution_count="75">
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練で決めた: 8907 円</code></pre>
 </div>
@@ -3725,7 +3744,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="差は出なかった" class="slide level2">
 <h2>差は出なかった</h2>
 <div class="block-tag"><span class="block-name">7節 ② 順番を守る</span><span class="block-dots">●●○○</span></div>
-<div id="f7c89994" class="cell" data-execution_count="76">
+<div id="4b8f6dbe" class="cell" data-execution_count="76">
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練で決めた: 8907 円
 全データで決めた: 8907 円</code></pre>
@@ -3772,7 +3791,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="いよいよ値付け" class="slide level2">
 <h2>いよいよ値付け</h2>
-<div id="bbe3ab8b" class="cell" data-execution_count="77">
+<div id="760b4f8a" class="cell" data-execution_count="77">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3789,7 +3808,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="新しい部屋も同じ道を通る" class="slide level2">
 <h2>新しい部屋も同じ道を通る</h2>
 <div class="block-tag block-start"><span class="block-name">8節 ① あなたの部屋</span><span class="block-dots">●○○○○○</span></div>
-<div id="fb1be0cd" class="cell" data-execution_count="78">
+<div id="91812334" class="cell" data-execution_count="78">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3820,7 +3839,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="円" class="slide level2">
 <h2>24,830円</h2>
 <div class="block-tag"><span class="block-name">8節 ① あなたの部屋</span><span class="block-dots">●●●○○○</span></div>
-<div id="2ab65a51" class="cell" data-execution_count="79">
+<div id="ed93803b" class="cell" data-execution_count="79">
 <div class="cell-output cell-output-stdout">
 <pre><code>24830 円</code></pre>
 </div>
@@ -3858,7 +3877,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="答え合わせtodo④" class="slide level2">
 <h2>答え合わせ：TODO④</h2>
 <div class="block-tag"><span class="block-name">8節 ① あなたの部屋</span><span class="block-dots">●●●●●●</span></div>
-<div id="ebdfa5d1" class="cell" data-execution_count="80">
+<div id="40ef4db5" class="cell" data-execution_count="80">
 <div class="cell-output cell-output-stdout">
 <pre><code>定員2・寝室1・ベッド1: 18164 円
 定員4・寝室数が空欄  : 22749 円</code></pre>
@@ -3875,7 +3894,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="外す線で値段は動く" class="slide level2">
 <h2>外す線で値段は動く？</h2>
-<div id="940852df" class="cell" data-execution_count="81">
+<div id="07504ea1" class="cell" data-execution_count="81">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3892,7 +3911,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="price_forの4つのかたまり" class="slide level2">
 <h2>price_forの4つのかたまり</h2>
 <div class="block-tag block-start"><span class="block-name">9節 ① 外す線を動かす</span><span class="block-dots">●○○○○○○○</span></div>
-<div id="49cd0b09" class="cell" data-execution_count="82">
+<div id="1609b1ba" class="cell" data-execution_count="82">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3932,7 +3951,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="既定値で10万円" class="slide level2">
 <h2>既定値で10万円</h2>
 <div class="block-tag"><span class="block-name">9節 ① 外す線を動かす</span><span class="block-dots">●●●●○○○○</span></div>
-<div id="62c341b3" class="cell" data-execution_count="83">
+<div id="84db4eec" class="cell" data-execution_count="83">
 <div class="cell-output cell-output-stdout">
 <pre><code>100000 円まで: 24830 円  外れ幅 8907 円</code></pre>
 </div>
@@ -3947,7 +3966,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <div class="block-tag"><span class="block-name">9節 ① 外す線を動かす</span><span class="block-dots">●●●●●○○○</span></div>
 <div class="sourceCode" id="cb77"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href></a><span class="cf">for</span> cut <span class="kw">in</span> [<span class="dv">30000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">300000</span>, <span class="dv">10000000</span>]:</span>
 <span id="cb77-2"><a href></a>    price_for(cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="83630bf6" class="cell" data-execution_count="84">
+<div id="a6f9f041" class="cell" data-execution_count="84">
 <div class="cell-output cell-output-stdout">
 <pre><code>30000 円まで: 18629 円  外れ幅 4173 円
 50000 円まで: 22363 円  外れ幅 6225 円
@@ -3975,7 +3994,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="値段は9千円近く動く" class="slide level2">
 <h2>値段は9千円近く動く</h2>
 <div class="block-tag"><span class="block-name">9節 ① 外す線を動かす</span><span class="block-dots">●●●●●●●○</span></div>
-<div id="b4943c23" class="cell" data-execution_count="85">
+<div id="588376b0" class="cell" data-execution_count="85">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -3991,7 +4010,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="いちばん効くのは外す線" class="slide level2">
 <h2>いちばん効くのは外す線</h2>
 <div class="block-tag"><span class="block-name">9節 ① 外す線を動かす</span><span class="block-dots">●●●●●●●●</span></div>
-<div id="e5115ed2" class="cell" data-execution_count="86">
+<div id="d38a1bd7" class="cell" data-execution_count="86">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4008,7 +4027,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="外れ幅も動く" class="slide level2">
 <h2>外れ幅も動く</h2>
 <div class="block-tag block-start"><span class="block-name">9節 ② 外れ幅の罠</span><span class="block-dots">●○○○</span></div>
-<div id="31ccf424" class="cell" data-execution_count="87">
+<div id="3c69bd45" class="cell" data-execution_count="87">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4032,7 +4051,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="テストの部屋が変わった" class="slide level2">
 <h2>テストの部屋が変わった</h2>
 <div class="block-tag"><span class="block-name">9節 ② 外れ幅の罠</span><span class="block-dots">●●●○</span></div>
-<div id="136a3415" class="cell" data-execution_count="88">
+<div id="eabc8355" class="cell" data-execution_count="88">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4108,7 +4127,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="今日の道筋を振り返る" class="slide level2">
 <h2>今日の道筋を振り返る</h2>
 <div class="block-tag block-start"><span class="block-name">⑤ 振り返る</span><span class="block-dots">●○○○</span></div>
-<div id="68865170" class="cell" data-execution_count="89">
+<div id="d7c1ed18" class="cell" data-execution_count="89">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4124,7 +4143,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="今日の歩み" class="slide level2">
 <h2>今日の歩み</h2>
 <div class="block-tag"><span class="block-name">⑤ 振り返る</span><span class="block-dots">●●○○</span></div>
-<div id="9558198c" class="cell" data-execution_count="90">
+<div id="c4d547b3" class="cell" data-execution_count="90">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4204,7 +4223,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="推測は揃いすぎている" class="slide level2">
 <h2>推測は揃いすぎている</h2>
-<div id="645f4472" class="cell" data-execution_count="91">
+<div id="be1928cd" class="cell" data-execution_count="91">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4266,7 +4285,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="今度は散らばりすぎる" class="slide level2">
 <h2>今度は散らばりすぎる</h2>
-<div id="58835ac6" class="cell" data-execution_count="92">
+<div id="b26c9bbb" class="cell" data-execution_count="92">
 <div class="cell-output cell-output-stdout">
 <pre><code>本当の値  相関 0.848  標準偏差 2.16
 推測  相関 0.863  標準偏差 2.11
@@ -4280,7 +4299,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="図で見ると" class="slide level2">
 <h2>図で見ると</h2>
-<div id="410e7667" class="cell" data-execution_count="93">
+<div id="6d3238ca" class="cell" data-execution_count="93">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4314,7 +4333,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="多重代入の流れ" class="slide level2">
 <h2>多重代入の流れ</h2>
-<div id="2b445679" class="cell" data-execution_count="94">
+<div id="4c98493a" class="cell" data-execution_count="94">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -4365,7 +4384,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="平均0.67室推測0.31室" class="slide level2">
 <h2>平均0.67室・推測0.31室</h2>
-<div id="9518f8f1" class="cell" data-execution_count="95">
+<div id="3f741367" class="cell" data-execution_count="95">
 <div class="cell-output cell-output-stdout">
 <pre><code>平均 外れ 0.67
 推測 外れ 0.31</code></pre>
