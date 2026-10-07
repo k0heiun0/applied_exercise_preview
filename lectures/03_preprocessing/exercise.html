@@ -3281,7 +3281,9 @@ window.Quarto = {
 <li>何度も使う処理を<code>def</code>で関数にまとめ、引数（既定値つきを含む）と戻り値を読み書きできる</li>
 <li>欠測（missing value）の量と欠測した理由を確かめ、別の列から戻す・補完せずに使わない・ほかの列から予測して補完（imputation）する、を選べる</li>
 <li>平均値補完（mean imputation）がなぜよくないかを、答えの分かる欠測で評価して説明できる</li>
-<li>標準化（standardization）で列の目盛りをそろえ、線形回帰の予測は変わらないことを確かめられる</li>
+<li>標準化（standardization）と正規化で列の目盛りをそろえ、線形回帰の予測は変わらないこと、正規化が極端な値に弱いことを確かめられる</li>
+<li>区分を表す文字の列に番号を振ると何が起きるかを説明し、ダミー変数にして訓練の列にそろえられる</li>
+<li>右に尾の長い値を対数にして当て、<code>np.exp</code>で元に戻せる</li>
 <li>補完の方法を訓練データだけで決め、関数にして、テストと新しい部屋に同じように当てられる</li>
 </ul>
 <hr>
@@ -3583,14 +3585,15 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </section>
 <section id="今日の道筋" class="level3">
 <h3 class="anchored" data-anchor-id="今日の道筋">今日の道筋</h3>
-<p>前処理を進める順に、次の6つの小さな問いに答えていきます。</p>
+<p>前処理を進める順に、次の7つの小さな問いに答えていきます。</p>
 <ol type="1">
 <li>どの部屋を使う？（1〜2節）</li>
 <li>なぜ欠測した？（3節）</li>
 <li>どう補完する？（4〜5節）</li>
 <li>目盛りをそろえると？（6節）</li>
-<li>同じ整え方を何度でも当てるには？（7節）</li>
-<li>1泊いくら？（8〜9節）</li>
+<li>文字の列と、当てる値の形は？（7〜8節）</li>
+<li>同じ整え方を何度でも当てるには？（9節）</li>
+<li>1泊いくら？（10節）</li>
 </ol>
 <hr>
 </section>
@@ -4378,54 +4381,253 @@ dtype: float64</code></pre>
 <p>変わるのは係数です。</p>
 <p>そのままの係数では、バスルーム数が1室あたり3,537円と、定員の1人あたり1,507円より大きく見えます。でも、バスルーム数は0.4室しか散らばらない列でした。標準化すると、どの係数も「その列が標準偏差1つぶん増えたら、料金が何円変わるか」という同じ目盛りになり、定員4,395円、寝室数2,959円、バスルーム数1,414円の順に並びます。</p>
 <p>予測には効かなくても、列どうしを同じ物差しで比べたいときには、目盛りをそろえておく必要があります。そして、その物差し（平均と標準偏差）も、訓練データだけで決めます。</p>
+</section>
+<section id="変えてみるもう1つのそろえ方正規化" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみるもう1つのそろえ方正規化">変えてみる：もう1つのそろえ方、正規化</h3>
+<p>目盛りのそろえ方には、標準化のほかに正規化（min-max normalization）もあります。各列から最小値を引き、最大値と最小値の差で割って、どの列も0〜1の範囲に収めます。</p>
+<p><span class="math display">\[
+x&#39;_{ij} = \frac{x_{ij} - \min_j}{\max_j - \min_j}
+\]</span></p>
+<p><code>standardize</code>と同じ形の関数にします。最小値と最大値も、訓練データだけで決めます。<code>.min()</code>・<code>.max()</code>を表に付けると、列ごとの最小値・最大値が並んで返ります。<code>quantile([0.5, 0.9, 0.99])</code>は、小さいほうから50%・90%・99%の位置の値（分位点）を返すメソッドです。</p>
+<div id="e32fe4fa" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> normalize(X, lo, hi):</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (X <span class="op">-</span> lo) <span class="op">/</span> (hi <span class="op">-</span> lo)</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>lo_tr <span class="op">=</span> X_tr.<span class="bu">min</span>()               <span class="co"># 列ごとの最小値（訓練だけ）</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>hi_tr <span class="op">=</span> X_tr.<span class="bu">max</span>()               <span class="co"># 列ごとの最大値（訓練だけ）</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>N_tr <span class="op">=</span> normalize(X_tr, lo_tr, hi_tr)</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(hi_tr[<span class="st">&#39;レビュー数&#39;</span>])</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(N_tr[<span class="st">&#39;レビュー数&#39;</span>].quantile([<span class="fl">0.5</span>, <span class="fl">0.9</span>, <span class="fl">0.99</span>]).<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>4222.0
+0.50    0.005
+0.90    0.023
+0.99    0.068
+Name: レビュー数, dtype: float64</code></pre>
+</div>
+</div>
+<p>どの列も0〜1に収まりますが、レビュー数を見ると、正規化した値は中央値が0.005、99%の位置でも0.068です。レビューが4,222件もある部屋が1つあり、それが1になるので、ほかのほとんどの部屋が0の近くに押しつぶされるのです。正規化は最大値と最小値の2つだけで目盛りが決まるので、極端な値が1つあると、その影響をまともに受けます。どちらのそろえ方を使うかは、手法と列の分布を見て決めます。</p>
+<hr>
+</section>
+</section>
+<section id="文字の列を式に入れる" class="level2">
+<h2 class="anchored" data-anchor-id="文字の列を式に入れる">7. 文字の列を式に入れる</h2>
+<p>数の列は、欠測を補完し、目盛りもそろえられるようになりました。まだ使っていない手がかりに、地区があります。地区は文字の列なので、このままでは式に入りません。</p>
+<section id="お手本地区ごとの料金を見る" class="level3">
+<h3 class="anchored" data-anchor-id="お手本地区ごとの料金を見る">お手本：地区ごとの料金を見る</h3>
+<ul>
+<li>役割：訓練データを地区ごとにまとめ、料金の中央値と件数を出し、30件以上ある地区を安い順に並べる</li>
+<li>入力：訓練の表<code>tr</code></li>
+<li>出力：地区の数と、安い3地区・高い3地区</li>
+</ul>
+<p><code>groupby</code>と<code>agg</code>は1節と同じです。<code>sort_values(&#39;median&#39;)</code>は中央値の小さい順に並べ、<code>head(3)</code>・<code>tail(3)</code>は先頭・末尾の3行を取り出します。</p>
+<div id="bafed887" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>by_area <span class="op">=</span> tr.groupby(<span class="st">&#39;地区&#39;</span>)[<span class="st">&#39;料金&#39;</span>].agg([<span class="st">&#39;median&#39;</span>, <span class="st">&#39;count&#39;</span>])</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>by_area <span class="op">=</span> by_area[by_area[<span class="st">&#39;count&#39;</span>] <span class="op">&gt;=</span> <span class="dv">30</span>].sort_values(<span class="st">&#39;median&#39;</span>)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(by_area), <span class="st">&#39;地区&#39;</span>)</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(by_area.head(<span class="dv">3</span>))</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(by_area.tail(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>25 地区
+              median  count
+地区                         
+Ota Ku       14591.0    986
+Arakawa Ku   15406.0    111
+Itabashi Ku  16114.0    461
+             median  count
+地区                        
+Minato Ku   27985.0    960
+Chiyoda Ku  28790.0    119
+Meguro Ku   29355.0     78</code></pre>
+</div>
+</div>
+<p>30件以上ある25地区のうち、いちばん安い大田区（<code>Ota Ku</code>）は中央値14,591円、いちばん高い目黒区（<code>Meguro Ku</code>）は29,355円です。同じ貸切でも、地区で料金が2倍ほど違います。地区は、料金の手がかりとして使いたい列です。</p>
+</section>
+<section id="変えてみる地区に番号を振る" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみる地区に番号を振る">変えてみる：地区に番号を振る</h3>
+<p>文字を式に入れるいちばん手っ取り早い方法は、地区に番号を振ることです。地区の名前をアルファベット順に並べ、1番から番号を振る辞書を作って、<code>map</code>で番号に置き換えます。</p>
+<ul>
+<li><code>sorted(...)</code>：並びを小さい順（文字ならアルファベット順）に並べ替える</li>
+<li><code>code[order[i]] = i + 1</code>：辞書<code>code</code>に、地区の名前と番号の組を足す</li>
+<li><code>assign(地区番号=...)</code>：その列を足した新しい表を返す</li>
+</ul>
+<div id="66a283cc" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> <span class="bu">sorted</span>(tr[<span class="st">&#39;地区&#39;</span>].unique())          <span class="co"># アルファベット順</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>code <span class="op">=</span> {}</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(order)):</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>    code[order[i]] <span class="op">=</span> i <span class="op">+</span> <span class="dv">1</span>                   <span class="co"># 1番から番号を振る</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>Xc_tr <span class="op">=</span> X_tr.assign(地区番号<span class="op">=</span>tr[<span class="st">&#39;地区&#39;</span>].<span class="bu">map</span>(code))</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>Xc_te <span class="op">=</span> X_te.assign(地区番号<span class="op">=</span>te[<span class="st">&#39;地区&#39;</span>].<span class="bu">map</span>(code))</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>m_c <span class="op">=</span> LinearRegression().fit(Xc_tr, tr_f[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], m_c.predict(Xc_te)), <span class="st">&#39;円&#39;</span>)</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;番号1つあたり&#39;</span>, <span class="bu">round</span>(m_c.coef_[<span class="op">-</span><span class="dv">1</span>]), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>8819 円
+番号1つあたり 115 円</code></pre>
+</div>
+</div>
+<p>MAEは8,819円で、番号なし（8,907円）より少し縮みました。番号が1つ増えると、料金は115円上がる、という式です。</p>
+</section>
+<section id="todo④並べ方を変えて番号を振り直す" class="level3">
+<h3 class="anchored" data-anchor-id="todo④並べ方を変えて番号を振り直す">TODO④：並べ方を変えて、番号を振り直す</h3>
+<p>上のセルの<code>order</code>を、件数の多い順（<code>list(tr[&#39;地区&#39;].value_counts().index)</code>）に変えて、同じように式を作り、MAEと「番号1つあたり」の係数を表示してください。</p>
+<div id="243f58e5" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 件数の多い順に番号を振り直し、MAE と係数を表示する</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: order = list(tr[&#39;地区&#39;].value_counts().index) にして、</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         上のセルの残りをそのまま写す</span></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>件数の多い順に振ると、MAEは8,851円、番号1つあたりは−211円です。同じ地区の情報なのに、振り方を変えただけで、係数の向きが逆になりました。</p>
+<p>番号の大小には、意味がないからです。足立区が1番、大田区が39番、という並びは、アルファベットの順番にすぎません。それなのに式は「番号が大きいほど高い（安い）」という1本の傾きを当てはめてしまいます。区分を表す文字の列に番号を振って、数として式に入れてはいけません。</p>
+</section>
+<section id="お手本ダミー変数にする" class="level3">
+<h3 class="anchored" data-anchor-id="お手本ダミー変数にする">お手本：ダミー変数にする</h3>
+<p>そこで、地区ごとに1本ずつ列を作り、その地区の部屋なら1、そうでなければ0を入れます。この0と1の列を、ダミー変数（dummy variable）と呼びます。部屋<span class="math inline">\(i\)</span>が地区<span class="math inline">\(k\)</span>にあるかどうかを</p>
+<p><span class="math display">\[
+d_{ik} = \begin{cases} 1 &amp; (\text{部屋}\,i\,\text{が地区}\,k) \\ 0 &amp; (\text{それ以外}) \end{cases}
+\]</span></p>
+<p>と書きます。<code>pd.get_dummies(列, drop_first=True, dtype=int)</code>は、文字の列からダミー変数の表を作る関数です。<code>drop_first=True</code>は、最初の地区（アルファベット順でいちばん前の足立区<code>Adachi Ku</code>）の列を作らない指定です。どの列も0の部屋が足立区になり、ほかの地区の係数は「同じ条件の足立区の部屋と比べて何円違うか」になります。この足立区を、基準のカテゴリと呼びます。</p>
+<div id="8e039917" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>D_tr <span class="op">=</span> pd.get_dummies(tr[<span class="st">&#39;地区&#39;</span>], drop_first<span class="op">=</span><span class="va">True</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr[<span class="st">&#39;地区&#39;</span>].nunique(), <span class="st">&#39;地区&#39;</span>)</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(D_tr.shape)</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(D_tr.columns[:<span class="dv">4</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>49 地区
+(21144, 48)
+[&#39;Akiruno Shi&#39;, &#39;Akishima Shi&#39;, &#39;Arakawa Ku&#39;, &#39;Bunkyo Ku&#39;]</code></pre>
+</div>
+</div>
+<p>49地区から基準の足立区を除いた48本の列ができました。列の名前は、地区の名前そのものです。</p>
+</section>
+<section id="変えてみるテストも同じ列にそろえて式に入れる" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみるテストも同じ列にそろえて式に入れる">変えてみる：テストも同じ列にそろえて、式に入れる</h3>
+<p>テストにも同じことをしたいのですが、テストには42の地区しか出てきません。そのまま<code>get_dummies</code>を当てると、列が42本になり、訓練の48本とずれてしまいます。そこで、訓練の列（<code>D_tr.columns</code>）にそろえます。</p>
+<ul>
+<li><code>reindex(columns=D_tr.columns, fill_value=0)</code>：列を、訓練と同じ名前・同じ順番に並べ直す。テストに無い地区の列は0で作る</li>
+<li><code>pd.concat([表1, 表2], axis=1)</code>：2つの表を横につなぐ</li>
+</ul>
+<p>ダミー変数の列も、訓練で決めた列にそろえる。補完や標準化と同じく、「訓練で決める」の1つです。</p>
+<div id="36ba19d5" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(te[<span class="st">&#39;地区&#39;</span>].nunique(), <span class="st">&#39;地区&#39;</span>)      <span class="co"># テストの地区の数</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>D_te <span class="op">=</span> pd.get_dummies(te[<span class="st">&#39;地区&#39;</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 訓練の列にそろえる</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>D_te <span class="op">=</span> D_te.reindex(columns<span class="op">=</span>D_tr.columns, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>A_tr <span class="op">=</span> pd.concat([X_tr, D_tr], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>A_te <span class="op">=</span> pd.concat([X_te, D_te], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>m_d <span class="op">=</span> LinearRegression().fit(A_tr, tr_f[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(A_tr.shape, A_te.shape)</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], m_d.predict(A_te)), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>42 地区
+(21144, 56) (5286, 56)
+8215 円</code></pre>
+</div>
+</div>
+<p>訓練もテストも56本（数の列8本＋地区48本）にそろい、MAEは8,215円です。地区を入れなかったとき（8,907円）より、692円縮みました。番号ではなくダミー変数にしたことで、地区の情報が式に正しく入ったのです。</p>
+<hr>
+</section>
+</section>
+<section id="料金を対数にする" class="level2">
+<h2 class="anchored" data-anchor-id="料金を対数にする">8. 料金を対数にする</h2>
+<p>地区が入って、MAEは8,215円になりました。もう1つ、気になっていたことがあります。1節で見たとおり、料金は右に長い尾を引く分布でした。当てたい値そのものの形を整えます。</p>
+<section id="お手本料金を対数にして形を見る" class="level3">
+<h3 class="anchored" data-anchor-id="お手本料金を対数にして形を見る">お手本：料金を対数にして形を見る</h3>
+<ul>
+<li>役割：訓練の料金を対数にしたヒストグラムを描き、元の料金と対数の料金の歪度を出す</li>
+<li>入力：訓練の料金</li>
+<li>出力：ヒストグラムと、2つの歪度</li>
+</ul>
+<p><code>np.log</code>は自然対数（底が<span class="math inline">\(e\)</span>の対数）です。歪度（skewness）は、分布の左右の偏りを表す数で、0なら左右対称、正なら右に尾が長い分布です。pandasでは<code>.skew()</code>で求まります。</p>
+<div id="0bca9867" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>log_price <span class="op">=</span> np.log(tr[<span class="st">&#39;料金&#39;</span>])</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(tr[<span class="st">&#39;料金&#39;</span>].skew(), <span class="dv">2</span>), <span class="bu">round</span>(log_price.skew(), <span class="dv">2</span>))</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>plt.hist(log_price, bins<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;log(1泊の料金)&#39;</span>)</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;部屋の数&#39;</span>)</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1.78 0.13</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img role="img" src="data:image/png;base64,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" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>歪度は、元の料金の1.78から、対数にすると0.13まで小さくなり、ヒストグラムもほぼ左右対称の山になります。</p>
+<p>対数にすると、料金の「差」が「比」になります。2万円と4万円の差も、5万円と10万円の差も、どちらも2倍なので、対数では同じ幅です。料金は「何円高い」より「何倍高い」で決まりやすい量なので、対数のほうが式で表しやすくなります。高い部屋の大きな料金に、式が引っぱられにくくもなります。</p>
+</section>
+<section id="変えてみる対数の料金を当てる式を作る" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみる対数の料金を当てる式を作る">変えてみる：対数の料金を当てる式を作る</h3>
+<p>当てる値を料金<span class="math inline">\(y\)</span>ではなく<span class="math inline">\(\log y\)</span>にして式を作り、予測を<code>np.exp</code>で円に戻します。</p>
+<p><span class="math display">\[
+\log \hat{y}_i = b_0 + \sum_j b_j x_{ij}, \qquad \hat{y}_i = \exp(\log \hat{y}_i)
+\]</span></p>
+<p><code>np.exp</code>は、<code>np.log</code>の逆で、対数から元の値に戻す関数です。手がかりは7節の<code>A_tr</code>（数の列と地区のダミー変数）のままです。</p>
+<div id="7182579d" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>m_log <span class="op">=</span> LinearRegression().fit(A_tr, np.log(tr_f[<span class="st">&#39;料金&#39;</span>]))</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>pred_log <span class="op">=</span> np.exp(m_log.predict(A_te))           <span class="co"># 円に戻す</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te_f[<span class="st">&#39;料金&#39;</span>], pred_log), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>7934 円</code></pre>
+</div>
+</div>
+<p>MAEは7,934円です。対数にする前（8,215円）より、さらに300円近く縮みました。これで、数の列の補完・目盛り・文字の列・当てる値の形、と一通り整いました。</p>
 <hr>
 </section>
 </section>
 <section id="同じ整え方を何度でも" class="level2">
-<h2 class="anchored" data-anchor-id="同じ整え方を何度でも">7. 同じ整え方を何度でも</h2>
-<p>ここまでで、整え方がそろいました。バスルーム数は文字から戻し、寝室数とベッド数は訓練で作った式で予測して補完します。この整え方は、訓練にも、テストにも、そしてあなたの部屋にも、同じように当てる必要があります。毎回同じ行を書き写すと、どこかでずれます。1つの関数にまとめます。</p>
+<h2 class="anchored" data-anchor-id="同じ整え方を何度でも">9. 同じ整え方を何度でも</h2>
+<p>ここまでで、整え方がそろいました。バスルーム数は文字から戻し、寝室数とベッド数は訓練で作った式で予測して補完し、地区は訓練の列にそろえたダミー変数にします。この整え方は、訓練にも、テストにも、そしてあなたの部屋にも、同じように当てる必要があります。毎回同じ行を書き写すと、どこかでずれます。1つの関数にまとめます。</p>
 <section id="お手本整え方を1つの関数にまとめる" class="level3">
 <h3 class="anchored" data-anchor-id="お手本整え方を1つの関数にまとめる">お手本：整え方を1つの関数にまとめる</h3>
 <ul>
-<li>役割：補完の方法を<code>base</code>で決め、表<code>d</code>を整えて、手がかりの8本の列を返す</li>
-<li>入力：補完の方法を決める表<code>base</code>、整える表<code>d</code></li>
-<li>出力：欠測のない8本の列の表</li>
+<li>役割：補完の方法とダミー変数の列を<code>base</code>で決め、表<code>d</code>を整えて、手がかりの表を返す</li>
+<li>入力：決める表<code>base</code>、整える表<code>d</code></li>
+<li>出力：数の列8本と地区のダミー変数48本の表</li>
 </ul>
-<p>関数の中で、3節の<code>fill_bath</code>と5節の<code>fill_reg</code>を呼んでいます。小さな関数を組み合わせて、大きな処理を作るのです。</p>
-<div id="f1da07dd" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep(base, d):           <span class="co"># 補完の方法は base で決め、d を整える</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_bath(d)</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;寝室数&#39;</span>)</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;ベッド数&#39;</span>)</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> d[cols]</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression().fit(prep(tr, tr), tr[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], model.predict(prep(tr, te)))</span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練で決めた:&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>関数の中で、3節の<code>fill_bath</code>と5節の<code>fill_reg</code>を呼んでいます。ダミー変数の列（<code>area_cols</code>）も<code>base</code>から決め、<code>d</code>の列をそれにそろえます。小さな関数を組み合わせて、大きな処理を作るのです。式は、8節と同じく対数の料金を当てます。</p>
+<div id="4c9a4fb4" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> prep(base, d):           <span class="co"># 決めるのは base、整えるのは d</span></span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_bath(d)</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;寝室数&#39;</span>)</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> fill_reg(base, d, <span class="st">&#39;ベッド数&#39;</span>)</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    area_cols <span class="op">=</span> pd.get_dummies(base[<span class="st">&#39;地区&#39;</span>], drop_first<span class="op">=</span><span class="va">True</span>).columns</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>    area <span class="op">=</span> pd.get_dummies(d[<span class="st">&#39;地区&#39;</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    area <span class="op">=</span> area.reindex(columns<span class="op">=</span>area_cols, fill_value<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.concat([d[cols], area], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-10"><a href="#cb72-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LinearRegression().fit(prep(tr, tr), np.log(tr[<span class="st">&#39;料金&#39;</span>]))</span>
+<span id="cb72-11"><a href="#cb72-11" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], np.exp(model.predict(prep(tr, te))))</span>
+<span id="cb72-12"><a href="#cb72-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;訓練で決めた:&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>訓練で決めた: 8907 円</code></pre>
+<pre><code>訓練で決めた: 7934 円</code></pre>
 </div>
 </div>
-<p>5節と同じ8,907円です。3節の<code>fill_bath</code>と5節の<code>fill_reg</code>の4行が、<code>prep(tr, tr)</code>と<code>prep(tr, te)</code>の2つの呼び出しになりました。</p>
+<p>8節と同じ7,934円です。3節・5節・7節で書いた整え方が、<code>prep(tr, tr)</code>と<code>prep(tr, te)</code>の2つの呼び出しになりました。</p>
 </section>
-<section id="変えてみる全データで補完の方法を決めると" class="level3">
-<h3 class="anchored" data-anchor-id="変えてみる全データで補完の方法を決めると">変えてみる：全データで補完の方法を決めると</h3>
-<p><code>prep</code>の最初の引数を、訓練<code>tr</code>から全データ<code>df</code>に変えるだけです。テストの部屋も含めて、予測の式を作ることになります。</p>
-<div id="3aae0983" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>model_l <span class="op">=</span> LinearRegression().fit(prep(df, tr), tr[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>err_l <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], model_l.predict(prep(df, te)))</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;全データで決めた:&#39;</span>, err_l, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="変えてみる全データで決めると" class="level3">
+<h3 class="anchored" data-anchor-id="変えてみる全データで決めると">変えてみる：全データで決めると</h3>
+<p><code>prep</code>の最初の引数を、訓練<code>tr</code>から全データ<code>df</code>に変えるだけです。テストの部屋も含めて、予測の式とダミー変数の列を決めることになります。</p>
+<div id="daa31ad6" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>model_l <span class="op">=</span> LinearRegression().fit(prep(df, tr), np.log(tr[<span class="st">&#39;料金&#39;</span>]))</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>err_l <span class="op">=</span> mae(te[<span class="st">&#39;料金&#39;</span>], np.exp(model_l.predict(prep(df, te))))</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;全データで決めた:&#39;</span>, err_l, <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>全データで決めた: 8907 円</code></pre>
+<pre><code>全データで決めた: 7934 円</code></pre>
 </div>
 </div>
-<p>全データで決めても8,907円で、差は出ませんでした。2万件以上もあると、テストの5千件を混ぜても、定員から寝室数を当てる式はほとんど変わらないからです。</p>
-<p>それでも、補完の方法は訓練だけで決めます。テストの情報が前処理を通して式に漏れることを、第2回で見たリーク（leakage）と同じく避けるためです。データが少ないときや、テストの部屋だけ傾向が違うときには、差が大きく出ます。差が出るかどうかを確かめてから順番を守るのではなく、いつも訓練だけで決める習慣にします。<code>prep(base, d)</code>のように「決める表」と「整える表」を分けて受け取る関数にしておくと、この順番を間違えにくくなります。</p>
+<p>全データで決めても7,934円で、差は出ませんでした。2万件以上もあると、テストの5千件を混ぜても、定員から寝室数を当てる式はほとんど変わらず、地区の顔ぶれも同じだからです。</p>
+<p>それでも、整え方は訓練だけで決めます。テストの情報が前処理を通して式に漏れることを、第2回で見たリーク（leakage）と同じく避けるためです。データが少ないときや、テストの部屋だけ傾向が違うときには、差が大きく出ます。差が出るかどうかを確かめてから順番を守るのではなく、いつも訓練だけで決める習慣にします。<code>prep(base, d)</code>のように「決める表」と「整える表」を分けて受け取る関数にしておくと、この順番を間違えにくくなります。</p>
 <hr>
 </section>
 </section>
 <section id="泊いくら" class="level2">
-<h2 class="anchored" data-anchor-id="泊いくら">8. 1泊いくら？</h2>
+<h2 class="anchored" data-anchor-id="泊いくら">10. 1泊いくら？</h2>
 <p>整え方を<code>prep</code>1つにまとめました。いよいよ、あなたの部屋に値段を付けます。</p>
 <section id="お手本あなたの部屋を値付けする" class="level3">
 <h3 class="anchored" data-anchor-id="お手本あなたの部屋を値付けする">お手本：あなたの部屋を値付けする</h3>
@@ -4434,100 +4636,40 @@ dtype: float64</code></pre>
 <li>入力：あなたの部屋の表<code>my_room</code></li>
 <li>出力：1泊の値段（円）</li>
 </ul>
-<p>例えば「定員4人、寝室2・ベッド2・バスルーム1」の貸切の部屋です。レビューはまだ0件、最低宿泊数は2泊、この先1年で200日予約を受け付け、ホストの掲載はこの1件だけとします。新しい部屋にも、訓練で決めた同じ整え方を当てます。<code>prep</code>の2つ目の引数に、新しい部屋を渡すだけです。<code>pd.DataFrame({列名: [値], ...})</code>で、1行の表を作れます。</p>
-<div id="48db7eda" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>my_room <span class="op">=</span> pd.DataFrame({<span class="st">&#39;定員&#39;</span>: [<span class="dv">4</span>], <span class="st">&#39;寝室数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;ベッド数&#39;</span>: [<span class="dv">2</span>],</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルーム数&#39;</span>: [<span class="dv">1</span>],</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルームの表記&#39;</span>: [<span class="st">&#39;1 bath&#39;</span>],</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;最低宿泊数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;予約可能日数&#39;</span>: [<span class="dv">200</span>],</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;レビュー数&#39;</span>: [<span class="dv">0</span>], <span class="st">&#39;ホストの掲載数&#39;</span>: [<span class="dv">1</span>]})</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>price <span class="op">=</span> model.predict(prep(tr, my_room))[<span class="dv">0</span>]</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(price), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>例えば「墨田区（<code>Sumida Ku</code>）にある、定員4人、寝室2・ベッド2・バスルーム1」の貸切の部屋です。レビューはまだ0件、最低宿泊数は2泊、この先1年で200日予約を受け付け、ホストの掲載はこの1件だけとします。新しい部屋にも、訓練で決めた同じ整え方を当てます。<code>prep</code>の2つ目の引数に、新しい部屋を渡すだけです。地区のダミー変数も、訓練の48本の列にそろいます。<code>pd.DataFrame({列名: [値], ...})</code>で、1行の表を作れます。</p>
+<div id="9f129a0f" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>my_room <span class="op">=</span> pd.DataFrame({<span class="st">&#39;地区&#39;</span>: [<span class="st">&#39;Sumida Ku&#39;</span>],</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;定員&#39;</span>: [<span class="dv">4</span>], <span class="st">&#39;寝室数&#39;</span>: [<span class="dv">2</span>],</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;ベッド数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;バスルーム数&#39;</span>: [<span class="dv">1</span>],</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;バスルームの表記&#39;</span>: [<span class="st">&#39;1 bath&#39;</span>],</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;最低宿泊数&#39;</span>: [<span class="dv">2</span>], <span class="st">&#39;予約可能日数&#39;</span>: [<span class="dv">200</span>],</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;レビュー数&#39;</span>: [<span class="dv">0</span>], <span class="st">&#39;ホストの掲載数&#39;</span>: [<span class="dv">1</span>]})</span>
+<span id="cb76-7"><a href="#cb76-7" aria-hidden="true" tabindex="-1"></a>price <span class="op">=</span> np.exp(model.predict(prep(tr, my_room))[<span class="dv">0</span>])</span>
+<span id="cb76-8"><a href="#cb76-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(price), <span class="st">&#39;円&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>24830 円</code></pre>
+<pre><code>21142 円</code></pre>
 </div>
 </div>
-<p>答えは24,830円です。予測は並びで返るので、<code>[0]</code>で1つ目を取り出しています。</p>
+<p>答えは21,142円です。予測は並びで返るので、<code>[0]</code>で1つ目を取り出し、<code>np.exp</code>で円に戻しています。</p>
 </section>
-<section id="todo④あなたの番自分の部屋を値付けする" class="level3">
-<h3 class="anchored" data-anchor-id="todo④あなたの番自分の部屋を値付けする">TODO④：あなたの番。自分の部屋を値付けする</h3>
-<p>定員・寝室数などを自分で決めて、1泊の値付けの目安を出してください。寝室数が分からない部屋なら、<code>np.nan</code>（欠測値）を入れてもかまいません。<code>prep</code>が、訓練で作った式で補完してくれます。</p>
-<div id="c44804a8" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: my_room の条件を変えた部屋を作り、prep と model で値付けする</span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: room2 = my_room.assign(定員=2, 寝室数=1, ベッド数=1)</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         のように、assign で列の値を変えた表を作れる</span></span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<section id="todo⑤あなたの番自分の部屋を値付けする" class="level3">
+<h3 class="anchored" data-anchor-id="todo⑤あなたの番自分の部屋を値付けする">TODO⑤：あなたの番。自分の部屋を値付けする</h3>
+<p>地区・定員・寝室数などを自分で決めて、1泊の値付けの目安を出してください。寝室数が分からない部屋なら、<code>np.nan</code>（欠測値）を入れてもかまいません。<code>prep</code>が、訓練で作った式で補完してくれます。</p>
+<div id="73558a5d" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: my_room の条件を変えた部屋を作り、prep と model で値付けする</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: room2 = my_room.assign(地区=&#39;Minato Ku&#39;)</span></span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         のように、assign で列の値を変えた表を作れる。最後に np.exp</span></span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>定員2人・寝室1・ベッド1なら約1万8千円、定員4人で寝室数を<code>np.nan</code>にすると、寝室数を定員から予測して約2万3千円になります。</p>
-<hr>
-</section>
-</section>
-<section id="外す線で値段は変わるか" class="level2">
-<h2 class="anchored" data-anchor-id="外す線で値段は変わるか">9. 外す線で、値段は変わるか</h2>
-<p>あなたの部屋の値段が出ました。ただ、この値段は、1節で「1泊10万円以下」に線を引いた結果です。線を変えたら、値段はどれくらい変わるのでしょうか。</p>
-<section id="お手本外す線を引数にした関数" class="level3">
-<h3 class="anchored" data-anchor-id="お手本外す線を引数にした関数">お手本：外す線を引数にした関数</h3>
-<ul>
-<li>役割：<code>cut</code>円以下の貸切の部屋で、絞る・分ける・整えて式を作る・値付けして評価する、を通して行う</li>
-<li>入力：外す線<code>cut</code>（既定値は10万円）</li>
-<li>出力：なし（値段とMAEを表示する）</li>
-</ul>
-<p>長く見えますが、新しい書き方はありません。今日これまでに書いたセルを、4つのかたまりで並べただけです。</p>
-<ol type="1">
-<li>絞る（3行）：1節と同じ。10万円の代わりに<code>cut</code>を使う</li>
-<li>分ける（1行）：1節と同じ<code>train_test_split</code></li>
-<li>整えて式を作る（1行）：7節の<code>prep</code>と同じ</li>
-<li>値付けして評価する（3行）：8節の値付けと、2節の<code>mae</code></li>
-</ol>
-<p><code>cut=100000</code>のように既定値を書いておくと、<code>price_for()</code>とかっこだけで呼べば10万円で、<code>price_for(50000)</code>と書けば5万円で動きます。</p>
-<div id="e2300310" class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> price_for(cut<span class="op">=</span><span class="dv">100000</span>):</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> raw[raw[<span class="st">&#39;料金&#39;</span>] <span class="op">&lt;=</span> cut]</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;部屋のタイプ&#39;</span>] <span class="op">==</span> <span class="st">&#39;Entire home/apt&#39;</span>]</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;最低宿泊数&#39;</span>].notna()]</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>    tr2, te2 <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(prep(tr2, tr2), tr2[<span class="st">&#39;料金&#39;</span>])</span>
-<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> m.predict(prep(tr2, my_room))[<span class="dv">0</span>]</span>
-<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> mae(te2[<span class="st">&#39;料金&#39;</span>], m.predict(prep(tr2, te2)))</span>
-<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cut, <span class="st">&#39;円まで:&#39;</span>, <span class="bu">round</span>(p), <span class="st">&#39;円  MAE&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span>
-<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-11"><a href="#cb64-11" aria-hidden="true" tabindex="-1"></a>price_for()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>100000 円まで: 24830 円  MAE 8907 円</code></pre>
-</div>
-</div>
-<p>既定値の10万円では、8節と同じ24,830円・8,907円です。</p>
-</section>
-<section id="変えてみる線を動かす" class="level3">
-<h3 class="anchored" data-anchor-id="変えてみる線を動かす">変えてみる：線を動かす</h3>
-<p><code>for</code>文で、外す線を3万円から1千万円（実質、外さない）まで変えて呼びます。</p>
-<div id="cd76f1eb" class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cut <span class="kw">in</span> [<span class="dv">30000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">300000</span>, <span class="dv">10000000</span>]:</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    price_for(cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>30000 円まで: 18629 円  MAE 4173 円
-50000 円まで: 22363 円  MAE 6225 円
-100000 円まで: 24830 円  MAE 8907 円
-300000 円まで: 25005 円  MAE 11432 円
-10000000 円まで: 27358 円  MAE 19157 円</code></pre>
-</div>
-</div>
-<p>あなたの部屋の値段は、3万円で切ると18,629円、外さないと27,358円と、9千円近く動きます。5節で見た補完の方法の違い（全体で4円、欠測した部屋で300円）よりずっと大きく、どの部屋を相場に入れるかが、値段をいちばん動かす判断でした。</p>
-</section>
-<section id="問いmaeがどんどん小さくなる" class="level3">
-<h3 class="anchored" data-anchor-id="問いmaeがどんどん小さくなる">問い：MAEが、どんどん小さくなる</h3>
-<p>MAEも、外さないときの19,157円から、3万円で切ると4,173円まで縮みます。線を厳しくするほど、式は良くなったのでしょうか。下に書いてください。</p>
-<p>（ここに予想を書く）</p>
-<p>良くなったとは言えません。線を変えると、テストの部屋そのものが変わるからです。3万円で切ると、当てにくい高い部屋がテストからも消え、3万円以下の部屋だけで評価しています。物差しの部屋が違うMAEは、比べられません。第2回で見た「採点が甘い」と同じ落とし穴です。</p>
-<p>線は、MAEが小さくなるように選ぶのではなく、目標から選びます。あなたの部屋は定員4人のふつうの部屋で、1泊数十万円の一棟貸しと競うわけではありません。だから10万円の線を使い、その線を書き残します。</p>
+<p>同じ部屋でも、港区（<code>Minato Ku</code>）なら約3万2千円、大田区（<code>Ota Ku</code>）なら約1万7千円です。定員2人・寝室1・ベッド1なら約1万6千円、寝室数を<code>np.nan</code>にすると、寝室数を定員から予測して約2万円になります。</p>
 </section>
 <section id="答え" class="level3">
 <h3 class="anchored" data-anchor-id="答え">答え</h3>
-<p>あなたの部屋（定員4人・寝室2・ベッド2・バスルーム1）は、1泊およそ2万5千円（24,830円）。まだ見ていない部屋でのMAEは、およそ8,900円。相場に入れる部屋を1泊10万円以下の貸切とした場合の値段です。</p>
+<p>墨田区にあるあなたの部屋（定員4人・寝室2・ベッド2・バスルーム1）は、1泊およそ2万1千円（21,142円）。まだ見ていない部屋でのMAEは、およそ7,900円。相場に入れる部屋を1泊10万円以下の貸切とした場合の値段です。</p>
 <p>まだ言えないこと</p>
 <ul>
 <li>MAEだけで測ってよいのか：大きな誤差を重く見る物差しもある</li>
-<li>地区：同じ貸切でも、地区によって料金は違いそうなのに、地区（文字の列）は式に入っていない</li>
+<li>件数の少ない地区：檜原村（訓練に3件）や稲城市（1件）のように数件しかない地区のダミー変数は、その数件の料金だけで係数が決まり、当てにならない</li>
 <li>補完した値の揺れ：回帰補完した値は1本の線に乗るので、真の値より揃いすぎている（発展で扱う）</li>
 </ul>
 <hr>
@@ -4536,11 +4678,13 @@ dtype: float64</code></pre>
 <section id="目標に答えられたか" class="level2">
 <h2 class="anchored" data-anchor-id="目標に答えられたか">目標に答えられたか</h2>
 <ul>
-<li>今日の目標は「自分の部屋に、1泊いくらの値段を付ければいいか」でした。9節の答えは何円で、どれくらい外れうるでしょうか？</li>
+<li>今日の目標は「自分の部屋に、1泊いくらの値段を付ければいいか」でした。10節の答えは何円で、どれくらい外れうるでしょうか？</li>
 <li>1節で、10万円を超える部屋と、貸切以外の部屋を外しました。それぞれ外した理由を、今日の目標から説明できますか？</li>
 <li>3節で、レビューの点数・バスルーム数・寝室数の欠測を、それぞれどう扱いましたか？ なぜ扱いが違ったのでしょうか？</li>
 <li>4節で、平均値補完するのはなぜよくないと分かりましたか？MAE・図・相関の3つで説明できますか？</li>
-<li>7節の<code>prep</code>は、なぜ「決める表」と「整える表」の2つを受け取るのでしょうか？</li>
+<li>7節で、地区に番号を振るのをやめ、ダミー変数にしたのはなぜですか？</li>
+<li>8節で、料金を対数にすると、何が変わりましたか？</li>
+<li>9節の<code>prep</code>は、なぜ「決める表」と「整える表」の2つを受け取るのでしょうか？</li>
 </ul>
 <hr>
 </section>
@@ -4548,18 +4692,20 @@ dtype: float64</code></pre>
 <h2 class="anchored" data-anchor-id="今日の要点">今日の要点</h2>
 <ul>
 <li>今日、持ち帰る1文：欠測値は、1つの値で補完しない。欠測した理由を確かめ、ほかの列から予測して補完する。整え方は訓練データだけで決め、関数にして、新しい部屋にも同じように当てる</li>
-<li>外す行は、目標から理由を説明でき、どこで線を引いたかを書き残せるときに外す。MAEが小さくなるように選ばない</li>
+<li>外す行は、目標から理由を説明でき、どこで線を引いたかを書き残せるときに外す</li>
 <li>欠測値は、理由を先に確かめる。値が存在しない欠測（レビューの点数）は補完しない。別の列から戻せる欠測（バスルーム数）は戻す</li>
 <li>平均値補完すると、補完値の誤差が大きく、列どうしの関係が弱まる。小さい部屋ほど欠測するときは、平均そのものもずれる</li>
 <li>答えの分かる欠測を作れば、補完の方法を評価できる</li>
-<li>標準化しても線形回帰の予測は変わらない。係数を同じ目盛りで比べられるようになる</li>
+<li>標準化と正規化で目盛りをそろえられる。線形回帰の予測は変わらないが、係数を同じ目盛りで比べられる。正規化は極端な値に弱い</li>
+<li>区分を表す文字の列に番号を振らない。ダミー変数にして、訓練の列にそろえる</li>
+<li>右に尾の長い料金は、対数にすると式で表しやすく、極端な値にも引っぱられにくい</li>
 <li>Python：<code>def</code>で関数を作る。引数が入力、<code>return</code>の後ろが戻り値。既定値つきの引数で選択肢を切り替え、小さな関数を組み合わせて大きな処理を作る</li>
 </ul>
 <hr>
 </section>
 <section id="次回へ" class="level2">
 <h2 class="anchored" data-anchor-id="次回へ">次回へ</h2>
-<p>今日は、データを整えて、あなたの部屋に1泊およそ2万5千円の値段を付けました。ただ、MAEだけで式を測ってよいのか、式の係数をどう読めばよいのかには、まだ答えていません。</p>
+<p>今日は、データを整えて、あなたの部屋に1泊およそ2万1千円の値段を付けました。ただ、MAEだけで式を測ってよいのか、式の係数をどう読めばよいのかには、まだ答えていません。</p>
 <p>次回は、場面を住宅の査定に変えます。次回の問いは、「この家は、なぜこの値段なのか」を説明する式を、どの物差しで選び、どう読むか、です。</p>
 <hr>
 </section>
@@ -4569,9 +4715,9 @@ dtype: float64</code></pre>
 <section id="応用①変形" class="level3">
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>4節では、ベッド数を欠測させて、平均値補完の場合と、回帰補完した場合を評価しました。同じことを、寝室数でやってください。寝室数が分かっている訓練の部屋<code>full_bed</code>から、<code>make_missing</code>で<code>rate=0.2</code>の欠測を作り、平均値補完のときと<code>fill_reg</code>で回帰補完したときの、欠測させた部屋でのMAEを表示してください。</p>
-<div id="c9baa70c" class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c9baa70c" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
 <summary>
@@ -4583,9 +4729,9 @@ dtype: float64</code></pre>
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①で、寝室数を平均値補完のとき、欠測させた部屋でのMAEは何室ですか。小数第2位まで答えてください（例: 0.12）。</p>
-<div id="d9ea1549" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d9ea1549" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <details>
 <summary>
@@ -4617,25 +4763,25 @@ dtype: float64</code></pre>
 <li>出力：ランダムな誤差を足したときの相関と標準偏差</li>
 </ul>
 <p><code>rng.normal(0, s, 個数)</code>は、平均0・標準偏差<code>s</code>の正規分布に従う乱数を、指定した個数だけ出します。</p>
-<div id="74c4a4d3" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> full[<span class="st">&#39;ベッド数&#39;</span>]</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>practice <span class="op">=</span> make_missing(full, <span class="st">&#39;ベッド数&#39;</span>, <span class="fl">0.2</span>)</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>miss <span class="op">=</span> practice[<span class="st">&#39;ベッド数&#39;</span>].isna()</span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> practice[practice[<span class="st">&#39;ベッド数&#39;</span>].notna()]</span>
-<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(ok[[<span class="st">&#39;定員&#39;</span>]], ok[<span class="st">&#39;ベッド数&#39;</span>])</span>
-<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 予測の誤差の散らばり（標準偏差）</span></span>
-<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> (ok[<span class="st">&#39;ベッド数&#39;</span>] <span class="op">-</span> m.predict(ok[[<span class="st">&#39;定員&#39;</span>]])).std()</span>
-<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;予測の誤差の標準偏差:&#39;</span>, <span class="bu">round</span>(s, <span class="dv">2</span>))</span>
-<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a>by_reg <span class="op">=</span> fill_reg(practice, practice, <span class="st">&#39;ベッド数&#39;</span>)[<span class="st">&#39;ベッド数&#39;</span>]</span>
-<span id="cb70-11"><a href="#cb70-11" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
-<span id="cb70-12"><a href="#cb70-12" aria-hidden="true" tabindex="-1"></a>by_noise <span class="op">=</span> by_reg.copy()</span>
-<span id="cb70-13"><a href="#cb70-13" aria-hidden="true" tabindex="-1"></a>by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
-<span id="cb70-14"><a href="#cb70-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, val <span class="kw">in</span> [(<span class="st">&#39;真の値&#39;</span>, truth), (<span class="st">&#39;回帰補完&#39;</span>, by_reg),</span>
-<span id="cb70-15"><a href="#cb70-15" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">&#39;確率的回帰補完&#39;</span>, by_noise)]:</span>
-<span id="cb70-16"><a href="#cb70-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(val), <span class="dv">3</span>),</span>
-<span id="cb70-17"><a href="#cb70-17" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 標準偏差&#39;</span>, <span class="bu">round</span>(val.std(), <span class="dv">2</span>))</span>
-<span id="cb70-18"><a href="#cb70-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;0より小さい値:&#39;</span>, (by_noise[miss] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="74c4a4d3" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>truth <span class="op">=</span> full[<span class="st">&#39;ベッド数&#39;</span>]</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>practice <span class="op">=</span> make_missing(full, <span class="st">&#39;ベッド数&#39;</span>, <span class="fl">0.2</span>)</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>miss <span class="op">=</span> practice[<span class="st">&#39;ベッド数&#39;</span>].isna()</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>ok <span class="op">=</span> practice[practice[<span class="st">&#39;ベッド数&#39;</span>].notna()]</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(ok[[<span class="st">&#39;定員&#39;</span>]], ok[<span class="st">&#39;ベッド数&#39;</span>])</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 予測の誤差の散らばり（標準偏差）</span></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> (ok[<span class="st">&#39;ベッド数&#39;</span>] <span class="op">-</span> m.predict(ok[[<span class="st">&#39;定員&#39;</span>]])).std()</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;予測の誤差の標準偏差:&#39;</span>, <span class="bu">round</span>(s, <span class="dv">2</span>))</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>by_reg <span class="op">=</span> fill_reg(practice, practice, <span class="st">&#39;ベッド数&#39;</span>)[<span class="st">&#39;ベッド数&#39;</span>]</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">1</span>)</span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>by_noise <span class="op">=</span> by_reg.copy()</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> name, val <span class="kw">in</span> [(<span class="st">&#39;真の値&#39;</span>, truth), (<span class="st">&#39;回帰補完&#39;</span>, by_reg),</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>                  (<span class="st">&#39;確率的回帰補完&#39;</span>, by_noise)]:</span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(name, <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(val), <span class="dv">3</span>),</span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 標準偏差&#39;</span>, <span class="bu">round</span>(val.std(), <span class="dv">2</span>))</span>
+<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;0より小さい値:&#39;</span>, (by_noise[miss] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;件&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>予測の誤差の標準偏差: 1.21
 真の値  相関 0.848  標準偏差 2.16
@@ -4644,11 +4790,11 @@ dtype: float64</code></pre>
 0より小さい値: 342 件</code></pre>
 </div>
 </div>
-<div id="e2d076f0" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(full[<span class="st">&#39;定員&#39;</span>][miss], by_noise[miss], s<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;定員&#39;</span>)</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;ランダムな誤差を足して補完したベッド数&#39;</span>)</span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e2d076f0" class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(full[<span class="st">&#39;定員&#39;</span>][miss], by_noise[miss], s<span class="op">=</span><span class="dv">4</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;定員&#39;</span>)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;ランダムな誤差を足して補完したベッド数&#39;</span>)</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4660,13 +4806,13 @@ dtype: float64</code></pre>
 <p>読み方　回帰補完だけのときは、相関0.863・標準偏差2.11で、真の値（0.848・2.16）より揃いすぎていました。ランダムな誤差を足すと、今度は相関0.833・標準偏差2.19と、反対側にずれます。図の点も1本の線ではなくなりますが、0より小さいベッド数が342件も出てしまいます。</p>
 <p>散らばりすぎる理由は、どの部屋にも同じ大きさのランダムな誤差を足したことです。真のベッド数は、定員の小さい部屋ではあまり散らばらず、大きい部屋ではよく散らばります。それなのに、小さい部屋にも大きい部屋と同じ<span class="math inline">\(s=1.21\)</span>のランダムな誤差を足しました。本格的な方法では、ランダムな誤差の大きさも部屋に合わせてデータから決めます。</p>
 <p>それでも、ランダムな誤差を足すという考え方には意味があります。足したランダムな誤差は乱数なので、種を変えれば補完した値も変わります。そこで、種を変えて補完したデータを何通りも作り、それぞれで同じ分析をして、結果をまとめます。補完した値の不確かさを、結果の幅として残せるのです。この方法を多重代入（multiple imputation）と呼びます。</p>
-<div id="c36545cd" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>    by_noise <span class="op">=</span> by_reg.copy()</span>
-<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>    by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
-<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(seed, by_noise[miss].head(<span class="dv">3</span>).<span class="bu">round</span>(<span class="dv">1</span>).values,</span>
-<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(by_noise), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c36545cd" class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> seed <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed)</span>
+<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>    by_noise <span class="op">=</span> by_reg.copy()</span>
+<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>    by_noise[miss] <span class="op">=</span> by_reg[miss] <span class="op">+</span> rng.normal(<span class="dv">0</span>, s, miss.<span class="bu">sum</span>())</span>
+<span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(seed, by_noise[miss].head(<span class="dv">3</span>).<span class="bu">round</span>(<span class="dv">1</span>).values,</span>
+<span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>          <span class="st">&#39; 相関&#39;</span>, <span class="bu">round</span>(full[<span class="st">&#39;定員&#39;</span>].corr(by_noise), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0 [3.4 1.8 3.4]  相関 0.833
 1 [3.6 3.  3. ]  相関 0.833
@@ -4676,6 +4822,66 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>欠測させた部屋の最初の3件に入る値は、種ごとに違います。補完した値がどれくらい不確かかが、種による違いとして見えるのです。試すなら、<code>rate</code>を0.4に上げて、回帰補完だけのとき・ランダムな誤差を足したときの相関と標準偏差が、真の値からどちらにどれだけずれるかを比べてみましょう。</p>
+</section>
+<section id="外す線で値段は変わるか" class="level3">
+<h3 class="anchored" data-anchor-id="外す線で値段は変わるか">外す線で、値段は変わるか</h3>
+<p>本編で出したあなたの部屋の値段は、1節で「1泊10万円以下」に線を引いた結果です。線を変えたら、値段はどれくらい変わるのでしょうか。</p>
+<section id="お手本外す線を引数にした関数" class="level4">
+<h4 class="anchored" data-anchor-id="お手本外す線を引数にした関数">お手本：外す線を引数にした関数</h4>
+<ul>
+<li>役割：<code>cut</code>円以下の貸切の部屋で、絞る・分ける・整えて式を作る・値付けして評価する、を通して行う</li>
+<li>入力：外す線<code>cut</code>（既定値は10万円）</li>
+<li>出力：なし（値段とMAEを表示する）</li>
+</ul>
+<p>長く見えますが、新しい書き方はありません。今日これまでに書いたセルを、4つのかたまりで並べただけです。</p>
+<ol type="1">
+<li>絞る（3行）：1節と同じ。10万円の代わりに<code>cut</code>を使う</li>
+<li>分ける（1行）：1節と同じ<code>train_test_split</code></li>
+<li>整えて式を作る（1行）：9節の<code>prep</code>と同じ。対数の料金を当てる</li>
+<li>値付けして評価する（3行）：10節の値付けと、2節の<code>mae</code></li>
+</ol>
+<p><code>cut=100000</code>のように既定値を書いておくと、<code>price_for()</code>とかっこだけで呼べば10万円で、<code>price_for(50000)</code>と書けば5万円で動きます。</p>
+<div id="814debdc" class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> price_for(cut<span class="op">=</span><span class="dv">100000</span>):</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> raw[raw[<span class="st">&#39;料金&#39;</span>] <span class="op">&lt;=</span> cut]</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;部屋のタイプ&#39;</span>] <span class="op">==</span> <span class="st">&#39;Entire home/apt&#39;</span>]</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a>    d <span class="op">=</span> d[d[<span class="st">&#39;最低宿泊数&#39;</span>].notna()]</span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a>    tr2, te2 <span class="op">=</span> train_test_split(d, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb86-6"><a href="#cb86-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> LinearRegression().fit(prep(tr2, tr2), np.log(tr2[<span class="st">&#39;料金&#39;</span>]))</span>
+<span id="cb86-7"><a href="#cb86-7" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> np.exp(m.predict(prep(tr2, my_room))[<span class="dv">0</span>])</span>
+<span id="cb86-8"><a href="#cb86-8" aria-hidden="true" tabindex="-1"></a>    err <span class="op">=</span> mae(te2[<span class="st">&#39;料金&#39;</span>], np.exp(m.predict(prep(tr2, te2))))</span>
+<span id="cb86-9"><a href="#cb86-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(cut, <span class="st">&#39;円まで:&#39;</span>, <span class="bu">round</span>(p), <span class="st">&#39;円  MAE&#39;</span>, err, <span class="st">&#39;円&#39;</span>)</span>
+<span id="cb86-10"><a href="#cb86-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-11"><a href="#cb86-11" aria-hidden="true" tabindex="-1"></a>price_for()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>100000 円まで: 21142 円  MAE 7934 円</code></pre>
+</div>
+</div>
+<p>既定値の10万円では、本編の10節と同じ21,142円・7,934円です。</p>
+</section>
+<section id="変えてみる線を動かす" class="level4">
+<h4 class="anchored" data-anchor-id="変えてみる線を動かす">変えてみる：線を動かす</h4>
+<p><code>for</code>文で、外す線を3万円から1千万円（実質、外さない）まで変えて呼びます。</p>
+<div id="8d70042c" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cut <span class="kw">in</span> [<span class="dv">30000</span>, <span class="dv">50000</span>, <span class="dv">100000</span>, <span class="dv">300000</span>, <span class="dv">10000000</span>]:</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>    price_for(cut)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>30000 円まで: 18188 円  MAE 4005 円
+50000 円まで: 20102 円  MAE 5780 円
+100000 円まで: 21142 円  MAE 7934 円
+300000 円まで: 20950 円  MAE 9830 円
+10000000 円まで: 21876 円  MAE 15083 円</code></pre>
+</div>
+</div>
+<p>5万円・10万円・30万円で切っても、外さなくても、あなたの部屋の値段は20,102円〜21,876円で、ほとんど変わりません。料金を対数にしたので、1泊数百万円の部屋があっても、式が引っぱられにくいのです。3万円で切ったときだけ18,188円と下がるのは、ふつうの貸切（中央値は約2万円）まで外してしまうからです。</p>
+</section>
+<section id="問いmaeがどんどん小さくなる" class="level4">
+<h4 class="anchored" data-anchor-id="問いmaeがどんどん小さくなる">問い：MAEが、どんどん小さくなる</h4>
+<p>一方で、MAEは、外さないときの15,083円から、3万円で切ると4,005円まで縮みます。線を厳しくするほど、式は良くなったのでしょうか。下に書いてください。</p>
+<p>（ここに予想を書く）</p>
+<p>良くなったとは言えません。線を変えると、テストの部屋そのものが変わるからです。3万円で切ると、当てにくい高い部屋がテストからも消え、3万円以下の部屋だけで評価しています。評価する部屋が違うMAEは、比べられません。第2回で見た「採点が甘い」と同じ落とし穴です。</p>
+<p>線は、MAEが小さくなるように選ぶのではなく、目標から選びます。あなたの部屋は定員4人のふつうの部屋で、1泊数十万円の一棟貸しと競うわけではありません。だから10万円の線を使い、その線を書き残します。</p>
+</section>
 </section>
 </section>
 
