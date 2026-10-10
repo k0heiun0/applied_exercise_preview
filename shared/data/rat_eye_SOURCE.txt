@@ -1,0 +1,14 @@
+Rat eye gene expression (eQTL experiment, GEO GSE5680)
+出典: Scheetz, T. E. et al. (2006). Regulation of gene expression in the mammalian eye and its
+relevance to eye disease. Proceedings of the National Academy of Sciences, 103(39), 14429–14434.
+データ: NCBI Gene Expression Omnibus, GSE5680（Affymetrix Rat Genome 230 2.0, GPL1355）
+URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE5680
+NCBI は GEO のデータの利用・再配布に制限を設けていない（提出者が権利を主張する場合を除く）。
+利用時は上記の論文を引用すること。
+
+加工内容（tools/make_data/rat_eye.py で再現できる）:
+- GSE5680_series_matrix.txt.gz（120匹の F2 ラットの目の組織、発現量は log2）を読み、
+  行をラット、列をプローブにした。
+- 当てる値として TRIM32 のプローブ（1389163_at）を列 TRIM32 にした。
+- 残りのプローブから、測定の確認用の対照プローブ（AFFX で始まるもの）を除き、
+  120匹での分散が大きい上位200プローブを残した。値は小数第4位に丸めた。

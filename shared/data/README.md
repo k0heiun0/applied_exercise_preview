@@ -16,6 +16,7 @@
 | `heart.csv` | 心臓病診断の臨床指標と診断結果 | 303行 × 14列 | UCI（文献引用を要求） |
 | `movielens_genre_decade.csv` | 映画ジャンル × 公開年代のクロス集計 | 10行 × 9列 | 派生集計（下記参照） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
+| `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
 
 各ファイルの詳しい出典・引用文献・加工内容は、同じディレクトリの
 `<名前>_SOURCE.txt` に記載しています。
@@ -52,6 +53,12 @@
   Archipelago (Antarctica) penguin data*. R package version 0.1.0.
   doi:10.5281/zenodo.3960218 — CC-0。元データは Dr. Kristen Gorman および
   Palmer Station Antarctica LTER による収集。
+
+- **ラットの目の遺伝子発現**（`rat_eye.csv`）
+  Scheetz, T. E. et al. (2006). Regulation of gene expression in the mammalian
+  eye and its relevance to eye disease. *PNAS* 103(39): 14429–14434。
+  NCBI GEO GSE5680 <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE5680>
+  から、TRIM32 と分散の大きい200遺伝子に絞った（`tools/make_data/rat_eye.py`）。
 
 - **MovieLens 由来の集計表**（`movielens_genre_decade.csv`）
   F. M. Harper and J. A. Konstan (2015). *The MovieLens Datasets: History and
