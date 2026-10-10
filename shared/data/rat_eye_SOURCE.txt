@@ -12,3 +12,9 @@ NCBI は GEO のデータの利用・再配布に制限を設けていない（�
 - 当てる値として TRIM32 のプローブ（1389163_at）を列 TRIM32 にした。
 - 残りのプローブから、測定の確認用の対照プローブ（AFFX で始まるもの）を除き、
   120匹での分散が大きい上位200プローブを残した。値は小数第4位に丸めた。
+
+第8回用（tools/make_data/rat_eye_full.py で再現できる）:
+- rat_eye_full.csv.gz：120匹 × 全プローブ（31,098本、対照の AFFX を含む）を、TRIM32 を先頭の列にして
+  gzip で圧縮して書き出した。値は小数第4位に丸めた。
+- rat_eye_genes.csv：GPL1355.annot.gz（https://ftp.ncbi.nlm.nih.gov/geo/platforms/GPL1nnn/GPL1355/annot/）
+  から、プローブごとの遺伝子の記号（symbol）と名前（title）を取り出した。

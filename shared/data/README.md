@@ -17,6 +17,8 @@
 | `movielens_genre_decade.csv` | 映画ジャンル × 公開年代のクロス集計 | 10行 × 9列 | 派生集計（下記参照） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
+| `rat_eye_full.csv.gz` | 同、全プローブ（gzip 圧縮） | 120行 × 31,100列 | 文献引用（Scheetz 2006、NCBI GEO） |
+| `rat_eye_genes.csv` | プローブと遺伝子の名前の対応（GPL1355） | 31,099行 × 3列 | NCBI GEO（制限なし） |
 
 各ファイルの詳しい出典・引用文献・加工内容は、同じディレクトリの
 `<名前>_SOURCE.txt` に記載しています。
@@ -59,6 +61,8 @@
   eye and its relevance to eye disease. *PNAS* 103(39): 14429–14434。
   NCBI GEO GSE5680 <https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE5680>
   から、TRIM32 と分散の大きい200遺伝子に絞った（`tools/make_data/rat_eye.py`）。
+  `rat_eye_full.csv.gz` は全プローブ、`rat_eye_genes.csv` は GPL1355 の注釈表から作った
+  プローブと遺伝子の名前の対応（`tools/make_data/rat_eye_full.py`）。
 
 - **MovieLens 由来の集計表**（`movielens_genre_decade.csv`）
   F. M. Harper and J. A. Konstan (2015). *The MovieLens Datasets: History and
