@@ -14,6 +14,7 @@
 | `bike_hour.csv` | 同、時間別 | 17,379行 × 17列 | UCI（文献引用を要求） |
 | `gapminder.csv` | 国・年ごとの平均寿命、人口、一人当たりGDP | 1,704行 × 8列 | CC-BY（Gapminder Foundation） |
 | `heart.csv` | 心臓病診断の臨床指標と診断結果 | 303行 × 14列 | UCI（文献引用を要求） |
+| `olivetti_faces.csv.gz` | 40人 × 10枚の顔画像（64×64画素の明るさ、gzip 圧縮） | 400行 × 4,097列 | AT&T Laboratories Cambridge（クレジット表記、scikit-learn が配布） |
 | `movielens_genre_decade.csv` | 映画ジャンル × 公開年代のクロス集計 | 10行 × 9列 | 派生集計（下記参照） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -63,6 +64,12 @@
   から、TRIM32 と分散の大きい200遺伝子に絞った（`tools/make_data/rat_eye.py`）。
   `rat_eye_full.csv.gz` は全プローブ、`rat_eye_genes.csv` は GPL1355 の注釈表から作った
   プローブと遺伝子の名前の対応（`tools/make_data/rat_eye_full.py`）。
+
+- **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
+  AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces
+  <https://cam-orl.co.uk/facedatabase.html>。scikit-learn の `fetch_olivetti_faces`
+  から、1枚を1行（4,096画素の明るさ0〜1）にし、人の番号の列 `person` を付けた
+  （`tools/make_data/olivetti_faces.py`）。
 
 - **MovieLens 由来の集計表**（`movielens_genre_decade.csv`）
   F. M. Harper and J. A. Konstan (2015). *The MovieLens Datasets: History and

@@ -1,0 +1,12 @@
+Olivetti faces (The Database of Faces, AT&T Laboratories Cambridge)
+出典: AT&T Laboratories Cambridge, The Database of Faces（1992〜1994年撮影）
+URL: https://cam-orl.co.uk/facedatabase.html
+配布: scikit-learn の sklearn.datasets.fetch_olivetti_faces（Samaria & Harter の版を 64×64 に縮小したもの）
+利用時は "AT&T Laboratories Cambridge" のクレジットを表記すること（原サイトの依頼）。
+参考文献: F. Samaria and A. Harter (1994). Parameterisation of a stochastic model for human face
+identification. Proceedings of the 2nd IEEE Workshop on Applications of Computer Vision.
+
+加工内容（tools/make_data/olivetti_faces.py で再現できる）:
+- 40人 × 10枚 ＝ 400枚。1枚を1行にし、64×64 の画素を左上から行ごとに並べた4,096列（px0〜px4095）にした
+- 値は画素の明るさ（0が黒、1が白。scikit-learn の配布値を小数第4位で丸めた）
+- 先頭の列 person に人の番号（0〜39）を付けた
