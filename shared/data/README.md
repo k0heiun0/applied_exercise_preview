@@ -10,6 +10,7 @@
 |---|---|---|---|
 | `airbnb_tokyo.csv` | 東京の Airbnb 掲載の部屋の条件と1泊の料金 | 32,361行 × 16列 | CC BY 4.0（Inside Airbnb） |
 | `ames_housing.csv` | 米国エイムズ市の住宅の条件と売買価格 | 2,930行 × 80列 | 文献引用（De Cock 2011） |
+| `auto_mpg.csv` | 1970〜1982年の車の性能（燃費・排気量・馬力・重さなど） | 398行 × 9列 | UCI（CC BY 4.0、文献引用） |
 | `bike_day.csv` | シェアサイクルの日別利用台数と気象条件 | 731行 × 16列 | UCI（文献引用を要求） |
 | `bike_hour.csv` | 同、時間別 | 17,379行 × 17列 | UCI（文献引用を要求） |
 | `gapminder.csv` | 国・年ごとの平均寿命、人口、一人当たりGDP | 1,704行 × 8列 | CC-BY（Gapminder Foundation） |
@@ -64,6 +65,12 @@
   から、TRIM32 と分散の大きい200遺伝子に絞った（`tools/make_data/rat_eye.py`）。
   `rat_eye_full.csv.gz` は全プローブ、`rat_eye_genes.csv` は GPL1355 の注釈表から作った
   プローブと遺伝子の名前の対応（`tools/make_data/rat_eye_full.py`）。
+
+- **自動車の性能**（`auto_mpg.csv`）
+  Quinlan, R. (1993). Combining Instance-Based and Model-Based Learning. *ICML*。
+  UCI Machine Learning Repository の Auto MPG <https://archive.ics.uci.edu/dataset/9/auto+mpg>
+  を、seaborn の配布する形（`mpg`）のまま書き出した（`tools/make_data/auto_mpg.py`）。
+  単位は米国の単位のまま。単位の換算と欠測6台の除外はノートで行う。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces

@@ -1,0 +1,11 @@
+Auto MPG (UCI Machine Learning Repository)
+出典: Quinlan, R. (1993). Combining Instance-Based and Model-Based Learning. Proceedings of the Tenth
+International Conference on Machine Learning, 236–243. 元は Carnegie Mellon University の StatLib に収録。
+URL: https://archive.ics.uci.edu/dataset/9/auto+mpg（CC BY 4.0）
+配布: seaborn の load_dataset('mpg')（列名・地域名を整えた版）
+
+加工内容（tools/make_data/auto_mpg.py で再現できる）:
+- seaborn の mpg をそのまま書き出した（398行 × 9列）
+- 列: mpg（マイル/ガロン）, cylinders, displacement（立方インチ）, horsepower, weight（ポンド）,
+  acceleration（0〜60マイル毎時の秒数）, model_year（70〜82）, origin（usa / japan / europe）, name
+- horsepower の欠測6台も残してある。単位の換算と欠測の除外は演習ノートで行う
