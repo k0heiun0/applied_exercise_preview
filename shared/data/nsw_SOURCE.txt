@@ -1,0 +1,18 @@
+National Supported Work Demonstration（NSW）職業訓練の実験データ
+出典: LaLonde, R. J. (1986). Evaluating the Econometric Evaluations of Training Programs with Experimental
+Data. The American Economic Review, 76(4), 604–620.
+Dehejia, R. H., & Wahba, S. (1999). Causal Effects in Nonexperimental Studies: Reevaluating the Evaluation
+of Training Programs. Journal of the American Statistical Association, 94(448), 1053–1062.
+URL: https://users.nber.org/~rdehejia/data/（nswre74_treated.txt・nswre74_control.txt。Rajeev Dehejia が公開）
+利用: 研究・教育用に公開されている実験データ。再利用の際は上の2文献を引用すること。
+
+内容:
+- 1970年代のアメリカで、長期失業者などに職業訓練（仕事の経験）を与える実験。参加の希望者を、くじ引きで
+  訓練を受ける群と受けない群（対照群）に分けた。
+- Dehejia & Wahba (1999) が使った、1974年の収入まで分かる445人（訓練185人・対照260人）。
+
+加工内容（tools/make_data/nsw.py で再現できる）:
+- 2つのファイルを、訓練群・対照群の順に縦につないだ（445行 × 10列）。値は元のまま
+- 列: treat（1＝訓練を受けた、0＝受けていない）, age（年齢）, educ（教育を受けた年数）, black, hispanic,
+  married（既婚なら1）, nodegree（高校を卒業していなければ1）, re74, re75, re78（1974・1975・1978年の
+  収入。米ドル）

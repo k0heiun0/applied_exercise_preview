@@ -17,6 +17,7 @@
 | `heart.csv` | 心臓病診断の臨床指標と診断結果 | 303行 × 14列 | UCI（文献引用を要求） |
 | `olivetti_faces.csv.gz` | 40人 × 10枚の顔画像（64×64画素の明るさ、gzip 圧縮） | 400行 × 4,097列 | AT&T Laboratories Cambridge（クレジット表記、scikit-learn が配布） |
 | `movielens_genre_decade.csv` | 映画ジャンル × 公開年代のクロス集計 | 10行 × 9列 | 派生集計（下記参照） |
+| `nsw.csv` | 職業訓練の実験（くじ引きで訓練の有無を決めた445人の収入） | 445行 × 10列 | 文献引用（LaLonde 1986、Dehejia & Wahba 1999） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
 | `rat_eye_full.csv.gz` | 同、全プローブ（gzip 圧縮） | 120行 × 31,100列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -51,6 +52,13 @@
 - **Gapminder**（`gapminder.csv`）
   Gapminder Foundation、CC-BY。plotly/datasets 経由で取得。
   <https://raw.githubusercontent.com/plotly/datasets/master/gapminder_with_codes.csv>
+
+- **National Supported Work Demonstration**（`nsw.csv`）
+  LaLonde, R. J. (1986). *Evaluating the Econometric Evaluations of Training Programs with
+  Experimental Data*. The American Economic Review, 76(4), 604–620.
+  Dehejia, R. H., and Wahba, S. (1999). *Causal Effects in Nonexperimental Studies*.
+  Journal of the American Statistical Association, 94(448), 1053–1062.
+  <https://users.nber.org/~rdehejia/data/>
 
 - **Palmer Penguins**（`penguins.csv`）
   Horst, A. M., Hill, A. P., and Gorman, K. B. (2020). *palmerpenguins: Palmer
