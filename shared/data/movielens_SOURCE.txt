@@ -1,9 +1,12 @@
-MovieLens ml-latest-small から生成した ジャンル×年代 クロス集計表
-出典: F. Maxwell Harper and Joseph A. Konstan (2015). The MovieLens Datasets.
-URL: https://grouplens.org/datasets/movielens/ (研究・教育利用可)
-movies.csv のジャンル(複数)と公開年代(10年区切り)を集計。上位10ジャンル×主要年代。
-【再配布について】本ファイルは movies.csv のジャンル欄と公開年から数え上げた
-10ジャンル×9年代のカウント表であり、MovieLens の生データ（評価値・ユーザー情報・
-個別作品行）は一切含まない派生集計である。GroupLens は生データの公開再配布を
-許可していない（"We typically do not permit public redistribution."）ため、
-ml-latest-small 本体はリポジトリに置かず、この集計表のみを配布する。
+MovieLens ml-latest-small（第14回）
+出典: F. Maxwell Harper and Joseph A. Konstan (2015). The MovieLens Datasets:
+History and Context. ACM Transactions on Interactive Intelligent Systems 5(4).
+URL: https://grouplens.org/datasets/movielens/
+取得元: https://files.grouplens.org/datasets/movielens/ml-latest-small.zip
+【再配布について】GroupLens は生データの公開再配布を許可していない
+（"We typically do not permit public redistribution."）。そこでこのリポジトリには
+置かず、第14回のノートの中で取得元から取ってきて展開する。使うのは movies.csv
+（映画9,742本の題名とジャンル）だけ。手元の写し shared/data/ml-latest-small/ は
+.gitignore で版管理から外し、tools/publish.sh でも公開しない。
+（以前はジャンル×年代の集計表 movielens_genre_decade.csv を置いていたが、
+映画1本ごとの一覧から表を作る形に改めたので消した。2026-10-11）
