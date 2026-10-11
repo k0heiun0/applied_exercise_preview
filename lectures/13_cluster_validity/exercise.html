@@ -2398,9 +2398,9 @@ window.Quarto = {
 <ul>
 <li>慣性（inertia）がKとともに必ず下がる理由を説明し、エルボーを読める</li>
 <li>シルエット（silhouette）係数の意味を説明し、Kごとに比べられる</li>
-<li>乱数（random number）の種を変えたときに、分け方がどれだけ揺れるかを確かめられる</li>
+<li>乱数（random number）のシードを変えたときに、分け方がどれだけ揺れるかを確かめられる</li>
 <li>大陸のような外の区分と、ARIで比べられる</li>
-<li>Kごと・種ごとの結果をリストや辞書に集め、表にして比べられる</li>
+<li>Kごと・シードごとの結果をリストや辞書に集め、表にして比べられる</li>
 </ul>
 <hr>
 </section>
@@ -2577,14 +2577,14 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <hr>
 </section>
 </section>
-<section id="乱数の種を変えると分け方は揺れるか" class="level2">
-<h2 class="anchored" data-anchor-id="乱数の種を変えると分け方は揺れるか">3. 乱数の種を変えると、分け方は揺れるか</h2>
-<p>エルボーとシルエットで、Kの候補は2・3・5に絞れました。第11回では、k-meansの答えが出発点で変わることを見ました。出発点は乱数で決まるので、乱数の種（<code>random_state</code>）を変えると、分け方が変わるかもしれません。報告に載せるなら、分け方が安定していることも確かめたいところです。</p>
+<section id="乱数のシードを変えると分け方は揺れるか" class="level2">
+<h2 class="anchored" data-anchor-id="乱数のシードを変えると分け方は揺れるか">3. 乱数のシードを変えると、分け方は揺れるか</h2>
+<p>エルボーとシルエットで、Kの候補は2・3・5に絞れました。第11回では、k-meansの答えが出発点で変わることを見ました。出発点は乱数で決まるので、乱数のシード（<code>random_state</code>）を変えると、分け方が変わるかもしれません。報告に載せるなら、分け方が安定していることも確かめたいところです。</p>
 <p>分け方がどれだけ同じかは、第11回のARI（2つの分け方の一致度。同じ分け方なら1、でたらめに分けたのと同じくらいなら0）で測ります。</p>
-<section id="お手本出発点1つで種を5通り" class="level3">
-<h3 class="anchored" data-anchor-id="お手本出発点1つで種を5通り">お手本：出発点1つで、種を5通り</h3>
+<section id="お手本出発点1つでシードを5通り" class="level3">
+<h3 class="anchored" data-anchor-id="お手本出発点1つでシードを5通り">お手本：出発点1つで、シードを5通り</h3>
 <ul>
-<li>役割：<code>n_init=1</code>（出発点1つ）で、種を0〜4に変えてK＝3で分け、慣性と、<code>km3</code>とのARIを表示する</li>
+<li>役割：<code>n_init=1</code>（出発点1つ）で、シードを0〜4に変えてK＝3で分け、慣性と、<code>km3</code>とのARIを表示する</li>
 <li>入力：<code>X</code>、<code>km3</code></li>
 <li>出力：5行の結果</li>
 </ul>
@@ -2601,11 +2601,11 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 4 55.4 0.571</code></pre>
 </div>
 </div>
-<p>出発点が1つだと、慣性は54.67〜57.1とばらつき、<code>km3</code>とのARIも0.40〜0.73と、分け方が大きく揺れます。どの種でも、<code>km3</code>の慣性（53.75）より大きい、つまりまとまりの悪い分け方で止まっています。</p>
+<p>出発点が1つだと、慣性は54.67〜57.1とばらつき、<code>km3</code>とのARIも0.40〜0.73と、分け方が大きく揺れます。どのシードでも、<code>km3</code>の慣性（53.75）より大きい、つまりまとまりの悪い分け方で止まっています。</p>
 </section>
 <section id="新しい書き方条件に合う数をsumで数える" class="level3">
 <h3 class="anchored" data-anchor-id="新しい書き方条件に合う数をsumで数える">新しい書き方：条件に合う数を、sumで数える</h3>
-<p>TODO②では、「ARIが0.95以上の種はいくつか」を数えます。そのための書き方です。</p>
+<p>TODO②では、「ARIが0.95以上のシードはいくつか」を数えます。そのための書き方です。</p>
 <div id="bc0426d8" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">sum</span>(v <span class="op">&gt;=</span> <span class="fl">0.95</span> <span class="cf">for</span> v <span class="kw">in</span> [<span class="fl">0.4</span>, <span class="fl">0.98</span>, <span class="fl">0.99</span>]))   <span class="co"># 2 と表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2632,17 +2632,17 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 </div>
 </div>
 </section>
-<section id="todo②10通りの種で揺れを数える" class="level3">
-<h3 class="anchored" data-anchor-id="todo②10通りの種で揺れを数える">TODO②：10通りの種で、揺れを数える</h3>
-<p>種を0〜9に変えて（<code>n_init=1</code>）、<code>km3</code>とのARIを辞書<code>ari_seed</code>に<code>{種: ARI}</code>の形で集めてください。ARIが0.95以上になった種は、10通りのうちいくつですか。</p>
-<div id="18e8e1bb" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 種0〜9の ARI を辞書 ari_seed に集め、0.95 以上の数を数える</span></span>
+<section id="todo②10通りのシードで揺れを数える" class="level3">
+<h3 class="anchored" data-anchor-id="todo②10通りのシードで揺れを数える">TODO②：10通りのシードで、揺れを数える</h3>
+<p>シードを0〜9に変えて（<code>n_init=1</code>）、<code>km3</code>とのARIを辞書<code>ari_seed</code>に<code>{シード: ARI}</code>の形で集めてください。ARIが0.95以上になったシードは、10通りのうちいくつですか。</p>
+<div id="b2625a22" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: シード0〜9の ARI を辞書 ari_seed に集め、0.95 以上の数を数える</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: ari_seed[seed] = adjusted_rand_score(km3.labels_, …)</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         sum(v &gt;= 0.95 for v in ari_seed.values())</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>0.95以上は、10通りのうち3通り（種5・8・9、どれも0.98）だけです。出発点1つでは、いつも同じ分け方にたどり着くとは限りません。</p>
-<p>だから、第11回から<code>n_init=10</code>（出発点を10通り試し、慣性のいちばん小さいものを残す）を使ってきました。<code>n_init=10</code>なら種を変えても分け方がほとんど揺れないかは、課題で確かめます。</p>
+<p>0.95以上は、10通りのうち3通り（シード5・8・9、どれも0.98）だけです。出発点1つでは、いつも同じ分け方にたどり着くとは限りません。</p>
+<p>だから、第11回から<code>n_init=10</code>（出発点を10通り試し、慣性のいちばん小さいものを残す）を使ってきました。<code>n_init=10</code>ならシードを変えても分け方がほとんど揺れないかは、課題で確かめます。</p>
 <hr>
 </section>
 </section>
@@ -2762,10 +2762,10 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <ul>
 <li>慣性はKを増やすと必ず下がる。いちばん小さいKではなく、下がり方の曲がり角（エルボー）を読む</li>
 <li>シルエットは、「自分のグループへの近さ」と「別のグループからの遠さ」の比べ。1に近いほど、しっくり収まる</li>
-<li>出発点1つでは、種によって分け方が揺れる。何通りも試して、安定を確かめる</li>
+<li>出発点1つでは、シードによって分け方が揺れる。何通りも試して、安定を確かめる</li>
 <li>外の区分とのARIで、「何で説明のつく分け方か」を読む</li>
 <li>物差しは判断の材料。形の物差しで候補（2・3・5）を絞り、目的に照らしてKを決め、根拠を示す</li>
-<li>Python：Kごと・種ごとの結果を、リストや辞書に集め、表にして比べる。条件に合う数は<code>sum(… for …)</code>で数える</li>
+<li>Python：Kごと・シードごとの結果を、リストや辞書に集め、表にして比べる。条件に合う数は<code>sum(… for …)</code>で数える</li>
 </ul>
 <hr>
 </section>
@@ -2780,7 +2780,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 <p>提出するもの：応用②の答えと、応用③の文章。提出フォームに入力してください。期限はありません。応用①のコードは提出しませんが、②の答えを出すために必要です。</p>
 <section id="応用①変形" class="level3">
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
-<p>3節では、出発点1つ（<code>n_init=1</code>）だと、種によって分け方が揺れました。今度は、第11回から使ってきた<code>n_init=10</code>で、種を0〜4の5通りに変えてK＝3で分け、それぞれの慣性と、<code>km3</code>とのARIを表示してください。ARIは辞書<code>ari10</code>に<code>{種: ARI}</code>の形で集めておきましょう。</p>
+<p>3節では、出発点1つ（<code>n_init=1</code>）だと、シードによって分け方が揺れました。今度は、第11回から使ってきた<code>n_init=10</code>で、シードを0〜4の5通りに変えてK＝3で分け、それぞれの慣性と、<code>km3</code>とのARIを表示してください。ARIは辞書<code>ari10</code>に<code>{シード: ARI}</code>の形で集めておきましょう。</p>
 <div id="0b4f79b4" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2808,7 +2808,7 @@ s_i = \frac{b_i - a_i}{\max(a_i,\ b_i)}
 </section>
 <section id="応用③解釈" class="level3">
 <h3 class="anchored" data-anchor-id="応用③解釈">応用③（解釈）</h3>
-<p>3節（<code>n_init=1</code>）と応用①（<code>n_init=10</code>）の揺れ方を比べて、「報告に載せる3つのグループは、乱数の種しだいで変わってしまうのではないか」と心配する上司に向けて、3行程度で説明してください。</p>
+<p>3節（<code>n_init=1</code>）と応用①（<code>n_init=10</code>）の揺れ方を比べて、「報告に載せる3つのグループは、乱数のシードしだいで変わってしまうのではないか」と心配する上司に向けて、3行程度で説明してください。</p>
 <p>（ここに3行程度で書く）</p>
 <hr>
 </section>

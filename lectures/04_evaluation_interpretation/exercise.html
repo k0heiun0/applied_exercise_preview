@@ -2486,7 +2486,7 @@ window.Quarto = {
 <li>出力：表<code>raw</code>（元の表）</li>
 </ul>
 <p>第3回と同じく、<code>{&#39;元の名前&#39;: &#39;新しい名前&#39;, ...}</code>の辞書を<code>rename(columns=...)</code>に渡して、列名を付け替えます。80本のうち、今日使う13本だけを日本語にします。</p>
-<div id="0366c8f1" class="cell" data-execution_count="3">
+<div id="f28727a7" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2499,7 +2499,11 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;Full Bath&#39;</span>: <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;TotRms AbvGrd&#39;</span>: <span class="st">&#39;部屋数&#39;</span>,</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;Fireplaces&#39;</span>: <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;Lot Area&#39;</span>: <span class="st">&#39;敷地面積&#39;</span>}</span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> raw.rename(columns<span class="op">=</span>ja_names)</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>raw[[<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>, <span class="st">&#39;売買の条件&#39;</span>, <span class="st">&#39;価格&#39;</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(raw), <span class="st">&#39;件&#39;</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>raw[[<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>, <span class="st">&#39;売買の条件&#39;</span>, <span class="st">&#39;価格&#39;</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2930 件</code></pre>
+</div>
 <div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
@@ -2646,13 +2650,13 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <p>親族間の売買や、差し押さえの売買は、ふつうの値段の付き方と違います。居住面積が4,000平方フィート（約372㎡）を超える家は全体で5軒だけで、データの作者も、授業で使うなら外すよう勧めています。</p>
 <p><code>&amp;</code>は「かつ」です（第3回のおさらい）。<code>for</code>文で、面積の4本の列に同じ計算（0.0929を掛ける）を順に当てます。</p>
 <div id="4a5c4e3a" class="cell" data-execution_count="4">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> raw[<span class="st">&#39;売買の条件&#39;</span>] <span class="op">==</span> <span class="st">&#39;Normal&#39;</span>     <span class="co"># ふつうの売買</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> raw[<span class="st">&#39;居住面積&#39;</span>] <span class="op">&lt;=</span> <span class="dv">4000</span>            <span class="co"># 広すぎない家</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw[normal <span class="op">&amp;</span> small].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]:</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    df[c] <span class="op">=</span> df[c] <span class="op">*</span> <span class="fl">0.0929</span>                 <span class="co"># 平方フィート → ㎡</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df), <span class="st">&#39;軒&#39;</span>)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;価格&#39;</span>].describe().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> raw[<span class="st">&#39;売買の条件&#39;</span>] <span class="op">==</span> <span class="st">&#39;Normal&#39;</span>     <span class="co"># ふつうの売買</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> raw[<span class="st">&#39;居住面積&#39;</span>] <span class="op">&lt;=</span> <span class="dv">4000</span>            <span class="co"># 広すぎない家</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw[normal <span class="op">&amp;</span> small].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    df[c] <span class="op">=</span> df[c] <span class="op">*</span> <span class="fl">0.0929</span>                 <span class="co"># 平方フィート → ㎡</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df), <span class="st">&#39;軒&#39;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;価格&#39;</span>].describe().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2412 軒
 count      2412.0
@@ -2672,10 +2676,10 @@ Name: 価格, dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="手がかりにする11本の列">手がかりにする11本の列</h3>
 <p>価格を当てる手がかりにする列の名前を、<code>feat</code>にしまっておきます。今日は、この11本の列をいろいろに選び直して、式を比べます。</p>
 <div id="f7090981" class="cell" data-execution_count="5">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>feat <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(feat), <span class="st">&#39;本&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>feat <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(feat), <span class="st">&#39;本&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>11 本</code></pre>
 </div>
@@ -2718,12 +2722,12 @@ Name: 価格, dtype: float64</code></pre>
 <li>入力：表<code>df</code>と、列の名前<code>feat</code></li>
 <li>出力：訓練とテストの軒数と、テストでの決定係数（R²）</li>
 </ul>
-<p><code>m.score(テストの手がかり, テストの答え)</code>は、第2回で使った決定係数（coefficient of determination）R²を返します。今日は、分け方の乱数（random number）の種を<code>random_state=0</code>にします。</p>
+<p><code>m.score(テストの手がかり, テストの答え)</code>は、第2回で使った決定係数（coefficient of determination）R²を返します。今日は、分け方の乱数（random number）のシードを<code>random_state=0</code>にします。</p>
 <div id="0ffd6b4a" class="cell" data-execution_count="7">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(tr[feat], tr[<span class="st">&#39;価格&#39;</span>])</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(tr), <span class="bu">len</span>(te))</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(m.score(te[feat], te[<span class="st">&#39;価格&#39;</span>]), <span class="dv">3</span>))   <span class="co"># テストのR²</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(tr[feat], tr[<span class="st">&#39;価格&#39;</span>])</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(tr), <span class="bu">len</span>(te))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(m.score(te[feat], te[<span class="st">&#39;価格&#39;</span>]), <span class="dv">3</span>))   <span class="co"># テストのR²</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1929 483
 0.854</code></pre>
@@ -2740,11 +2744,11 @@ Name: 価格, dtype: float64</code></pre>
 \]</span></p>
 <p><code>def 名前(引数):</code>で関数を作り、<code>return</code>の後ろが戻り値です。作っただけでは何も出ないので、呼び出して使います。</p>
 <div id="bcb974df" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae(y, pred):          <span class="co"># MAE</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.<span class="bu">abs</span>(y <span class="op">-</span> pred).mean())</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> m.predict(te[feat])</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te[<span class="st">&#39;価格&#39;</span>], pred), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae(y, pred):          <span class="co"># MAE</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.<span class="bu">abs</span>(y <span class="op">-</span> pred).mean())</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> m.predict(te[feat])</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mae(te[<span class="st">&#39;価格&#39;</span>], pred), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>19391 ドル</code></pre>
 </div>
@@ -2766,10 +2770,10 @@ Name: 価格, dtype: float64</code></pre>
 </ul>
 <p><code>mae</code>との違いは1行目の中だけです。<code>** 2</code>は二乗、<code>np.sqrt</code>は平方根です。</p>
 <div id="309d67cf" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse(y, pred):         <span class="co"># RMSE</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.sqrt(((y <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>).mean()))</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rmse(te[<span class="st">&#39;価格&#39;</span>], pred), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse(y, pred):         <span class="co"># RMSE</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.sqrt(((y <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>).mean()))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rmse(te[<span class="st">&#39;価格&#39;</span>], pred), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>27191 ドル</code></pre>
 </div>
@@ -2780,10 +2784,10 @@ Name: 価格, dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="todo①5万ドル以上外した家を数える">TODO①：5万ドル以上外した家を数える</h3>
 <p>テストの家のうち、予測が5万ドル以上外れた家は何軒あるでしょうか。誤差の大きさ<code>np.abs(te[&#39;価格&#39;] - pred)</code>が50000以上の家の数と、誤差のいちばん大きな値を表示してください。</p>
 <div id="3a761bf9" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 誤差の大きさが 50000 以上の家の数と、誤差の最大値を表示する</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: err = np.abs(te[&#39;価格&#39;] - pred) のあと、</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         (err &gt;= 50000).sum() と err.max()</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 誤差の大きさが 50000 以上の家の数と、誤差の最大値を表示する</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: err = np.abs(te[&#39;価格&#39;] - pred) のあと、</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         (err &gt;= 50000).sum() と err.max()</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>483軒のうち28軒で、5万ドル以上外れています。いちばん大きな誤差は約20万ドル（200,677ドル）です。MAEだけを見ていると、こうした大きな誤差が見えません。このあとは、MAEとRMSEを並べて測ります。</p>
 <hr>
@@ -2809,8 +2813,8 @@ Name: 価格, dtype: float64</code></pre>
 </ul>
 <p><code>m.coef_</code>には、係数が<code>feat</code>と同じ順に並んでいます。<code>pd.Series(値の並び, index=名前の並び)</code>で、名前の付いた1列の表にします。名前が付くと、<code>coef[&#39;品質&#39;]</code>のように名前で取り出せます。</p>
 <div id="a6d2ca6d" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.Series(m.coef_, index<span class="op">=</span>feat)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.Series(m.coef_, index<span class="op">=</span>feat)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>品質        16065.0
 居住面積        675.0
@@ -2838,9 +2842,9 @@ dtype: float64</code></pre>
 </ul>
 <p><code>corr()</code>は、列どうしの相関係数を表にします。</p>
 <div id="a06cc507" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>m_bath <span class="op">=</span> LinearRegression().fit(tr[[<span class="st">&#39;バスルーム数&#39;</span>]], tr[<span class="st">&#39;価格&#39;</span>])</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(m_bath.coef_[<span class="dv">0</span>]), <span class="st">&#39;ドル&#39;</span>)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr[[<span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;部屋数&#39;</span>]].corr().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>m_bath <span class="op">=</span> LinearRegression().fit(tr[[<span class="st">&#39;バスルーム数&#39;</span>]], tr[<span class="st">&#39;価格&#39;</span>])</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(m_bath.coef_[<span class="dv">0</span>]), <span class="st">&#39;ドル&#39;</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr[[<span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;部屋数&#39;</span>]].corr().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>68759 ドル
         バスルーム数  居住面積   部屋数
@@ -2862,29 +2866,30 @@ dtype: float64</code></pre>
 <section id="おさらいfor文" class="level3">
 <h3 class="anchored" data-anchor-id="おさらいfor文">おさらい：for文</h3>
 <p><code>for 変数 in 並び:</code>は、並びの中身を1つずつ変数に入れて、字下げした行をくり返します。<code>range(20)</code>は0から19までの20個の数です。</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(s)          <span class="co"># 0, 1, 2 と順に表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(s)          <span class="co"># 0, 1, 2 と順に表示される</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="お手本分け方を20通り変える" class="level3">
 <h3 class="anchored" data-anchor-id="お手本分け方を20通り変える">お手本：分け方を20通り変える</h3>
 <ul>
 <li>役割：<code>random_state</code>を0〜19に変えて分け直し、毎回、式を作ってMAEと車庫の台数の係数をためる</li>
 <li>入力：表<code>df</code>と、列の名前<code>feat</code></li>
-<li>出力：20回分の結果の表<code>result</code>の要約と、係数がマイナスになった回数</li>
+<li>出力：20回分の結果の表<code>result</code>の要約、MAEの最大と最小の差、係数がマイナスになった回数</li>
 </ul>
 <p><code>rows = []</code>で空のリストを作り、毎回の結果を辞書<code>{&#39;名前&#39;: 値, ...}</code>にして<code>rows.append(...)</code>で1行ずつ足します。最後に<code>pd.DataFrame(rows)</code>で、20行の表にします。</p>
 <p>ループの中の訓練とテストは、1節の<code>tr</code>・<code>te</code>を上書きしないよう、<code>tr_s</code>・<code>te_s</code>という名前にします。</p>
-<div id="9877d673" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>s)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> LinearRegression().fit(tr_s[feat], tr_s[<span class="st">&#39;価格&#39;</span>])</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    coef_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>feat)</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], m_s.predict(te_s[feat])),</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&#39;車庫の台数&#39;</span>: <span class="bu">round</span>(coef_s[<span class="st">&#39;車庫の台数&#39;</span>])})</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pd.DataFrame(rows)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.describe().<span class="bu">round</span>(<span class="dv">0</span>))</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((result[<span class="st">&#39;車庫の台数&#39;</span>] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;回はマイナス&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="d61fcb79" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>s)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> LinearRegression().fit(tr_s[feat], tr_s[<span class="st">&#39;価格&#39;</span>])</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    coef_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>feat)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], m_s.predict(te_s[feat])),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                 <span class="st">&#39;車庫の台数&#39;</span>: <span class="bu">round</span>(coef_s[<span class="st">&#39;車庫の台数&#39;</span>])})</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> pd.DataFrame(rows)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result.describe().<span class="bu">round</span>(<span class="dv">0</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(result[<span class="st">&#39;MAE&#39;</span>].<span class="bu">max</span>() <span class="op">-</span> result[<span class="st">&#39;MAE&#39;</span>].<span class="bu">min</span>(), <span class="st">&#39;ドルの幅&#39;</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((result[<span class="st">&#39;車庫の台数&#39;</span>] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;回はマイナス&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           MAE   車庫の台数
 count     20.0    20.0
@@ -2895,15 +2900,16 @@ min    18555.0 -2081.0
 50%    19382.0   198.0
 75%    19604.0   461.0
 max    20874.0  2143.0
+2319 ドルの幅
 8 回はマイナス</code></pre>
 </div>
 </div>
-<p>MAEは、最小18,555ドルから最大20,874ドルまで、分け方だけで2,300ドルほど揺れます。平均は19,367ドルです。1節の19,391ドルは、この20通りのうちの1つ（<code>random_state=0</code>）にすぎません。どの分け方を引くかで、報告する数が変わってしまいます。</p>
+<p>MAEは、最小18,555ドルから最大20,874ドルまで、分け方だけで2,319ドルも揺れます。平均は19,367ドルです。1節の19,391ドルは、この20通りのうちの1つ（<code>random_state=0</code>）にすぎません。どの分け方を引くかで、報告する数が変わってしまいます。</p>
 <div id="483e8e24" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>plt.plot(result[<span class="st">&#39;MAE&#39;</span>], <span class="st">&#39;o&#39;</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE（ドル）&#39;</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>plt.plot(result[<span class="st">&#39;MAE&#39;</span>], <span class="st">&#39;o&#39;</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE（ドル）&#39;</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -2925,7 +2931,7 @@ max    20874.0  2143.0
 <li>出力：相関係数</li>
 </ul>
 <div id="fd01f7ae" class="cell" data-execution_count="15">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;車庫の台数&#39;</span>].corr(df[<span class="st">&#39;車庫の面積&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;車庫の台数&#39;</span>].corr(df[<span class="st">&#39;車庫の面積&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.89</code></pre>
 </div>
@@ -2949,21 +2955,21 @@ max    20874.0  2143.0
 </ul>
 <p>中身は3節のセルとほぼ同じです。違いは3つです。<code>feat</code>を引数<code>cols</code>に変えたこと、1節の<code>rmse</code>も呼ぶようにしたこと、係数を見る列を引数<code>watch</code>で選べるようにしたことです。1節で作った<code>mae</code>と<code>rmse</code>を、この関数の中で部品として呼んでいます。</p>
 <div id="39621ae6" class="cell" data-execution_count="16">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_scores(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>        tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span>s)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;価格&#39;</span>])</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>        pred_s <span class="op">=</span> m_s.predict(te_s[cols])</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        coef_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>cols)</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;RMSE&#39;</span>: rmse(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;係数&#39;</span>: <span class="bu">round</span>(coef_s[watch])})</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>all11 <span class="op">=</span> split_scores(feat)</span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(all11.mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_scores(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                                      random_state<span class="op">=</span>s)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>        m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;価格&#39;</span>])</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        pred_s <span class="op">=</span> m_s.predict(te_s[cols])</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        coef_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>cols)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;RMSE&#39;</span>: rmse(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;係数&#39;</span>: <span class="bu">round</span>(coef_s[watch])})</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>all11 <span class="op">=</span> split_scores(feat)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(all11.mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MAE     19367.0
 RMSE    27060.0
@@ -2978,14 +2984,16 @@ dtype: float64</code></pre>
 <ul>
 <li>役割：車庫の面積を外した10本の列で、同じ20回の評価をする</li>
 <li>入力：列の名前<code>no_area</code></li>
-<li>出力：20回の結果の要約</li>
+<li>出力：20回の結果の要約と、11本の式とのMAEの平均の差</li>
 </ul>
-<div id="7ced9c7b" class="cell" data-execution_count="17">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>no_area <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>,</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>drop_area <span class="op">=</span> split_scores(no_area)</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(drop_area.describe().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="ddfbb05a" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>no_area <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>,</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>drop_area <span class="op">=</span> split_scores(no_area)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(drop_area.describe().<span class="bu">round</span>(<span class="dv">0</span>))</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>gap <span class="op">=</span> drop_area[<span class="st">&#39;MAE&#39;</span>].mean() <span class="op">-</span> all11[<span class="st">&#39;MAE&#39;</span>].mean()</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(gap), <span class="st">&#39;ドル悪い&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           MAE     RMSE      係数
 count     20.0     20.0    20.0
@@ -2995,15 +3003,16 @@ min    18730.0  25182.0  7392.0
 25%    19359.0  26401.0  8339.0
 50%    19582.0  27108.0  8450.0
 75%    19852.0  28023.0  8772.0
-max    21215.0  29923.0  9801.0</code></pre>
+max    21215.0  29923.0  9801.0
+285 ドル悪い</code></pre>
 </div>
 </div>
 <p>車庫の台数の係数は、最小7,392ドルから最大9,801ドルで、20回とも約8千〜1万ドルのプラスに落ち着きました。「車庫に車がもう1台入ると、約8千ドル高い」と説明できます。</p>
-<p>MAEの平均は19,651ドルで、11本の式（19,367ドル）より284ドル悪くなりました。</p>
+<p>MAEの平均は19,651ドルで、11本の式（19,367ドル）より285ドル悪くなりました。</p>
 </section>
-<section id="問い284ドルの差は揺れの中に埋もれていないか" class="level3">
-<h3 class="anchored" data-anchor-id="問い284ドルの差は揺れの中に埋もれていないか">問い：284ドルの差は、揺れの中に埋もれていないか</h3>
-<p>MAEは、分け方だけで2,300ドルほど揺れました。それに比べて、284ドルの差はずっと小さな差です。面積を外した式が本当に悪いのか、たまたまなのか、どうやって確かめればよいでしょうか。予想を下に書いてください。</p>
+<section id="問い285ドルの差は揺れの中に埋もれていないか" class="level3">
+<h3 class="anchored" data-anchor-id="問い285ドルの差は揺れの中に埋もれていないか">問い：285ドルの差は、揺れの中に埋もれていないか</h3>
+<p>MAEは、分け方だけで2,319ドルも揺れました。それに比べて、285ドルの差はずっと小さな差です。面積を外した式が本当に悪いのか、たまたまなのか、どうやって確かめればよいでしょうか。予想を下に書いてください。</p>
 <p>（ここに予想を書く）</p>
 </section>
 <section id="お手本同じ分け方どうしで並べる" class="level3">
@@ -3015,11 +3024,11 @@ max    21215.0  29923.0  9801.0</code></pre>
 </ul>
 <p><code>random_state</code>が同じ回どうしは、テストの家がまったく同じです。同じ家で測った2つのMAEなら、差は式の違いだけから生まれます。</p>
 <div id="2ded3146" class="cell" data-execution_count="18">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">&#39;11本&#39;</span>: all11[<span class="st">&#39;MAE&#39;</span>],</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;面積を外す&#39;</span>: drop_area[<span class="st">&#39;MAE&#39;</span>]})</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>compare[<span class="st">&#39;差&#39;</span>] <span class="op">=</span> compare[<span class="st">&#39;面積を外す&#39;</span>] <span class="op">-</span> compare[<span class="st">&#39;11本&#39;</span>]</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(compare)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((compare[<span class="st">&#39;差&#39;</span>] <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;回は面積を外すと悪い&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">&#39;11本&#39;</span>: all11[<span class="st">&#39;MAE&#39;</span>],</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;面積を外す&#39;</span>: drop_area[<span class="st">&#39;MAE&#39;</span>]})</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>compare[<span class="st">&#39;差&#39;</span>] <span class="op">=</span> compare[<span class="st">&#39;面積を外す&#39;</span>] <span class="op">-</span> compare[<span class="st">&#39;11本&#39;</span>]</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(compare)</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((compare[<span class="st">&#39;差&#39;</span>] <span class="op">&gt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), <span class="st">&#39;回は面積を外すと悪い&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      11本  面積を外す    差
 0   19391  19634  243
@@ -3048,12 +3057,12 @@ max    21215.0  29923.0  9801.0</code></pre>
 <p>20回すべてで、面積を外した式のほうが悪くなりました。差は、最も小さい回で50ドル、最も大きい回で547ドルです。MAEそのものは分け方で大きく揺れますが、同じ分け方どうしの差は、いつも同じ向きです。</p>
 <p>逆に、違う分け方どうしで比べると、結論が逆になります。例えば、面積を外した式の<code>random_state=16</code>（18,730ドル）と、11本の式の<code>random_state=7</code>（20,874ドル）を比べると、面積を外した式のほうが2千ドル以上も良く見えます。テストの家が違えば、当てやすい家に当たったかどうかで、MAEが変わるからです。式を比べるときは、同じ分け方どうしで並べます。</p>
 <div id="37542bca" class="cell" data-execution_count="19">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;11本&#39;</span>], <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;11本&#39;</span>)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;面積を外す&#39;</span>], <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;面積を外す&#39;</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE（ドル）&#39;</span>)</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;11本&#39;</span>], <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;11本&#39;</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;面積を外す&#39;</span>], <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;面積を外す&#39;</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE（ドル）&#39;</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3079,11 +3088,11 @@ max    21215.0  29923.0  9801.0</code></pre>
 </ul>
 <p><code>pd.Series(0, index=df.index)</code>で、家の数だけ0を並べた入れ物を作ります。<code>count[te_s.index] += 1</code>は、その回にテストに入った家（<code>te_s.index</code>の行）にだけ1を足します。<code>value_counts()</code>は値ごとの数、<code>sort_index()</code>はそれを回数の小さい順に並べます。</p>
 <div id="c9b0d65e" class="cell" data-execution_count="20">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> pd.Series(<span class="dv">0</span>, index<span class="op">=</span>df.index)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>s)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    count[te_s.index] <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(count.value_counts().sort_index())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> pd.Series(<span class="dv">0</span>, index<span class="op">=</span>df.index)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>s)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    count[te_s.index] <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(count.value_counts().sort_index())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0      29
 1     120
@@ -3128,9 +3137,9 @@ Name: count, dtype: int64</code></pre>
 </ul>
 <p><code>KFold(n_splits=5, shuffle=True, random_state=0)</code>は、行を混ぜてから5つの組に分ける道具です。<code>kf.split(df)</code>は、5回分の「訓練の行番号の並び」と「テストの行番号の並び」の組を、<code>for</code>文で1回ずつ渡します。</p>
 <div id="647295e1" class="cell" data-execution_count="22">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(tr_i), <span class="bu">len</span>(te_i), te_i[:<span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(tr_i), <span class="bu">len</span>(te_i), te_i[:<span class="dv">5</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1929 483 [ 1  9 10 11 14]
 1929 483 [ 4  5  6 15 19]
@@ -3151,21 +3160,21 @@ Name: count, dtype: int64</code></pre>
 </ul>
 <p>4節の<code>split_scores</code>と比べてください。変わったのは、<code>for</code>の行と、その次の訓練とテストを作る行の2行だけです。「分け方」の部品を差し替えるだけで、20回の分け直しが交差検証に変わります。</p>
 <div id="634f7655" class="cell" data-execution_count="23">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>        tr_s, te_s <span class="op">=</span> df.iloc[tr_i], df.iloc[te_i]</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>        m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;価格&#39;</span>])</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>        pred_s <span class="op">=</span> m_s.predict(te_s[cols])</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>        coef_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>cols)</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;RMSE&#39;</span>: rmse(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;係数&#39;</span>: <span class="bu">round</span>(coef_s[watch])})</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>cv11 <span class="op">=</span> cv_score(feat)</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv11)</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv11.mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>        tr_s, te_s <span class="op">=</span> df.iloc[tr_i], df.iloc[te_i]</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>        m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;価格&#39;</span>])</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>        pred_s <span class="op">=</span> m_s.predict(te_s[cols])</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>        coef_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>cols)</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;RMSE&#39;</span>: rmse(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;係数&#39;</span>: <span class="bu">round</span>(coef_s[watch])})</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>cv11 <span class="op">=</span> cv_score(feat)</span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv11)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv11.mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     MAE   RMSE    係数
 0  19391  27191   267
@@ -3186,10 +3195,10 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="todo②面積を外した式も交差検証で比べる">TODO②：面積を外した式も、交差検証で比べる</h3>
 <p><code>cv_score</code>に、4節の<code>no_area</code>を渡して、面積を外した式の5回分の結果を出してください。そのうえで、11本の式（<code>cv11</code>）とMAEを横に並べた表を作り、5回のうち何回、面積を外した式のほうが悪かったかを表示してください。</p>
 <div id="2d4fa7ec" class="cell" data-execution_count="24">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: cv_score(no_area) の結果と cv11 の MAE を並べて比べる</span></span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cv_area = cv_score(no_area) のあと、4節の compare と同じ形で</span></span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         cv11[&#39;MAE&#39;] と cv_area[&#39;MAE&#39;] を並べた表を作る</span></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: cv_score(no_area) の結果と cv11 の MAE を並べて比べる</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cv_area = cv_score(no_area) のあと、4節の compare と同じ形で</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         cv11[&#39;MAE&#39;] と cv_area[&#39;MAE&#39;] を並べた表を作る</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>面積を外した式のMAEは平均19,561ドルで、5回すべてで11本の式より悪くなります。交差検証でも、4節と同じ結論です。</p>
 <p>交差検証は、どの家もちょうど1度ずつテストに入るので、家の偏りなく式を評価できます。そして、2つの式を同じ5つの組で評価するので、いつも同じ分け方どうしで並べて比べられます。式を比べるときの、標準の物差しです。</p>
@@ -3203,10 +3212,10 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="todo③車庫の台数を外して交差検証で評価する">TODO③：車庫の台数を外して、交差検証で評価する</h3>
 <p>車庫の台数を外した10本の列の名前<code>no_cars</code>を作り、<code>cv_score</code>で評価してください。台数を外したので、係数は車庫の面積の係数を見ます（<code>watch=&#39;車庫の面積&#39;</code>）。5回分の表と、その平均を表示してください。</p>
 <div id="51dc7630" class="cell" data-execution_count="25">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 車庫の台数を外した列の組 no_cars を作り、cv_score で評価する</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: no_cars は feat から &#39;車庫の台数&#39; を除いた10本。</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         cv_score(no_cars, watch=&#39;車庫の面積&#39;)</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 車庫の台数を外した列の組 no_cars を作り、cv_score で評価する</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: no_cars は feat から &#39;車庫の台数&#39; を除いた10本。</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         cv_score(no_cars, watch=&#39;車庫の面積&#39;)</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="お手本3つの式を1つの表に並べる" class="level3">
@@ -3218,14 +3227,14 @@ dtype: float64</code></pre>
 </ul>
 <p><code>cv_score(...).mean()</code>は、5回分の表の列ごとの平均です。それを辞書の値にして<code>pd.DataFrame</code>に渡すと、式ごとに1列の表になります。係数の行は、11本と面積を外した式では車庫の台数、台数を外した式では車庫の面積の係数です。</p>
 <div id="90eb2ee0" class="cell" data-execution_count="26">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>no_cars <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;11本&#39;</span>: cv_score(feat).mean(),</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;面積を外す&#39;</span>: cv_score(no_area).mean(),</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;台数を外す&#39;</span>: cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>).mean()})</span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(table.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>no_cars <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;11本&#39;</span>: cv_score(feat).mean(),</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;面積を外す&#39;</span>: cv_score(no_area).mean(),</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;台数を外す&#39;</span>: cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>).mean()})</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(table.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          11本    面積を外す    台数を外す
 MAE   19297.0  19561.0  19297.0
@@ -3236,8 +3245,8 @@ RMSE  26997.0  27219.0  26994.0
 <p>台数を外した式のMAEは19,297ドルで、11本の式と同じです。RMSEも26,994ドルで、11本の式（26,997ドル）とほとんど変わりません。車庫の台数を外しても、当たりは落ちないのです。</p>
 <p>車庫の面積の係数は、平均で1㎡あたり390ドルです。</p>
 <div id="6682f6a6" class="cell" data-execution_count="27">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>cv_cars <span class="op">=</span> cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>)</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_cars)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>cv_cars <span class="op">=</span> cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_cars)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     MAE   RMSE   係数
 0  19386  27188  387
@@ -3250,7 +3259,7 @@ RMSE  26997.0  27219.0  26994.0
 <p>5回とも、車庫の面積の係数は1㎡あたり375〜402ドルのプラスで、ほとんど揺れません。MAEも、5回それぞれで11本の式とほぼ同じです（1回目は19,386ドル、11本は19,391ドル）。</p>
 <p>なぜ、台数を外しても当たりが落ちないのでしょうか。車庫の台数ごとに、車庫の面積の平均を見ます。</p>
 <div id="62195300" class="cell" data-execution_count="28">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;車庫の台数&#39;</span>)[<span class="st">&#39;車庫の面積&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;車庫の台数&#39;</span>)[<span class="st">&#39;車庫の面積&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>車庫の台数
 0.0      0.0
@@ -3280,9 +3289,9 @@ Name: 車庫の面積, dtype: float64</code></pre>
 </ul>
 <p>交差検証は、式を選ぶための評価でした。選んだら、手元の家を全部使って、査定に使う式を作り直します。家が多いほど、係数は安定するからです。当たりの目安には、交差検証のMAE（19,297ドル）を使います。</p>
 <div id="0e2e3052" class="cell" data-execution_count="29">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>final <span class="op">=</span> LinearRegression().fit(df[no_cars], df[<span class="st">&#39;価格&#39;</span>])</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>coef_f <span class="op">=</span> pd.Series(final.coef_, index<span class="op">=</span>no_cars)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_f.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>final <span class="op">=</span> LinearRegression().fit(df[no_cars], df[<span class="st">&#39;価格&#39;</span>])</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>coef_f <span class="op">=</span> pd.Series(final.coef_, index<span class="op">=</span>no_cars)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_f.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>品質        15803.0
 居住面積        686.0
@@ -3317,13 +3326,13 @@ dtype: float64</code></pre>
 </ul>
 <p><code>df.iloc[[0]]</code>は、0行目の家を1行の表のまま取り出します（かっこを二重にすると表のまま）。<code>house.iloc[0]</code>は、その1行を列の名前の付いた並びにします。係数と同じく列の名前が付いているので、<code>coef_f * (家の値 - 平均)</code>は列どうしで掛け算されます。</p>
 <div id="455980ee" class="cell" data-execution_count="30">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>house <span class="op">=</span> df.iloc[[<span class="dv">0</span>]]</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>pred_h <span class="op">=</span> final.predict(house[no_cars])[<span class="dv">0</span>]</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>avg_h <span class="op">=</span> final.predict(df[no_cars]).mean()   <span class="co"># 平均的な家の予測</span></span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_f <span class="op">*</span> (house[no_cars].iloc[<span class="dv">0</span>] <span class="op">-</span> df[no_cars].mean())</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(pred_h), <span class="bu">round</span>(avg_h), <span class="bu">round</span>(pred_h <span class="op">-</span> avg_h))</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(house[[<span class="st">&#39;敷地面積&#39;</span>, <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>]])</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(push.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>house <span class="op">=</span> df.iloc[[<span class="dv">0</span>]]</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>pred_h <span class="op">=</span> final.predict(house[no_cars])[<span class="dv">0</span>]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>avg_h <span class="op">=</span> final.predict(df[no_cars]).mean()   <span class="co"># 平均的な家の予測</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_f <span class="op">*</span> (house[no_cars].iloc[<span class="dv">0</span>] <span class="op">-</span> df[no_cars].mean())</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(pred_h), <span class="bu">round</span>(avg_h), <span class="bu">round</span>(pred_h <span class="op">-</span> avg_h))</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(house[[<span class="st">&#39;敷地面積&#39;</span>, <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>]])</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(push.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>211548 175327 36221
        敷地面積  暖炉の数  建てた年  改装した年
@@ -3365,16 +3374,16 @@ dtype: float64</code></pre>
 <li><code>{space:+,.0f}</code>：さらに、プラスのときも<code>+</code>を付ける（<code>+</code>）</li>
 </ul>
 <div id="f966de17" class="cell" data-execution_count="31">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> push[<span class="st">&#39;居住面積&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;バスルーム数&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;部屋数&#39;</span>]</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>land <span class="op">=</span> push[<span class="st">&#39;敷地面積&#39;</span>]</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>fire <span class="op">=</span> push[<span class="st">&#39;暖炉の数&#39;</span>]</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>remod <span class="op">=</span> push[<span class="st">&#39;改装した年&#39;</span>]</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>cv_err <span class="op">=</span> <span class="bu">round</span>(cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>)[<span class="st">&#39;MAE&#39;</span>].mean())</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;査定額：</span><span class="sc">{</span>pred_h<span class="sc">:,.0f}</span><span class="ss">ドル&#39;</span>)</span>
-<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;似た家での誤差は、平均</span><span class="sc">{</span>cv_err<span class="sc">:,}</span><span class="ss">ドルほどです。&#39;</span>)</span>
-<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;平均的な家（</span><span class="sc">{</span>avg_h<span class="sc">:,.0f}</span><span class="ss">ドル）より</span><span class="sc">{</span>pred_h <span class="op">-</span> avg_h<span class="sc">:+,.0f}</span><span class="ss">ドル&#39;</span>)</span>
-<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;広さと間取り</span><span class="sc">{</span>space<span class="sc">:+,.0f}</span><span class="ss">ドル、敷地</span><span class="sc">{</span>land<span class="sc">:+,.0f}</span><span class="ss">ドル&#39;</span>)</span>
-<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;暖炉</span><span class="sc">{</span>fire<span class="sc">:+,.0f}</span><span class="ss">ドル、改装していないこと</span><span class="sc">{</span>remod<span class="sc">:+,.0f}</span><span class="ss">ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> push[<span class="st">&#39;居住面積&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;バスルーム数&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;部屋数&#39;</span>]</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>land <span class="op">=</span> push[<span class="st">&#39;敷地面積&#39;</span>]</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>fire <span class="op">=</span> push[<span class="st">&#39;暖炉の数&#39;</span>]</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>remod <span class="op">=</span> push[<span class="st">&#39;改装した年&#39;</span>]</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>cv_err <span class="op">=</span> <span class="bu">round</span>(cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>)[<span class="st">&#39;MAE&#39;</span>].mean())</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;査定額：</span><span class="sc">{</span>pred_h<span class="sc">:,.0f}</span><span class="ss">ドル&#39;</span>)</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;似た家での誤差は、平均</span><span class="sc">{</span>cv_err<span class="sc">:,}</span><span class="ss">ドルほどです。&#39;</span>)</span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;平均的な家（</span><span class="sc">{</span>avg_h<span class="sc">:,.0f}</span><span class="ss">ドル）より</span><span class="sc">{</span>pred_h <span class="op">-</span> avg_h<span class="sc">:+,.0f}</span><span class="ss">ドル&#39;</span>)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;広さと間取り</span><span class="sc">{</span>space<span class="sc">:+,.0f}</span><span class="ss">ドル、敷地</span><span class="sc">{</span>land<span class="sc">:+,.0f}</span><span class="ss">ドル&#39;</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&#39;暖炉</span><span class="sc">{</span>fire<span class="sc">:+,.0f}</span><span class="ss">ドル、改装していないこと</span><span class="sc">{</span>remod<span class="sc">:+,.0f}</span><span class="ss">ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>査定額：211,548ドル
 似た家での誤差は、平均19,297ドルほどです。
@@ -3389,10 +3398,10 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="todo④別の家の査定書">TODO④：別の家の査定書</h3>
 <p>1軒目の代わりに、<code>df.iloc[[5]]</code>（6軒目の家）の査定書を作ってください。お手本の「1軒目の家の内訳」と「査定書の文」の2つのセルを写し、<code>house = df.iloc[[0]]</code>の<code>0</code>を<code>5</code>に変えるだけで動きます。押し上げの大きい列を見て、査定書の最後の2行に書く列を選び直してみましょう。</p>
 <div id="d6beeccf" class="cell" data-execution_count="32">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 6軒目の家（df.iloc[[5]]）の押し上げと査定書の文を表示する</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: house = df.iloc[[5]] にして、お手本の2つのセルを写す。</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         print(push.round(0)) で押し上げの大きい列を確かめる</span></span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 6軒目の家（df.iloc[[5]]）の押し上げと査定書の文を表示する</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: house = df.iloc[[5]] にして、お手本の2つのセルを写す。</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         print(push.round(0)) で押し上げの大きい列を確かめる</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>6軒目の家の予測は190,365ドルで、実際の価格は195,500ドルでした。平均的な家より15,037ドル高く、いちばん押し上げているのは建てた年（+8,485ドル）と居住面積（+8,147ドル）です。</p>
 </section>
@@ -3413,7 +3422,7 @@ dtype: float64</code></pre>
 <h2 class="anchored" data-anchor-id="目標に答えられたか">目標に答えられたか</h2>
 <ul>
 <li>今日の目標は「お客さんに説明できる査定の式を、どう選ぶか」でした。選んだ式と、選んだ理由を2つの面から説明できますか？</li>
-<li>1節で、MAEとRMSEはどう違いましたか？ 5万ドル以上外した家は何軒ありましたか？</li>
+<li>1節で、MAEとRMSEはどう違いましたか？5万ドル以上外した家は何軒ありましたか？</li>
 <li>2節で、バスルーム数の係数が、1列だけの式と11本の式で逆の符号になったのはなぜですか？</li>
 <li>3節で、分け方を変えると、MAEと車庫の台数の係数はどれくらい揺れましたか？ 係数が揺れる理由は何でしたか？</li>
 <li>4節で、2つの式を比べるときに、同じ分け方どうしで並べたのはなぜですか？</li>
@@ -3428,7 +3437,7 @@ dtype: float64</code></pre>
 <li>今日、持ち帰る1文：式は2つの面から選ぶ。1つは、交差検証で同じ分け方どうしを並べた当たりの良さ。もう1つは、係数が「ほかの列を同じにしたら」の値として、揺れずに読めるかどうか</li>
 <li>MAEは誤差の大きさの平均、RMSEは大きな誤差を重く見る物差し。RMSEはいつもMAE以上</li>
 <li>係数は「ほかの列を同じにしたまま、その列を1増やすと、予測が何ドル変わるか」。一緒に入れた列によって意味が変わる</li>
-<li>1回の分け方の数は揺れる。MAEは分け方だけで2,300ドルほど動き、似た列の係数は符号まで変わる（多重共線性）</li>
+<li>1回の分け方の数は揺れる。MAEは分け方だけで2千ドル以上動き、似た列の係数は符号まで変わる（多重共線性）</li>
 <li>2つの式は、同じ分け方どうしで並べて比べる。違う分け方どうしでは、結論が逆にもなる</li>
 <li>交差検証は、全部の行を1度ずつテストに回す。式を比べるときの標準の物差し</li>
 <li>似た2列のどちらを残すかは、交差検証で比べて決める。似た列どうしは、合わせて読む</li>
@@ -3450,8 +3459,8 @@ dtype: float64</code></pre>
 <p>7節の査定書では、居住面積・バスルーム数・部屋数を「広さと間取り」として合わせて読みました。部屋数の係数も、査定に使った式ではマイナスです。では、部屋数を外したらどうなるでしょうか。</p>
 <p>6節で選んだ10本の列<code>no_cars</code>から、さらに部屋数を外した9本の列で、<code>cv_score</code>による交差検証をしてください。係数は居住面積の係数を見ます（<code>watch=&#39;居住面積&#39;</code>）。あわせて、部屋数だけで価格を当てる式の係数も表示してください。</p>
 <div id="4d0a0832" class="cell" data-execution_count="33">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -3464,8 +3473,8 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①で、部屋数を外した9本の式の、交差検証のMAEの平均は何ドルですか。整数に丸めて答えてください（例: 12345）。</p>
 <div id="c667c1c9" class="cell" data-execution_count="34">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <details>
 <summary>
@@ -3493,18 +3502,18 @@ dtype: float64</code></pre>
 </ul>
 <p><code>cv_score</code>と比べると、変わったのは<code>fit</code>の行（当てる値を<code>np.log</code>に）と、予測の行（<code>np.exp</code>で戻す）の2行です。</p>
 <div id="8e839644" class="cell" data-execution_count="35">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_log(cols):</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>        tr_s, te_s <span class="op">=</span> df.iloc[tr_i], df.iloc[te_i]</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>        m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols],</span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>                                     np.log(tr_s[<span class="st">&#39;価格&#39;</span>]))</span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>        pred_s <span class="op">=</span> np.exp(m_s.predict(te_s[cols]))</span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;RMSE&#39;</span>: rmse(te_s[<span class="st">&#39;価格&#39;</span>], pred_s)})</span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_log(no_cars).mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_log(cols):</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>        tr_s, te_s <span class="op">=</span> df.iloc[tr_i], df.iloc[te_i]</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>        m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols],</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>                                     np.log(tr_s[<span class="st">&#39;価格&#39;</span>]))</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>        pred_s <span class="op">=</span> np.exp(m_s.predict(te_s[cols]))</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>        rows.append({<span class="st">&#39;MAE&#39;</span>: mae(te_s[<span class="st">&#39;価格&#39;</span>], pred_s),</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&#39;RMSE&#39;</span>: rmse(te_s[<span class="st">&#39;価格&#39;</span>], pred_s)})</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame(rows)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_log(no_cars).mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>MAE     16051.0
 RMSE    22533.0
@@ -3514,10 +3523,10 @@ dtype: float64</code></pre>
 <p>MAEは16,051ドルで、対数にしない式（19,297ドル）より3千ドル以上小さくなります。RMSEも22,533ドルまで下がります。当たりは、対数の式のほうがはっきり良いのです。</p>
 <p>ただ、係数の読み方が変わります。<span class="math inline">\(\log \hat{y}\)</span>が<span class="math inline">\(b_j\)</span>だけ増えると、<span class="math inline">\(\hat{y}\)</span>は<span class="math inline">\(e^{b_j}\)</span>倍になります。<span class="math inline">\(b_j\)</span>が小さいときは<span class="math inline">\(e^{b_j} \approx 1 + b_j\)</span>なので、係数を100倍した数が「約何%高くなるか」です。</p>
 <div id="8187bf91" class="cell" data-execution_count="36">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>m_log <span class="op">=</span> LinearRegression().fit(df[no_cars], np.log(df[<span class="st">&#39;価格&#39;</span>]))</span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>coef_log <span class="op">=</span> pd.Series(m_log.coef_, index<span class="op">=</span>no_cars)</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((coef_log <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>))                  <span class="co"># 約何%</span></span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(((np.exp(coef_log) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>))   <span class="co"># 正確に何%</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>m_log <span class="op">=</span> LinearRegression().fit(df[no_cars], np.log(df[<span class="st">&#39;価格&#39;</span>]))</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>coef_log <span class="op">=</span> pd.Series(m_log.coef_, index<span class="op">=</span>no_cars)</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((coef_log <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>))                  <span class="co"># 約何%</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(((np.exp(coef_log) <span class="op">-</span> <span class="dv">1</span>) <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>))   <span class="co"># 正確に何%</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>品質        8.22
 居住面積      0.30
@@ -3561,19 +3570,19 @@ dtype: float64</code></pre>
 </ul>
 <p><code>others</code>は、<code>cols</code>から列<code>c</code>を除いた列の名前のリストです。<code>for</code>文で<code>cols</code>を1つずつ見て、<code>c</code>でない列だけを<code>append</code>で集めます。</p>
 <div id="839a47e9" class="cell" data-execution_count="37">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vif(cols):</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> {}</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> cols:</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> []</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> o <span class="kw">in</span> cols:</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> o <span class="op">!=</span> c:</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>                others.append(o)</span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>        m_v <span class="op">=</span> LinearRegression().fit(df[others], df[c])</span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> m_v.score(df[others], df[c])</span>
-<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>        out[c] <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> r2), <span class="dv">2</span>)</span>
-<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(out)</span>
-<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;11本&#39;</span>: vif(feat), <span class="st">&#39;台数を外す&#39;</span>: vif(no_cars)}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vif(cols):</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> {}</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> cols:</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> []</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> o <span class="kw">in</span> cols:</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> o <span class="op">!=</span> c:</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>                others.append(o)</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>        m_v <span class="op">=</span> LinearRegression().fit(df[others], df[c])</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> m_v.score(df[others], df[c])</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>        out[c] <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> r2), <span class="dv">2</span>)</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(out)</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;11本&#39;</span>: vif(feat), <span class="st">&#39;台数を外す&#39;</span>: vif(no_cars)}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         11本  台数を外す
 バスルーム数  2.19   2.16
