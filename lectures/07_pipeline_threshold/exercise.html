@@ -3402,7 +3402,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>入力：訓練の<code>X_tr</code>・<code>y_tr</code>と、テストの<code>X_te</code></li>
 <li>出力：式の値の最小と最大、AUC、テストの1人目の式の値</li>
 </ul>
-<div id="0221814d" class="cell" data-execution_count="4">
+<div id="85fb09f2" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(X_tr, y_tr)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>s <span class="op">=</span> m.predict(X_te)                 <span class="co"># テストの人の、式の値</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(s.<span class="bu">min</span>(), <span class="dv">2</span>), <span class="bu">round</span>(s.<span class="bu">max</span>(), <span class="dv">2</span>))</span>
@@ -3430,7 +3430,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：シグモイド関数の値</li>
 </ul>
 <p><code>np.exp(-z)</code>は、<span class="math inline">\(e^{-z}\)</span>を、並びの1つずつに計算します。</p>
-<div id="2ca34dc7" class="cell" data-execution_count="5">
+<div id="2ae3d922" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">4</span>, <span class="op">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">4</span>])</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>z))).<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3438,7 +3438,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </div>
 </div>
 <p>−4は0.018に、0は0.5に、4は0.982になりました。どの値も、0と1の間に収まります。</p>
-<div id="b4c10bb7" class="cell" data-execution_count="6">
+<div id="52a3dde3" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>zz <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">6</span>, <span class="dv">6</span>, <span class="dv">200</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plt.plot(zz, <span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> np.exp(<span class="op">-</span>zz)))</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="fl">0.5</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>, ls<span class="op">=</span><span class="st">&#39;--&#39;</span>)</span>
@@ -3476,7 +3476,7 @@ L = \prod_{i=1}^{n} p_i^{\,y_i} (1 - p_i)^{1 - y_i}
 <li>出力：なし（警告が出るかを見る）</li>
 </ul>
 <p>使い方は、<code>LinearRegression</code>と同じで、<code>fit(手がかり, 答え)</code>です。</p>
-<div id="4f01f068" class="cell" data-execution_count="7">
+<div id="1ca932a9" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LogisticRegression().fit(X_tr, y_tr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>~/Documents/proj/new_lesson_applied/.venv/lib/python3.12/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 100 iteration(s) (status=1):
@@ -3509,7 +3509,7 @@ You might also want to scale the data as shown in: ...</code></pre>
 <li>入力：訓練の<code>X_tr</code></li>
 <li>出力：コレステロール・最大心拍数・性別の標準偏差</li>
 </ul>
-<div id="095d302b" class="cell" data-execution_count="8">
+<div id="294f2cec" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_tr[[<span class="st">&#39;コレステロール&#39;</span>, <span class="st">&#39;最大心拍数&#39;</span>, <span class="st">&#39;性別&#39;</span>]].std().<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>コレステロール    52.47
@@ -3529,7 +3529,7 @@ dtype: float64</code></pre>
 </ul>
 <p><code>standardize</code>は、第5回と同じ関数です。平均と標準偏差は、訓練だけで決めます（第3回）。</p>
 <p><code>predict_proba</code>は、区分ごとの確率を返すメソッドです。probaは確率（probability）の略です。</p>
-<div id="6bba6801" class="cell" data-execution_count="9">
+<div id="22c7107a" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mean, std):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (X <span class="op">-</span> mean) <span class="op">/</span> std</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3554,7 +3554,7 @@ dtype: float64</code></pre>
 <li>入力：標準化したテストの<code>Z_te</code></li>
 <li>出力：確率の最小と最大、先頭5人の確率</li>
 </ul>
-<div id="99e53608" class="cell" data-execution_count="10">
+<div id="cdb2bf9b" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>prob <span class="op">=</span> lr.predict_proba(Z_te)[:, <span class="dv">1</span>]     <span class="co"># 2列目＝心臓病の確率</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(prob.<span class="bu">min</span>(), <span class="dv">3</span>), <span class="bu">round</span>(prob.<span class="bu">max</span>(), <span class="dv">3</span>))</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prob[:<span class="dv">5</span>].<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3564,7 +3564,7 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>確率は、最小0.005、最大0.994で、すべて0〜1に収まりました。先頭の5人は0.31・0.99・0.77・0.92・0.94です。前回の線形回帰では、1人目の式の値は0.33でした。</p>
-<div id="fee606a0" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
+<div id="94cedc48" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3583,7 +3583,7 @@ dtype: float64</code></pre>
 <li>出力：<code>C</code>の値</li>
 </ul>
 <p><code>C</code>は、第5回の<code>alpha</code>と向きが逆で、小さいほど罰が強くなります（<code>help(LogisticRegression)</code>の<code>C</code>の説明に、Inverse of regularization strengthとあります）。罰をかけるなら、第5回と同じく、先に標準化しておく必要があります。</p>
-<div id="2b99670e" class="cell" data-execution_count="12">
+<div id="4d544cab" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lr.C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1.0</code></pre>
@@ -3593,7 +3593,7 @@ dtype: float64</code></pre>
 <section id="todo①0.5で切って評価する" class="level3">
 <h3 class="anchored" data-anchor-id="todo①0.5で切って評価する">TODO①：0.5で切って、評価する</h3>
 <p>確率<code>prob</code>を0.5で切って判定<code>pred</code>を作り、<code>confusion_matrix(y_true, pred)</code>で混同行列を表示してください。あわせて、確率<code>prob</code>のAUCを小数第3位まで表示してください。</p>
-<div id="7b04baa2" class="cell" data-execution_count="13">
+<div id="c3db3a25" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: prob を 0.5 で切って判定し、混同行列と AUC を表示する</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: pred = (prob &gt;= 0.5).astype(int)（前回と同じ）</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         AUC は roc_auc_score(y_true, prob)</span></span>
@@ -3615,7 +3615,7 @@ dtype: float64</code></pre>
 <li>出力：0.5以上になった人数</li>
 </ul>
 <p>わざと、1段目を飛ばしてみます。</p>
-<div id="a9e0bc30" class="cell" data-execution_count="14">
+<div id="94f8ee51" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>p_forgot <span class="op">=</span> lr.predict_proba(X_te)[:, <span class="dv">1</span>]   <span class="co"># 標準化を忘れた</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((p_forgot <span class="op">&gt;=</span> <span class="fl">0.5</span>).<span class="bu">sum</span>(), <span class="st">&#39;人が「心臓病」&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3627,7 +3627,7 @@ dtype: float64</code></pre>
 </section>
 <section id="おさらいdef" class="level3">
 <h3 class="anchored" data-anchor-id="おさらいdef">おさらい：def</h3>
-<p><code>def</code>は、手順に名前を付けてまとめる書き方でした（第4回）。1節の<code>standardize</code>も<code>def</code>です。</p>
+<p><code>def</code>は、手順に名前を付けてまとめる書き方でした（第3回）。1節の<code>standardize</code>も<code>def</code>です。</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> standardize(X, mean, std):</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (X <span class="op">-</span> mean) <span class="op">/</span> std</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>ただ、<code>standardize</code>は、平均と標準偏差を毎回渡す必要があります。覚えておく場所がないからです。</p>
@@ -3640,7 +3640,7 @@ dtype: float64</code></pre>
 <li>入力：なし（部品の設計図を書くだけ）</li>
 <li>出力：なし</li>
 </ul>
-<div id="d3e1136f" class="cell" data-execution_count="15">
+<div id="1489eff1" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Standardizer:</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X):</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mean <span class="op">=</span> X.mean()     <span class="co"># 訓練の平均を覚える</span></span>
@@ -3666,7 +3666,7 @@ dtype: float64</code></pre>
 <li>出力：覚えた年齢とコレステロールの平均、標準化したテストの先頭3人・3列</li>
 </ul>
 <p><code>Standardizer()</code>で、設計図から部品を1つ作ります。</p>
-<div id="439e8d09" class="cell" data-execution_count="16">
+<div id="b08f6a26" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sc <span class="op">=</span> Standardizer().fit(X_tr)          <span class="co"># 訓練で覚える</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sc.mean[[<span class="st">&#39;年齢&#39;</span>, <span class="st">&#39;コレステロール&#39;</span>]].<span class="bu">round</span>(<span class="dv">2</span>))</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sc.transform(X_te).iloc[:<span class="dv">3</span>, :<span class="dv">3</span>].<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3690,7 +3690,7 @@ dtype: float64
 <li>入力：訓練の<code>X_tr</code>と、テストの<code>X_te</code></li>
 <li>出力：標準化したテストの先頭3人・3列</li>
 </ul>
-<div id="6507ca7f" class="cell" data-execution_count="17">
+<div id="2e432fe4" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ss <span class="op">=</span> StandardScaler().fit(X_tr)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ss.transform(X_te)[:<span class="dv">3</span>, :<span class="dv">3</span>].<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3713,7 +3713,7 @@ dtype: float64
 \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i - \bar{x})^2}
 \]</span></p>
 <p><code>ddof=0</code>は<span class="math inline">\(n\)</span>で割る（左）、<code>ddof=1</code>は<span class="math inline">\(n - 1\)</span>で割る（右）という指定です。pandasの<code>std()</code>は、何も書かないと<code>ddof=1</code>です。<code>StandardScaler</code>は<code>ddof=0</code>なので、ずれたのです。</p>
-<div id="341d9745" class="cell" data-execution_count="18">
+<div id="7b48733a" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">help</span>(StandardScaler)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Help on class StandardScaler in module sklearn.preprocessing._data:
@@ -4284,7 +4284,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <section id="todo②自分の部品をstandardscalerにそろえる" class="level3">
 <h3 class="anchored" data-anchor-id="todo②自分の部品をstandardscalerにそろえる">TODO②：自分の部品を、StandardScalerにそろえる</h3>
 <p>お手本の<code>Standardizer</code>のセルを写し、<code>X.std()</code>を<code>X.std(ddof=0)</code>に変えて、名前を<code>Standardizer0</code>にしてください。訓練で<code>fit</code>し、テストの先頭3人・3列を<code>transform</code>して、<code>StandardScaler</code>の結果と同じになるか確かめてください。</p>
-<div id="51051970" class="cell" data-execution_count="19">
+<div id="f1586205" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: ddof=0 にした Standardizer0 を書き、StandardScaler と比べる</span></span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: class Standardizer0: の中身はお手本と同じで、</span></span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         self.std = X.std(ddof=0) にする</span></span>
@@ -4300,7 +4300,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <li>入力：<code>fit</code>した<code>ss</code></li>
 <li>出力：年齢と性別の、平均と標準偏差</li>
 </ul>
-<div id="a558db3a" class="cell" data-execution_count="20">
+<div id="44606b08" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ss.mean_[:<span class="dv">2</span>].<span class="bu">round</span>(<span class="dv">2</span>))     <span class="co"># 年齢、性別の平均</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ss.scale_[:<span class="dv">2</span>].<span class="bu">round</span>(<span class="dv">2</span>))    <span class="co"># 年齢、性別の標準偏差</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4320,7 +4320,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <li>出力：テストの先頭5人の、心臓病の確率</li>
 </ul>
 <p><code>make_pipeline(部品1, 部品2)</code>で、部品を順につなぎます。</p>
-<div id="f865a9a9" class="cell" data-execution_count="21">
+<div id="a6fe05a6" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> make_pipeline(StandardScaler(), LogisticRegression())</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>pipe.fit(X_tr, y_tr)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>p_te <span class="op">=</span> pipe.predict_proba(X_te)[:, <span class="dv">1</span>]   <span class="co"># 元の値を渡すだけ</span></span>
@@ -4336,7 +4336,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <li>標準化した訓練で、<code>LogisticRegression</code>の<code>fit</code>をする</li>
 </ol>
 <p><code>predict_proba</code>は、<code>StandardScaler</code>の<code>transform</code>で（訓練で覚えた値を使って）標準化してから、<code>LogisticRegression</code>の<code>predict_proba</code>を呼びます。標準化を忘れることは、もうありません。</p>
-<div id="53eb556a" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="22">
+<div id="0689d828" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4355,7 +4355,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <li>出力：5回分のAUCと、その平均</li>
 </ul>
 <p><code>scoring=&#39;roc_auc&#39;</code>で、AUCで評価します（<code>scoring</code>の名前の一覧は、第5回で読んだドキュメントにあります）。<code>cv=skf</code>で、前回の<code>StratifiedKFold</code>の分け方を渡します。</p>
-<div id="bad88dcc" class="cell" data-execution_count="23">
+<div id="db5b941a" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>auc_cv <span class="op">=</span> cross_val_score(pipe, X, y, cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">&#39;roc_auc&#39;</span>)</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_cv.<span class="bu">round</span>(<span class="dv">3</span>))</span>
@@ -4386,7 +4386,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <li>出力：確率の個数と、先頭5人の確率</li>
 </ul>
 <p><code>cross_val_predict</code>は、<code>cross_val_score</code>と同じ分け方で、評価の数ではなく、1人1人の予測を返します。<code>method=&#39;predict_proba&#39;</code>で、確率を返すように指定します。</p>
-<div id="eb642b12" class="cell" data-execution_count="24">
+<div id="64e151f6" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>p_cv <span class="op">=</span> cross_val_predict(pipe, X_tr, y_tr, cv<span class="op">=</span>skf,</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                         method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)[:, <span class="dv">1</span>]</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(p_cv))</span>
@@ -4406,7 +4406,7 @@ class StandardScaler(sklearn.callback._callback_support.CallbackSupportMixin, sk
 <li>出力：幅ごとの人数と、確率の平均・実際の割合の表</li>
 </ul>
 <p><code>pd.cut(値, 区切り)</code>は、値を区切りで幅に分け、それぞれがどの幅に入るかを返します。<code>(0.2, 0.4]</code>は「0.2より大きく、0.4以下」です。分けたあとは、第3回からの<code>groupby</code>で幅ごとに平均します。心臓病の列（1と0）の平均は、心臓病の人の割合です。<code>observed=True</code>は、「人のいる幅だけを出す」という指定です。</p>
-<div id="b72548a1" class="cell" data-execution_count="25">
+<div id="6b5eafa5" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>check <span class="op">=</span> pd.DataFrame({<span class="st">&#39;確率&#39;</span>: p_cv, <span class="st">&#39;心臓病&#39;</span>: y_tr.values})</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>check[<span class="st">&#39;幅&#39;</span>] <span class="op">=</span> pd.cut(p_cv, [<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">1.0</span>])</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(check[<span class="st">&#39;幅&#39;</span>].value_counts(sort<span class="op">=</span><span class="va">False</span>))</span>
@@ -4429,7 +4429,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <p>確率が0.8より大きいと出た70人では、確率の平均が0.95、実際に心臓病だった人の割合が0.886です。0.2以下と出た97人では、確率の平均が0.079、実際の割合が0.103です。まん中の幅は22〜26人と少ないので、確率の平均と実際の割合の差が大きめに出ています。</p>
-<div id="730514d4" class="cell" data-execution_count="26">
+<div id="8a405000" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> check.groupby(<span class="st">&#39;幅&#39;</span>, observed<span class="op">=</span><span class="va">True</span>).mean()</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], <span class="st">&#39;--&#39;</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>, label<span class="op">=</span><span class="st">&#39;確率どおり&#39;</span>)</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>plt.plot(res[<span class="st">&#39;確率&#39;</span>], res[<span class="st">&#39;心臓病&#39;</span>], <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;ロジスティック回帰&#39;</span>)</span>
@@ -4474,7 +4474,7 @@ Name: count, dtype: int64
 <li>出力：18本の列の、オッズ比</li>
 </ul>
 <p>パイプラインは部品の並びなので、<code>pipe[-1]</code>で最後の部品（ロジスティック回帰）を取り出せます。<code>pipe[0]</code>なら最初の部品（<code>StandardScaler</code>）です。</p>
-<div id="098d9675" class="cell" data-execution_count="27">
+<div id="a5b30636" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.Series(pipe[<span class="op">-</span><span class="dv">1</span>].coef_[<span class="dv">0</span>], index<span class="op">=</span>X.columns)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.exp(coef).<span class="bu">round</span>(<span class="dv">2</span>).sort_values())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4511,7 +4511,7 @@ dtype: float64</code></pre>
 <li>入力：係数<code>coef</code>と、パイプラインの最初の部品<code>pipe[0]</code></li>
 <li>出力：血管の数の標準偏差と、1本あたりのオッズ比</li>
 </ul>
-<div id="2f13b3b2" class="cell" data-execution_count="28">
+<div id="e0f134ac" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>scale <span class="op">=</span> pd.Series(pipe[<span class="dv">0</span>].scale_, index<span class="op">=</span>X.columns)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(scale[<span class="st">&#39;血管の数&#39;</span>], <span class="dv">3</span>))</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.exp(coef[<span class="st">&#39;血管の数&#39;</span>] <span class="op">/</span> scale[<span class="st">&#39;血管の数&#39;</span>]), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4525,7 +4525,7 @@ dtype: float64</code></pre>
 <section id="todo③最大心拍数が10拍高いと" class="level3">
 <h3 class="anchored" data-anchor-id="todo③最大心拍数が10拍高いと">TODO③：最大心拍数が10拍高いと</h3>
 <p>お手本をまねて、最大心拍数が10拍高いときのオッズ比を、小数第2位まで表示してください。1拍あたりの係数を10倍してから、<code>np.exp</code>に通します。</p>
-<div id="df3f2fd2" class="cell" data-execution_count="29">
+<div id="2843c845" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 最大心拍数が 10 拍高いときのオッズ比を表示する</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: 1拍あたりの係数は coef[&#39;最大心拍数&#39;] / scale[&#39;最大心拍数&#39;]</span></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         それを 10 倍して np.exp に通す</span></span>
@@ -4533,7 +4533,7 @@ dtype: float64</code></pre>
 </div>
 <p>オッズ比は0.83です。運動の検査で達した最大心拍数が10拍高いと、心臓病のオッズは0.83倍、つまり2割ほど小さくなります。</p>
 <p>オッズ比は、確率が何倍になるかではありません。確率が0.3から0.6になる（2倍）とき、オッズは0.43から1.5で、3.5倍になります。患者に伝えるときは、オッズ比ではなく、6節のように、その人の確率で伝えます。</p>
-<div id="3557ef72" class="cell" data-execution_count="30">
+<div id="73a0b0da" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(<span class="fl">0.3</span> <span class="op">/</span> <span class="fl">0.7</span>, <span class="dv">2</span>), <span class="bu">round</span>(<span class="fl">0.6</span> <span class="op">/</span> <span class="fl">0.4</span>, <span class="dv">2</span>))</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>((<span class="fl">0.6</span> <span class="op">/</span> <span class="fl">0.4</span>) <span class="op">/</span> (<span class="fl">0.3</span> <span class="op">/</span> <span class="fl">0.7</span>), <span class="dv">1</span>))   <span class="co"># オッズは何倍か</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4554,7 +4554,7 @@ dtype: float64</code></pre>
 <li>入力：テストの確率<code>p_te</code>と答え<code>y_true</code></li>
 <li>出力：混同行列</li>
 </ul>
-<div id="d7553684" class="cell" data-execution_count="31">
+<div id="53996885" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y_true, (p_te <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[29  3]
@@ -4583,7 +4583,7 @@ dtype: float64</code></pre>
 <li>出力：しきい値ごとの誤検出・見逃し・損失の表</li>
 </ul>
 <p>前回の6節の、しきい値ごとの表と同じ形です。</p>
-<div id="ba2865d5" class="cell" data-execution_count="32">
+<div id="4a563e6a" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>c_fp, c_fn <span class="op">=</span> <span class="dv">1</span>, <span class="dv">5</span>                       <span class="co"># 見逃しは誤検出の5倍</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>y_cv <span class="op">=</span> y_tr.values</span>
 <span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
@@ -4630,7 +4630,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <li>入力：重さ<code>c_fp</code>・<code>c_fn</code></li>
 <li>出力：<span class="math inline">\(t^*\)</span></li>
 </ul>
-<div id="b82f2cd5" class="cell" data-execution_count="33">
+<div id="e897a328" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>t_star <span class="op">=</span> c_fp <span class="op">/</span> (c_fp <span class="op">+</span> c_fn)</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(t_star, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4638,7 +4638,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 </div>
 </div>
 <p><span class="math inline">\(t^* = 1/6\)</span>で、0.167です。表では0.1と0.2の損失がほぼ同じでしたが、その間にある値です。</p>
-<div id="864d3d34" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="34">
+<div id="197ea064" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="34">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4657,7 +4657,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <li>出力：損失の図と、損失がいちばん小さいしきい値とその損失</li>
 </ul>
 <p><code>np.argmin</code>は、並びの中でいちばん小さい値の、位置（何番目か）を返します。</p>
-<div id="d76d586e" class="cell" data-execution_count="35">
+<div id="0c17b63c" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">100</span>) <span class="op">/</span> <span class="dv">100</span>            <span class="co"># 0.01, 0.02, ..., 0.99</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>losses <span class="op">=</span> []</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
@@ -4688,7 +4688,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <h3 class="anchored" data-anchor-id="todo④重さを変えると">TODO④：重さを変えると</h3>
 <p>見逃しの重さを、誤検出の3倍（<code>c_fn3 = 3</code>）にしたときの<span class="math inline">\(t^*\)</span>を計算してください。そして、お手本の表のセルを写して<code>c_fn</code>を<code>c_fn3</code>に変え、0.1〜0.9のどこで損失がいちばん小さくなるかを確かめてください。</p>
 <p>あとのセルの<code>c_fn</code>と<code>t_star</code>を変えないように、新しい名前<code>c_fn3</code>・<code>t3</code>を使います。</p>
-<div id="22e35242" class="cell" data-execution_count="36">
+<div id="aa01fbaf" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: c_fn3 = 3 のときの t* と、しきい値ごとの損失の表を出す</span></span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: t3 = c_fp / (c_fp + c_fn3)</span></span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         表は、お手本のセルの c_fn を c_fn3 に変える</span></span>
@@ -4704,7 +4704,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <li>入力：テストの確率<code>p_te</code>と答え<code>y_true</code>、<span class="math inline">\(t^*\)</span></li>
 <li>出力：しきい値ごとの誤検出・見逃し・損失</li>
 </ul>
-<div id="7018b4d8" class="cell" data-execution_count="37">
+<div id="415eb963" class="cell" data-execution_count="37">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> [<span class="fl">0.5</span>, t_star]:</span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> (p_te <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    fp <span class="op">=</span> ((p <span class="op">==</span> <span class="dv">1</span>) <span class="op">&amp;</span> (y_true <span class="op">==</span> <span class="dv">0</span>)).<span class="bu">sum</span>()</span>
@@ -4731,7 +4731,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <li>出力：その人の主な検査値と、心臓病である確率</li>
 </ul>
 <p><code>X_te.iloc[[0]]</code>のように、角かっこを2重にすると、1行だけの表として取り出せます。パイプラインは表を待っているので、この形で渡します。標準化は、パイプラインが訓練の平均と標準偏差で済ませます。</p>
-<div id="873eb28e" class="cell" data-execution_count="38">
+<div id="42083144" class="cell" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> X_te.iloc[[<span class="dv">0</span>]]                    <span class="co"># テストの1人目</span></span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(new[[<span class="st">&#39;年齢&#39;</span>, <span class="st">&#39;最大心拍数&#39;</span>, <span class="st">&#39;ST低下&#39;</span>, <span class="st">&#39;血管の数&#39;</span>]])</span>
 <span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>p_new <span class="op">=</span> pipe.predict_proba(new)[<span class="dv">0</span>, <span class="dv">1</span>]</span>
@@ -4752,7 +4752,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <li>出力：患者に伝える2つの文</li>
 </ul>
 <p><code>if</code>と<code>else</code>で、条件が成り立つときと成り立たないときで、入れる言葉を変えます。f-stringの<code>{p_new:.1%}</code>は、百分率で小数第1位まで、という指定です（前回のおさらい）。</p>
-<div id="f68ad8e9" class="cell" data-execution_count="39">
+<div id="99b4513e" class="cell" data-execution_count="39">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> p_new <span class="op">&gt;=</span> t_star:</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>    msg <span class="op">=</span> <span class="st">&#39;造影を勧めます&#39;</span></span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
@@ -4766,7 +4766,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 </div>
 <p>「心臓病である確率は30.7%です。しきい値16.7%と比べて、造影を勧めます。」という文になりました。</p>
 <p>この人は、0.5で切っていたら「心臓病でない」と判定され、造影を勧められなかった人です。前回の線形回帰でも、式の値0.33で見逃されていました。実際の答えを見てみます。</p>
-<div id="7b30359f" class="cell" data-execution_count="40">
+<div id="f1ecd827" class="cell" data-execution_count="40">
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y_true[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1</code></pre>
@@ -4777,7 +4777,7 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <section id="todo⑤別の患者の確率と判定" class="level3">
 <h3 class="anchored" data-anchor-id="todo⑤別の患者の確率と判定">TODO⑤：別の患者の確率と判定</h3>
 <p>テストの16人目（<code>X_te.iloc[[15]]</code>）を新しく来た患者として、お手本と同じように確率を出し、2つの文を表示してください。</p>
-<div id="10a6d3c8" class="cell" data-execution_count="41">
+<div id="f1a617d4" class="cell" data-execution_count="41">
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: テストの16人目の確率を出し、判定の文を表示する</span></span>
 <span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: new2 = X_te.iloc[[15]]</span></span>
 <span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         p2 = pipe.predict_proba(new2)[0, 1] として、お手本をまねる</span></span>
@@ -4926,6 +4926,124 @@ p &gt; \frac{c_{FP}}{c_{FP} + c_{FN}}
 <p>線形判別分析の確率も0.002〜0.997で、0〜1に収まります。AUCは0.929で、ロジスティック回帰の確率との相関係数は0.992と、ほとんど同じ並び方です。</p>
 <p>ただ、1人目の患者の確率は、ロジスティック回帰の0.31に対して、線形判別分析では0.19です。どちらも<span class="math inline">\(t^*\)</span>の0.167は超えますが、確率の値そのものは、仮定の違う式で変わります。どの式の確率を患者に伝えるかは、3節のような較正の確かめで選びます。</p>
 <p>試すなら、3節と同じ幅ごとの表を、線形判別分析の確率でも作ってみましょう。対角線に沿うのは、どちらの確率でしょうか。</p>
+</section>
+<section id="部品の作り方をもう一歩" class="level3">
+<h3 class="anchored" data-anchor-id="部品の作り方をもう一歩">部品の作り方を、もう一歩</h3>
+<p>2節で書いた標準化の部品を、もう一歩作り込みます。インスタンス、<code>__init__</code>、継承の3つを、1つずつ足します。</p>
+<section id="インスタンス" class="level4">
+<h4 class="anchored" data-anchor-id="インスタンス">インスタンス</h4>
+<p>クラスは設計図です。設計図から作った部品1つ1つを、インスタンス（instance）と呼びます。2節の<code>sc = Standardizer().fit(X_tr)</code>の<code>sc</code>は、インスタンスです。同じ設計図から、いくつでも作れます。</p>
+<ul>
+<li>役割：同じ<code>Standardizer</code>から2つのインスタンスを作り、しまった値を比べる</li>
+<li>入力：訓練の<code>X_tr</code>、テストの<code>X_te</code>（ここでは比べるためだけに、テストでも<code>fit</code>する）</li>
+<li>出力：2つのインスタンスがしまった年齢の平均と、インスタンスの<code>type</code></li>
+</ul>
+<div id="997c8dfb" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>sc_tr <span class="op">=</span> Standardizer().fit(X_tr)   <span class="co"># 訓練でfit</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>sc_te <span class="op">=</span> Standardizer().fit(X_te)   <span class="co"># 比べるためだけに、テストでfit</span></span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(sc_tr.mean[<span class="st">&#39;年齢&#39;</span>], <span class="dv">2</span>), <span class="bu">round</span>(sc_te.mean[<span class="st">&#39;年齢&#39;</span>], <span class="dv">2</span>))</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(sc_tr))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>54.32 55.42
+&lt;class &#39;__main__.Standardizer&#39;&gt;</code></pre>
+</div>
+</div>
+<p>同じ設計図でも、<code>sc_tr</code>は54.32歳、<code>sc_te</code>は55.42歳をしまいました。しまった値は、インスタンスごとに別々です。<code>type</code>で見ると、どちらも<code>Standardizer</code>から作ったものです。</p>
+</section>
+<section id="init__" class="level4">
+<h4 class="anchored" data-anchor-id="init__"><code>__init__</code></h4>
+<p>TODO②では、<code>ddof</code>の1か所のために、<code>Standardizer0</code>を丸ごと書き直しました。作るときに<code>ddof</code>を渡せれば、設計図は1つで済みます。</p>
+<p><code>def __init__(self, 引数):</code>は、インスタンスを作るときに1回だけ動くメソッドです。<code>Standardizer2(ddof=0)</code>と書くと、<code>ddof=0</code>が<code>__init__</code>に渡ります。<code>init</code>の両側の下線は、2本ずつです。</p>
+<ul>
+<li>役割：<code>ddof</code>を作るときに渡せる標準化の部品を書き、<code>ddof=1</code>と<code>ddof=0</code>の2通りで使う</li>
+<li>入力：訓練の<code>X_tr</code>、テストの<code>X_te</code></li>
+<li>出力：2通りで標準化した、テストの先頭3人・3列</li>
+</ul>
+<div id="8b9584dc" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Standardizer2:</span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ddof<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ddof <span class="op">=</span> ddof            <span class="co"># 作るときに決める</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X):</span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mean <span class="op">=</span> X.mean()</span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.std <span class="op">=</span> X.std(ddof<span class="op">=</span><span class="va">self</span>.ddof)</span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>, X):</span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (X <span class="op">-</span> <span class="va">self</span>.mean) <span class="op">/</span> <span class="va">self</span>.std</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> Standardizer2().fit(X_tr)          <span class="co"># 何も書かないと ddof=1</span></span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a>s0 <span class="op">=</span> Standardizer2(ddof<span class="op">=</span><span class="dv">0</span>).fit(X_tr)</span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s1.transform(X_te).iloc[:<span class="dv">3</span>, :<span class="dv">3</span>].<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s0.transform(X_te).iloc[:<span class="dv">3</span>, :<span class="dv">3</span>].<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       年齢     性別  安静時血圧
+69 -0.921  0.692  1.112
+2   1.403  0.692 -0.656
+94 -0.257  0.692 -0.185
+       年齢     性別  安静時血圧
+69 -0.923  0.694  1.114
+2   1.406  0.694 -0.658
+94 -0.257  0.694 -0.185</code></pre>
+</div>
+</div>
+<p>1人目の年齢は、<code>ddof=1</code>で−0.921、<code>ddof=0</code>で−0.923です。<code>Standardizer</code>と<code>Standardizer0</code>の2つが、1つの設計図で済みました。</p>
+</section>
+<section id="継承" class="level4">
+<h4 class="anchored" data-anchor-id="継承">継承</h4>
+<p><code>class 名前(親):</code>と書くと、親のクラスのメソッドを受け継ぎます。これを継承（inheritance）と呼びます。scikit-learnは、部品の親になるクラスとして、<code>BaseEstimator</code>と<code>TransformerMixin</code>を用意しています。</p>
+<ul>
+<li>役割：2つの親を受け継いだ標準化の部品を書き、自分では書いていないメソッドを呼ぶ</li>
+<li>入力：訓練の<code>X_tr</code></li>
+<li>出力：<code>fit_transform</code>で標準化した、訓練の先頭3人・3列と、<code>get_params</code>の結果</li>
+</ul>
+<div id="a8277a8b" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.base <span class="im">import</span> BaseEstimator, TransformerMixin</span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Standardizer3(BaseEstimator, TransformerMixin):</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, ddof<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ddof <span class="op">=</span> ddof</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.mean_ <span class="op">=</span> X.mean()</span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.scale_ <span class="op">=</span> X.std(ddof<span class="op">=</span><span class="va">self</span>.ddof)</span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>, X):</span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> (X <span class="op">-</span> <span class="va">self</span>.mean_) <span class="op">/</span> <span class="va">self</span>.scale_</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a>st <span class="op">=</span> Standardizer3()</span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(st.fit_transform(X_tr).iloc[:<span class="dv">3</span>, :<span class="dv">3</span>].<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(st.get_params())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        年齢     性別  安静時血圧
+259  0.630 -1.441  1.114
+167 -1.034 -1.441 -1.130
+9   -0.146  0.694  0.523
+{&#39;ddof&#39;: 0}</code></pre>
+</div>
+</div>
+<p><code>fit_transform</code>は、書いていないのに使えました。<code>TransformerMixin</code>から受け継いだメソッドで、<code>fit</code>と<code>transform</code>を続けて呼びます。<code>get_params</code>は<code>BaseEstimator</code>から受け継いだメソッドで、<code>__init__</code>の引数を返します。</p>
+<p>本物の形に合わせて、3か所を変えています。</p>
+<ul>
+<li><code>fit(self, X, y=None)</code>：パイプラインは<code>fit</code>に<code>y</code>も渡すので、受け取れるようにする</li>
+<li><code>mean_</code>・<code>scale_</code>：「<code>fit</code>で覚えた」印の<code>_</code>を付ける（2節）</li>
+<li><code>self.ddof = ddof</code>：<code>__init__</code>の引数と同じ名前でしまう。<code>get_params</code>は、この名前で探す</li>
+</ul>
+<p>最後に、自作の部品をパイプラインに入れて、2節と同じ分け方で交差検証します。</p>
+<div id="ddacf785" class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>pipe_my <span class="op">=</span> make_pipeline(Standardizer3(), LogisticRegression())</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>auc_my <span class="op">=</span> cross_val_score(pipe_my, X, y, cv<span class="op">=</span>skf, scoring<span class="op">=</span><span class="st">&#39;roc_auc&#39;</span>)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_my.<span class="bu">round</span>(<span class="dv">3</span>))</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_cv.<span class="bu">round</span>(<span class="dv">3</span>))    <span class="co"># 2節の StandardScaler のパイプライン</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0.945 0.93  0.9   0.824 0.912]
+[0.945 0.93  0.9   0.824 0.912]</code></pre>
+</div>
+</div>
+<p>5回とも、2節の<code>StandardScaler</code>のパイプラインと同じAUCになりました。自作の部品を、scikit-learnの部品と同じように扱えました。</p>
+<p>試すなら、2節の親のない<code>Standardizer</code>を<code>make_pipeline</code>に入れて、<code>fit</code>してみましょう。どんなエラーが出るでしょうか。エラーの最後の行を読んでみてください。</p>
+</section>
 </section>
 </section>
 

@@ -4349,7 +4349,7 @@ dtype: float64</code></pre>
 <h2 class="anchored" data-anchor-id="発展任意">発展（任意）</h2>
 <section id="価格を対数にした式係数を約何と読む" class="level3">
 <h3 class="anchored" data-anchor-id="価格を対数にした式係数を約何と読む">価格を対数にした式：係数を「約何%」と読む</h3>
-<p>第3回で、右に尾の長い料金を対数にすると、式で表しやすくなることを見ました。住宅の価格も、右に尾が長い量です。価格を対数にして当て、<code>np.exp</code>で元に戻す式を、交差検証で評価します。</p>
+<p>住宅の価格は、右に尾が長い量です。<code>np.log</code>で対数にすると、その尾が縮み、価格の「差」が「比」になります。10万ドルから20万ドルも、20万ドルから40万ドルも、どちらも2倍なので、対数では同じ幅です。価格は「何ドル高い」より「何倍高い」で決まりやすいので、対数のほうが式で表しやすくなります。価格を対数にして当て、<code>np.log</code>の逆の<code>np.exp</code>で元に戻す式を、交差検証で評価します。</p>
 <ul>
 <li>役割：<code>cv_score</code>の中で、当てる値を<span class="math inline">\(\log y\)</span>にし、予測を<code>np.exp</code>でドルに戻して、MAEを測る</li>
 <li>入力：手がかりの列の名前<code>cols</code></li>
