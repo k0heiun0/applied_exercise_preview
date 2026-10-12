@@ -3548,19 +3548,6 @@ Name: 価格, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="分析の地図今日はここ" class="level3">
-<h3 class="anchored" data-anchor-id="分析の地図今日はここ">分析の地図：今日はここ</h3>
-<p>データ解析は「① データの理解と目標の設定 → ② 前処理（preprocessing）とデータ解析 → ③ 結果の解釈と目標との整合」の3つのフェーズを回ります。今日は、②の評価と、③の解釈が中心です。</p>
-<div id="4533a3bf" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="6">
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAvsAAADTCAYAAAAf4dw8AAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjExLjIsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvgI3uAAAAAAlwSFlzAAAOxAAADsQBlSsOGwAARQRJREFUeJzt3Qd81OX9B/DP7VwuewAJIYywwhYEFByIAxWsgmitWldbW7XVVq3aqq11/d24R2urVesWN6iAbARkyR5hQ0LIXrfH//V9krvcXS4hQZDwy+f9eiHJ5cYvB8TP8zzf5/voAoFAAEREREREpDn6Y30BRERERER0dDDsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWmU8VhfABHR8cbtdqOyshJVVVXw+/3H+nI0T6fTISEhAampqbBarcf6cqidCQQCqK2tRUVFBRwOx7G+HPoJmc1mpKSkICkpCQaDge99Mxj2iYhaoaCgAB9//DHe/+hDbNywAYEAEOA795PRNfyna9ccXHrxxZg8eTJGjBihBgLU8TidTsyZMwfTp0/HzM8+R21dncR+/qPsoD8YjEYjTht3OqZMnYpJkyYhLS3tWF9Zu6ILyJCYiIhiWrhwIW798+1Yv34DjIk22IYMRGJ+HxgTbDBY46DT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ERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFpFMM+EREREZFGMewTEREREWkUwz4RERERkUYx7BMRERERaRTDPhERERGRRjHsExERERFBm/4fOutl5gZ5cVkAAAAASUVORK5CYII=" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
 <section id="今日の道筋" class="level3">
 <h3 class="anchored" data-anchor-id="今日の道筋">今日の道筋</h3>
 <p>次の6つの小さな問いに答えていきます。</p>
@@ -3586,7 +3573,7 @@ Name: 価格, dtype: float64</code></pre>
 <li>出力：訓練とテストの軒数と、テストでの決定係数（R²）</li>
 </ul>
 <p><code>m.score(テストの手がかり, テストの答え)</code>は、第2回で使った決定係数（coefficient of determination）R²を返します。今日は、分け方の乱数（random number）のシードを<code>random_state=0</code>にします。</p>
-<div id="0ffd6b4a" class="cell" data-execution_count="7">
+<div id="0ffd6b4a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(tr[feat], tr[<span class="st">&#39;価格&#39;</span>])</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(tr), <span class="bu">len</span>(te))</span>
@@ -3606,7 +3593,7 @@ Name: 価格, dtype: float64</code></pre>
 \text{MAE} = \frac{1}{n}\sum_{i=1}^{n} \lvert y_i - \hat{y}_i \rvert
 \]</span></p>
 <p><code>def 名前(引数):</code>で関数を作り、<code>return</code>の後ろが戻り値です。作っただけでは何も出ないので、呼び出して使います。</p>
-<div id="bcb974df" class="cell" data-execution_count="8">
+<div id="bcb974df" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae(y, pred):          <span class="co"># MAE</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.<span class="bu">abs</span>(y <span class="op">-</span> pred).mean())</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3632,7 +3619,7 @@ Name: 価格, dtype: float64</code></pre>
 <li>出力：RMSE（整数に丸めたドル）</li>
 </ul>
 <p><code>mae</code>との違いは1行目の中だけです。<code>** 2</code>は二乗、<code>np.sqrt</code>は平方根です。</p>
-<div id="309d67cf" class="cell" data-execution_count="9">
+<div id="309d67cf" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse(y, pred):         <span class="co"># RMSE</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.sqrt(((y <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>).mean()))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3646,7 +3633,7 @@ Name: 価格, dtype: float64</code></pre>
 <section id="todo①5万ドル以上外した家を数える" class="level3">
 <h3 class="anchored" data-anchor-id="todo①5万ドル以上外した家を数える">TODO①：5万ドル以上外した家を数える</h3>
 <p>テストの家のうち、予測が5万ドル以上外れた家は何軒あるでしょうか。誤差の大きさ<code>np.abs(te[&#39;価格&#39;] - pred)</code>が50000以上の家の数と、誤差のいちばん大きな値を表示してください。</p>
-<div id="3a761bf9" class="cell" data-execution_count="10">
+<div id="3a761bf9" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 誤差の大きさが 50000 以上の家の数と、誤差の最大値を表示する</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: err = np.abs(te[&#39;価格&#39;] - pred) のあと、</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         (err &gt;= 50000).sum() と err.max()</span></span>
@@ -3675,7 +3662,7 @@ Name: 価格, dtype: float64</code></pre>
 <li>出力：列ごとの係数（ドル）</li>
 </ul>
 <p><code>m.coef_</code>には、係数が<code>feat</code>と同じ順に並んでいます。<code>pd.Series(値の並び, index=名前の並び)</code>で、名前の付いた1列の表にします。名前が付くと、<code>coef[&#39;品質&#39;]</code>のように名前で取り出せます。</p>
-<div id="a6d2ca6d" class="cell" data-execution_count="11">
+<div id="a6d2ca6d" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.Series(m.coef_, index<span class="op">=</span>feat)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -3704,7 +3691,7 @@ dtype: float64</code></pre>
 <li>出力：1列だけの式の係数と、3つの列の相関係数の表</li>
 </ul>
 <p><code>corr()</code>は、列どうしの相関係数を表にします。</p>
-<div id="a06cc507" class="cell" data-execution_count="12">
+<div id="a06cc507" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>m_bath <span class="op">=</span> LinearRegression().fit(tr[[<span class="st">&#39;バスルーム数&#39;</span>]], tr[<span class="st">&#39;価格&#39;</span>])</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(m_bath.coef_[<span class="dv">0</span>]), <span class="st">&#39;ドル&#39;</span>)</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr[[<span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;部屋数&#39;</span>]].corr().<span class="bu">round</span>(<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3741,7 +3728,7 @@ dtype: float64</code></pre>
 </ul>
 <p><code>rows = []</code>で空のリストを作り、毎回の結果を辞書<code>{&#39;名前&#39;: 値, ...}</code>にして<code>rows.append(...)</code>で1行ずつ足します。最後に<code>pd.DataFrame(rows)</code>で、20行の表にします。</p>
 <p>ループの中の訓練とテストは、1節の<code>tr</code>・<code>te</code>を上書きしないよう、<code>tr_s</code>・<code>te_s</code>という名前にします。</p>
-<div id="d61fcb79" class="cell" data-execution_count="13">
+<div id="d61fcb79" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>s)</span>
@@ -3768,7 +3755,7 @@ max    20874.0  2143.0
 </div>
 </div>
 <p>MAEは、最小18,555ドルから最大20,874ドルまで、分け方だけで2,319ドルも揺れます。平均は19,367ドルです。1節の19,391ドルは、この20通りのうちの1つ（<code>random_state=0</code>）にすぎません。どの分け方を引くかで、報告する数が変わってしまいます。</p>
-<div id="483e8e24" class="cell" data-execution_count="14">
+<div id="483e8e24" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>plt.plot(result[<span class="st">&#39;MAE&#39;</span>], <span class="st">&#39;o&#39;</span>)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE（ドル）&#39;</span>)</span>
@@ -3793,7 +3780,7 @@ max    20874.0  2143.0
 <li>入力：表<code>df</code></li>
 <li>出力：相関係数</li>
 </ul>
-<div id="fd01f7ae" class="cell" data-execution_count="15">
+<div id="fd01f7ae" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;車庫の台数&#39;</span>].corr(df[<span class="st">&#39;車庫の面積&#39;</span>]), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.89</code></pre>
@@ -3817,7 +3804,7 @@ max    20874.0  2143.0
 <li>出力：20行の表（列はMAE・RMSE・係数）</li>
 </ul>
 <p>中身は3節のセルとほぼ同じです。違いは3つです。<code>feat</code>を引数<code>cols</code>に変えたこと、1節の<code>rmse</code>も呼ぶようにしたこと、係数を見る列を引数<code>watch</code>で選べるようにしたことです。1節で作った<code>mae</code>と<code>rmse</code>を、この関数の中で部品として呼んでいます。</p>
-<div id="39621ae6" class="cell" data-execution_count="16">
+<div id="39621ae6" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_scores(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
@@ -3849,7 +3836,7 @@ dtype: float64</code></pre>
 <li>入力：列の名前<code>no_area</code></li>
 <li>出力：20回の結果の要約と、11本の式とのMAEの平均の差</li>
 </ul>
-<div id="ddfbb05a" class="cell" data-execution_count="17">
+<div id="ddfbb05a" class="cell" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>no_area <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>,</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
@@ -3886,7 +3873,7 @@ max    21215.0  29923.0  9801.0
 <li>出力：20行の比較の表と、面積を外した式が悪かった回数</li>
 </ul>
 <p><code>random_state</code>が同じ回どうしは、テストの家がまったく同じです。同じ家で測った2つのMAEなら、差は式の違いだけから生まれます。</p>
-<div id="2ded3146" class="cell" data-execution_count="18">
+<div id="2ded3146" class="cell" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">&#39;11本&#39;</span>: all11[<span class="st">&#39;MAE&#39;</span>],</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;面積を外す&#39;</span>: drop_area[<span class="st">&#39;MAE&#39;</span>]})</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>compare[<span class="st">&#39;差&#39;</span>] <span class="op">=</span> compare[<span class="st">&#39;面積を外す&#39;</span>] <span class="op">-</span> compare[<span class="st">&#39;11本&#39;</span>]</span>
@@ -3919,7 +3906,7 @@ max    21215.0  29923.0  9801.0
 </div>
 <p>20回すべてで、面積を外した式のほうが悪くなりました。差は、最も小さい回で50ドル、最も大きい回で547ドルです。MAEそのものは分け方で大きく揺れますが、同じ分け方どうしの差は、いつも同じ向きです。</p>
 <p>逆に、違う分け方どうしで比べると、結論が逆になります。例えば、面積を外した式の<code>random_state=16</code>（18,730ドル）と、11本の式の<code>random_state=7</code>（20,874ドル）を比べると、面積を外した式のほうが2千ドル以上も良く見えます。テストの家が違えば、当てやすい家に当たったかどうかで、MAEが変わるからです。式を比べるときは、同じ分け方どうしで並べます。</p>
-<div id="37542bca" class="cell" data-execution_count="19">
+<div id="37542bca" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;11本&#39;</span>], <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;11本&#39;</span>)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;面積を外す&#39;</span>], <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;面積を外す&#39;</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
@@ -3950,7 +3937,7 @@ max    21215.0  29923.0  9801.0
 <li>出力：「テストに入った回数」ごとの家の数</li>
 </ul>
 <p><code>pd.Series(0, index=df.index)</code>で、家の数だけ0を並べた入れ物を作ります。<code>count[te_s.index] += 1</code>は、その回にテストに入った家（<code>te_s.index</code>の行）にだけ1を足します。<code>value_counts()</code>は値ごとの数、<code>sort_index()</code>はそれを回数の小さい順に並べます。</p>
-<div id="c9b0d65e" class="cell" data-execution_count="20">
+<div id="c9b0d65e" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> pd.Series(<span class="dv">0</span>, index<span class="op">=</span>df.index)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span>s)</span>
@@ -3981,7 +3968,7 @@ Name: count, dtype: int64</code></pre>
 \text{CV} = \frac{1}{K}\sum_{k=1}^{K} \text{MAE}_k
 \]</span></p>
 <p><span class="math inline">\(K\)</span>は組の数（今日は5）、<span class="math inline">\(\text{MAE}_k\)</span>は<span class="math inline">\(k\)</span>番目の組をテストにしたときのMAEです。このやり方を、<span class="math inline">\(K\)</span>分割交差検証（K-fold cross-validation, CV）と呼びます。</p>
-<div id="e2a5bd35" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="21">
+<div id="e2a5bd35" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3999,7 +3986,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：各回の訓練とテストの軒数と、テストに入った家の最初の5つの行番号</li>
 </ul>
 <p><code>KFold(n_splits=5, shuffle=True, random_state=0)</code>は、行を混ぜてから5つの組に分ける道具です。<code>kf.split(df)</code>は、5回分の「訓練の行番号の並び」と「テストの行番号の並び」の組を、<code>for</code>文で1回ずつ渡します。</p>
-<div id="647295e1" class="cell" data-execution_count="22">
+<div id="647295e1" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(tr_i), <span class="bu">len</span>(te_i), te_i[:<span class="dv">5</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4022,7 +4009,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：5行の表（列はMAE・RMSE・係数）</li>
 </ul>
 <p>4節の<code>split_scores</code>と比べてください。変わったのは、<code>for</code>の行と、その次の訓練とテストを作る行の2行だけです。「分け方」の部品を差し替えるだけで、20回の分け直しが交差検証に変わります。</p>
-<div id="634f7655" class="cell" data-execution_count="23">
+<div id="634f7655" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
@@ -4057,7 +4044,7 @@ dtype: float64</code></pre>
 <section id="todo②面積を外した式も交差検証で比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo②面積を外した式も交差検証で比べる">TODO②：面積を外した式も、交差検証で比べる</h3>
 <p><code>cv_score</code>に、4節の<code>no_area</code>を渡して、面積を外した式の5回分の結果を出してください。そのうえで、11本の式（<code>cv11</code>）とMAEを横に並べた表を作り、5回のうち何回、面積を外した式のほうが悪かったかを表示してください。</p>
-<div id="2d4fa7ec" class="cell" data-execution_count="24">
+<div id="2d4fa7ec" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: cv_score(no_area) の結果と cv11 の MAE を並べて比べる</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: cv_area = cv_score(no_area) のあと、4節の compare と同じ形で</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         cv11[&#39;MAE&#39;] と cv_area[&#39;MAE&#39;] を並べた表を作る</span></span>
@@ -4074,7 +4061,7 @@ dtype: float64</code></pre>
 <section id="todo③車庫の台数を外して交差検証で評価する" class="level3">
 <h3 class="anchored" data-anchor-id="todo③車庫の台数を外して交差検証で評価する">TODO③：車庫の台数を外して、交差検証で評価する</h3>
 <p>車庫の台数を外した10本の列の名前<code>no_cars</code>を作り、<code>cv_score</code>で評価してください。台数を外したので、係数は車庫の面積の係数を見ます（<code>watch=&#39;車庫の面積&#39;</code>）。5回分の表と、その平均を表示してください。</p>
-<div id="51dc7630" class="cell" data-execution_count="25">
+<div id="51dc7630" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 車庫の台数を外した列の組 no_cars を作り、cv_score で評価する</span></span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: no_cars は feat から &#39;車庫の台数&#39; を除いた10本。</span></span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         cv_score(no_cars, watch=&#39;車庫の面積&#39;)</span></span>
@@ -4089,7 +4076,7 @@ dtype: float64</code></pre>
 <li>出力：式ごとのMAE・RMSE・係数の平均</li>
 </ul>
 <p><code>cv_score(...).mean()</code>は、5回分の表の列ごとの平均です。それを辞書の値にして<code>pd.DataFrame</code>に渡すと、式ごとに1列の表になります。係数の行は、11本と面積を外した式では車庫の台数、台数を外した式では車庫の面積の係数です。</p>
-<div id="90eb2ee0" class="cell" data-execution_count="26">
+<div id="90eb2ee0" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>no_cars <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
@@ -4107,7 +4094,7 @@ RMSE  26997.0  27219.0  26994.0
 </div>
 <p>台数を外した式のMAEは19,297ドルで、11本の式と同じです。RMSEも26,994ドルで、11本の式（26,997ドル）とほとんど変わりません。車庫の台数を外しても、当たりは落ちないのです。</p>
 <p>車庫の面積の係数は、平均で1㎡あたり390ドルです。</p>
-<div id="6682f6a6" class="cell" data-execution_count="27">
+<div id="6682f6a6" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>cv_cars <span class="op">=</span> cv_score(no_cars, watch<span class="op">=</span><span class="st">&#39;車庫の面積&#39;</span>)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_cars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4121,7 +4108,7 @@ RMSE  26997.0  27219.0  26994.0
 </div>
 <p>5回とも、車庫の面積の係数は1㎡あたり375〜402ドルのプラスで、ほとんど揺れません。MAEも、5回それぞれで11本の式とほぼ同じです（1回目は19,386ドル、11本は19,391ドル）。</p>
 <p>なぜ、台数を外しても当たりが落ちないのでしょうか。車庫の台数ごとに、車庫の面積の平均を見ます。</p>
-<div id="62195300" class="cell" data-execution_count="28">
+<div id="62195300" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;車庫の台数&#39;</span>)[<span class="st">&#39;車庫の面積&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>車庫の台数
@@ -4151,7 +4138,7 @@ Name: 車庫の面積, dtype: float64</code></pre>
 <li>出力：列ごとの係数</li>
 </ul>
 <p>交差検証は、式を選ぶための評価でした。選んだら、手元の家を全部使って、査定に使う式を作り直します。家が多いほど、係数は安定するからです。当たりの目安には、交差検証のMAE（19,297ドル）を使います。</p>
-<div id="0e2e3052" class="cell" data-execution_count="29">
+<div id="0e2e3052" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>final <span class="op">=</span> LinearRegression().fit(df[no_cars], df[<span class="st">&#39;価格&#39;</span>])</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>coef_f <span class="op">=</span> pd.Series(final.coef_, index<span class="op">=</span>no_cars)</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_f.<span class="bu">round</span>(<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4188,7 +4175,7 @@ dtype: float64</code></pre>
 <li>出力：予測・平均的な家の予測・その差、家の条件の一部、列ごとの押し上げ</li>
 </ul>
 <p><code>df.iloc[[0]]</code>は、0行目の家を1行の表のまま取り出します（かっこを二重にすると表のまま）。<code>house.iloc[0]</code>は、その1行を列の名前の付いた並びにします。係数と同じく列の名前が付いているので、<code>coef_f * (家の値 - 平均)</code>は列どうしで掛け算されます。</p>
-<div id="455980ee" class="cell" data-execution_count="30">
+<div id="455980ee" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>house <span class="op">=</span> df.iloc[[<span class="dv">0</span>]]</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>pred_h <span class="op">=</span> final.predict(house[no_cars])[<span class="dv">0</span>]</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>avg_h <span class="op">=</span> final.predict(df[no_cars]).mean()   <span class="co"># 平均的な家の予測</span></span>
@@ -4241,7 +4228,7 @@ dtype: float64</code></pre>
 <li><code>{pred_h:,.0f}</code>：3けたごとにカンマを入れ（<code>,</code>）、小数点以下0けた（<code>.0f</code>）で書く</li>
 <li><code>{space:+,.0f}</code>：さらに、プラスのときも<code>+</code>を付ける（<code>+</code>）</li>
 </ul>
-<div id="f966de17" class="cell" data-execution_count="31">
+<div id="f966de17" class="cell" data-execution_count="30">
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> push[<span class="st">&#39;居住面積&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;バスルーム数&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;部屋数&#39;</span>]</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>land <span class="op">=</span> push[<span class="st">&#39;敷地面積&#39;</span>]</span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>fire <span class="op">=</span> push[<span class="st">&#39;暖炉の数&#39;</span>]</span>
@@ -4265,7 +4252,7 @@ dtype: float64</code></pre>
 <section id="todo④別の家の査定書" class="level3">
 <h3 class="anchored" data-anchor-id="todo④別の家の査定書">TODO④：別の家の査定書</h3>
 <p>1軒目の代わりに、<code>df.iloc[[5]]</code>（6軒目の家）の査定書を作ってください。お手本の「1軒目の家の内訳」と「査定書の文」の2つのセルを写し、<code>house = df.iloc[[0]]</code>の<code>0</code>を<code>5</code>に変えるだけで動きます。押し上げの大きい列を見て、査定書の最後の2行に書く列を選び直してみましょう。</p>
-<div id="d6beeccf" class="cell" data-execution_count="32">
+<div id="d6beeccf" class="cell" data-execution_count="31">
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 6軒目の家（df.iloc[[5]]）の押し上げと査定書の文を表示する</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ヒント: house = df.iloc[[5]] にして、お手本の2つのセルを写す。</span></span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co">#         print(push.round(0)) で押し上げの大きい列を確かめる</span></span>
@@ -4326,7 +4313,7 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="応用①変形">応用①（変形）</h3>
 <p>7節の査定書では、居住面積・バスルーム数・部屋数を「広さと間取り」として合わせて読みました。部屋数の係数も、査定に使った式ではマイナスです。では、部屋数を外したらどうなるでしょうか。</p>
 <p>6節で選んだ10本の列<code>no_cars</code>から、さらに部屋数を外した9本の列で、<code>cv_score</code>による交差検証をしてください。係数は居住面積の係数を見ます（<code>watch=&#39;居住面積&#39;</code>）。あわせて、部屋数だけで価格を当てる式の係数も表示してください。</p>
-<div id="4d0a0832" class="cell" data-execution_count="33">
+<div id="4d0a0832" class="cell" data-execution_count="32">
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -4340,7 +4327,7 @@ dtype: float64</code></pre>
 <section id="応用②判断" class="level3">
 <h3 class="anchored" data-anchor-id="応用②判断">応用②（判断）</h3>
 <p>応用①で、部屋数を外した9本の式の、交差検証のMAEの平均は何ドルですか。整数に丸めて答えてください（例: 12345）。</p>
-<div id="c667c1c9" class="cell" data-execution_count="34">
+<div id="c667c1c9" class="cell" data-execution_count="33">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ここにコードを書く</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>...<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -4369,7 +4356,7 @@ dtype: float64</code></pre>
 <li>出力：5回のMAEの表</li>
 </ul>
 <p><code>cv_score</code>と比べると、変わったのは<code>fit</code>の行（当てる値を<code>np.log</code>に）と、予測の行（<code>np.exp</code>で戻す）の2行です。</p>
-<div id="8e839644" class="cell" data-execution_count="35">
+<div id="8e839644" class="cell" data-execution_count="34">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_log(cols):</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
@@ -4390,7 +4377,7 @@ dtype: float64</code></pre>
 </div>
 <p>MAEは16,051ドルで、対数にしない式（19,297ドル）より3千ドル以上小さくなります。RMSEも22,533ドルまで下がります。当たりは、対数の式のほうがはっきり良いのです。</p>
 <p>ただ、係数の読み方が変わります。<span class="math inline">\(\log \hat{y}\)</span>が<span class="math inline">\(b_j\)</span>だけ増えると、<span class="math inline">\(\hat{y}\)</span>は<span class="math inline">\(e^{b_j}\)</span>倍になります。<span class="math inline">\(b_j\)</span>が小さいときは<span class="math inline">\(e^{b_j} \approx 1 + b_j\)</span>なので、係数を100倍した数が「約何%高くなるか」です。</p>
-<div id="8187bf91" class="cell" data-execution_count="36">
+<div id="8187bf91" class="cell" data-execution_count="35">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>m_log <span class="op">=</span> LinearRegression().fit(df[no_cars], np.log(df[<span class="st">&#39;価格&#39;</span>]))</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>coef_log <span class="op">=</span> pd.Series(m_log.coef_, index<span class="op">=</span>no_cars)</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((coef_log <span class="op">*</span> <span class="dv">100</span>).<span class="bu">round</span>(<span class="dv">2</span>))                  <span class="co"># 約何%</span></span>
@@ -4437,7 +4424,7 @@ dtype: float64</code></pre>
 <li>出力：列ごとのVIF</li>
 </ul>
 <p><code>others</code>は、<code>cols</code>から列<code>c</code>を除いた列の名前のリストです。<code>for</code>文で<code>cols</code>を1つずつ見て、<code>c</code>でない列だけを<code>append</code>で集めます。</p>
-<div id="839a47e9" class="cell" data-execution_count="37">
+<div id="839a47e9" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vif(cols):</span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> {}</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> cols:</span>
