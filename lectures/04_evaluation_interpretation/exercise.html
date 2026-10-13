@@ -2408,18 +2408,55 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
 <p>査定に使う式と、それを選んだ理由です。そして、その式で書いた1軒の家の査定書です。査定書には、査定額・どれくらい外れうるか・平均的な家より高い（安い）理由を、条件ごとの金額で書きます。</p>
 </section>
+<section id="今日の一周結果だけ先に" class="level3">
+<h3 class="anchored" data-anchor-id="今日の一周結果だけ先に">今日の一周（結果だけ先に）</h3>
+<p>コードの説明はあとにして、今日の解析を、結果だけで一度通して見ておきます。</p>
+<ol type="1">
+<li>作って測る：11本の列で価格の式を作ると、テストの家で平均19,391ドル外れます。係数を読むと、品質1段階で約1万6千ドル高い一方、バスルームが多いと安く見えます。</li>
+<li>信じてよいか確かめる：分け方を20通りに変えるだけで、MAEは2,319ドル揺れます。車庫の台数の係数は、20回中8回マイナスで、説明に使えません。</li>
+<li>比べて選ぶ：交差検証で比べ直すと、車庫の台数を外した式は、11本の式と同じ当たりで、係数も揺れません。この式を選びます。</li>
+<li>説明する：選んだ式で、1軒目の家の査定書を作ります。査定額は211,548ドルで、敷地・広さ・暖炉が値段を押し上げています。</li>
+</ol>
+<p>このあと、この4つの段の中身を、1つずつ開けていきます。</p>
+</section>
 <section id="今日の問いとやること" class="level3">
 <h3 class="anchored" data-anchor-id="今日の問いとやること">今日の問いとやること</h3>
-<p>今日は、次の7つの小さな問いに、この順に答えていきます。それぞれ、問いのあとに、そのためにやることを書きます。</p>
-<ol type="1">
-<li>何ドル外れる？ → まず、11本の列で価格の式を作り、何ドル外れるかを測ります（1節）</li>
-<li>係数は何を言っている？ → 次に、式の係数を読み、お客さんへの説明に使えるかを見ます（2節）</li>
-<li>その数字、どこまで信じる？ → 分け方を20通りに変えて、外れ方と係数がどれだけ揺れるかを見ます（3節）</li>
-<li>列を1本外すと？ → 車庫の面積を外した式を作り、11本の式と比べます（4節）</li>
-<li>全部の家を1度ずつテストにするには？ → 交差検証で、全部の家を1度ずつテストにして比べ直します（5節）</li>
-<li>どちらを外す？ → 車庫の台数を外した式も比べて、査定に使う式を決めます（6節）</li>
-<li>この家は、なぜこの値段？ → 最後に、決めた式で1軒目の家の査定書を作ります。査定額・外れうる幅・値段の理由を文にします（7節）</li>
-</ol>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>段</th>
+<th>問い</th>
+<th>やること</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>作って測る（1・2節）</td>
+<td>何ドル外れる？ 係数は何を言っている？</td>
+<td>11本の列で式を作り、外れ方を測り、係数を読む</td>
+</tr>
+<tr class="even">
+<td>信じてよいか確かめる（3・4節）</td>
+<td>その数字は、どこまで信じてよい？</td>
+<td>分け方を20通りに変えて揺れを見る。面積を外した式と比べる</td>
+</tr>
+<tr class="odd">
+<td>比べて選ぶ（5・6節）</td>
+<td>どの式を査定に使う？</td>
+<td>交差検証で比べ直し、台数を外した式も比べて決める</td>
+</tr>
+<tr class="even">
+<td>説明する（7節）</td>
+<td>この家は、なぜこの値段？</td>
+<td>決めた式で、1軒目の家の査定書を作る</td>
+</tr>
+</tbody>
+</table>
 <hr>
 </section>
 </section>
@@ -2447,7 +2484,7 @@ window.Quarto = {
 <li>出力：なし（終わるとセルの左に ✓ が付く）</li>
 </ul>
 <p><code>import</code>は道具箱を持ってくる命令、<code>from</code>は道具箱から1つだけ取り出す書き方です。今日は、データの分け方を作る<code>KFold</code>が加わります（5節で使います）。</p>
-<div id="2722fb85" class="cell" data-execution_count="1">
+<div id="cc9af911" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -2463,7 +2500,7 @@ window.Quarto = {
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
 <p><code>try:</code>から先は、日本語表示の道具が動かなくなったときの保険で、中身は読まなくてかまいません。</p>
-<div id="4f6d7e41" class="cell" data-execution_count="2">
+<div id="3946fad5" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語が図の中で □ になるのを防ぐ</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q japanize<span class="op">-</span>matplotlib</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
@@ -2499,7 +2536,7 @@ window.Quarto = {
 <li>出力：表<code>raw</code>（元の表）</li>
 </ul>
 <p>第3回と同じく、<code>{&#39;元の名前&#39;: &#39;新しい名前&#39;, ...}</code>の辞書を<code>rename(columns=...)</code>に渡して、列名を付け替えます。80本のうち、今日使う13本だけを日本語にします。</p>
-<div id="1133cbff" class="cell" data-execution_count="3">
+<div id="1b01fa67" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -2662,7 +2699,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </ul>
 <p>親族間の売買や、差し押さえの売買は、ふつうの値段の付き方と違います。居住面積が4,000平方フィート（約372㎡）を超える家は全体で5軒だけで、データの作者も、授業で使うなら外すよう勧めています。</p>
 <p><code>&amp;</code>は「かつ」です（第3回のおさらい）。<code>for</code>文で、面積の4本の列に同じ計算（0.0929を掛ける）を順に当てます。</p>
-<div id="bcbb4d61" class="cell" data-execution_count="4">
+<div id="a08fb1cd" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>normal <span class="op">=</span> raw[<span class="st">&#39;売買の条件&#39;</span>] <span class="op">==</span> <span class="st">&#39;Normal&#39;</span>     <span class="co"># ふつうの売買</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>small <span class="op">=</span> raw[<span class="st">&#39;居住面積&#39;</span>] <span class="op">&lt;=</span> <span class="dv">4000</span>            <span class="co"># 広すぎない家</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw[normal <span class="op">&amp;</span> small].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
@@ -2688,7 +2725,7 @@ Name: 価格, dtype: float64</code></pre>
 <section id="手がかりにする11本の列" class="level3">
 <h3 class="anchored" data-anchor-id="手がかりにする11本の列">手がかりにする11本の列</h3>
 <p>価格を当てる手がかりにする列の名前を、<code>feat</code>にしまっておきます。今日は、この11本の列をいろいろに選び直して、式を比べます。</p>
-<div id="4bcbe9f3" class="cell" data-execution_count="5">
+<div id="a7e693f1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>feat <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
@@ -2711,7 +2748,7 @@ Name: 価格, dtype: float64</code></pre>
 <li>出力：訓練とテストの軒数と、テストでの決定係数（R²）</li>
 </ul>
 <p><code>m.score(テストの手がかり, テストの答え)</code>は、第2回で使った決定係数（coefficient of determination）R²を返します。今日は、分け方の乱数（random number）のシードを<code>random_state=0</code>にします。</p>
-<div id="bc40456b" class="cell" data-execution_count="6">
+<div id="bb958925" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(tr[feat], tr[<span class="st">&#39;価格&#39;</span>])</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(tr), <span class="bu">len</span>(te))</span>
@@ -2731,7 +2768,7 @@ Name: 価格, dtype: float64</code></pre>
 \text{MAE} = \frac{1}{n}\sum_{i=1}^{n} \lvert y_i - \hat{y}_i \rvert
 \]</span></p>
 <p><code>def 名前(引数):</code>で関数を作り、<code>return</code>の後ろが戻り値です。作っただけでは何も出ないので、呼び出して使います。</p>
-<div id="20484bc1" class="cell" data-execution_count="7">
+<div id="729b44cd" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mae(y, pred):          <span class="co"># MAE</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.<span class="bu">abs</span>(y <span class="op">-</span> pred).mean())</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2757,7 +2794,7 @@ Name: 価格, dtype: float64</code></pre>
 <li>出力：RMSE（整数に丸めたドル）</li>
 </ul>
 <p><code>mae</code>との違いは1行目の中だけです。<code>** 2</code>は二乗、<code>np.sqrt</code>は平方根です。</p>
-<div id="8f9c8a65" class="cell" data-execution_count="8">
+<div id="c29f153b" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rmse(y, pred):         <span class="co"># RMSE</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(np.sqrt(((y <span class="op">-</span> pred) <span class="op">**</span> <span class="dv">2</span>).mean()))</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2776,7 +2813,7 @@ Name: 価格, dtype: float64</code></pre>
 <li>入力：テストの家の実際の価格と予測</li>
 <li>出力：5万ドル以上外れた家の数、誤差の最大値</li>
 </ul>
-<div id="567e18f7" class="cell" data-execution_count="9">
+<div id="ac5057b1" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;価格&#39;</span>] <span class="op">-</span> pred)   <span class="co"># 誤差の大きさ</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((err <span class="op">&gt;=</span> <span class="dv">50000</span>).<span class="bu">sum</span>(), <span class="st">&#39;軒&#39;</span>)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.<span class="bu">max</span>()), <span class="st">&#39;ドル&#39;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2819,7 +2856,7 @@ Name: 価格, dtype: float64</code></pre>
 </summary>
 <p><code>m.coef_</code>には、係数が<code>feat</code>と同じ順に並んでいます。<code>pd.Series(値の並び, index=名前の並び)</code>で、名前の付いた1列の表にします。名前が付くと、<code>coef[&#39;品質&#39;]</code>のように名前で取り出せ、何番目かを数えずに済みます。</p>
 </details>
-<div id="7e553f82" class="cell" data-execution_count="10">
+<div id="58f688bb" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> pd.Series(m.coef_, index<span class="op">=</span>feat)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -2848,7 +2885,7 @@ dtype: float64</code></pre>
 <li>出力：1列だけの式の係数と、3つの列の相関係数の表</li>
 </ul>
 <p><code>corr()</code>は、列どうしの相関係数を表にします。</p>
-<div id="f47dbaa5" class="cell" data-execution_count="11">
+<div id="55238fe7" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>m_bath <span class="op">=</span> LinearRegression().fit(tr[[<span class="st">&#39;バスルーム数&#39;</span>]], tr[<span class="st">&#39;価格&#39;</span>])</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(m_bath.coef_[<span class="dv">0</span>]), <span class="st">&#39;ドル&#39;</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(tr[[<span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;部屋数&#39;</span>]].corr().<span class="bu">round</span>(<span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2864,6 +2901,40 @@ dtype: float64</code></pre>
 <p>バスルーム数と居住面積の相関は0.64、部屋数との相関は0.53です。バスルームの多い家は、たいてい広くて部屋も多い家です。1列だけの式の68,759ドルには、「広くて部屋も多い」ことの分まで入っています。</p>
 <p>11本の式の−9,976ドルは、意味が違います。居住面積と部屋数を同じにしたまま、バスルームだけを1つ増やすと、という比較です。同じ広さでバスルームが1つ多いなら、そのぶんほかの部屋が狭くなります。「バスルームが多い家は安い」ではなく、「同じ広さなら、バスルームに面積を割いた家は、少し安い」です。</p>
 <p>係数は、一緒に入れた列によって意味が変わります。いつも「ほかの列を同じにしたら」を付けて読みます。</p>
+</section>
+<section id="ここまでで分かったこと" class="level3">
+<h3 class="anchored" data-anchor-id="ここまでで分かったこと">ここまでで分かったこと</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>段</th>
+<th>分かったこと</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>作って測る（1・2節）</td>
+<td>平均19,391ドル外れる。係数は「ほかの列を同じにしたら」で読む</td>
+</tr>
+<tr class="even">
+<td>信じてよいか確かめる（3・4節）</td>
+<td>？（このあとの段で）</td>
+</tr>
+<tr class="odd">
+<td>比べて選ぶ（5・6節）</td>
+<td>？（このあとの段で）</td>
+</tr>
+<tr class="even">
+<td>説明する（7節）</td>
+<td>？（このあとの段で）</td>
+</tr>
+</tbody>
+</table>
+<p>まだ分からないのは、その数字を、どこまで信じてよいか、です。次の段で確かめます。</p>
 <hr>
 </section>
 </section>
@@ -2886,7 +2957,7 @@ dtype: float64</code></pre>
 <p>このセルは、分ける・当てはめる・測る・ためる、の4つのブロックを20回くり返し、最後にためた20回分を表にします。コードの中の<code># 分ける</code>などの見出しが、ブロックの区切りです。</p>
 <p>ためるブロックでは、<code>rows = []</code>で空のリストを作り、毎回の結果を辞書<code>{&#39;名前&#39;: 値, ...}</code>にして<code>rows.append(...)</code>で足します。最後に<code>pd.DataFrame(rows)</code>で、20行の表にします。</p>
 <p>ループの中の訓練とテストは、1節の<code>tr</code>・<code>te</code>を上書きしないよう、<code>tr_s</code>・<code>te_s</code>という名前にします。</p>
-<div id="491f77d5" class="cell" data-execution_count="12">
+<div id="d4038f36" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>rows <span class="op">=</span> []</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 分ける</span></span>
@@ -2918,7 +2989,7 @@ max    20874.0  2143.0
 </div>
 </div>
 <p>MAEは、最小18,555ドルから最大20,874ドルまで、分け方だけで2,319ドルも揺れます。平均は19,367ドルです。1節の19,391ドルは、この20通りのうちの1つ（<code>random_state=0</code>）にすぎません。どの分け方を引くかで、報告する数が変わってしまいます。</p>
-<div id="e8351fc5" class="cell" data-execution_count="13">
+<div id="17dbae89" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>plt.plot(result[<span class="st">&#39;MAE&#39;</span>], <span class="st">&#39;o&#39;</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE（ドル）&#39;</span>)</span>
@@ -2943,7 +3014,7 @@ max    20874.0  2143.0
 <li>入力：表<code>df</code></li>
 <li>出力：相関係数</li>
 </ul>
-<div id="aa5505ed" class="cell" data-execution_count="14">
+<div id="3446dd22" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;車庫の台数&#39;</span>].corr(df[<span class="st">&#39;車庫の面積&#39;</span>]), <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.89</code></pre>
@@ -2967,7 +3038,7 @@ max    20874.0  2143.0
 <li>出力：20行の表（列はMAE・RMSE・係数）</li>
 </ul>
 <p>3節のお手本と同じ4つのブロック（分ける・当てはめる・測る・ためる）を、<code>def</code>の下に並べたものです。<code>feat</code>を引数<code>cols</code>に変えたので、列の組を変えて流せます。1節で作った<code>mae</code>と<code>rmse</code>を、「測る」のブロックの中で部品として呼んでいます。<code>watch=&#39;車庫の台数&#39;</code>は既定値で、書かなければ車庫の台数の係数を見ます。</p>
-<div id="6197b8a8" class="cell" data-execution_count="15">
+<div id="f464719e" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> split_scores(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
@@ -3003,7 +3074,7 @@ dtype: float64</code></pre>
 <li>入力：列の名前<code>no_area</code></li>
 <li>出力：20回の結果の要約と、11本の式とのMAEの平均の差</li>
 </ul>
-<div id="14944b4c" class="cell" data-execution_count="16">
+<div id="05cb24c3" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>no_area <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の台数&#39;</span>,</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
@@ -3040,7 +3111,7 @@ max    21215.0  29923.0  9801.0
 <li>出力：20行の比較の表と、面積を外した式が悪かった回数</li>
 </ul>
 <p><code>random_state</code>が同じ回どうしは、テストの家がまったく同じです。同じ家で測った2つのMAEなら、差は式の違いだけから生まれます。</p>
-<div id="5ffabf87" class="cell" data-execution_count="17">
+<div id="ff4eb626" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>compare <span class="op">=</span> pd.DataFrame({<span class="st">&#39;11本&#39;</span>: all11[<span class="st">&#39;MAE&#39;</span>],</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&#39;面積を外す&#39;</span>: drop_area[<span class="st">&#39;MAE&#39;</span>]})</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>compare[<span class="st">&#39;差&#39;</span>] <span class="op">=</span> compare[<span class="st">&#39;面積を外す&#39;</span>] <span class="op">-</span> compare[<span class="st">&#39;11本&#39;</span>]</span>
@@ -3073,7 +3144,7 @@ max    21215.0  29923.0  9801.0
 </div>
 <p>20回すべてで、面積を外した式のほうが悪くなりました。差は、最も小さい回で50ドル、最も大きい回で547ドルです。MAEそのものは分け方で大きく揺れますが、同じ分け方どうしの差は、いつも同じ向きです。</p>
 <p>逆に、違う分け方どうしで比べると、結論が逆になります。例えば、面積を外した式の<code>random_state=16</code>（18,730ドル）と、11本の式の<code>random_state=7</code>（20,874ドル）を比べると、面積を外した式のほうが2千ドル以上も良く見えます。テストの家が違えば、当てやすい家に当たったかどうかで、MAEが変わるからです。式を比べるときは、同じ分け方どうしで並べます。</p>
-<div id="bd79d40c" class="cell" data-execution_count="18">
+<div id="7e8542f5" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;11本&#39;</span>], <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;11本&#39;</span>)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plt.plot(compare[<span class="st">&#39;面積を外す&#39;</span>], <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;面積を外す&#39;</span>)</span>
 <span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;random_state&#39;</span>)</span>
@@ -3090,6 +3161,40 @@ max    21215.0  29923.0  9801.0
 </div>
 <p>2本の線は、分け方ごとに一緒に上がったり下がったりします。そして、どの分け方でも、面積を外した式（四角）が少し上にあります。</p>
 <p>これで、板ばさみがはっきりしました。面積を外すと、係数は説明に使えるのに、当たりは確かに少し悪くなります。</p>
+</section>
+<section id="ここまでで分かったこと-1" class="level3">
+<h3 class="anchored" data-anchor-id="ここまでで分かったこと-1">ここまでで分かったこと</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>段</th>
+<th>分かったこと</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>作って測る（1・2節）</td>
+<td>平均19,391ドル外れる。係数は「ほかの列を同じにしたら」で読む</td>
+</tr>
+<tr class="even">
+<td>信じてよいか確かめる（3・4節）</td>
+<td>MAEも係数も、分け方で揺れる。似た2列で係数の符号まで揺れる</td>
+</tr>
+<tr class="odd">
+<td>比べて選ぶ（5・6節）</td>
+<td>？（このあとの段で）</td>
+</tr>
+<tr class="even">
+<td>説明する（7節）</td>
+<td>？（このあとの段で）</td>
+</tr>
+</tbody>
+</table>
+<p>まだ分からないのは、揺れる数どうしで、どう比べて式を選ぶか、です。</p>
 <hr>
 </section>
 </section>
@@ -3099,7 +3204,7 @@ max    21215.0  29923.0  9801.0
 <section id="家ごとにテストに入った回数を数える" class="level3">
 <h3 class="anchored" data-anchor-id="家ごとにテストに入った回数を数える">家ごとに、テストに入った回数を数える</h3>
 <p>20回の分け方それぞれで、テストに入った家に1を足していき、家ごとの回数を図にします。数えるセルは実行するだけでよく、中身は読み飛ばしてかまいません。</p>
-<div id="d965efbd" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="19">
+<div id="4ae2844c" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="19">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3122,7 +3227,7 @@ max    21215.0  29923.0  9801.0
 \text{CV} = \frac{1}{K}\sum_{k=1}^{K} \text{MAE}_k
 \]</span></p>
 <p><span class="math inline">\(K\)</span>は組の数（今日は5）、<span class="math inline">\(\text{MAE}_k\)</span>は<span class="math inline">\(k\)</span>番目の組をテストにしたときのMAEです。このやり方を、<span class="math inline">\(K\)</span>分割交差検証（K-fold cross-validation, CV）と呼びます。</p>
-<div id="678c6e87" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="20">
+<div id="c9906e6d" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3147,7 +3252,7 @@ max    21215.0  29923.0  9801.0
 <p><code>KFold(n_splits=5, shuffle=True, random_state=0)</code>は、行を混ぜてから5つの組に分けます。<code>kf.split(df)</code>は、5回分の「訓練の行番号の並び」と「テストの行番号の並び」の組を、<code>for</code>文で1回ずつ渡します。</p>
 <p><code>tr_i</code>と<code>te_i</code>は行番号の並びです。表から、その行番号の行を取り出すには<code>df.iloc[行番号の並び]</code>を使います。<code>iloc</code>は、行の番号（0から数えた位置）で行を取り出す書き方です。</p>
 </details>
-<div id="96641fde" class="cell" data-execution_count="21">
+<div id="963c914d" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>kf <span class="op">=</span> KFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(tr_i), <span class="bu">len</span>(te_i))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3169,7 +3274,7 @@ max    21215.0  29923.0  9801.0
 <li>出力：5行の表（列はMAE・RMSE・係数）</li>
 </ul>
 <p>4節の<code>split_scores</code>と比べてください。替えたのは「分ける」のブロックだけです。当てはめる・測る・ためるのブロックはそのままで、20回の分け直しが交差検証に変わります。</p>
-<div id="127ae1ff" class="cell" data-execution_count="22">
+<div id="449d71cc" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score(cols, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>):</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tr_i, te_i <span class="kw">in</span> kf.split(df):</span>
@@ -3214,7 +3319,7 @@ dtype: float64</code></pre>
 <li>出力：5回それぞれのMAEと差、面積を外すと悪かった回数、平均</li>
 </ul>
 <p>4節の<code>compare</code>と同じ形の表です。</p>
-<div id="b8b62754" class="cell" data-execution_count="23">
+<div id="972d2bd1" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>cv_area <span class="op">=</span> cv_score(no_area)</span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>compare_cv <span class="op">=</span> pd.DataFrame({<span class="st">&#39;11本&#39;</span>: cv11[<span class="st">&#39;MAE&#39;</span>],</span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                           <span class="st">&#39;面積を外す&#39;</span>: cv_area[<span class="st">&#39;MAE&#39;</span>]})</span>
@@ -3252,7 +3357,7 @@ dtype: float64</code></pre>
 <section id="お手本台数を外した列の組" class="level3">
 <h3 class="anchored" data-anchor-id="お手本台数を外した列の組">お手本：台数を外した列の組</h3>
 <p>11本から車庫の台数を外した10本に、<code>no_cars</code>と名前を付けます。</p>
-<div id="a04fbc4a" class="cell" data-execution_count="24">
+<div id="c9b3f4dd" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>no_cars <span class="op">=</span> [<span class="st">&#39;品質&#39;</span>, <span class="st">&#39;居住面積&#39;</span>, <span class="st">&#39;地下の面積&#39;</span>, <span class="st">&#39;車庫の面積&#39;</span>,</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;建てた年&#39;</span>, <span class="st">&#39;改装した年&#39;</span>, <span class="st">&#39;バスルーム数&#39;</span>, <span class="st">&#39;部屋数&#39;</span>,</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&#39;暖炉の数&#39;</span>, <span class="st">&#39;敷地面積&#39;</span>]</span>
@@ -3266,7 +3371,7 @@ dtype: float64</code></pre>
 <h3 class="anchored" data-anchor-id="todo①関数の入力を替える">TODO①：関数の入力を替える</h3>
 <p>下のセルは、このままだと5節と同じ「面積を外した式」の交差検証をします。<code>cv_score</code>に渡す入力を、<code>no_area</code>から<code>no_cars</code>に、<code>&#39;車庫の台数&#39;</code>から<code>&#39;車庫の面積&#39;</code>に替えて実行してください。</p>
 <p><code>cv_score</code>の中身（分ける・当てはめる・測る・ためる）は同じまま、渡す列の組を替えれば、別の式の交差検証になります。台数を外したので、係数は車庫の面積を見ます。</p>
-<div id="f4757b23" class="cell" data-execution_count="25">
+<div id="10db2581" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 入力を no_cars と &#39;車庫の面積&#39; に替えて実行する</span></span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>cv_x <span class="op">=</span> cv_score(no_area, watch<span class="op">=</span><span class="st">&#39;車庫の台数&#39;</span>)</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cv_x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3295,7 +3400,7 @@ dtype: float64</code></pre>
 <li>出力：式ごとのMAE・RMSE・係数の平均</li>
 </ul>
 <p><code>cv_score(...).mean()</code>は、5回分の表の列ごとの平均です。それを辞書の値にして<code>pd.DataFrame</code>に渡すと、式ごとに1列の表になります。係数の行は、11本と面積を外した式では車庫の台数、台数を外した式では車庫の面積の係数です。</p>
-<div id="84cd2efd" class="cell" data-execution_count="26">
+<div id="6f2c2d6c" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>table <span class="op">=</span> pd.DataFrame({</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;11本&#39;</span>: cv_score(feat).mean(),</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;面積を外す&#39;</span>: cv_score(no_area).mean(),</span>
@@ -3311,7 +3416,7 @@ RMSE  26997.0  27219.0  26994.0
 <p>台数を外した式のMAEは19,297ドルで、11本の式と同じです。RMSEも26,994ドルで、11本の式（26,997ドル）とほとんど変わりません。車庫の台数を外しても、当たりは落ちないのです。面積を外したときだけ、当たりが落ちます。</p>
 <p>車庫の面積の係数は、平均で1㎡あたり390ドルです。</p>
 <p>なぜ、台数を外しても当たりが落ちないのでしょうか。車庫の台数ごとに、車庫の面積の平均を見ます。</p>
-<div id="25d62a4a" class="cell" data-execution_count="27">
+<div id="ae595214" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;車庫の台数&#39;</span>)[<span class="st">&#39;車庫の面積&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>車庫の台数
@@ -3327,6 +3432,40 @@ Name: 車庫の面積, dtype: float64</code></pre>
 <p>車1台の車庫は平均28㎡、2台は48㎡、3台は74㎡です。1台から2台で20㎡、2台から3台で26㎡増えます。車庫の面積が、台数の情報をほとんど持っているのです。1㎡あたり390ドルなら、20〜26㎡で約8千〜1万ドルで、4節で面積を外したときの台数の係数（約7千〜1万ドル）とほぼ同じ大きさです。</p>
 <p>反対に、台数は面積の情報を全部は持っていません。同じ2台用でも、広い車庫と狭い車庫があるからです。だから、面積を外すと当たりが少し落ち、台数を外しても落ちませんでした。</p>
 <p>似た2列のどちらを残すかは、交差検証で比べて決めます。今日の査定には、車庫の台数を外した10本の式を使います。当たりは11本の式と同じで、係数は揺れずに読めます。</p>
+</section>
+<section id="ここまでで分かったこと-2" class="level3">
+<h3 class="anchored" data-anchor-id="ここまでで分かったこと-2">ここまでで分かったこと</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>段</th>
+<th>分かったこと</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>作って測る（1・2節）</td>
+<td>平均19,391ドル外れる。係数は「ほかの列を同じにしたら」で読む</td>
+</tr>
+<tr class="even">
+<td>信じてよいか確かめる（3・4節）</td>
+<td>MAEも係数も、分け方で揺れる。似た2列で係数の符号まで揺れる</td>
+</tr>
+<tr class="odd">
+<td>比べて選ぶ（5・6節）</td>
+<td>交差検証で比べ、台数を外した10本の式を選ぶ。当たりも説明も両立</td>
+</tr>
+<tr class="even">
+<td>説明する（7節）</td>
+<td>？（このあとの段で）</td>
+</tr>
+</tbody>
+</table>
+<p>残るのは、選んだ式で、この家の値段をどう説明するか、です。</p>
 <hr>
 </section>
 </section>
@@ -3341,7 +3480,7 @@ Name: 車庫の面積, dtype: float64</code></pre>
 <li>出力：列ごとの係数</li>
 </ul>
 <p>交差検証は、式を選ぶための評価でした。選んだら、手元の家を全部使って、査定に使う式を作り直します。家が多いほど、係数は安定するからです。当たりの目安には、交差検証のMAE（19,297ドル）を使います。</p>
-<div id="41a53ce1" class="cell" data-execution_count="28">
+<div id="cf80dc81" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>final <span class="op">=</span> LinearRegression().fit(df[no_cars], df[<span class="st">&#39;価格&#39;</span>])</span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>coef_f <span class="op">=</span> pd.Series(final.coef_, index<span class="op">=</span>no_cars)</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(coef_f.<span class="bu">round</span>(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -3373,7 +3512,7 @@ dtype: float64</code></pre>
 <li>出力：平均的な家の予測、1軒目の家の条件、居住面積とバスルーム数の平均</li>
 </ul>
 <p><code>df[no_cars].iloc[0]</code>は、10本の列だけの表から、0行目の家を、列の名前の付いた並びで取り出します。</p>
-<div id="7c26de69" class="cell" data-execution_count="29">
+<div id="a685d374" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>house <span class="op">=</span> df[no_cars].iloc[<span class="dv">0</span>]                 <span class="co"># 0行目の家</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>avg_h <span class="op">=</span> final.predict(df[no_cars]).mean()   <span class="co"># 平均的な家の予測</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(avg_h))</span>
@@ -3412,7 +3551,7 @@ dtype: float64</code></pre>
 <li>出力：列ごとの押し上げ、この家の予測と平均的な家との差</li>
 </ul>
 <p>上の式の2つの部分を、2つのブロックに写しました。押し上げのブロックでは、係数も家の値も列の名前が付いているので、<code>coef_f * (家の値 - 平均)</code>は列どうしで掛け算されます。予測のブロックでは、<code>push.sum()</code>で押し上げを全部足し、平均的な家の予測に加えます。</p>
-<div id="780e3431" class="cell" data-execution_count="30">
+<div id="3edfb672" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 押し上げ</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_f <span class="op">*</span> (house <span class="op">-</span> df[no_cars].mean())</span>
 <span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 予測</span></span>
@@ -3460,7 +3599,7 @@ dtype: float64
 <p><code>f&#39;...&#39;</code>の中では、<code>{ }</code>で囲んだところに、変数や計算の値が入ります。たとえば<code>x = 3</code>なら、<code>f&#39;{x}軒&#39;</code>は「3軒」になります。</p>
 <p><code>{ }</code>の中で<code>:,</code>を付けると、3けたごとにカンマが入ります（<code>f&#39;{14903:,}ドル&#39;</code>は「14,903ドル」）。金額は、先に<code>round</code>で整数にしておきます。</p>
 </details>
-<div id="49809ce1" class="cell" data-execution_count="31">
+<div id="004348a9" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 文に入れる金額</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> push[<span class="st">&#39;居住面積&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;バスルーム数&#39;</span>] <span class="op">+</span> push[<span class="st">&#39;部屋数&#39;</span>]</span>
 <span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>space <span class="op">=</span> <span class="bu">round</span>(space)</span>
@@ -3489,7 +3628,7 @@ dtype: float64
 <h3 class="anchored" data-anchor-id="todo②家の番号を替える">TODO②：家の番号を替える</h3>
 <p>1軒目と同じセルで、6軒目の家の査定書を作ります。下のセルの<code>k = 0</code>を<code>k = 5</code>に替えて実行してください（0から数えるので、5は6軒目です）。</p>
 <p><code>k</code>に入れる数を替えると、その名前を使う下のブロックが、全部6軒目の計算になります。最後の行には、押し上げの大きい列を選んで、建てた年と「広さと間取り」を書いています。</p>
-<div id="26768c3a" class="cell" data-execution_count="32">
+<div id="73917c5d" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: k = 0 を k = 5 に替えて、6軒目の家にする</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">0</span>                         <span class="co"># 何軒目か（0から数える）</span></span>
 <span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>house <span class="op">=</span> df[no_cars].iloc[k]</span>
@@ -3535,6 +3674,40 @@ dtype: float64
 <p>（ここに答えを書く）</p>
 <p>6軒目の家の予測は190,365ドルで、実際の価格は195,500ドルでした。平均的な家より15,037ドル高く、いちばん押し上げているのは建てた年（+8,485ドル）と居住面積（+8,147ドル）です。</p>
 <p>ただ、この家はバスルーム数（−4,728ドル）と部屋数（−2,078ドル）が押し下げています。3つは似た列で、「同じ広さなら」の値どうしなので、1つだけ取り出すと、お客さんに誤った印象を与えます。合わせた「広さと間取り」は1,342ドルで、この家は広さのわりに間取りが平均的、と伝えるのが正確です。</p>
+</section>
+<section id="ここまでで分かったこと-3" class="level3">
+<h3 class="anchored" data-anchor-id="ここまでで分かったこと-3">ここまでで分かったこと</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>段</th>
+<th>分かったこと</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>作って測る（1・2節）</td>
+<td>平均19,391ドル外れる。係数は「ほかの列を同じにしたら」で読む</td>
+</tr>
+<tr class="even">
+<td>信じてよいか確かめる（3・4節）</td>
+<td>MAEも係数も、分け方で揺れる。似た2列で係数の符号まで揺れる</td>
+</tr>
+<tr class="odd">
+<td>比べて選ぶ（5・6節）</td>
+<td>交差検証で比べ、台数を外した10本の式を選ぶ。当たりも説明も両立</td>
+</tr>
+<tr class="even">
+<td>説明する（7節）</td>
+<td>似た列は合わせて読み、査定額と理由を査定書にする</td>
+</tr>
+</tbody>
+</table>
+<p>4つの段がそろい、今日の問いに答えられます。</p>
 </section>
 <section id="答え" class="level3">
 <h3 class="anchored" data-anchor-id="答え">答え</h3>
