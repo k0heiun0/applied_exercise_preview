@@ -17,6 +17,7 @@
 | `heart.csv` | 心臓病診断の臨床指標と診断結果 | 303行 × 14列 | UCI（文献引用を要求） |
 | `olivetti_faces.csv.gz` | 40人 × 10枚の顔画像（64×64画素の明るさ、gzip 圧縮） | 400行 × 4,097列 | AT&T Laboratories Cambridge（クレジット表記、scikit-learn が配布） |
 | `nsw.csv` | 職業訓練の実験（くじ引きで訓練の有無を決めた445人の収入） | 445行 × 10列 | 文献引用（LaLonde 1986、Dehejia & Wahba 1999） |
+| `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
 | `rat_eye_full.csv.gz` | 同、全プローブ（gzip 圧縮） | 120行 × 31,100列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -78,6 +79,11 @@
   UCI Machine Learning Repository の Auto MPG <https://archive.ics.uci.edu/dataset/9/auto+mpg>
   を、seaborn の配布する形（`mpg`）のまま書き出した（`tools/make_data/auto_mpg.py`）。
   単位は米国の単位のまま。単位の換算と欠測6台の除外はノートで行う。
+
+- **SDSS の銀河**（`sdss_galaxies.csv`）
+  Sloan Digital Sky Survey, Data Release 18（Almeida et al. 2023, ApJS 267, 44）。
+  <https://skyserver.sdss.org/dr18/>　SkyServer の SQL 検索で、空の一角の銀河の5色の等級と赤方偏移を取った
+  （`tools/make_data/sdss_galaxies.py`）。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces

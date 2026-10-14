@@ -1,0 +1,15 @@
+SDSS（スローン・デジタル・スカイ・サーベイ）DR18 の銀河の測光と分光の赤方偏移
+出典: Sloan Digital Sky Survey, Data Release 18（Almeida et al. 2023, ApJS 267, 44）
+URL: https://skyserver.sdss.org/dr18/（SkyServer の SQL 検索で取得）
+利用: SDSS のデータは公開されており、自由に利用できる。利用時は SDSS の謝辞（https://www.sdss.org/collaboration/citing-sdss/）に従い、
+"Funding for the Sloan Digital Sky Survey has been provided by the Alfred P. Sloan Foundation, the U.S. Department of Energy Office of Science,
+and the Participating Institutions." などのクレジットと上の文献を記すこと。
+
+内容:
+- 空の一角（赤経150〜170度、赤緯0〜10度）で分光した銀河のうち、分光のサンプルの明るさの限界（r ≤ 17.77等）までの14,983個。
+- 条件: 分類が GALAXY、赤方偏移の測定に警告なし（zWarning = 0）、測光がきれい（clean = 1）、SDSS の分光（survey = 'sdss'）。
+
+加工内容（tools/make_data/sdss_galaxies.py で再現できる）:
+- 1行が1個の銀河。分光の番号（specobjid）の順に並べた（14,983行 × 9列）
+- 列: specobjid（分光の番号）, ra・dec（位置。度）, u・g・r・i・z（銀河系の塵による減光を補正した5色の等級。数が大きいほど暗い。
+  PhotoObj の dered_u〜dered_z を小数第3位で丸めた）, redshift（分光で測った赤方偏移。小数第5位で丸めた）
