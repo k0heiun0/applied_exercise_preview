@@ -3257,9 +3257,30 @@ window.Quarto = {
 <p>写真の5色だけで、銀河までの距離はどこまで分かるかに答える。</p>
 <p>SDSS（スローン・デジタル・スカイ・サーベイ）が分光した銀河のデータで、5色の明るさから赤方偏移を当てる線形回帰の式を作ります。その当たりを交差検証で確かめ、係数が何を言っているかを、読める形に直して説明します。</p>
 <p>もう1つのねらいは、<code>for</code>でくり返した結果を、リストにためて並べられるようになることです。1回分を返す短い関数を作り、くり返しは関数の外の<code>for</code>で書きます。</p>
+<section id="公開データの世界" class="level3">
+<h3 class="anchored" data-anchor-id="公開データの世界">公開データの世界</h3>
+<p>世の中には、データベースが山ほどあります。研究で集めたデータの多くは公開されていて、誰でも解析できます。最終レポートでは、自分が解析したいデータを、自分で見つけてもらいます。探すときの手がかりに、データの宝庫をいくつか挙げておきます（申請してから使うデータもあるので、使う前に条件を確かめてください）。</p>
+<ul>
+<li>生命（オミクス）：遺伝子・RNA・タンパク質・代謝物・糖鎖を、まるごと測ったデータ
+<ul>
+<li>ゲノム：<a href="https://www.ncbi.nlm.nih.gov/genbank/">GenBank</a>、<a href="https://www.ensembl.org/">Ensembl</a></li>
+<li>トランスクリプトーム（遺伝子の働き）：<a href="https://www.ncbi.nlm.nih.gov/geo/">GEO</a></li>
+<li>プロテオーム（タンパク質）：<a href="https://www.ebi.ac.uk/pride/">PRIDE</a>、<a href="https://www.uniprot.org/">UniProt</a></li>
+<li>メタボローム（代謝物）：<a href="https://www.ebi.ac.uk/metabolights/">MetaboLights</a></li>
+<li>グライコーム（糖鎖）：<a href="https://glycosmos.org/">GlyCosmos</a>、<a href="https://glytoucan.org/">GlyTouCan</a></li>
+<li>がん：<a href="https://portal.gdc.cancer.gov/">TCGA（GDCで配布）</a>。アルツハイマー病：<a href="https://adni.loni.usc.edu/">ADNI</a>（申請が要る）</li>
+</ul></li>
+<li>宇宙：<a href="https://www.sdss.org/">SDSS</a>（空を広く写して調べる観測）、<a href="https://gea.esac.esa.int/archive/">Gaia</a>（恒星の位置と動き）、<a href="https://archive.stsci.edu/">MAST</a>（ハッブルやジェイムズ・ウェッブ宇宙望遠鏡などの観測データ）</li>
+<li>データの置き場：<a href="https://zenodo.org/">Zenodo</a>、<a href="https://datadryad.org/">Dryad</a>、<a href="https://www.kaggle.com/datasets">Kaggle</a></li>
+<li>身近なデータ：<a href="https://www.data.jma.go.jp/risk/obsdl/">気象庁の過去の気象データ</a>、<a href="https://www.e-stat.go.jp/">e-Stat（政府統計）</a></li>
+<li>探すなら：<a href="https://datasetsearch.research.google.com/">Google Dataset Search</a></li>
+</ul>
+<p>分野が変われば、データの形も、くせも違います。同じ道具を、そのデータに合わせて組み立て直す。データに合わせて柔軟に対応できることが、データサイエンスの醍醐味です。第3回は東京の民泊の料金でしたが、今日は空の銀河です。データはまったく違っても、式を作って測り、その数を確かめる手順は同じです。</p>
+<p>今日は、宇宙のデータベースSDSS（スローン・デジタル・スカイ・サーベイ）を開きます。</p>
+</section>
 <section id="場面" class="level3">
 <h3 class="anchored" data-anchor-id="場面">場面</h3>
-<p>あなたは、銀河の地図を作る研究チームの一員です。</p>
+<p>天文学者は、宇宙の中で銀河がどう並んでいるか、地図を作っています。地図を作るには、一つひとつの銀河までの距離が要ります。</p>
 <p>銀河までの距離は、光を虹のように分ける分光で、赤方偏移を測れば正確に分かります。ただし、分光は1個ずつ時間がかかります。写真なら一度に何百万個も撮れますが、分かるのは5色（u・g・r・i・z）の明るさだけです。</p>
 <p>分光できた銀河を手がかりに、写真の5色だけで赤方偏移を当てる式を作りたい。天文学で実際に使われている、測光的赤方偏移（photometric redshift）の考え方です。</p>
 </section>
@@ -3355,7 +3376,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：なし（終わるとセルの左に ✓ が付く）</li>
 </ul>
-<div id="21e40122" class="cell" data-execution_count="1">
+<div id="575c5ca0" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -3371,7 +3392,7 @@ window.Quarto = {
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
 <p><code>try:</code>から先は、日本語表示の道具が動かなくなったときの保険で、中身は読まなくてかまいません。</p>
-<div id="8f8adc17" class="cell" data-execution_count="2">
+<div id="29c30839" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語が図の中で □ になるのを防ぐ</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q japanize<span class="op">-</span>matplotlib</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
@@ -3407,7 +3428,7 @@ window.Quarto = {
 <li>出力：表<code>raw</code>（14,983個の銀河）</li>
 </ul>
 <p>5色の列は、フィルターの名前（u・g・r・i・z）のままにします。答えの列<code>redshift</code>だけを、<code>赤方偏移</code>に付け替えます。z帯の明るさ<code>z</code>と取り違えないためです。</p>
-<div id="5d03c609" class="cell" data-execution_count="3">
+<div id="4b0dea94" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -3519,7 +3540,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 </summary>
 <p><code>reset_index(drop=True)</code>は、抜き出した行に、0から振り直した行の番号を付けます。元の表での番号は捨てます。これで、<code>df</code>の行の番号は0〜999になります。</p>
 </details>
-<div id="01fa6809" class="cell" data-execution_count="4">
+<div id="07fc4f82" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw.sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">0</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>bands <span class="op">=</span> [<span class="st">&#39;u&#39;</span>, <span class="st">&#39;g&#39;</span>, <span class="st">&#39;r&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;z&#39;</span>]</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df), <span class="st">&#39;個&#39;</span>)</span>
@@ -3558,7 +3579,7 @@ Name: 赤方偏移, dtype: float64
 <p><span class="math display">\[
 \hat{y}_i = b_0 + b_1 x_{i1} + b_2 x_{i2} + \cdots + b_5 x_{i5}
 \]</span></p>
-<div id="bb87cb92" class="cell" data-execution_count="5">
+<div id="15048543" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>tr, te <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> LinearRegression().fit(tr[bands], tr[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> m.predict(te[bands])</span>
@@ -3590,7 +3611,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAE、距離に直したMAE（億光年）、R²</li>
 </ul>
 <p><code>np.abs</code>は絶対値です。<code>m.score(...)</code>は、第2回で使った決定係数R²を返します。</p>
-<div id="2d992866" class="cell" data-execution_count="6">
+<div id="87f04f03" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;赤方偏移&#39;</span>] <span class="op">-</span> pred)          <span class="co"># 外れの大きさ</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.mean(), <span class="dv">4</span>))                  <span class="co"># MAE</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.mean() <span class="op">*</span> <span class="dv">140</span>, <span class="dv">1</span>), <span class="st">&#39;億光年&#39;</span>)   <span class="co"># 距離に直す</span></span>
@@ -3611,7 +3632,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：散布図</li>
 </ul>
 <p>灰色の線は「予測＝実際」の線です。線に近い点ほど、よく当たっています。</p>
-<div id="4a3bb326" class="cell" data-execution_count="7">
+<div id="67e43ef4" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(te[<span class="st">&#39;赤方偏移&#39;</span>], pred, s<span class="op">=</span><span class="dv">12</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="fl">0.35</span>], [<span class="dv">0</span>, <span class="fl">0.35</span>], color<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;実際の赤方偏移&#39;</span>)</span>
@@ -3635,7 +3656,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：大きく外れた銀河の数、いちばん大きな外れ、その銀河たちの表</li>
 </ul>
 <p><code>err &gt;= 0.05</code>は、外れが0.05以上かどうかのTrue/Falseの並びです。<code>te[...]</code>に渡すと、Trueの行だけが残ります（第1回の、条件で絞る書き方です）。</p>
-<div id="13a2b3c7" class="cell" data-execution_count="8">
+<div id="cbd5fbed" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>big <span class="op">=</span> err <span class="op">&gt;=</span> <span class="fl">0.05</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(big.<span class="bu">sum</span>(), <span class="st">&#39;個&#39;</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.<span class="bu">max</span>(), <span class="dv">3</span>), <span class="bu">round</span>(err.<span class="bu">max</span>() <span class="op">*</span> <span class="dv">140</span>, <span class="dv">1</span>), <span class="st">&#39;億光年&#39;</span>)</span>
@@ -3852,7 +3873,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAE（1つの数）</li>
 </ul>
 <p>中の4行は、1・2節でやったこと（分ける・当てはめる・予測する・測る）を、そのまま並べたものです。<code>random_state=0</code>を<code>random_state=s</code>に替えたので、<code>s</code>を変えると分け方が変わります。</p>
-<div id="afae5663" class="cell" data-execution_count="9">
+<div id="bd2bb6f6" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_mae(df, cols, s):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>s)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;赤方偏移&#39;</span>])</span>
@@ -3881,7 +3902,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAEの最小と最大、平均</li>
 </ul>
 <p><code>for</code>は関数の外にあります。関数は1回分だけを受け持ち、くり返しは<code>for</code>が受け持ちます。</p>
-<div id="25f55ea8" class="cell" data-execution_count="10">
+<div id="da7f1120" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>maes <span class="op">=</span> []</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    maes.append(one_mae(df, bands, s))</span>
@@ -3894,7 +3915,7 @@ Name: 赤方偏移, dtype: float64
 </div>
 <p>MAEは、最小0.0165から最大0.0201まで揺れます。平均は0.0185です。2節の0.0187は、この20通りのうちの1つにすぎません。</p>
 <p>点で描いて、揺れを見ます。</p>
-<div id="e99e58dd" class="cell" data-execution_count="11">
+<div id="2a6effdd" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.plot(maes, <span class="st">&#39;o&#39;</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;分け方の番号&#39;</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE&#39;</span>)</span>
@@ -3915,7 +3936,7 @@ Name: 赤方偏移, dtype: float64
 <p>まず、予想を書いてください。銀河を300個に減らすと、揺れの幅はどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>1000</code>を<code>300</code>に替えて実行してください。余裕があれば、<code>len(raw)</code>（14,983個すべて）にも替えて実行してみましょう。</p>
-<div id="5b75f7dc" class="cell" data-execution_count="12">
+<div id="437b41a2" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1000 を 300 に替えて実行する</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df_n <span class="op">=</span> raw.sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">0</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>maes_n <span class="op">=</span> []</span>
@@ -3981,7 +4002,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAEの平均</li>
 </ul>
 <p><code>one_mae</code>に渡す列の組を替えるだけで、別の式を測れます。</p>
-<div id="9c6cbf14" class="cell" data-execution_count="13">
+<div id="34c70276" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>no_u <span class="op">=</span> [<span class="st">&#39;g&#39;</span>, <span class="st">&#39;r&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;z&#39;</span>]</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>maes_no_u <span class="op">=</span> []</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
@@ -4001,7 +4022,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：5色の式が勝った回数</li>
 </ul>
 <p><code>maes[s]</code>は、リストの<code>s</code>番目（0から数える）の値です。番号<code>s</code>が同じなら、テストの250個がまったく同じです。同じ銀河で測った2つのMAEなら、差は式の違いだけから生まれます。</p>
-<div id="6f0a40d0" class="cell" data-execution_count="14">
+<div id="e703de9d" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>wins <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> maes[s] <span class="op">&lt;</span> maes_no_u[s]:</span>
@@ -4012,7 +4033,7 @@ Name: 赤方偏移, dtype: float64
 </div>
 </div>
 <p>20回すべてで、5色の式が勝ちました。MAEそのものは分け方で揺れても、同じ分け方どうしの勝ち負けは、いつも同じです。</p>
-<div id="301b32db" class="cell" data-execution_count="15">
+<div id="0c47d558" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt.plot(maes, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;5色&#39;</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plt.plot(maes_no_u, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;u を外す&#39;</span>)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;分け方の番号&#39;</span>)</span>
@@ -4032,7 +4053,7 @@ Name: 赤方偏移, dtype: float64
 <section id="別々の分け方どうしで比べると" class="level3">
 <h3 class="anchored" data-anchor-id="別々の分け方どうしで比べると">別々の分け方どうしで比べると</h3>
 <p>では、5色の式はある分け方で、uを外した式は別の分け方で測って比べたら、どうなるでしょうか。分け方の番号の組み合わせ（同じ番号どうしを除く380組）すべてで比べます。数えるセルは実行するだけでよく、中身は読み飛ばしてかまいません。</p>
-<div id="76017e8c" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="16">
+<div id="29463688" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>9 組で、u を外した式のほうが良く見えた（380組のうち）</code></pre>
 </div>
@@ -4051,7 +4072,7 @@ Name: 赤方偏移, dtype: float64
 \text{CV} = \frac{1}{K}\sum_{k=1}^{K} \text{MAE}_k
 \]</span></p>
 <p><span class="math inline">\(K\)</span>は組の数（今日は5）、<span class="math inline">\(\text{MAE}_k\)</span>は<span class="math inline">\(k\)</span>番目の組をテストにしたときのMAEです。このやり方を、<span class="math inline">\(K\)</span>分割交差検証（K-fold cross-validation, CV）と呼びます。平均するのはMAEでなくてもよく、ほかの外れの物差しでも同じ手順で比べられます。</p>
-<div id="678c6e87" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
+<div id="6784b39b" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4069,7 +4090,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：組ごとの個数</li>
 </ul>
 <p><code>df.index</code>は行の番号（0〜999）です。<code>%</code>は割った余りで、<code>df.index % 5</code>は0, 1, 2, 3, 4, 0, 1, …と、5つの番号を順に振ります。<code>df</code>は0節でくじで抜き出したので、行の並びはもともとばらばらです。</p>
-<div id="1d7af72b" class="cell" data-execution_count="18">
+<div id="8f358547" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;組&#39;</span>] <span class="op">=</span> df.index <span class="op">%</span> <span class="dv">5</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;組&#39;</span>].value_counts())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4092,7 +4113,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：5回分のMAEのリスト</li>
 </ul>
 <p><code>one_mae</code>と比べてください。変わったのは分け方だけです。<code>train_test_split</code>の代わりに、<code>df[&#39;組&#39;] != k</code>（組<code>k</code>でない）と<code>df[&#39;組&#39;] == k</code>（組<code>k</code>である）で絞ります。第1回の、条件で絞る書き方です。</p>
-<div id="80bf97bc" class="cell" data-execution_count="19">
+<div id="9bc71b12" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_mae(cols):</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    maes_k <span class="op">=</span> []</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
@@ -4112,7 +4133,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：5回分のMAEと平均（2つの式）</li>
 </ul>
 <p><code>np.round(リスト, 4)</code>は、リストの中身を小数第4位で丸めて表示します。</p>
-<div id="3831d68e" class="cell" data-execution_count="20">
+<div id="fa356b0d" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>cv5 <span class="op">=</span> cv_mae(bands)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>cv4 <span class="op">=</span> cv_mae(no_u)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(cv5, <span class="dv">4</span>), <span class="bu">round</span>(np.mean(cv5), <span class="dv">4</span>))</span>
@@ -4125,7 +4146,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>5色の式は平均0.0191（距離に直すと約2.7億光年）、uを外した式は0.0223です。5つの組すべてで、5色の式のほうがMAEが小さくなりました。uは、暗くて測りにくい色でも、赤方偏移を当てる手がかりになっています。</p>
-<div id="1233f576" class="cell" data-execution_count="21">
+<div id="27ddc185" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>plt.plot(cv5, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;5色&#39;</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.plot(cv4, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;u を外す&#39;</span>)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;テストにした組&#39;</span>)</span>
@@ -4151,7 +4172,7 @@ Name: count, dtype: int64</code></pre>
 <p>uのほかの色を外すと、どうなるでしょうか。まず、予想を書いてください。5色のうち、どの色を外すと、いちばん悪くなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、下のセルの列の並びを、別の色を1つ外した並びに替えて実行してください。今はuを外した並びです。たとえばgを外すなら<code>[&#39;u&#39;, &#39;r&#39;, &#39;i&#39;, &#39;z&#39;]</code>です。いくつか試してみましょう。</p>
-<div id="958c5e08" class="cell" data-execution_count="22">
+<div id="7d162f5b" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 別の色を1つ外した並びに替えて実行する</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;g&#39;</span>, <span class="st">&#39;r&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;z&#39;</span>]</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(cols_x)), <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4219,7 +4240,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：rだけの式の係数と、5色の式の係数</li>
 </ul>
 <p><code>pd.Series(m.coef_, index=列の名前)</code>で、係数に列の名前を付けて表示します。</p>
-<div id="0c8fc977" class="cell" data-execution_count="23">
+<div id="98e13bbe" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>m_r <span class="op">=</span> LinearRegression().fit(df[[<span class="st">&#39;r&#39;</span>]], df[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>m_all <span class="op">=</span> LinearRegression().fit(df[bands], df[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m_r.coef_.<span class="bu">round</span>(<span class="dv">3</span>))</span>
@@ -4245,7 +4266,7 @@ dtype: float64</code></pre>
 <li>出力：相関係数の表</li>
 </ul>
 <p><code>corr()</code>は、列どうしの相関係数を表にします。</p>
-<div id="880a9179" class="cell" data-execution_count="24">
+<div id="d7ec0c57" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[bands].corr().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       u      g      r      i      z
@@ -4267,7 +4288,7 @@ z  0.620  0.859  0.974  0.993  1.000</code></pre>
 <li>出力：20回分のrの係数の最小と最大</li>
 </ul>
 <p><code>one_mae</code>と同じ形で、最後の行だけが違います。MAEの代わりに、係数のうちrのものを返します。</p>
-<div id="6cfefc65" class="cell" data-execution_count="25">
+<div id="75608e0a" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> r_coef(cols, s):</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>s)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;赤方偏移&#39;</span>])</span>
@@ -4302,7 +4323,7 @@ z  0.620  0.859  0.974  0.993  1.000</code></pre>
 <li>出力：新しい列の相関係数の表</li>
 </ul>
 <p>列どうしの引き算は、第1回の書き方です。</p>
-<div id="94f6ec61" class="cell" data-execution_count="26">
+<div id="5484620b" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;u-g&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;u&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;g&#39;</span>]</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;g-r&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;g&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;r&#39;</span>]</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;r-i&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;r&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;i&#39;</span>]</span>
@@ -4327,7 +4348,7 @@ r   -0.01  0.13  0.11 -0.04  1.00</code></pre>
 <li>入力：表<code>df</code>、列の名前<code>colors</code>、6節の5色の式<code>m_all</code></li>
 <li>出力：予測の差の最大、色の差の式の係数</li>
 </ul>
-<div id="3a14d474" class="cell" data-execution_count="27">
+<div id="5fe9e402" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>m_c <span class="op">=</span> LinearRegression().fit(df[colors], df[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> np.<span class="bu">abs</span>(m_c.predict(df[colors]) <span class="op">-</span> m_all.predict(df[bands]))</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(diff.<span class="bu">max</span>(), <span class="dv">10</span>))</span>
@@ -4354,7 +4375,7 @@ dtype: float64</code></pre>
 <li>入力：列の名前<code>colors</code></li>
 <li>出力：20回分のrの係数の最小と最大</li>
 </ul>
-<div id="4cc81d7a" class="cell" data-execution_count="28">
+<div id="9b9ae0aa" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>coefs_c <span class="op">=</span> []</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    coefs_c.append(r_coef(colors, s))</span>
@@ -4372,7 +4393,7 @@ dtype: float64</code></pre>
 <p>まず、予想を書いてください。rを、相関の強いiと組ませると、rの係数の揺れはどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、下のセルの<code>[&#39;u&#39;, &#39;r&#39;]</code>を<code>[&#39;r&#39;, &#39;i&#39;]</code>に替えて実行してください。</p>
-<div id="0bc9513a" class="cell" data-execution_count="29">
+<div id="2f40b229" class="cell" data-execution_count="29">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: [&#39;u&#39;, &#39;r&#39;] を [&#39;r&#39;, &#39;i&#39;] に替えて実行する</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;u&#39;</span>, <span class="st">&#39;r&#39;</span>]</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>coefs_x <span class="op">=</span> []</span>
