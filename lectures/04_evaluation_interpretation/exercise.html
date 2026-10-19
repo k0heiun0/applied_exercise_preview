@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>第4回 写真の色から銀河までの距離を当て、式を評価して読む</title>
+<title>第4回 線形回帰の評価プロトコルを実装し、結果を解釈する</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3228,7 +3228,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">第4回 写真の色から銀河までの距離を当て、式を評価して読む</h1>
+<h1 class="title">第4回 線形回帰の評価プロトコルを実装し、結果を解釈する</h1>
 </div>
 
 
@@ -3248,14 +3248,14 @@ window.Quarto = {
 <hr>
 <section id="前回からの接続" class="level2">
 <h2 class="anchored" data-anchor-id="前回からの接続">前回からの接続</h2>
-<p>第3回は、民泊のホストとして、データを整えてから線形回帰（linear regression）の式を作り、1泊の値段を付けました。整えるたびに、テストでの平均絶対誤差（MAE）を測って比べました。</p>
+<p>第3回は、民泊のホストとして、データを整えてから線形回帰の式を作り、1泊の値段を付けました。整えるたびに、テストでの平均絶対誤差（MAE）を測って比べました。</p>
 <p>ただ、そのMAEは、訓練とテストへの分け方1通りで測った数でした。分け方を変えたら、数はどれくらい変わるのでしょうか。そして、式の係数が何を言っているのかは、まだ読んでいません。今日は、題材を宇宙に移し、式の評価と係数の読み方に取り組みます。</p>
 <hr>
 </section>
 <section id="今日の分析目標" class="level2">
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>写真の5色だけで、銀河までの距離はどこまで分かるかに答える。</p>
-<p>SDSS（スローン・デジタル・スカイ・サーベイ）が分光した銀河のデータで、5色の明るさから赤方偏移を当てる線形回帰の式を作ります。その当たりを交差検証で確かめ、係数を読める形に直して、1個の銀河が遠いと出た理由を説明します。</p>
+<p>SDSS（スローン・デジタル・スカイ・サーベイ）が分光した銀河のデータで、5色の明るさから赤方偏移を当てる線形回帰の式を作ります。その当たりを交差検証で確かめ、係数が何を言っているかを、読める形に直して説明します。</p>
 <p>もう1つのねらいは、<code>for</code>でくり返した結果を、リストにためて並べられるようになることです。1回分を返す短い関数を作り、くり返しは関数の外の<code>for</code>で書きます。</p>
 <section id="場面" class="level3">
 <h3 class="anchored" data-anchor-id="場面">場面</h3>
@@ -3274,7 +3274,7 @@ window.Quarto = {
 </section>
 <section id="最後に出す答え" class="level3">
 <h3 class="anchored" data-anchor-id="最後に出す答え">最後に出す答え</h3>
-<p>写真の5色から、赤方偏移をどれくらいの外れで当てられるか（交差検証のMAE）です。そして、係数を読める形に直した式で、1個の銀河が遠い（近い）と出た理由を、色ごとに説明します。</p>
+<p>写真の5色から、赤方偏移をどれくらいの外れで当てられるか（交差検証のMAE）です。そして、5色の式の係数が何を言っているかを、読める形に直して説明します。</p>
 </section>
 <section id="今日の一周結果だけ先に" class="level3">
 <h3 class="anchored" data-anchor-id="今日の一周結果だけ先に">今日の一周（結果だけ先に）</h3>
@@ -3319,9 +3319,9 @@ window.Quarto = {
 <td>同じ分け方どうしで比べ、交差検証で比べ直す</td>
 </tr>
 <tr class="even">
-<td>説明する（6〜8節）</td>
-<td>なぜ遠いと出た？</td>
-<td>rの係数を読み、色の差で式を作り直し、1個の銀河の内訳を読む</td>
+<td>説明する（6・7節）</td>
+<td>係数は読める？</td>
+<td>rの係数を読み、相関を見て、色の差で式を作り直す</td>
 </tr>
 </tbody>
 </table>
@@ -3342,7 +3342,6 @@ window.Quarto = {
 <li>2つの式を、同じ分け方どうしで比べる理由を説明できる</li>
 <li>交差検証（cross-validation）で、全部の行を1度ずつテストに回して式を評価できる</li>
 <li>相関の強い列を一緒に入れると係数が読めなくなること（多重共線性）を説明し、列を作り直して読める形にできる</li>
-<li>1個の銀河の予測を、列ごとの寄与に分けて説明できる</li>
 <li><code>for</code>の結果を、リストに<code>append</code>でためて並べられる</li>
 </ul>
 <hr>
@@ -3581,16 +3580,17 @@ Name: 赤方偏移, dtype: float64
 <p><span class="math display">\[
 \text{MAE} = \frac{1}{n}\sum_{i=1}^{n} \lvert y_i - \hat{y}_i \rvert
 \]</span></p>
+<p>式の係数は、外れの二乗の和が最小になるように決めました（第2回の最小二乗法）。でも、成績はMAEで測ります。式を作る基準と、成績を測る物差しは、別々に選んでかまいません。MAEなら、赤方偏移が平均でいくつ外れるかを、そのまま言えます。</p>
 </section>
 <section id="お手本外れを測る" class="level3">
 <h3 class="anchored" data-anchor-id="お手本外れを測る">お手本：外れを測る</h3>
 <ul>
-<li>役割：テストの銀河ごとの外れの大きさを出し、MAE・距離に直したMAE・決定係数（coefficient of determination）R²を表示する</li>
+<li>役割：テストの銀河ごとの外れの大きさを出し、MAE・距離に直したMAE・決定係数R²を表示する</li>
 <li>入力：テストの表<code>te</code>と予測<code>pred</code></li>
 <li>出力：MAE、距離に直したMAE（億光年）、R²</li>
 </ul>
 <p><code>np.abs</code>は絶対値です。<code>m.score(...)</code>は、第2回で使った決定係数R²を返します。</p>
-<div id="b98ed9cc" class="cell" data-execution_count="6">
+<div id="2d992866" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>err <span class="op">=</span> np.<span class="bu">abs</span>(te[<span class="st">&#39;赤方偏移&#39;</span>] <span class="op">-</span> pred)          <span class="co"># 外れの大きさ</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.mean(), <span class="dv">4</span>))                  <span class="co"># MAE</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.mean() <span class="op">*</span> <span class="dv">140</span>, <span class="dv">1</span>), <span class="st">&#39;億光年&#39;</span>)   <span class="co"># 距離に直す</span></span>
@@ -3611,7 +3611,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：散布図</li>
 </ul>
 <p>灰色の線は「予測＝実際」の線です。線に近い点ほど、よく当たっています。</p>
-<div id="3dd1bf2e" class="cell" data-execution_count="7">
+<div id="4a3bb326" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>plt.scatter(te[<span class="st">&#39;赤方偏移&#39;</span>], pred, s<span class="op">=</span><span class="dv">12</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="fl">0.35</span>], [<span class="dv">0</span>, <span class="fl">0.35</span>], color<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;実際の赤方偏移&#39;</span>)</span>
@@ -3635,7 +3635,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：大きく外れた銀河の数、いちばん大きな外れ、その銀河たちの表</li>
 </ul>
 <p><code>err &gt;= 0.05</code>は、外れが0.05以上かどうかのTrue/Falseの並びです。<code>te[...]</code>に渡すと、Trueの行だけが残ります（第1回の、条件で絞る書き方です）。</p>
-<div id="a185e722" class="cell" data-execution_count="8">
+<div id="13a2b3c7" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>big <span class="op">=</span> err <span class="op">&gt;=</span> <span class="fl">0.05</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(big.<span class="bu">sum</span>(), <span class="st">&#39;個&#39;</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(err.<span class="bu">max</span>(), <span class="dv">3</span>), <span class="bu">round</span>(err.<span class="bu">max</span>() <span class="op">*</span> <span class="dv">140</span>, <span class="dv">1</span>), <span class="st">&#39;億光年&#39;</span>)</span>
@@ -3821,7 +3821,7 @@ Name: 赤方偏移, dtype: float64
 <td>？（このあとの段で）</td>
 </tr>
 <tr class="even">
-<td>説明する（6〜8節）</td>
+<td>説明する（6・7節）</td>
 <td>？（このあとの段で）</td>
 </tr>
 </tbody>
@@ -3852,7 +3852,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAE（1つの数）</li>
 </ul>
 <p>中の4行は、1・2節でやったこと（分ける・当てはめる・予測する・測る）を、そのまま並べたものです。<code>random_state=0</code>を<code>random_state=s</code>に替えたので、<code>s</code>を変えると分け方が変わります。</p>
-<div id="946d2c61" class="cell" data-execution_count="9">
+<div id="afae5663" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> one_mae(df, cols, s):</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>s)</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;赤方偏移&#39;</span>])</span>
@@ -3881,7 +3881,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAEの最小と最大、平均</li>
 </ul>
 <p><code>for</code>は関数の外にあります。関数は1回分だけを受け持ち、くり返しは<code>for</code>が受け持ちます。</p>
-<div id="ee134b04" class="cell" data-execution_count="10">
+<div id="25f55ea8" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>maes <span class="op">=</span> []</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    maes.append(one_mae(df, bands, s))</span>
@@ -3894,7 +3894,7 @@ Name: 赤方偏移, dtype: float64
 </div>
 <p>MAEは、最小0.0165から最大0.0201まで揺れます。平均は0.0185です。2節の0.0187は、この20通りのうちの1つにすぎません。</p>
 <p>点で描いて、揺れを見ます。</p>
-<div id="4667177f" class="cell" data-execution_count="11">
+<div id="e99e58dd" class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.plot(maes, <span class="st">&#39;o&#39;</span>)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;分け方の番号&#39;</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;テストでのMAE&#39;</span>)</span>
@@ -3915,7 +3915,7 @@ Name: 赤方偏移, dtype: float64
 <p>まず、予想を書いてください。銀河を300個に減らすと、揺れの幅はどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>1000</code>を<code>300</code>に替えて実行してください。余裕があれば、<code>len(raw)</code>（14,983個すべて）にも替えて実行してみましょう。</p>
-<div id="4ba5068e" class="cell" data-execution_count="12">
+<div id="5b75f7dc" class="cell" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 1000 を 300 に替えて実行する</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>df_n <span class="op">=</span> raw.sample(<span class="dv">1000</span>, random_state<span class="op">=</span><span class="dv">0</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>maes_n <span class="op">=</span> []</span>
@@ -3960,7 +3960,7 @@ Name: 赤方偏移, dtype: float64
 <td>？（このあとの段で）</td>
 </tr>
 <tr class="even">
-<td>説明する（6〜8節）</td>
+<td>説明する（6・7節）</td>
 <td>？（このあとの段で）</td>
 </tr>
 </tbody>
@@ -3981,7 +3981,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：MAEの平均</li>
 </ul>
 <p><code>one_mae</code>に渡す列の組を替えるだけで、別の式を測れます。</p>
-<div id="69de153d" class="cell" data-execution_count="13">
+<div id="9c6cbf14" class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>no_u <span class="op">=</span> [<span class="st">&#39;g&#39;</span>, <span class="st">&#39;r&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;z&#39;</span>]</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>maes_no_u <span class="op">=</span> []</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
@@ -4001,7 +4001,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：5色の式が勝った回数</li>
 </ul>
 <p><code>maes[s]</code>は、リストの<code>s</code>番目（0から数える）の値です。番号<code>s</code>が同じなら、テストの250個がまったく同じです。同じ銀河で測った2つのMAEなら、差は式の違いだけから生まれます。</p>
-<div id="b130ad1f" class="cell" data-execution_count="14">
+<div id="6f0a40d0" class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>wins <span class="op">=</span> <span class="dv">0</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> maes[s] <span class="op">&lt;</span> maes_no_u[s]:</span>
@@ -4012,7 +4012,7 @@ Name: 赤方偏移, dtype: float64
 </div>
 </div>
 <p>20回すべてで、5色の式が勝ちました。MAEそのものは分け方で揺れても、同じ分け方どうしの勝ち負けは、いつも同じです。</p>
-<div id="b104ae43" class="cell" data-execution_count="15">
+<div id="301b32db" class="cell" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt.plot(maes, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;5色&#39;</span>)</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plt.plot(maes_no_u, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;u を外す&#39;</span>)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;分け方の番号&#39;</span>)</span>
@@ -4032,7 +4032,7 @@ Name: 赤方偏移, dtype: float64
 <section id="別々の分け方どうしで比べると" class="level3">
 <h3 class="anchored" data-anchor-id="別々の分け方どうしで比べると">別々の分け方どうしで比べると</h3>
 <p>では、5色の式はある分け方で、uを外した式は別の分け方で測って比べたら、どうなるでしょうか。分け方の番号の組み合わせ（同じ番号どうしを除く380組）すべてで比べます。数えるセルは実行するだけでよく、中身は読み飛ばしてかまいません。</p>
-<div id="64f6e5dd" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="16">
+<div id="76017e8c" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>9 組で、u を外した式のほうが良く見えた（380組のうち）</code></pre>
 </div>
@@ -4050,8 +4050,8 @@ Name: 赤方偏移, dtype: float64
 <p><span class="math display">\[
 \text{CV} = \frac{1}{K}\sum_{k=1}^{K} \text{MAE}_k
 \]</span></p>
-<p><span class="math inline">\(K\)</span>は組の数（今日は5）、<span class="math inline">\(\text{MAE}_k\)</span>は<span class="math inline">\(k\)</span>番目の組をテストにしたときのMAEです。このやり方を、<span class="math inline">\(K\)</span>分割交差検証（K-fold cross-validation, CV）と呼びます。</p>
-<div id="e2a5bd35" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
+<p><span class="math inline">\(K\)</span>は組の数（今日は5）、<span class="math inline">\(\text{MAE}_k\)</span>は<span class="math inline">\(k\)</span>番目の組をテストにしたときのMAEです。このやり方を、<span class="math inline">\(K\)</span>分割交差検証（K-fold cross-validation, CV）と呼びます。平均するのはMAEでなくてもよく、ほかの外れの物差しでも同じ手順で比べられます。</p>
+<div id="678c6e87" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4069,7 +4069,7 @@ Name: 赤方偏移, dtype: float64
 <li>出力：組ごとの個数</li>
 </ul>
 <p><code>df.index</code>は行の番号（0〜999）です。<code>%</code>は割った余りで、<code>df.index % 5</code>は0, 1, 2, 3, 4, 0, 1, …と、5つの番号を順に振ります。<code>df</code>は0節でくじで抜き出したので、行の並びはもともとばらばらです。</p>
-<div id="93dfaef6" class="cell" data-execution_count="18">
+<div id="1d7af72b" class="cell" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;組&#39;</span>] <span class="op">=</span> df.index <span class="op">%</span> <span class="dv">5</span></span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;組&#39;</span>].value_counts())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -4092,7 +4092,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：5回分のMAEのリスト</li>
 </ul>
 <p><code>one_mae</code>と比べてください。変わったのは分け方だけです。<code>train_test_split</code>の代わりに、<code>df[&#39;組&#39;] != k</code>（組<code>k</code>でない）と<code>df[&#39;組&#39;] == k</code>（組<code>k</code>である）で絞ります。第1回の、条件で絞る書き方です。</p>
-<div id="cceda074" class="cell" data-execution_count="19">
+<div id="80bf97bc" class="cell" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_mae(cols):</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>    maes_k <span class="op">=</span> []</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
@@ -4112,7 +4112,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：5回分のMAEと平均（2つの式）</li>
 </ul>
 <p><code>np.round(リスト, 4)</code>は、リストの中身を小数第4位で丸めて表示します。</p>
-<div id="e7b2d217" class="cell" data-execution_count="20">
+<div id="3831d68e" class="cell" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>cv5 <span class="op">=</span> cv_mae(bands)</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>cv4 <span class="op">=</span> cv_mae(no_u)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(np.<span class="bu">round</span>(cv5, <span class="dv">4</span>), <span class="bu">round</span>(np.mean(cv5), <span class="dv">4</span>))</span>
@@ -4125,7 +4125,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 </div>
 <p>5色の式は平均0.0191（距離に直すと約2.7億光年）、uを外した式は0.0223です。5つの組すべてで、5色の式のほうがMAEが小さくなりました。uは、暗くて測りにくい色でも、赤方偏移を当てる手がかりになっています。</p>
-<div id="f881ac05" class="cell" data-execution_count="21">
+<div id="1233f576" class="cell" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>plt.plot(cv5, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;5色&#39;</span>)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.plot(cv4, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;u を外す&#39;</span>)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;テストにした組&#39;</span>)</span>
@@ -4142,7 +4142,7 @@ Name: count, dtype: int64</code></pre>
 </div>
 <blockquote class="blockquote">
 <p>絶対に覚えて帰ること：交差検証</p>
-<p>1回の分け方の数は揺れる。だから、全部の行を1度ずつテストに回し、MAEを平均する。2つの式は、同じ組どうしで比べる。</p>
+<p>1回の分け方の数は揺れる。だから、全部の行を1度ずつテストに回し、外れ（今日はMAE）を平均する。2つの式は、同じ組どうしで比べる。</p>
 </blockquote>
 <p>交差検証は、どの銀河もちょうど1度ずつテストに入るので、偏りなく式を評価できます。そして、2つの式を同じ5つの組で評価するので、いつも同じ分け方どうしで比べられます。式を比べるときの、標準の物差しです。</p>
 </section>
@@ -4151,7 +4151,7 @@ Name: count, dtype: int64</code></pre>
 <p>uのほかの色を外すと、どうなるでしょうか。まず、予想を書いてください。5色のうち、どの色を外すと、いちばん悪くなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、下のセルの列の並びを、別の色を1つ外した並びに替えて実行してください。今はuを外した並びです。たとえばgを外すなら<code>[&#39;u&#39;, &#39;r&#39;, &#39;i&#39;, &#39;z&#39;]</code>です。いくつか試してみましょう。</p>
-<div id="736e81a3" class="cell" data-execution_count="22">
+<div id="958c5e08" class="cell" data-execution_count="22">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 別の色を1つ外した並びに替えて実行する</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;g&#39;</span>, <span class="st">&#39;r&#39;</span>, <span class="st">&#39;i&#39;</span>, <span class="st">&#39;z&#39;</span>]</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(cols_x)), <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -4194,7 +4194,7 @@ Name: count, dtype: int64</code></pre>
 <td>交差検証で比べると、5色の式（0.0191）がuを外した式（0.0223）に勝つ</td>
 </tr>
 <tr class="even">
-<td>説明する（6〜8節）</td>
+<td>説明する（6・7節）</td>
 <td>？（このあとの段で）</td>
 </tr>
 </tbody>
@@ -4205,7 +4205,7 @@ Name: count, dtype: int64</code></pre>
 </section>
 <section id="rの係数はなぜマイナス" class="level2">
 <h2 class="anchored" data-anchor-id="rの係数はなぜマイナス">6. rの係数はなぜマイナス？</h2>
-<p>ここから、段4「説明する」（6〜8節）です。問いは、この銀河はなぜ遠いと出たか、です。</p>
+<p>ここから、段4「説明する」（6・7節）です。問いは、この式の係数は読めるか、です。</p>
 <p>当たりの良い式が決まりました。次は、式の係数を読みます。まず、rだけで当てる式と、5色の式で、rの係数を比べます。</p>
 <section id="係数の読み方" class="level3">
 <h3 class="anchored" data-anchor-id="係数の読み方">係数の読み方</h3>
@@ -4219,7 +4219,7 @@ Name: count, dtype: int64</code></pre>
 <li>出力：rだけの式の係数と、5色の式の係数</li>
 </ul>
 <p><code>pd.Series(m.coef_, index=列の名前)</code>で、係数に列の名前を付けて表示します。</p>
-<div id="327e5b99" class="cell" data-execution_count="23">
+<div id="0c8fc977" class="cell" data-execution_count="23">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>m_r <span class="op">=</span> LinearRegression().fit(df[[<span class="st">&#39;r&#39;</span>]], df[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>m_all <span class="op">=</span> LinearRegression().fit(df[bands], df[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m_r.coef_.<span class="bu">round</span>(<span class="dv">3</span>))</span>
@@ -4245,7 +4245,7 @@ dtype: float64</code></pre>
 <li>出力：相関係数の表</li>
 </ul>
 <p><code>corr()</code>は、列どうしの相関係数を表にします。</p>
-<div id="851d6a14" class="cell" data-execution_count="24">
+<div id="880a9179" class="cell" data-execution_count="24">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[bands].corr().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       u      g      r      i      z
@@ -4267,7 +4267,7 @@ z  0.620  0.859  0.974  0.993  1.000</code></pre>
 <li>出力：20回分のrの係数の最小と最大</li>
 </ul>
 <p><code>one_mae</code>と同じ形で、最後の行だけが違います。MAEの代わりに、係数のうちrのものを返します。</p>
-<div id="594aad20" class="cell" data-execution_count="25">
+<div id="6cfefc65" class="cell" data-execution_count="25">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> r_coef(cols, s):</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    tr_s, te_s <span class="op">=</span> train_test_split(df, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span>s)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> LinearRegression().fit(tr_s[cols], tr_s[<span class="st">&#39;赤方偏移&#39;</span>])</span>
@@ -4285,14 +4285,14 @@ z  0.620  0.859  0.974  0.993  1.000</code></pre>
 <p>相関の強い列を一緒に式に入れると、予測はよく当たっても、係数は不安定になり、読めなくなります。これを、多重共線性（multicollinearity）と呼びます。</p>
 <blockquote class="blockquote">
 <p>絶対に覚えて帰ること：多重共線性</p>
-<p>相関の強い列を一緒に入れると、予測は良くても、係数は揺れて読めない。係数を読む前に、列どうしの相関を見る。</p>
+<p>相関の強い列を一緒に入れると、予測は良くても、係数は揺れて読めない（多重共線性）。係数を読む前に、列どうしの相関を見る。</p>
 </blockquote>
 <hr>
 </section>
 </section>
 <section id="係数を読める式にするには" class="level2">
 <h2 class="anchored" data-anchor-id="係数を読める式にするには">7. 係数を読める式にするには？</h2>
-<p>5色の係数は読めませんでした。でも、当たりは良い式です。当たりを保ったまま、係数を読める式に作り直せないでしょうか。</p>
+<p>5色の係数は、多重共線性で読めませんでした。でも、当たりは良い式です。当たりを保ったまま、係数を読める式に作り直せないでしょうか。</p>
 <p>天文学者は、5色の明るさそのものより、隣り合う色の差を見ます。たとえばg − rは、緑で見た明るさと赤で見た明るさの差で、銀河の「色」です。遠い銀河ほど光が赤い側にずれるので、色が変わります。</p>
 <section id="お手本色の差の列を作る" class="level3">
 <h3 class="anchored" data-anchor-id="お手本色の差の列を作る">お手本：色の差の列を作る</h3>
@@ -4302,7 +4302,7 @@ z  0.620  0.859  0.974  0.993  1.000</code></pre>
 <li>出力：新しい列の相関係数の表</li>
 </ul>
 <p>列どうしの引き算は、第1回の書き方です。</p>
-<div id="6cff6449" class="cell" data-execution_count="26">
+<div id="94f6ec61" class="cell" data-execution_count="26">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;u-g&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;u&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;g&#39;</span>]</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;g-r&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;g&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;r&#39;</span>]</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;r-i&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;r&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;i&#39;</span>]</span>
@@ -4327,7 +4327,7 @@ r   -0.01  0.13  0.11 -0.04  1.00</code></pre>
 <li>入力：表<code>df</code>、列の名前<code>colors</code>、6節の5色の式<code>m_all</code></li>
 <li>出力：予測の差の最大、色の差の式の係数</li>
 </ul>
-<div id="94a390d1" class="cell" data-execution_count="27">
+<div id="3a14d474" class="cell" data-execution_count="27">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>m_c <span class="op">=</span> LinearRegression().fit(df[colors], df[<span class="st">&#39;赤方偏移&#39;</span>])</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>diff <span class="op">=</span> np.<span class="bu">abs</span>(m_c.predict(df[colors]) <span class="op">-</span> m_all.predict(df[bands]))</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(diff.<span class="bu">max</span>(), <span class="dv">10</span>))</span>
@@ -4354,7 +4354,7 @@ dtype: float64</code></pre>
 <li>入力：列の名前<code>colors</code></li>
 <li>出力：20回分のrの係数の最小と最大</li>
 </ul>
-<div id="0ce534ee" class="cell" data-execution_count="28">
+<div id="4cc81d7a" class="cell" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>coefs_c <span class="op">=</span> []</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    coefs_c.append(r_coef(colors, s))</span>
@@ -4365,90 +4365,31 @@ dtype: float64</code></pre>
 </div>
 <p>rの係数は、20回とも+0.016〜+0.020に収まりました。5色の式では−0.235〜−0.137と揺れていた係数が、落ち着いています。</p>
 <p>当たりはそのままで、係数が読めるようになりました。相関の強い列を、意味の違う列に作り直したからです。</p>
-<hr>
 </section>
-</section>
-<section id="この銀河はなぜ遠いと出た" class="level2">
-<h2 class="anchored" data-anchor-id="この銀河はなぜ遠いと出た">8. この銀河は、なぜ遠いと出た？</h2>
-<p>係数が読める式ができました。いよいよ、1個の銀河について、予測の理由を説明します。</p>
-<section id="予測を列ごとの寄与に分ける" class="level3">
-<h3 class="anchored" data-anchor-id="予測を列ごとの寄与に分ける">予測を、列ごとの寄与に分ける</h3>
-<p>平均的な銀河とは、どの列も1,000個の平均<span class="math inline">\(\bar{x}_j\)</span>の値をもつ銀河です。ある銀河の予測<span class="math inline">\(\hat{y}\)</span>は、平均的な銀河の予測に、列ごとの寄与を足したものになります。</p>
-<p><span class="math display">\[
-\hat{y} = \hat{y}_{\text{平均的な銀河}} + \sum_j b_j (x_j - \bar{x}_j)
-\]</span></p>
-<p><span class="math inline">\(b_j(x_j - \bar{x}_j)\)</span>が、列<span class="math inline">\(j\)</span>がこの銀河の予測を平均よりどれだけ押し上げたか（マイナスなら押し下げたか）です。</p>
-</section>
-<section id="お手本8番目の銀河の内訳" class="level3">
-<h3 class="anchored" data-anchor-id="お手本8番目の銀河の内訳">お手本：8番目の銀河の内訳</h3>
-<ul>
-<li>役割：銀河の番号<code>k</code>の銀河について、列ごとの寄与と、予測・実際の赤方偏移を表示する</li>
-<li>入力：色の差の式<code>m_c</code>、係数<code>coef_c</code>、表<code>df</code>、銀河の番号<code>k</code></li>
-<li>出力：平均的な銀河の予測、この銀河の予測と実際の赤方偏移、列ごとの寄与</li>
-</ul>
-<p><code>df[colors].iloc[k]</code>は、<code>colors</code>の列だけの表から、<code>k</code>行目の銀河を取り出します。上の式を、そのまま写しています。</p>
-<div id="13e66b0d" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>avg <span class="op">=</span> m_c.predict(df[colors]).mean()   <span class="co"># 平均的な銀河の予測</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">7</span>                                  <span class="co"># 銀河の番号（0から数える）</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>gal <span class="op">=</span> df[colors].iloc[k]</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_c <span class="op">*</span> (gal <span class="op">-</span> df[colors].mean())   <span class="co"># 列ごとの寄与</span></span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(avg, <span class="dv">4</span>), <span class="bu">round</span>(avg <span class="op">+</span> push.<span class="bu">sum</span>(), <span class="dv">4</span>), df[<span class="st">&#39;赤方偏移&#39;</span>][k])</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(push.<span class="bu">round</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>0.107 0.1422 0.1514
-u-g   -0.0213
-g-r    0.0717
-r-i    0.0014
-i-z   -0.0140
-r     -0.0026
-dtype: float64</code></pre>
-</div>
-</div>
-<p>平均的な銀河の予測は0.107です。8番目の銀河（番号7）の予測は0.1422で、実際の赤方偏移は0.1514でした。</p>
-<p>いちばん押し上げているのはg − rで、+0.0717です。この銀河は、平均より赤い色をしています。遠い銀河ほど光が赤い側にずれるので、式は「赤いから遠い」と判断しました。</p>
-<div id="91fcf74e" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>plt.bar(push.index, push)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;予測への寄与&#39;</span>)</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<figure class="figure">
-<p><img role="img" src="data:image/png;base64,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5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATtWKsD9lypQ488wzY++9947BgwfHo48+WuVj77jjjth1111j7NixlZg5AADUnKIP+w8//HB07do1Zs+eHSeddFJ069YtDjnkkBg6dGiVjX3jjTfiiiuuiH/961/xxRdfFPDZAABA9WkYReybb76Jww8/PDv+9Kc/ZZfttdde0a5duzjqqKNi3333jZ49exZ07LfffhsHH3xwjBo1KgYNGlTFzxAAAOroyv6dd94ZP/zwQ5xzzjnLXP6f//mfsd566y0J8YUaW1JSEkcccUT07ds39txzz5g/f34Bnw0AAFSvol7Zf/7556NDhw7RpUuXZS5v1KhRVk//7LPPFnTs8OHD45NPPon77rsv+/PixYtXOceFCxfGokWLlvx57ty5q/XcAACgTq/sf/755/GLX/yizOvat2+f1dOvKJCXd+wzzzwTV199ddx///3RtGnT1Z7jsGHDolmzZkuOVq1arfZYAACos2E/rZrXr1/2FNdcc8346aefVriSXp6x06ZNy+rzR48eHZtuumm55njBBRfEnDlzlhwzZ84s13gAAKiTZTypDOfdd98t87q0kXbttdfOgntlxqYSnNShZ7fddsvKe6ZPn16uOaayoHQAAECuV/YnT54c2267bcHuL9Xbp3KctGL+c2+//fZy9fgVGfv666/Hiy++GPfee29W3rP0kTboXnTRRbHZZpvFX//614I9LwAAKMqwv2DBgvj444/LvC7VwKee9oWSToI1b968ePDBB5e5PK2+jx8/Pru+smM33njjuOmmm8o8GjZsGHvssUecddZZWY9+AACoTeqVpH6T5TBp0qQYMGBA9rM811XUPvvsE++8806MGzcu23Cb6uxT2c2ECRPirbfeihYtWmS3S6H+f/7nf+KMM87IeuiXZ+yKNGnSJP74xz/Gscceu9rzTY+RNuqmbxTKs9EXKqPTUGd6LjZTR/Sv6SkAkGOrmzkrXbP/4YcfZn3p04PUq1cvPvvsszjwwAOjbdu20alTp9h5551jxx13rPD933333XHcccdlpTRpdX3KlCmx4YYbxhNPPLFMWE8lOynUH3rooeUeCwAAeVTpsJ82uKbSnvPOOy8r70nlLy1btsw63Dz33HNx7rnnZu0pzz///Ardf9pIm+rpv/zyy+z+W7duHZ07d17udvvvv39sscUWsckmm5R77Io8+eSTK90XAAAAue/Gs84668SQIUOy8p2HH344C/ylbr311hg1alSFw36p9E1BOlakY8eO2VGRsSuyyy67lHsMAADUmT77W2+9dVU/BAAAUBNhP/W6b9euXVU/DAAAUN1h//HHH49tttmmqh8GAACoaNhPPeufeuqp+Prrr1d3SLZxN23U3XvvvVd7DAAAUM0bdKdOnRp77bVX1n0ntdlMLS632mqrlbawbNy4cTz99NMFmioAAFAlYT/1qv/hhx9i4sSJ8eabb8Ybb7wRN998c9a7Pp1pduTIkbHffvuV68EBAIAiab2Zzijbo0eP7Fj6pFrpJFXrr79+VcwPAACoqT776SRVpSeqSn32AQCAOtKNBwAAyEHYT3X9VvcBACBnYX/hwoXx6aefFuruAACA6q7ZnzVrVtx1113Z7zvttFPWfjNJXXkGDBhgZR8AAGpr2J8+fXqcffbZ0bVr16zHfgr7JSUlVTM7AACgervxbLjhhjFmzJi48MILY/DgwVm//ddffz1mzJgRp5122nIn1jr44IOXadcJAAAUcevNOXPmxCuvvJL9PmrUqOjVq1dWt5/OtLu01If/xRdfzA4AAKAW9dl/6aWXshX94447Lp5++ul46KGHlrk+nWn3qKOOquzDAAAA1d2N584778xKd9LZdcsybdq0WG+99Sr7MAAAQFWG/VS6k45kwYIFWdnO3/72t/jNb36z5DaTJ0/Ogn86unfvHvXr149TTz21vPMCAACqM+xvvPHGse2222a/9+nTJz766KP45S9/Ga1atVpym8WLF0e7du3i7rvvjvnz50e/fv1i3333rew8AQCAqgz7jz32WNxzzz1LyndSec4XX3wRl19++TK3S6v6qTUnAABQSzbobrPNNtGsWbPs94022ihatmwZTzzxRNZrv2fPnlU1RwAAoCY26Kae+6lU54EHHqjsXQEAAMUU9kvr91977bUlf06lPeecc07289prry3EQwAAANXVZz+V82y33XbZ72mTbseOHWPSpEnZZt0TTjghu/xXv/rVMpt3AQCAIg/7n376aRxxxBFLQv2uu+6adeAZMGBAtml3xIgRhZ4nAABQ1WG/TZs2cfHFFy/ZpAsAAOQk7KcOPEOHDi2zB//jjz9eqHkBAADFsEE3ady4sZV+AADIwwbdUt99910899xzMX369Fh77bWjR48e2So/AABQS8P+okWLsjPnXn311TFv3rxlrtttt93ixhtvjM6dOxdijgAAQHWW8QwZMiSuueaauOSSS2LKlClZ4E999W+//faYOnVq1pbz/fffr+jdAwAAlVSvpKSkpLyDxowZE4MGDYrnn39+Sa/9pc2cOTN23nnnWGuttWL8+PFRr169qCvmzp2bnYNgzpw50bRp05qeDnVEp6Fja3oK/MzUEf29JgDUeOas0Mr+73//+zjjjDPKDPpJOpHWrbfeGq+++qoOPQAAUEPqV+RTxMsvvxyDBw9e6e2233776NmzZ9x1112VmR8AAFBdYT913UmbcydOnBivv/569tXBivTv3z/r1AMAANSCbjwNG/7/IUcffXS2KbdBgwbRrVu32GOPPeKggw6KX//610tu+x//8R/Rq1evws4YAACompX9Nm3aZIH/tddei88//zzGjh0bBxxwQLaCn0p3Up/9dFmSgn/v3r3L+xAAAEBNhP011lgjdthhh3jooYeiQ4cO2Yr+RRddFC+99FJ89NFH0adPnxg4cGBW0z9//vxCzBEAAKiACnXjOfbYY7OTaaX6/aVtuOGGMXLkyJg8eXJ8/PHHWQ9+AACgFoX9ww47LLp27RoDBgyI7777brnr04r/iBEjYty4cYWYIwAAUF1hP9Xs//Wvf40ff/wxttxyy7jzzjtj9uzZ2XULFy6MJ554Io477rhVtucEAACKLOwn7du3jxdffDH69euXlfU0b9481ltvvexMXunsuqecckqcdNJJhZ0tAABQda03l7bOOuvE6NGjY/jw4dkG3a+//jr7EJDababQDwAA1NKwX6pFixbZCj8AAJCDMh4AAKCOhf0PP/wwTj/99GyjLgAAkKOwn06wddNNN8WMGTMKfdcAAEB11+yXSt157r333qzHfseOHQt51wAAQE2t7M+fPz9rwbnppptmZTwAAEBOVvbPPvvsmDRpUjz11FPRqFGjQt0tAABQkyv799xzT1x33XXZin7fvn0LcZcAAEBNh/1XXnklK9/Zaaed4qqrrqrs3QEAAMUQ9j/44IPo379/NG/ePO67775o2LCg+30BAIBKqHA6X7RoUeyzzz7xzTffxLPPPhvt27evzDwAAIBiWdn/8ccf49NPP42tt946dtlll8LOCgAAqLmw36JFi7jrrrvinXfeyXrrAwAAOarZP+CAA+LGG2+MwYMHx2233Va4WQEAAJVW6R21hx9+eHz33XdxzDHHRLNmzeKQQw6p/KwAAIBKK0j7nJNPPjlef/31OOKII6JDhw5ZG85CSpuB/+///i/ef//9rHxo7733jtatWxd87Lx58+KJJ56Ijz/+ONZaa63YZpttsgMAAOrsSbWS66+/PuvO07hx4yik1N4zbQJOZ+j97LPP4u67746NNtooHnnkkYKOTR8IOnbsGMOGDYtPPvkk6zC04447Zt9ULFy4sKDPCQAAqkPBGuM3bdo07r///iiktCq/7777RsuWLeOZZ56JNdZYI7v8zDPPjEGDBmWbgzt16lTpsdOnT4/9998/TjzxxGVODDZkyJDo3bt3bLvttnHuuecW9LkBAECtWdmvCunDw6RJk2LEiBFLwnpy4YUXxk8//RQ33HBDQcaWlJRkl19++eXL3MfOO+8cnTt3jueee67gzw0AAIpqZT+VwUycOLFcD5CCdlpJ32yzzco7t3jyySdjnXXWiV69ei1z+brrrht9+/aNMWPGxPDhwys9Np0QbOjQocvdx5w5c2LGjBmx5557rnCOqcQnfYtQau7cueV+ngAAUONhf9asWVnJS3mk1fVU/16R1fEPP/wwfvnLX0b9+st/AfGLX/wiK8+pirFJCvDHH398Vp50/vnnr/B2qcb/sssuW+VzAQCAog77J510Urkf4LXXXosTTjghKmL27Nmx5pprlnldq1atsu456Uy+qXNOIcemzbzp24i0qj9u3Lho167dCud4wQUXLFPPn1b20/0DAECt26CbWlimFe9VufXWW7PON2+99Va0bdu2QpNbb731suBdlu+//z4rESorrFdm7KOPPpq1EB0wYEA8/vjj0bx585XOsVGjRtkBAAC1PuynVet0xtxVST3tk9TXPp14qyI22GCDGD9+fCxevHi5cpzUHjOV4xRybGofmmr3b775ZicHAwCgbnXjSSUqqQY/bbZd2ZFORJU2wj744IOx6667xrRp0yo0uf322y87O+8//vGPZS6fP39+tgcgrb4Xaux9992X9eNPq/nOAgwAQJ1b2U8r4qmTTZcuXWLBggXZn8v6Pa2kH3PMMXHppZfGFVdcEeuvv36FJrfXXntl95m65uyyyy7RsOH/n+6VV16Z1dwvXU6U9gb8/e9/j379+mUfNsoz9ssvv4xjjz02fve73y3XvQcAAOpMGU+qw3/77bezFf60Or6i33/1q1/FCy+8kAXvimrQoEHWIjMF+B122CFrgZlaf6az3d5+++1ZD/xSL7/8clx00UXRunXr7DHLMzb13E8fAFKnof/6r/9abh7pw8vKOvIAAECuz6D7c6l3faqbr6wtttgi3nvvvXjkkUdiypQp2Yr96NGjo0OHDsvcrkePHllnnHS22/KO3W677eKcc87Jeuan4+fSBwcAAKht6pWk08euprRqv9NOO8WQIUNi5syZ2Vlqy/o99dXffvvts842qTTmyCOPjLoi7Wto1qxZdkKu1KMfqkOnoWO90EVm6oj+NT0FAHJsdTNn/fJ24jnqqKOykpfUw35Fv6d6/VQqc80112QfAE4//fRCPCcAAKCqynhS7/qRI0fG3XffnbXfLOvstP/85z9j8803z35PHwBSjX/6EAAAAFSvcq3sp4qfFPJ/+9vfZptdk1QT361bt6ynfTprbVrVTzXxKei/+uqr0bt379hjjz2qav4AAEAhwn5a1U/dbFKXne7du2f981MrzrQRd8stt8xKeN5555144IEHYsaMGdnG13333Tf+9a9/ledhAACA6g77adX+ySefzLrcJOmkWZtssknW4rJ0Y0Aq7Uldbx577LEYN25cFvpfeeWVQswVAACoqm48ZUkn0WrcuHFl7iJXdOOhJujGU3x04wGg1nXjKYugDwAAxanSYT9JPfYXL15ciLsCAACKJexPnjw5DjnkkNhnn33i+++/L8ysAACA6g37pa01Fy1atOSytKLfrl27mDp1anZ23a+++qryswIAAKo37H/22Wdx6623xhVXXLHM5euss0689NJLse6662atOGfOnFn5mQEAANVbxtOmTZsYPXp0TJgwYbnA/8gjj2S/v/HGG5WbFQAAUP1hP63eX3vttXHSSSfF/Pnzl+mhnwJ/OpPu7rvvXvmZAQAAldKwIoMOPfTQuOWWW6JPnz7x4YcfRqNGjeKhhx4q87bNmzePXr16RZMmTSo3UwAAoOrDfnL++ednYf/666+PE044IQ466KDlbpPO15U28A4cODDuueeeij4UAABQna0377jjjvjNb34Tu+66a2y66aZZh56fHz/99FOMGTMmJk2aVNGHAQAAqnNl/5133okHHngg3n///Zg1a9ZKb5sCf9u2bSs6PwAAoDpX9tdcc80YMWJE1l9/db4BsGEXAABqycp+p06dsjr9VUk1+xdddFF07969Ig8DAABUV9hv0KBBrL322qt9+3r16kWPHj0qMi8AAKA6y3i6dOmyTF99AAAgh914SqWV/v79+xdmNgAAQPGE/Q4dOsQ111xTmNkAAADFE/YBAIDiJOwDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQUw2jlpg7d25MmTIlWrRoEeuvv36Vja3M4wBUt05Dx3rRi8zUEf1regoAtWdlf/bs2XHKKadEq1at4rDDDouuXbvGTjvtFB999FFBx1bmcQAAoBgVfdg//PDDY8yYMTFhwoTs+Pe//x2NGzeO3XffPX744YeCja3M4wAAQDEq6rD/3HPPxYMPPhhXX311dOnSJbusefPmceONN2Yr7rfffntBxlbmcQAAoFjVKykpKYkidfrpp8fo0aPj22+/jaZNmy5zXc+ePWPRokXxyiuvVHpsZR5n4cKF2fVL1/ynUqALLrggGjVqVOHnDgAAK5Iy6LBhw2LOnDnL5ddas7L/1ltvRefOnct8AptttllMnjy5IGMr8zjpRW7WrNmSIwV9AAAoBkXdjSettK+77rplXte2bdv47rvvsk8zKWRXZmxlHiet4J977rllruyv7FNWVdCVo/joygFUBX/f192/8733xWlqDXThSpkzLTrX6rCf6ua///77Mq+bP39+NGjQINZYY41Kj63M46RSHeU6AAAUo6Iu40l97qdPn17mdV9++WW26p6CeGXHVuZxAACgWBV12O/du3cWwt97773lrnv++eez6wsxtjKPAwAAxaqow/6gQYOyEpvrr79+mctTP/zPPvssjj/++GVW4F9++eWYMWNGuceW57YAAFBbFH3N/k033ZSd8CrVzO+9994xceLEbPPrySefvMyK+/3335+dATe10BwyZEi5xpbntgAAUFsUddhPBg4cGBtvvHH86U9/iksvvTRat24df/7zn+Pggw9e5nbt2rWL7bffPquvL+/Y8t4WAABqg6IP+0mPHj2yY2UOOuig7KjI2IrcFgAAil2tCPsAADh/CznboAsAAFScsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5FTDmp4AAFA+U0f095IBq8XKPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU7Ui7D/88MPRu3fvaNeuXWy22WZx6aWXxoIFCwo69qefforrrrsudtxxx+y2nTt3jkMOOSTefffdKnhGAABQ9Yo+7A8fPjwL3YcffnhMnDgxRo0aFX/+859j//33j8WLFxds7MEHHxwjR46Ms88+OyZMmBAPPvhgzJkzJ7bZZpt46623qvhZAgBA4dUrKSkpiSL10UcfxSabbBKXXHJJXHTRRUsuf+aZZ6Jv374xZsyYLLhXduybb74ZPXv2jHHjxsV222235LYp7Hfo0CEGDBgQt91222rNee7cudGsWbNsbNOmTaM6dRo6tlofj1WbOqK/lwkAKLjVzZxFvbJ/1113ZSvwxx9//DKX9+nTJyuzufnmmwsyduutt45vvvlmmaCfpBewbdu28fXXX6/wcRYuXJi92EsfAABQDIo67I8fPz422mijaNOmzXLXpWD+2muvFWxsWZ+I0n188MEHMWjQoBU+zrBhw7IPBaVHq1atVuOZAQBAHQ/7M2bMyDbLlqV9+/bx1VdfrXCjbmXGJk8//XT069cvTjjhhDjssMNWeLsLLrgg+/qk9Jg5c+YqnxcAANSZsL/pppvGWmutteS48sors8sbNGgQixYtKnNMui5tN1jRJt2Kjk1deVKN/z777BMXX3xxtql3ZRo1apR9K7D0AQAAxaBhFIG0QXbp4N24cePsZ8eOHVdYqpNW0FPJTJMmTcq8viJjU93+QQcdlH0rkEp4unXrVolnBQAANasoVvZTrfvSK/ulYb979+7x+eefZyU3P/fqq6/GlltuucL7LO/YWbNmZV160uOn6wV9AABqu6Juvfnpp59mm2z/+7//O04//fQll7/99ttZWL/zzjtXWE9f3rGpvWZa8U+tOVNpTkXVZOtNAADqhrl5aL25wQYbxKmnnpqd9fbvf/97Vmf/3nvvxaGHHpp11Eknwip14403Zqvy6aRZ5R07duzYePTRR+OWW26pVNAHAIBiUhQ1+yuTVuZT95zUL3/atGmx5pprxsCBA+Oqq65aUu6TpM46s2fPzvrel3fss88+m+0ZSP32y9KwYcOszAcAAGqToi7j+bkU5Fe08p6umz9/frbpNoXz8oxNHxRW1oazXr162QeF1aGMBwCAqra6mbPoV/aXtrISm3Tdqq5fkbTKv/RKPwAA5EFR1+wDAAAVJ+wDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQUw1regJ5U1JSkv2cO3duTU8FAICcKs2apdlzRYT9Aps3b172s1WrVoW+awAAWC57NmvWLFakXsmqPg5QLosXL45Zs2ZFkyZNol69el69Cn5STR+WZs6cGU2bNvUa1iHe+7rJ+153ee/rLu995aUIn4J+ixYton79FVfmW9kvsPRit2zZstB3WyeloC/s103e+7rJ+153ee/rLu995axsRb+UDboAAJBTwj4AAOSUsE/RadiwYVxyySXZT+oW733d5H2vu7z3dZf3vvrYoAsAADllZR8AAHJK2AcAgJwS9gEAIKeEfQAAyClhHwAAckrYB6Ao3X777TFkyJBYtGhRTU+FShg2bFhceumlXkOoIVpvAlCUjjrqqCzwz507N5o0aVLT06GCttpqq5g3b15MmjTJawg1wFmLqPW++eabaNmyZU1Pg0r49ttvY9111/Uasowjjzwydthhh2jUqJFXpha78MIL46effqrpaUCdZWWfavHKK6/ELbfcEiNGjIgWLVosufyJJ56IRx55JEaNGrVa9/Pwww/H+PHjY+HChdG5c+e47rrrYvr06fH1119X4ewplAULFsT//u//xsSJE6Nx48bRvn377Cv+LbbYIp566qkVjvvHP/6Rvfe///3v4+WXX87u45xzzomOHTt6c2qRv/zlL/H555/H2WefHX/729/i8ccfz/7fr1evXk1PjSIwYcKEGD169HKXr7POOjFy5MgamRNVI/3b/+yzz2aZ4Pnnn4977703LrvssmjVqpWXvAqo2adaTJ48OW644Yb48ccfl7n8zTffzC5flZKSkhgwYECceOKJseaaa2bh4Iwzzog2bdpk90Hx+/777+PXv/51FtjT+zZjxow47bTT4sADD8xC4Mq8/fbbcccdd2T/OKRVwvQtQLoPapfnnnsuHn300bj++uvj7rvvji5duqw06P/ud7+LHXfcsVrnSOEdd9xxccwxx6zydinUp5Kf0qNbt25xzz33xLvvvuttyZn073ZatEl/H1x55ZWx3nrr+Ya+CinjoVZIq/9pZfe9996LzTbbLLssBcdDDz00W+Wn+KWQn76FmTJlSjRv3jy7LAX2tJKXvqFZlfRNwM0335ytBivrqL3mz58fr732WhbiViV9IPzggw+qZV5Unc8++2y1Nll36tQp25BdKq30JmWt9lP7NWzYMFvoSYG/QYMGNT2dXBP2KSrnnXdeVr9dau+9986Od955J1vNLQ36yfbbb5+t+KcwsPHGG9fQjFld6T1M5TqlQb/0PRw+fHh89dVXsdZaa8WZZ565zJgTTjghunfvnv2ePij069dP0K/lUhne0t/mpW/90gr+0q644opspY98euaZZ+K+++5b8ue0+foPf/jDMrdJ5Xrpv4Obbrop1l9//RqYJVXto48+yv7fF/SrnrBPUenatesypT7t2rXLfm6yySbZh4BU27fzzjsvWe1PK7wpQFL80nv45JNPxr///e8l/3inuu0OHTpE27Zts24d6av7n3+tv7S+fftW65wpvFSTW/oBLkkf8n7+vq+xxhpe+hxLH+SWfs9//k1d6r6UNmfvsccecfTRR9fADKkuffr08WJXA2GfojJ48OAyLz/ggAOy63bfffdspT8Fw7ShM60K2KRZO6RNmWlFL/0jn/4Rnzp1alaLW1rOkVb3lv4KvyxLb+6mdvr5e5g+7K3qfSdfUi1+Olbk3HPPzUq40t8X5Fda0V/6m16qjrBPtSj9H/rnG3TThsvVkco8UqeGtJEnrQw2a9Ys6+Kx4YYbVsl8KbwPP/wwZs2alXVfSH/Jp3apvXr1itatW3u5gSX/Jvzxj3+M2267zUIOFIiwT7VIqzip60ZajS+tu0/dOFJLxdUxbty4rF1jat2YWm6mr4GFxNrlgQceiGnTpi0p10of2qzqAKV++OGHrGxn4MCBccQRR3hhoECEfapF2kCbvppN7TJTcE9tGNPJsFK3hdRKcVX222+/OPnkk5c7OUsKjddee626v1rg1FNPzcp2Uhu+UvXr189W91OXnVTTD9Rd559/fnzyySfRs2fP5Uq7rrrqqlh77bVrbG5Qmwn7VJvUdWXQoEFZOU6qs991112zTjqrc/bbdAKOBx98MOvVnAJ+6sKT2rndeeed2X1++eWX1fIcqLj0TU5quXjWWWfFBhtskLVMnTRpUvYennLKKdl7vCK77bZb1n5Py83a7bDDDovevXuv9u3333//2Hzzzat0TlS93/72t7F48eJV3i7t5Ul/v5fF//v5sueee+qrX42cQZdaIX0wSH2aX3jhhWUuv/zyy7MVn/RNQVolprg3ZqZN1qke9+ebr1NbzZdeeqnG5gYAeWVln1ohlf8cddRR0aNHj6zVZlolShs+05lV00ZdQb/4pRKsiy++OFvNTxurU0elt956K2bOnBn3339/TU8PAHLJyj61Rtqcm1Z/U/lO0r59+6zeu2nTpjU9NVZT+gbmxRdfzMquUi/1VM6zww47OKkKAFQRYR8AAHJKkTMAAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AAAQ+fT/AD1M6pwHDFM6AAAAAElFTkSuQmCC" class="img-fluid figure-img"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="todo③銀河の番号を替える予想-実行-比べる" class="level3">
-<h3 class="anchored" data-anchor-id="todo③銀河の番号を替える予想-実行-比べる">TODO③：銀河の番号を替える（予想 → 実行 → 比べる）</h3>
-<p>5番目の銀河（番号4）は、実際の赤方偏移が0.038の、近い銀河です。まず、予想を書いてください。この銀河では、どの列がいちばん効いて、予測を押し下げる（近いと言う）でしょうか。</p>
+<section id="todo③rと組む色を替える予想-実行-比べる" class="level3">
+<h3 class="anchored" data-anchor-id="todo③rと組む色を替える予想-実行-比べる">TODO③：rと組む色を替える（予想 → 実行 → 比べる）</h3>
+<p>6節では、5色を一緒に入れると、rの係数が分け方で揺れました。2色だけの式でも、同じことが起きるでしょうか。下のセルは、uとrの2色の式を20通りの分け方で作り、rの係数の最小と最大を出します。6節の相関の表で、uとrの相関は0.758、rとiの相関は0.988でした。</p>
+<p>まず、予想を書いてください。rを、相関の強いiと組ませると、rの係数の揺れはどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
-<p>予想を書いたら、下のセルの<code>k = 7</code>を<code>k = 4</code>に替えて実行してください。</p>
-<div id="99a200f1" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: k = 7 を k = 4 に替えて実行する</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">7</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>gal <span class="op">=</span> df[colors].iloc[k]</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_c <span class="op">*</span> (gal <span class="op">-</span> df[colors].mean())</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(avg <span class="op">+</span> push.<span class="bu">sum</span>(), <span class="dv">4</span>), df[<span class="st">&#39;赤方偏移&#39;</span>][k])</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(push.<span class="bu">round</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>予想を書いたら、下のセルの<code>[&#39;u&#39;, &#39;r&#39;]</code>を<code>[&#39;r&#39;, &#39;i&#39;]</code>に替えて実行してください。</p>
+<div id="0bc9513a" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: [&#39;u&#39;, &#39;r&#39;] を [&#39;r&#39;, &#39;i&#39;] に替えて実行する</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;u&#39;</span>, <span class="st">&#39;r&#39;</span>]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>coefs_x <span class="op">=</span> []</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    coefs_x.append(r_coef(cols_x, s))</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(<span class="bu">min</span>(coefs_x), <span class="dv">3</span>), <span class="bu">round</span>(<span class="bu">max</span>(coefs_x), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.1422 0.1514
-u-g   -0.0213
-g-r    0.0717
-r-i    0.0014
-i-z   -0.0140
-r     -0.0026
-dtype: float64</code></pre>
+<pre><code>-0.016 -0.012</code></pre>
 </div>
 </div>
 </section>
 <section id="やってみよう予想と比べる-2" class="level3">
 <h3 class="anchored" data-anchor-id="やってみよう予想と比べる-2">やってみよう：予想と比べる</h3>
-<p>実行した結果を、予想と比べてください。この銀河が近いと出た理由を、寄与を使って1〜2文で説明してください。</p>
+<p>実行した結果を、予想と比べてください。uと組ませたときと、iと組ませたときで、rの係数の揺れが違うのはなぜか、1〜2文で説明してください。</p>
 <p>（ここに答えを書く）</p>
-<p>番号4の銀河の予測は0.0823で、実際は0.03825です。g − rの寄与が−0.1366で、大きく押し下げています。この銀河は平均よりずっと青い色をしているので、式は「青いから近い」と判断しました。</p>
-<p>一方で、i − zは+0.0702と押し上げていて、予測は実際より遠めに外れました。青い色の銀河は、星を盛んに作っている銀河に多く、赤い年老いた銀河とは光の分布が違います。こうした銀河は、5色の直線の式では当てにくいのです。</p>
+<p>uと組ませると、rの係数は−0.016〜−0.012で、ほとんど揺れません。iと組ませると、0.149〜0.438と大きく揺れます。</p>
+<p>rとiは相関が0.988で、ほとんど同じことを言う2色です。2色だけの式でも、式は2つに手柄をどう分けるかを決められず、分け方しだいで係数が大きく変わります。係数を揺らすのは、列の数ではなく、列どうしの相関です。</p>
 </section>
 <section id="ここまでで分かったこと-3" class="level3">
 <h3 class="anchored" data-anchor-id="ここまでで分かったこと-3">ここまでで分かったこと</h3>
@@ -4477,7 +4418,7 @@ dtype: float64</code></pre>
 <td>交差検証で比べると、5色の式（0.0191）がuを外した式（0.0223）に勝つ</td>
 </tr>
 <tr class="even">
-<td>説明する（6〜8節）</td>
+<td>説明する（6・7節）</td>
 <td>5色の係数は多重共線性で読めない。色の差に作り直すと、予測は同じで係数が読める</td>
 </tr>
 </tbody>
@@ -4487,12 +4428,12 @@ dtype: float64</code></pre>
 <section id="答え" class="level3">
 <h3 class="anchored" data-anchor-id="答え">答え</h3>
 <p>写真の5色だけで、赤方偏移は交差検証で平均0.0191の外れで当たります。距離に直すと約2.7億光年で、14億光年ほど先の銀河までの距離を、分光せずに見積もれます。</p>
-<p>ただし、5色の等級をそのまま入れた式の係数は、多重共線性で読めません。隣り合う色の差とrで作り直すと、予測は同じまま、係数が読めます。8番目の銀河は、g − rが赤いことで、遠いと出ました。</p>
+<p>ただし、5色の等級をそのまま入れた式の係数は、多重共線性で読めません。隣り合う色の差とrで作り直すと、予測は同じまま、係数が読めます。rの係数はプラスで「同じ色なら暗いほど遠い」、g − rの係数もプラスで「赤いほど遠い」と読めます。</p>
 <p>まだ言えないこと</p>
 <ul>
 <li>遠い銀河ほど大きく外れる：大外れの半分近くは、赤方偏移が0.2を超える銀河だった。直線の式では表しきれない関係がありそう</li>
 <li>列を増やすと：色の差の二乗など、列を増やせば当たりは良くなるかもしれない。でも、列が増えるほど、似た列も増える</li>
-<li>青い銀河：星を盛んに作っている銀河は、赤い銀河と光の分布が違い、同じ式では当てにくい</li>
+<li>1個の銀河：この銀河が遠いと出た理由を、色ごとに言えるかは、まだ確かめていない</li>
 </ul>
 <hr>
 </section>
@@ -4507,6 +4448,7 @@ dtype: float64</code></pre>
 <li>5節の交差検証は、20回の分け直しと比べて、何が良いのでしょうか？</li>
 <li>6節で、rの係数が、rだけの式と5色の式で逆の符号になったのはなぜですか？</li>
 <li>7節で、色の差に作り直すと、予測と係数はそれぞれどうなりましたか？</li>
+<li>TODO③で、rをuと組ませたときとiと組ませたときで、係数の揺れが違ったのはなぜですか？</li>
 </ul>
 <hr>
 </section>
@@ -4516,6 +4458,7 @@ dtype: float64</code></pre>
 <li>今日、持ち帰る1文：写真の色だけで、銀河までの距離はかなり当たる。ただし、その成績は交差検証で確かめる。相関の強い列を一緒に入れると（多重共線性）、予測は良くても係数は読めない</li>
 <li>絶対1：交差検証。1回の分け方の数は揺れる。全部の行を1度ずつテストに回し、2つの式は同じ組どうしで比べる</li>
 <li>絶対2：多重共線性。相関の強い列を一緒に入れると、係数は揺れて読めない。意味の違う列に作り直すと、予測は同じまま係数が読める</li>
+<li>2つの絶対はつながる：r・i・zは、どれを外しても交差検証のMAEがほとんど変わらなかった（5節）。この3色は相関が0.988・0.993と強い（6節）。外しても当たりが変わらない列どうしは、多重共線性を疑う</li>
 <li>係数は「ほかの列を同じにしたまま、その列を1増やすと、予測がどれだけ変わるか」</li>
 <li>MAEは平均の外れ。大外れは1個ずつ見る。データが少ないほど、1回の分け方の数は揺れる</li>
 <li>Python：1回分を返す関数を作り、<code>for</code>でくり返して、結果をリストに<code>append</code>でためる</li>
@@ -4570,6 +4513,72 @@ dtype: float64</code></pre>
 </section>
 <section id="発展任意" class="level2">
 <h2 class="anchored" data-anchor-id="発展任意">発展（任意）</h2>
+<section id="個の銀河を説明する予測を列ごとの寄与に分ける" class="level3">
+<h3 class="anchored" data-anchor-id="個の銀河を説明する予測を列ごとの寄与に分ける">1個の銀河を説明する：予測を、列ごとの寄与に分ける</h3>
+<p>7節で、係数が読める式ができました。その式で、1個の銀河について、予測の理由を説明します。</p>
+<p>平均的な銀河とは、どの列も1,000個の平均<span class="math inline">\(\bar{x}_j\)</span>の値をもつ銀河です。ある銀河の予測<span class="math inline">\(\hat{y}\)</span>は、平均的な銀河の予測に、列ごとの寄与を足したものになります。</p>
+<p><span class="math display">\[
+\hat{y} = \hat{y}_{\text{平均的な銀河}} + \sum_j b_j (x_j - \bar{x}_j)
+\]</span></p>
+<p><span class="math inline">\(b_j(x_j - \bar{x}_j)\)</span>が、列<span class="math inline">\(j\)</span>がこの銀河の予測を平均よりどれだけ押し上げたか（マイナスなら押し下げたか）です。</p>
+<ul>
+<li>役割：銀河の番号<code>k</code>の銀河について、列ごとの寄与と、予測・実際の赤方偏移を表示する</li>
+<li>入力：色の差の式<code>m_c</code>、係数<code>coef_c</code>、表<code>df</code>、銀河の番号<code>k</code></li>
+<li>出力：平均的な銀河の予測、この銀河の予測と実際の赤方偏移、列ごとの寄与</li>
+</ul>
+<p><code>df[colors].iloc[k]</code>は、<code>colors</code>の列だけの表から、<code>k</code>行目の銀河を取り出します。上の式を、そのまま写しています。</p>
+<div id="7eaeba33" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>avg <span class="op">=</span> m_c.predict(df[colors]).mean()   <span class="co"># 平均的な銀河の予測</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">7</span>                                  <span class="co"># 銀河の番号（0から数える）</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>gal <span class="op">=</span> df[colors].iloc[k]</span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_c <span class="op">*</span> (gal <span class="op">-</span> df[colors].mean())   <span class="co"># 列ごとの寄与</span></span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(avg, <span class="dv">4</span>), <span class="bu">round</span>(avg <span class="op">+</span> push.<span class="bu">sum</span>(), <span class="dv">4</span>), df[<span class="st">&#39;赤方偏移&#39;</span>][k])</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(push.<span class="bu">round</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.107 0.1422 0.1514
+u-g   -0.0213
+g-r    0.0717
+r-i    0.0014
+i-z   -0.0140
+r     -0.0026
+dtype: float64</code></pre>
+</div>
+</div>
+<p>平均的な銀河の予測は0.107です。8番目の銀河（番号7）の予測は0.1422で、実際の赤方偏移は0.1514でした。</p>
+<p>いちばん押し上げているのはg − rで、+0.0717です。この銀河は、平均より赤い色をしています。遠い銀河ほど光が赤い側にずれるので、式は「赤いから遠い」と判断しました。</p>
+<div id="bb1083f5" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>plt.bar(push.index, push)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">&#39;gray&#39;</span>)</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;予測への寄与&#39;</span>)</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img role="img" src="data:image/png;base64,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5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATtWKsD9lypQ488wzY++9947BgwfHo48+WuVj77jjjth1111j7NixlZg5AADUnKIP+w8//HB07do1Zs+eHSeddFJ069YtDjnkkBg6dGiVjX3jjTfiiiuuiH/961/xxRdfFPDZAABA9WkYReybb76Jww8/PDv+9Kc/ZZfttdde0a5duzjqqKNi3333jZ49exZ07LfffhsHH3xwjBo1KgYNGlTFzxAAAOroyv6dd94ZP/zwQ5xzzjnLXP6f//mfsd566y0J8YUaW1JSEkcccUT07ds39txzz5g/f34Bnw0AAFSvol7Zf/7556NDhw7RpUuXZS5v1KhRVk//7LPPFnTs8OHD45NPPon77rsv+/PixYtXOceFCxfGokWLlvx57ty5q/XcAACgTq/sf/755/GLX/yizOvat2+f1dOvKJCXd+wzzzwTV199ddx///3RtGnT1Z7jsGHDolmzZkuOVq1arfZYAACos2E/rZrXr1/2FNdcc8346aefVriSXp6x06ZNy+rzR48eHZtuumm55njBBRfEnDlzlhwzZ84s13gAAKiTZTypDOfdd98t87q0kXbttdfOgntlxqYSnNShZ7fddsvKe6ZPn16uOaayoHQAAECuV/YnT54c2267bcHuL9Xbp3KctGL+c2+//fZy9fgVGfv666/Hiy++GPfee29W3rP0kTboXnTRRbHZZpvFX//614I9LwAAKMqwv2DBgvj444/LvC7VwKee9oWSToI1b968ePDBB5e5PK2+jx8/Pru+smM33njjuOmmm8o8GjZsGHvssUecddZZWY9+AACoTeqVpH6T5TBp0qQYMGBA9rM811XUPvvsE++8806MGzcu23Cb6uxT2c2ECRPirbfeihYtWmS3S6H+f/7nf+KMM87IeuiXZ+yKNGnSJP74xz/Gscceu9rzTY+RNuqmbxTKs9EXKqPTUGd6LjZTR/Sv6SkAkGOrmzkrXbP/4YcfZn3p04PUq1cvPvvsszjwwAOjbdu20alTp9h5551jxx13rPD933333XHcccdlpTRpdX3KlCmx4YYbxhNPPLFMWE8lOynUH3rooeUeCwAAeVTpsJ82uKbSnvPOOy8r70nlLy1btsw63Dz33HNx7rnnZu0pzz///Ardf9pIm+rpv/zyy+z+W7duHZ07d17udvvvv39sscUWsckmm5R77Io8+eSTK90XAAAAue/Gs84668SQIUOy8p2HH344C/ylbr311hg1alSFw36p9E1BOlakY8eO2VGRsSuyyy67lHsMAADUmT77W2+9dVU/BAAAUBNhP/W6b9euXVU/DAAAUN1h//HHH49tttmmqh8GAACoaNhPPeufeuqp+Prrr1d3SLZxN23U3XvvvVd7DAAAUM0bdKdOnRp77bVX1n0ntdlMLS632mqrlbawbNy4cTz99NMFmioAAFAlYT/1qv/hhx9i4sSJ8eabb8Ybb7wRN998c9a7Pp1pduTIkbHffvuV68EBAIAiab2Zzijbo0eP7Fj6pFrpJFXrr79+VcwPAACoqT776SRVpSeqSn32AQCAOtKNBwAAyEHYT3X9VvcBACBnYX/hwoXx6aefFuruAACA6q7ZnzVrVtx1113Z7zvttFPWfjNJXXkGDBhgZR8AAGpr2J8+fXqcffbZ0bVr16zHfgr7JSUlVTM7AACgervxbLjhhjFmzJi48MILY/DgwVm//ddffz1mzJgRp5122nIn1jr44IOXadcJAAAUcevNOXPmxCuvvJL9PmrUqOjVq1dWt5/OtLu01If/xRdfzA4AAKAW9dl/6aWXshX94447Lp5++ul46KGHlrk+nWn3qKOOquzDAAAA1d2N584778xKd9LZdcsybdq0WG+99Sr7MAAAQFWG/VS6k45kwYIFWdnO3/72t/jNb36z5DaTJ0/Ogn86unfvHvXr149TTz21vPMCAACqM+xvvPHGse2222a/9+nTJz766KP45S9/Ga1atVpym8WLF0e7du3i7rvvjvnz50e/fv1i3333rew8AQCAqgz7jz32WNxzzz1LyndSec4XX3wRl19++TK3S6v6qTUnAABQSzbobrPNNtGsWbPs94022ihatmwZTzzxRNZrv2fPnlU1RwAAoCY26Kae+6lU54EHHqjsXQEAAMUU9kvr91977bUlf06lPeecc07289prry3EQwAAANXVZz+V82y33XbZ72mTbseOHWPSpEnZZt0TTjghu/xXv/rVMpt3AQCAIg/7n376aRxxxBFLQv2uu+6adeAZMGBAtml3xIgRhZ4nAABQ1WG/TZs2cfHFFy/ZpAsAAOQk7KcOPEOHDi2zB//jjz9eqHkBAADFsEE3ady4sZV+AADIwwbdUt99910899xzMX369Fh77bWjR48e2So/AABQS8P+okWLsjPnXn311TFv3rxlrtttt93ixhtvjM6dOxdijgAAQHWW8QwZMiSuueaauOSSS2LKlClZ4E999W+//faYOnVq1pbz/fffr+jdAwAAlVSvpKSkpLyDxowZE4MGDYrnn39+Sa/9pc2cOTN23nnnWGuttWL8+PFRr169qCvmzp2bnYNgzpw50bRp05qeDnVEp6Fja3oK/MzUEf29JgDUeOas0Mr+73//+zjjjDPKDPpJOpHWrbfeGq+++qoOPQAAUEPqV+RTxMsvvxyDBw9e6e2233776NmzZ9x1112VmR8AAFBdYT913UmbcydOnBivv/569tXBivTv3z/r1AMAANSCbjwNG/7/IUcffXS2KbdBgwbRrVu32GOPPeKggw6KX//610tu+x//8R/Rq1evws4YAACompX9Nm3aZIH/tddei88//zzGjh0bBxxwQLaCn0p3Up/9dFmSgn/v3r3L+xAAAEBNhP011lgjdthhh3jooYeiQ4cO2Yr+RRddFC+99FJ89NFH0adPnxg4cGBW0z9//vxCzBEAAKiACnXjOfbYY7OTaaX6/aVtuOGGMXLkyJg8eXJ8/PHHWQ9+AACgFoX9ww47LLp27RoDBgyI7777brnr04r/iBEjYty4cYWYIwAAUF1hP9Xs//Wvf40ff/wxttxyy7jzzjtj9uzZ2XULFy6MJ554Io477rhVtucEAACKLOwn7du3jxdffDH69euXlfU0b9481ltvvexMXunsuqecckqcdNJJhZ0tAABQda03l7bOOuvE6NGjY/jw4dkG3a+//jr7EJDababQDwAA1NKwX6pFixbZCj8AAJCDMh4AAKCOhf0PP/wwTj/99GyjLgAAkKOwn06wddNNN8WMGTMKfdcAAEB11+yXSt157r333qzHfseOHQt51wAAQE2t7M+fPz9rwbnppptmZTwAAEBOVvbPPvvsmDRpUjz11FPRqFGjQt0tAABQkyv799xzT1x33XXZin7fvn0LcZcAAEBNh/1XXnklK9/Zaaed4qqrrqrs3QEAAMUQ9j/44IPo379/NG/ePO67775o2LCg+30BAIBKqHA6X7RoUeyzzz7xzTffxLPPPhvt27evzDwAAIBiWdn/8ccf49NPP42tt946dtlll8LOCgAAqLmw36JFi7jrrrvinXfeyXrrAwAAOarZP+CAA+LGG2+MwYMHx2233Va4WQEAAJVW6R21hx9+eHz33XdxzDHHRLNmzeKQQw6p/KwAAIBKK0j7nJNPPjlef/31OOKII6JDhw5ZG85CSpuB/+///i/ef//9rHxo7733jtatWxd87Lx58+KJJ56Ijz/+ONZaa63YZpttsgMAAOrsSbWS66+/PuvO07hx4yik1N4zbQJOZ+j97LPP4u67746NNtooHnnkkYKOTR8IOnbsGMOGDYtPPvkk6zC04447Zt9ULFy4sKDPCQAAqkPBGuM3bdo07r///iiktCq/7777RsuWLeOZZ56JNdZYI7v8zDPPjEGDBmWbgzt16lTpsdOnT4/9998/TjzxxGVODDZkyJDo3bt3bLvttnHuuecW9LkBAECtWdmvCunDw6RJk2LEiBFLwnpy4YUXxk8//RQ33HBDQcaWlJRkl19++eXL3MfOO+8cnTt3jueee67gzw0AAIpqZT+VwUycOLFcD5CCdlpJ32yzzco7t3jyySdjnXXWiV69ei1z+brrrht9+/aNMWPGxPDhwys9Np0QbOjQocvdx5w5c2LGjBmx5557rnCOqcQnfYtQau7cueV+ngAAUONhf9asWVnJS3mk1fVU/16R1fEPP/wwfvnLX0b9+st/AfGLX/wiK8+pirFJCvDHH398Vp50/vnnr/B2qcb/sssuW+VzAQCAog77J510Urkf4LXXXosTTjghKmL27Nmx5pprlnldq1atsu456Uy+qXNOIcemzbzp24i0qj9u3Lho167dCud4wQUXLFPPn1b20/0DAECt26CbWlimFe9VufXWW7PON2+99Va0bdu2QpNbb731suBdlu+//z4rESorrFdm7KOPPpq1EB0wYEA8/vjj0bx585XOsVGjRtkBAAC1PuynVet0xtxVST3tk9TXPp14qyI22GCDGD9+fCxevHi5cpzUHjOV4xRybGofmmr3b775ZicHAwCgbnXjSSUqqQY/bbZd2ZFORJU2wj744IOx6667xrRp0yo0uf322y87O+8//vGPZS6fP39+tgcgrb4Xaux9992X9eNPq/nOAgwAQJ1b2U8r4qmTTZcuXWLBggXZn8v6Pa2kH3PMMXHppZfGFVdcEeuvv36FJrfXXntl95m65uyyyy7RsOH/n+6VV16Z1dwvXU6U9gb8/e9/j379+mUfNsoz9ssvv4xjjz02fve73y3XvQcAAOpMGU+qw3/77bezFf60Or6i33/1q1/FCy+8kAXvimrQoEHWIjMF+B122CFrgZlaf6az3d5+++1ZD/xSL7/8clx00UXRunXr7DHLMzb13E8fAFKnof/6r/9abh7pw8vKOvIAAECuz6D7c6l3faqbr6wtttgi3nvvvXjkkUdiypQp2Yr96NGjo0OHDsvcrkePHllnnHS22/KO3W677eKcc87Jeuan4+fSBwcAAKht6pWk08euprRqv9NOO8WQIUNi5syZ2Vlqy/o99dXffvvts842qTTmyCOPjLoi7Wto1qxZdkKu1KMfqkOnoWO90EVm6oj+NT0FAHJsdTNn/fJ24jnqqKOykpfUw35Fv6d6/VQqc80112QfAE4//fRCPCcAAKCqynhS7/qRI0fG3XffnbXfLOvstP/85z9j8803z35PHwBSjX/6EAAAAFSvcq3sp4qfFPJ/+9vfZptdk1QT361bt6ynfTprbVrVTzXxKei/+uqr0bt379hjjz2qav4AAEAhwn5a1U/dbFKXne7du2f981MrzrQRd8stt8xKeN5555144IEHYsaMGdnG13333Tf+9a9/ledhAACA6g77adX+ySefzLrcJOmkWZtssknW4rJ0Y0Aq7Uldbx577LEYN25cFvpfeeWVQswVAACoqm48ZUkn0WrcuHFl7iJXdOOhJujGU3x04wGg1nXjKYugDwAAxanSYT9JPfYXL15ciLsCAACKJexPnjw5DjnkkNhnn33i+++/L8ysAACA6g37pa01Fy1atOSytKLfrl27mDp1anZ23a+++qryswIAAKo37H/22Wdx6623xhVXXLHM5euss0689NJLse6662atOGfOnFn5mQEAANVbxtOmTZsYPXp0TJgwYbnA/8gjj2S/v/HGG5WbFQAAUP1hP63eX3vttXHSSSfF/Pnzl+mhnwJ/OpPu7rvvXvmZAQAAldKwIoMOPfTQuOWWW6JPnz7x4YcfRqNGjeKhhx4q87bNmzePXr16RZMmTSo3UwAAoOrDfnL++ednYf/666+PE044IQ466KDlbpPO15U28A4cODDuueeeij4UAABQna0377jjjvjNb34Tu+66a2y66aZZh56fHz/99FOMGTMmJk2aVNGHAQAAqnNl/5133okHHngg3n///Zg1a9ZKb5sCf9u2bSs6PwAAoDpX9tdcc80YMWJE1l9/db4BsGEXAABqycp+p06dsjr9VUk1+xdddFF07969Ig8DAABUV9hv0KBBrL322qt9+3r16kWPHj0qMi8AAKA6y3i6dOmyTF99AAAgh914SqWV/v79+xdmNgAAQPGE/Q4dOsQ111xTmNkAAADFE/YBAIDiJOwDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQUw2jlpg7d25MmTIlWrRoEeuvv36Vja3M4wBUt05Dx3rRi8zUEf1regoAtWdlf/bs2XHKKadEq1at4rDDDouuXbvGTjvtFB999FFBx1bmcQAAoBgVfdg//PDDY8yYMTFhwoTs+Pe//x2NGzeO3XffPX744YeCja3M4wAAQDEq6rD/3HPPxYMPPhhXX311dOnSJbusefPmceONN2Yr7rfffntBxlbmcQAAoFjVKykpKYkidfrpp8fo0aPj22+/jaZNmy5zXc+ePWPRokXxyiuvVHpsZR5n4cKF2fVL1/ynUqALLrggGjVqVOHnDgAAK5Iy6LBhw2LOnDnL5ddas7L/1ltvRefOnct8AptttllMnjy5IGMr8zjpRW7WrNmSIwV9AAAoBkXdjSettK+77rplXte2bdv47rvvsk8zKWRXZmxlHiet4J977rllruyv7FNWVdCVo/joygFUBX/f192/8733xWlqDXThSpkzLTrX6rCf6ua///77Mq+bP39+NGjQINZYY41Kj63M46RSHeU6AAAUo6Iu40l97qdPn17mdV9++WW26p6CeGXHVuZxAACgWBV12O/du3cWwt97773lrnv++eez6wsxtjKPAwAAxaqow/6gQYOyEpvrr79+mctTP/zPPvssjj/++GVW4F9++eWYMWNGuceW57YAAFBbFH3N/k033ZSd8CrVzO+9994xceLEbPPrySefvMyK+/3335+dATe10BwyZEi5xpbntgAAUFsUddhPBg4cGBtvvHH86U9/iksvvTRat24df/7zn+Pggw9e5nbt2rWL7bffPquvL+/Y8t4WAABqg6IP+0mPHj2yY2UOOuig7KjI2IrcFgAAil2tCPsAADh/CznboAsAAFScsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5FTDmp4AAFA+U0f095IBq8XKPgAA5JSwDwAAOSXsAwBATgn7AACQU8I+AADklLAPAAA5JewDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQU7Ui7D/88MPRu3fvaNeuXWy22WZx6aWXxoIFCwo69qefforrrrsudtxxx+y2nTt3jkMOOSTefffdKnhGAABQ9Yo+7A8fPjwL3YcffnhMnDgxRo0aFX/+859j//33j8WLFxds7MEHHxwjR46Ms88+OyZMmBAPPvhgzJkzJ7bZZpt46623qvhZAgBA4dUrKSkpiSL10UcfxSabbBKXXHJJXHTRRUsuf+aZZ6Jv374xZsyYLLhXduybb74ZPXv2jHHjxsV222235LYp7Hfo0CEGDBgQt91222rNee7cudGsWbNsbNOmTaM6dRo6tlofj1WbOqK/lwkAKLjVzZxFvbJ/1113ZSvwxx9//DKX9+nTJyuzufnmmwsyduutt45vvvlmmaCfpBewbdu28fXXX6/wcRYuXJi92EsfAABQDIo67I8fPz422mijaNOmzXLXpWD+2muvFWxsWZ+I0n188MEHMWjQoBU+zrBhw7IPBaVHq1atVuOZAQBAHQ/7M2bMyDbLlqV9+/bx1VdfrXCjbmXGJk8//XT069cvTjjhhDjssMNWeLsLLrgg+/qk9Jg5c+YqnxcAANSZsL/pppvGWmutteS48sors8sbNGgQixYtKnNMui5tN1jRJt2Kjk1deVKN/z777BMXX3xxtql3ZRo1apR9K7D0AQAAxaBhFIG0QXbp4N24cePsZ8eOHVdYqpNW0FPJTJMmTcq8viJjU93+QQcdlH0rkEp4unXrVolnBQAANasoVvZTrfvSK/ulYb979+7x+eefZyU3P/fqq6/GlltuucL7LO/YWbNmZV160uOn6wV9AABqu6Juvfnpp59mm2z/+7//O04//fQll7/99ttZWL/zzjtXWE9f3rGpvWZa8U+tOVNpTkXVZOtNAADqhrl5aL25wQYbxKmnnpqd9fbvf/97Vmf/3nvvxaGHHpp11Eknwip14403Zqvy6aRZ5R07duzYePTRR+OWW26pVNAHAIBiUhQ1+yuTVuZT95zUL3/atGmx5pprxsCBA+Oqq65aUu6TpM46s2fPzvrel3fss88+m+0ZSP32y9KwYcOszAcAAGqToi7j+bkU5Fe08p6umz9/frbpNoXz8oxNHxRW1oazXr162QeF1aGMBwCAqra6mbPoV/aXtrISm3Tdqq5fkbTKv/RKPwAA5EFR1+wDAAAVJ+wDAEBOCfsAAJBTwj4AAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AACQUw1regJ5U1JSkv2cO3duTU8FAICcKs2apdlzRYT9Aps3b172s1WrVoW+awAAWC57NmvWLFakXsmqPg5QLosXL45Zs2ZFkyZNol69el69Cn5STR+WZs6cGU2bNvUa1iHe+7rJ+153ee/rLu995aUIn4J+ixYton79FVfmW9kvsPRit2zZstB3WyeloC/s103e+7rJ+153ee/rLu995axsRb+UDboAAJBTwj4AAOSUsE/RadiwYVxyySXZT+oW733d5H2vu7z3dZf3vvrYoAsAADllZR8AAHJK2AcAgJwS9gEAIKeEfQAAyClhHwAAckrYB6Ao3X777TFkyJBYtGhRTU+FShg2bFhceumlXkOoIVpvAlCUjjrqqCzwz507N5o0aVLT06GCttpqq5g3b15MmjTJawg1wFmLqPW++eabaNmyZU1Pg0r49ttvY9111/Uasowjjzwydthhh2jUqJFXpha78MIL46effqrpaUCdZWWfavHKK6/ELbfcEiNGjIgWLVosufyJJ56IRx55JEaNGrVa9/Pwww/H+PHjY+HChdG5c+e47rrrYvr06fH1119X4ewplAULFsT//u//xsSJE6Nx48bRvn377Cv+LbbYIp566qkVjvvHP/6Rvfe///3v4+WXX87u45xzzomOHTt6c2qRv/zlL/H555/H2WefHX/729/i8ccfz/7fr1evXk1PjSIwYcKEGD169HKXr7POOjFy5MgamRNVI/3b/+yzz2aZ4Pnnn4977703LrvssmjVqpWXvAqo2adaTJ48OW644Yb48ccfl7n8zTffzC5flZKSkhgwYECceOKJseaaa2bh4Iwzzog2bdpk90Hx+/777+PXv/51FtjT+zZjxow47bTT4sADD8xC4Mq8/fbbcccdd2T/OKRVwvQtQLoPapfnnnsuHn300bj++uvj7rvvji5duqw06P/ud7+LHXfcsVrnSOEdd9xxccwxx6zydinUp5Kf0qNbt25xzz33xLvvvuttyZn073ZatEl/H1x55ZWx3nrr+Ya+CinjoVZIq/9pZfe9996LzTbbLLssBcdDDz00W+Wn+KWQn76FmTJlSjRv3jy7LAX2tJKXvqFZlfRNwM0335ytBivrqL3mz58fr732WhbiViV9IPzggw+qZV5Unc8++2y1Nll36tQp25BdKq30JmWt9lP7NWzYMFvoSYG/QYMGNT2dXBP2KSrnnXdeVr9dau+9986Od955J1vNLQ36yfbbb5+t+KcwsPHGG9fQjFld6T1M5TqlQb/0PRw+fHh89dVXsdZaa8WZZ565zJgTTjghunfvnv2ePij069dP0K/lUhne0t/mpW/90gr+0q644opspY98euaZZ+K+++5b8ue0+foPf/jDMrdJ5Xrpv4Obbrop1l9//RqYJVXto48+yv7fF/SrnrBPUenatesypT7t2rXLfm6yySbZh4BU27fzzjsvWe1PK7wpQFL80nv45JNPxr///e8l/3inuu0OHTpE27Zts24d6av7n3+tv7S+fftW65wpvFSTW/oBLkkf8n7+vq+xxhpe+hxLH+SWfs9//k1d6r6UNmfvsccecfTRR9fADKkuffr08WJXA2GfojJ48OAyLz/ggAOy63bfffdspT8Fw7ShM60K2KRZO6RNmWlFL/0jn/4Rnzp1alaLW1rOkVb3lv4KvyxLb+6mdvr5e5g+7K3qfSdfUi1+Olbk3HPPzUq40t8X5Fda0V/6m16qjrBPtSj9H/rnG3TThsvVkco8UqeGtJEnrQw2a9Ys6+Kx4YYbVsl8KbwPP/wwZs2alXVfSH/Jp3apvXr1itatW3u5gSX/Jvzxj3+M2267zUIOFIiwT7VIqzip60ZajS+tu0/dOFJLxdUxbty4rF1jat2YWm6mr4GFxNrlgQceiGnTpi0p10of2qzqAKV++OGHrGxn4MCBccQRR3hhoECEfapF2kCbvppN7TJTcE9tGNPJsFK3hdRKcVX222+/OPnkk5c7OUsKjddee626v1rg1FNPzcp2Uhu+UvXr189W91OXnVTTD9Rd559/fnzyySfRs2fP5Uq7rrrqqlh77bVrbG5Qmwn7VJvUdWXQoEFZOU6qs991112zTjqrc/bbdAKOBx98MOvVnAJ+6sKT2rndeeed2X1++eWX1fIcqLj0TU5quXjWWWfFBhtskLVMnTRpUvYennLKKdl7vCK77bZb1n5Py83a7bDDDovevXuv9u3333//2Hzzzat0TlS93/72t7F48eJV3i7t5Ul/v5fF//v5sueee+qrX42cQZdaIX0wSH2aX3jhhWUuv/zyy7MVn/RNQVolprg3ZqZN1qke9+ebr1NbzZdeeqnG5gYAeWVln1ohlf8cddRR0aNHj6zVZlolShs+05lV00ZdQb/4pRKsiy++OFvNTxurU0elt956K2bOnBn3339/TU8PAHLJyj61Rtqcm1Z/U/lO0r59+6zeu2nTpjU9NVZT+gbmxRdfzMquUi/1VM6zww47OKkKAFQRYR8AAHJKkTMAAOSUsA8AADkl7AMAQE4J+wAAkFPCPgAA5JSwDwAAOSXsAwBATgn7AAAQ+fT/AD1M6pwHDFM6AAAAAElFTkSuQmCC" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>番号を4に替えてみます。番号4の銀河は、実際の赤方偏移が0.038の、近い銀河です。</p>
+<div id="3cf3ef2b" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>gal <span class="op">=</span> df[colors].iloc[k]</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>push <span class="op">=</span> coef_c <span class="op">*</span> (gal <span class="op">-</span> df[colors].mean())</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(avg <span class="op">+</span> push.<span class="bu">sum</span>(), <span class="dv">4</span>), df[<span class="st">&#39;赤方偏移&#39;</span>][k])</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(push.<span class="bu">round</span>(<span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0823 0.03825
+u-g    0.0329
+g-r   -0.1366
+r-i   -0.0033
+i-z    0.0702
+r      0.0121
+dtype: float64</code></pre>
+</div>
+</div>
+<p>番号4の銀河の予測は0.0823で、実際は0.03825です。g − rの寄与が−0.1366で、大きく押し下げています。この銀河は平均よりずっと青い色をしているので、式は「青いから近い」と判断しました。</p>
+<p>一方で、i − zは+0.0702と押し上げていて、予測は実際より遠めに外れました。青い色の銀河は、星を盛んに作っている銀河に多く、赤い年老いた銀河とは光の分布が違います。こうした銀河は、5色の直線の式では当てにくいのです。</p>
+</section>
 <section id="色の二乗を足す曲がった関係を直線の式で表す" class="level3">
 <h3 class="anchored" data-anchor-id="色の二乗を足す曲がった関係を直線の式で表す">色の二乗を足す：曲がった関係を、直線の式で表す</h3>
 <p>2節の散布図では、遠い銀河ほど、式は近めに当てていました。赤方偏移と色の関係が、まっすぐでないのかもしれません。</p>
@@ -4580,13 +4589,13 @@ dtype: float64</code></pre>
 <li>出力：交差検証のMAE（色の差の式と、二乗を足した式）</li>
 </ul>
 <p><code>** 2</code>は二乗です。<code>colors + squares</code>は、2つのリストをつないだリストです。</p>
-<div id="a59dcb39" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>squares <span class="op">=</span> []</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">&#39;u-g&#39;</span>, <span class="st">&#39;g-r&#39;</span>, <span class="st">&#39;r-i&#39;</span>, <span class="st">&#39;i-z&#39;</span>]:</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>    df[c <span class="op">+</span> <span class="st">&#39;の二乗&#39;</span>] <span class="op">=</span> df[c] <span class="op">**</span> <span class="dv">2</span></span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    squares.append(c <span class="op">+</span> <span class="st">&#39;の二乗&#39;</span>)</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(colors)), <span class="dv">4</span>))</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(colors <span class="op">+</span> squares)), <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cf3ca2e5" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>squares <span class="op">=</span> []</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> [<span class="st">&#39;u-g&#39;</span>, <span class="st">&#39;g-r&#39;</span>, <span class="st">&#39;r-i&#39;</span>, <span class="st">&#39;i-z&#39;</span>]:</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    df[c <span class="op">+</span> <span class="st">&#39;の二乗&#39;</span>] <span class="op">=</span> df[c] <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    squares.append(c <span class="op">+</span> <span class="st">&#39;の二乗&#39;</span>)</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(colors)), <span class="dv">4</span>))</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(colors <span class="op">+</span> squares)), <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.0191
 0.0182</code></pre>
@@ -4609,21 +4618,21 @@ dtype: float64</code></pre>
 <li>出力：列ごとのVIF</li>
 </ul>
 <p><code>others</code>は、<code>cols</code>から列<code>c</code>を除いた列の名前のリストです。<code>for</code>で<code>cols</code>を1つずつ見て、<code>c</code>でない列だけを<code>append</code>で集めます。</p>
-<div id="5bcf7bcf" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vif(cols):</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> {}</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> cols:</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> []</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> o <span class="kw">in</span> cols:</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> o <span class="op">!=</span> c:</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>                others.append(o)</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>        m_v <span class="op">=</span> LinearRegression().fit(df[others], df[c])</span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> m_v.score(df[others], df[c])</span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>        out[c] <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> r2), <span class="dv">1</span>)</span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(out)</span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vif(bands))</span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vif(colors))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e90867bd" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vif(cols):</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> {}</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> c <span class="kw">in</span> cols:</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>        others <span class="op">=</span> []</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> o <span class="kw">in</span> cols:</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> o <span class="op">!=</span> c:</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>                others.append(o)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>        m_v <span class="op">=</span> LinearRegression().fit(df[others], df[c])</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>        r2 <span class="op">=</span> m_v.score(df[others], df[c])</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>        out[c] <span class="op">=</span> <span class="bu">round</span>(<span class="dv">1</span> <span class="op">/</span> (<span class="dv">1</span> <span class="op">-</span> r2), <span class="dv">1</span>)</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.Series(out)</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vif(bands))</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(vif(colors))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>u     18.7
 g     77.5
@@ -4643,6 +4652,85 @@ dtype: float64</code></pre>
 <p>色の差に作り直すと、VIFは1.1〜4.8まで下がります。7節で、rの係数が揺れなくなったことと合います。</p>
 <p>VIFは、どの列が似た列を持っているかを見つける目安です。ただ、列をどう作り直すかは、VIFだけでは決まりません。今日の色の差のように、データの意味から考えます。</p>
 <p>試すなら、上の二乗を足した9本の列<code>colors + squares</code>でもVIFを出し、二乗の列とその元の列のVIFがどれくらい大きいかを確かめてみましょう。</p>
+</section>
+<section id="maeでなくrmseで測ると" class="level3">
+<h3 class="anchored" data-anchor-id="maeでなくrmseで測ると">MAEでなくRMSEで測ると？</h3>
+<p>二乗の列を足すと、交差検証のMAEは0.0191から0.0182に下がりました。では、外れの物差しを替えても、同じ結論になるでしょうか。</p>
+<p>もう1つの物差しが、二乗平均平方根誤差（RMSE, root mean squared error）です。外れを二乗して平均し、平方根をとって、赤方偏移の単位に戻します。二乗するので、大きく外れた銀河ほど重く数えます。</p>
+<p><span class="math display">\[
+\text{RMSE} = \sqrt{\frac{1}{n}\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
+\]</span></p>
+<ul>
+<li>役割：5節の<code>cv_mae</code>の、外れを測る2行だけを替え、組ごとのRMSEを返す</li>
+<li>入力：列の名前<code>cols</code></li>
+<li>出力：5つの組のRMSEのリスト</li>
+</ul>
+<p><code>np.sqrt</code>は平方根です。</p>
+<div id="cd8fce84" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_rmse(cols):</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    rmses_k <span class="op">=</span> []</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>        tr_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> k]      <span class="co"># 組k以外で訓練</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>        te_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">==</span> k]      <span class="co"># 組kでテスト</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>        m_k <span class="op">=</span> LinearRegression().fit(tr_k[cols], tr_k[<span class="st">&#39;赤方偏移&#39;</span>])</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>        pred_k <span class="op">=</span> m_k.predict(te_k[cols])</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>        err2 <span class="op">=</span> (te_k[<span class="st">&#39;赤方偏移&#39;</span>] <span class="op">-</span> pred_k) <span class="op">**</span> <span class="dv">2</span></span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>        rmses_k.append(np.sqrt(err2.mean()))</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rmses_k</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>4つの式を、RMSEの交差検証で比べ直します。上から、5色の式、uを外した式、色の差の式、二乗を足した式です。</p>
+<div id="bfd84410" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>cols_sq <span class="op">=</span> colors <span class="op">+</span> squares</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>r5 <span class="op">=</span> cv_rmse(bands)</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>r4 <span class="op">=</span> cv_rmse(no_u)</span>
+<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>r_c <span class="op">=</span> cv_rmse(colors)</span>
+<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>r_sq <span class="op">=</span> cv_rmse(cols_sq)</span>
+<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> r <span class="kw">in</span> [r5, r4, r_c, r_sq]:</span>
+<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(np.<span class="bu">round</span>(r, <span class="dv">4</span>), <span class="bu">round</span>(np.mean(r), <span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0.0284 0.0234 0.0341 0.0254 0.0236] 0.027
+[0.0289 0.026  0.0519 0.0304 0.0283] 0.0331
+[0.0284 0.0234 0.0341 0.0254 0.0236] 0.027
+[0.0247 0.0209 0.0926 0.0225 0.0223] 0.0366</code></pre>
+</div>
+</div>
+<p>uの結論は、RMSEでも同じです。5色の式は0.027、uを外すと0.0331で、5つの組すべてで5色の式が勝ちます。</p>
+<p>ところが、二乗の列は、RMSEでは悪くなります。MAEでは0.0191から0.0182に良くなったのに、RMSEでは0.027から0.0366に悪くなります。組2だけ、RMSEが0.0926に跳ね上がっています。組2をテストにした式で、外れの大きい銀河を見ます。</p>
+<div id="49229ad8" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>tr_2 <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> <span class="dv">2</span>]      <span class="co"># 組2以外で訓練</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>te_2 <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">==</span> <span class="dv">2</span>]      <span class="co"># 組2でテスト</span></span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>m_2 <span class="op">=</span> LinearRegression().fit(tr_2[cols_sq], tr_2[<span class="st">&#39;赤方偏移&#39;</span>])</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>pred_2 <span class="op">=</span> m_2.predict(te_2[cols_sq])</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>err_2 <span class="op">=</span> np.<span class="bu">abs</span>(te_2[<span class="st">&#39;赤方偏移&#39;</span>] <span class="op">-</span> pred_2)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(err_2.sort_values().tail(<span class="dv">3</span>).<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>462    0.069
+302    0.166
+92     1.259
+Name: 赤方偏移, dtype: float64</code></pre>
+</div>
+</div>
+<p>92番の銀河だけが、1.259も外れました。この銀河の色を、1,000個の中央値と並べます。<code>df.loc[92, colors]</code>は、番号92の行の、<code>colors</code>の列を取り出します。</p>
+<div id="1890fc96" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.loc[<span class="dv">92</span>, colors].<span class="bu">round</span>(<span class="dv">2</span>))     <span class="co"># 92番の銀河</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[colors].median().<span class="bu">round</span>(<span class="dv">2</span>))    <span class="co"># 1,000個の中央値</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>u-g    -0.63
+g-r     1.73
+r-i    -1.96
+i-z     0.97
+r      15.45
+Name: 92, dtype: float64
+u-g     1.74
+g-r     0.86
+r-i     0.40
+i-z     0.30
+r      17.14
+dtype: float64</code></pre>
+</div>
+</div>
+<p>92番の銀河は、r − iが−1.96です。1,000個の中央値は0.4です。rだけが、iより2等級近く明るく、測り損ねかもしれません。二乗の式は、こうした見たことのない色の銀河で、大きく外れることがあります。</p>
+<p>物差しで、結論が変わりました。MAEは平均の外れなので、1個の大外れは平均にならされます。RMSEは、1個の大外れに大きく引っぱられます。結論が分かれたら、2節と同じように、大外れを1個ずつ見ます。</p>
 </section>
 </section>
 
