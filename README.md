@@ -25,3 +25,9 @@
 
 データは `shared/data/` にあり、ノート冒頭の `DATA_DIR` から読み込みます。出典とライセンスは `shared/data/README.md` を見てください。
 第12回のデータ（銀河の画像）は著者のリポジトリから、第14回のデータ（映画の一覧）は GroupLens から、ノートの中で取ってきます。
+
+## 期末レポート
+
+| テンプレート | Colab | GitHub |
+|---|---|---|
+| python_data_analysis_UCI_student_template.ipynb | [開く](https://colab.research.google.com/github/k0heiun0/applied_exercise_preview/blob/main/report/python_data_analysis_UCI_student_template.ipynb) | [見る](https://github.com/k0heiun0/applied_exercise_preview/blob/main/report/python_data_analysis_UCI_student_template.ipynb) |
