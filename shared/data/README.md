@@ -17,6 +17,7 @@
 | `heart.csv` | 心臓病診断の臨床指標と診断結果 | 303行 × 14列 | UCI（文献引用を要求） |
 | `olivetti_faces.csv.gz` | 40人 × 10枚の顔画像（64×64画素の明るさ、gzip 圧縮） | 400行 × 4,097列 | AT&T Laboratories Cambridge（クレジット表記、scikit-learn が配布） |
 | `nsw.csv` | 職業訓練の実験（くじ引きで訓練の有無を決めた445人の収入） | 445行 × 10列 | 文献引用（LaLonde 1986、Dehejia & Wahba 1999） |
+| `tecator.csv` | ひき肉240個の近赤外の吸収スペクトル（850〜1048nm、100本）と、化学分析で測った水分・脂肪・たんぱく質の割合 | 240行 × 103列 | パブリックドメイン（Tecator の許可文を添えて再配布可） |
 | `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -84,6 +85,12 @@
   Sloan Digital Sky Survey, Data Release 18（Almeida et al. 2023, ApJS 267, 44）。
   <https://skyserver.sdss.org/dr18/>　SkyServer の SQL 検索で、空の一角の銀河の5色の等級と赤方偏移を取った
   （`tools/make_data/sdss_galaxies.py`）。
+
+- **Tecator**（`tecator.csv`）
+  Tecator AB が Tecator Infratec Food and Feed Analyzer で測った、ひき肉の近赤外の吸収スペクトル。
+  StatLib で配布され、OpenML（データ番号505）が再配布している <https://www.openml.org/d/505>。
+  許可文：パブリックドメイン。許可文を添えれば再配布できる。結果を発表するときは、装置と会社の名前（Tecator）を書く。
+  OpenML が足した主成分の22列を外し、吸収の列の名前を波長（nm）にした（`tools/make_data/tecator.py`）。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces

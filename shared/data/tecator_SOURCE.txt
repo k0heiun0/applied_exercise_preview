@@ -1,0 +1,19 @@
+Tecator：ひき肉の近赤外の吸収スペクトルと、脂肪・水分・たんぱく質の割合
+出典: Tecator AB（Tecator Infratec Food and Feed Analyzer で測定）。StatLib で配布され、OpenML（データ番号505, "tecator"）が再配布している。
+URL: https://www.openml.org/d/505（元は http://lib.stat.cmu.edu/datasets/tecator）
+利用: 元の許可文の要旨（OpenML の説明に全文がある）——
+  "The data are available in the public domain with no responsability from the original data source.
+   The data can be redistributed as long as this permission note is attached."
+  "If results from these data are used in a publication we want you to mention the instrument and company name (Tecator) in the publication."
+  公開（パブリックドメイン）。この許可文を添えれば再配布できる。結果を発表するときは、装置と会社の名前（Tecator）を書く。
+
+内容:
+- ひき肉240個。肉の種類ごとに水分・脂肪・たんぱく質の割合が違う。
+- 850〜1050nm の近赤外の光を当て、2nm おき100本の波長で吸収（透過率の −log10）を測った（Near Infrared Transmission）。
+- 水分・脂肪・たんぱく質の割合（%）は、化学分析で測った。
+
+加工内容（tools/make_data/tecator.py で再現できる）:
+- 1行が1個の肉（240行 × 103列）。並びは OpenML のまま。
+- 列: 850, 852, …, 1048（その波長での吸収。OpenML の absorbance_1〜absorbance_100 を、波長の数に名前を付け替えた）,
+  moisture（水分, %）, fat（脂肪, %）, protein（たんぱく質, %）
+- OpenML が足した主成分の22列（principal_component_1〜22）は外した。
