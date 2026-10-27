@@ -1,0 +1,15 @@
+SMS Spam Collection：携帯電話の SMS と、迷惑（spam）か普通（ham）かのラベル
+出典: Almeida, T.A., Gómez Hidalgo, J.M., Yamakami, A. (2011). Contributions to the Study of SMS Spam Filtering:
+      New Collection and Results. Proceedings of the 2011 ACM Symposium on Document Engineering (DocEng'11).
+URL: https://archive.ics.uci.edu/dataset/228/sms+spam+collection（UCI Machine Learning Repository）
+利用: CC BY 4.0（クレジット表記と上の文献の引用）。
+
+内容:
+- 英語の SMS 5,574通。普通のメッセージ4,827通、迷惑メッセージ747通。
+- 迷惑メッセージは、英国の利用者が迷惑 SMS を投稿する掲示板（Grumbletext）などから集めた。
+  普通のメッセージは、シンガポール国立大学の SMS コーパス（NUS SMS Corpus、提供を承知した学生のメッセージ）などから集めた。
+- 同じ本文が何通もある（403通）。ノートの0節で、同じ本文は1通にまとめる（5,171通）。
+
+加工内容（tools/make_data/sms_spam.py で再現できる）:
+- 1行が1通（5,574行 × 2列）。並びは元のまま。
+- 列: label（spam または ham）, text（本文。元のまま）

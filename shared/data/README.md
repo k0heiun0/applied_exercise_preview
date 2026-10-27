@@ -18,6 +18,7 @@
 | `olivetti_faces.csv.gz` | 40人 × 10枚の顔画像（64×64画素の明るさ、gzip 圧縮） | 400行 × 4,097列 | AT&T Laboratories Cambridge（クレジット表記、scikit-learn が配布） |
 | `nsw.csv` | 職業訓練の実験（くじ引きで訓練の有無を決めた445人の収入） | 445行 × 10列 | 文献引用（LaLonde 1986、Dehejia & Wahba 1999） |
 | `tecator.csv` | ひき肉240個の近赤外の吸収スペクトル（850〜1048nm、100本）と、化学分析で測った水分・脂肪・たんぱく質の割合 | 240行 × 103列 | パブリックドメイン（Tecator の許可文を添えて再配布可） |
+| `sms_spam.csv` | 携帯電話の SMS の本文と、迷惑（spam）か普通（ham）かのラベル（英語） | 5,574行 × 2列 | CC BY 4.0（UCI、文献引用） |
 | `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -91,6 +92,11 @@
   StatLib で配布され、OpenML（データ番号505）が再配布している <https://www.openml.org/d/505>。
   許可文：パブリックドメイン。許可文を添えれば再配布できる。結果を発表するときは、装置と会社の名前（Tecator）を書く。
   OpenML が足した主成分の22列を外し、吸収の列の名前を波長（nm）にした（`tools/make_data/tecator.py`）。
+
+- **SMS Spam Collection**（`sms_spam.csv`）
+  Almeida, Gómez Hidalgo & Yamakami (2011), DocEng'11。UCI Machine Learning Repository
+  <https://archive.ics.uci.edu/dataset/228/sms+spam+collection>（CC BY 4.0）。
+  元のタブ区切りのファイルを、列 `label`・`text` の CSV にした（`tools/make_data/sms_spam.py`）。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces
