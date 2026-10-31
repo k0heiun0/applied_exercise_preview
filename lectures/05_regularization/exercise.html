@@ -3248,7 +3248,7 @@ window.Quarto = {
 <hr>
 <section id="前回からの接続" class="level2">
 <h2 class="anchored" data-anchor-id="前回からの接続">前回からの接続</h2>
-<p>第4回は、銀河の5色の明るさから赤方偏移を当てる式を作り、交差検証で確かめました。5色の等級をそのまま入れると、相関の強い列どうしで係数が揺れて読めませんでした（多重共線性）。そこで、隣り合う色の差に作り直して、係数を読める式にしました。</p>
+<p>第4回は、銀河の5色の明るさから赤方偏移を当てる式を作り、交差検証（cross-validation）で確かめました。5色の等級をそのまま入れると、相関の強い列どうしで係数が揺れて読めませんでした（多重共線性）。そこで、隣り合う色の差に作り直して、係数を読める式にしました。</p>
 <p>でも、いつも作り直し方が分かるとは限りません。今日の列は100本で、似た列がたくさんあります。列がたくさんあるときに、当たりを保ちながら、係数を落ち着かせられるでしょうか。</p>
 <hr>
 </section>
@@ -3376,7 +3376,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：なし（終わるとセルの左に ✓ が付く）</li>
 </ul>
-<p><code>Ridge</code>・<code>Lasso</code>・<code>ElasticNet</code>は、今日使う3つの「ペナルティをかけた線形回帰」です。中身は3節から順に説明します。</p>
+<p><code>Ridge</code>・<code>Lasso</code>・<code>ElasticNet</code>は、今日使う3つの「ペナルティをかけた線形回帰（linear regression）」です。中身は3節から順に説明します。</p>
 <div id="2459c87f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -3816,7 +3816,7 @@ Name: 脂肪, dtype: float64</code></pre>
 </div>
 </div>
 <p>930nmと932nmの相関は0.99997で、ほとんど同じです。100本どうしの相関は、いちばん小さくても0.959です。</p>
-<p>似た列が100本も並ぶので、式は手柄をどう分けるかを決められず、係数が揺れます。第4回で見た多重共線性が、100本で起きています。</p>
+<p>似た列が100本も並ぶので、式は手柄をどう分けるかを決められず、係数が揺れます。第4回で見た多重共線性（multicollinearity）が、100本で起きています。</p>
 <blockquote class="blockquote">
 <p>重要：予測と係数は別</p>
 <p>相関の強い列がたくさんあると、予測はそこそこ当たっても、係数は揺れて読めない。</p>
@@ -3846,7 +3846,7 @@ Name: 脂肪, dtype: float64</code></pre>
 <p>（ここに答えを書く）</p>
 <p>930nmの1本だけでは10.07%で、平均で当てるのとほとんど変わりません。隣の3本にすると3.11%で、100本の式（3.0%）に近くなります。</p>
 <p>1本の吸収の高さは、肉の厚みなどで、曲線全体ごと上下します。だから、1本だけでは脂肪を教えてくれません。3本の係数は−3.3、+6.6、−3.3で、足すと0です。曲線全体が上下しても予測は変わらず、932nmが両隣より尖っているかどうか（山の形）だけを見ています。</p>
-<div id="87fd18b7" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="13">
+<div id="87fd18b7" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3913,7 +3913,7 @@ Name: 脂肪, dtype: float64</code></pre>
 \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \alpha \sum_{j=1}^{100} b_j^2
 \]</span></p>
 <p>係数が大きいほど、ペナルティが重くなります。外れを小さくしたいが、係数も大きくしたくない。その折り合いで係数を決めます。</p>
-<div id="d5a1e502" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="14">
+<div id="d5a1e502" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4127,7 +4127,7 @@ Name: 脂肪, dtype: float64</code></pre>
 </div>
 </div>
 <p><code>for</code>が1回まわるたびに、名札<span class="math inline">\(\alpha\)</span>の引き出しが1つ増え、そこにMAEがしまわれます。<code>maes[1]</code>で、<span class="math inline">\(\alpha = 1\)</span>の引き出しを開けます。</p>
-<div id="cb79e9cf" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="20">
+<div id="cb79e9cf" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4136,6 +4136,30 @@ Name: 脂肪, dtype: float64</code></pre>
 </div>
 </div>
 </div>
+<section id="行ずつ読む" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む">1行ずつ読む</h4>
+<ul>
+<li>1行目：空の辞書を作り、<code>maes</code>と名付ける</li>
+<li>2行目：<code>a</code>に0.01、0.1、…、1000を順に入れ、字下げした3行目をくり返す</li>
+<li>3行目：右側で、そのαのリッジを交差検証で測り、5つの組のMAEを平均する。その平均を、名札<code>a</code>の引き出しにしまう（<code>maes[a] = 値</code>）。名札は0番目・1番目ではなく、αの値そのもの</li>
+<li>4行目：<code>for a in maes:</code>で、辞書の名札を、しまった順に1つずつ取り出す</li>
+<li>5行目：<code>maes[a]</code>で、名札<code>a</code>の引き出しを開け、小数2桁に丸めて出す</li>
+</ul>
+</section>
+<section id="中身を見る2回まわした辞書" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る2回まわした辞書">中身を見る：2回まわした辞書</h4>
+<div id="4911e208" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>maes2 <span class="op">=</span> {}</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> a <span class="kw">in</span> [<span class="fl">0.01</span>, <span class="fl">0.1</span>]:</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    maes2[a] <span class="op">=</span> np.mean(cv_mae(df, waves, Ridge(alpha<span class="op">=</span>a)))</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">list</span>(maes2.keys()), <span class="bu">round</span>(maes2[a], <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0.01] 2.33
+[0.01, 0.1] 2.02</code></pre>
+</div>
+</div>
+<p><code>list(maes2.keys())</code>は、名札の並びです。1回まわるたびに、名札が1つ増えます。名札0.01の中身は2.33、名札0.1の中身は2.02です。</p>
+</section>
 </section>
 <section id="お手本αとmaeを描く" class="level3">
 <h3 class="anchored" data-anchor-id="お手本αとmaeを描く">お手本：αとMAEを描く</h3>
@@ -4145,12 +4169,12 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>出力：折れ線</li>
 </ul>
 <p><code>list(maes.keys())</code>は名札のリスト、<code>list(maes.values())</code>は中身のリストです。<code>plt.xscale(&#39;log&#39;)</code>で、横軸を10倍ごとに等しい幅にします。</p>
-<div id="3021588c" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">list</span>(maes.keys()), <span class="bu">list</span>(maes.values()), <span class="st">&#39;o-&#39;</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">&#39;log&#39;</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;α（ペナルティの強さ）&#39;</span>)</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;交差検証のMAE（%）&#39;</span>)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4ee8ed42" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">list</span>(maes.keys()), <span class="bu">list</span>(maes.values()), <span class="st">&#39;o-&#39;</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>plt.xscale(<span class="st">&#39;log&#39;</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;α（ペナルティの強さ）&#39;</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;交差検証のMAE（%）&#39;</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4174,9 +4198,9 @@ Name: 脂肪, dtype: float64</code></pre>
 </summary>
 <p><code>min(maes, key=maes.get)</code>は、名札の中から、<code>maes.get(名札)</code>（＝中身）がいちばん小さい名札を返します。<code>key=</code>は「何で比べるか」の指定です。</p>
 </details>
-<div id="77ded6b5" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>best_a <span class="op">=</span> <span class="bu">min</span>(maes, key<span class="op">=</span>maes.get)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_a, <span class="bu">round</span>(maes[best_a], <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9197e18d" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>best_a <span class="op">=</span> <span class="bu">min</span>(maes, key<span class="op">=</span>maes.get)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_a, <span class="bu">round</span>(maes[best_a], <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 1.98</code></pre>
 </div>
@@ -4185,7 +4209,7 @@ Name: 脂肪, dtype: float64</code></pre>
 <section id="解パスαを動かすと係数はどう動くか" class="level3">
 <h3 class="anchored" data-anchor-id="解パスαを動かすと係数はどう動くか">解パス：αを動かすと、係数はどう動くか</h3>
 <p><span class="math inline">\(\alpha\)</span>を動かしたときの係数の動きを描いた図を、解パス（solution path）と呼びます。<span class="math inline">\(\alpha\)</span>ごとに120個すべてでリッジを作り、係数を辞書にためて描きます。灰色が100本の係数、赤が930nmの係数、青い点線が選んだ<span class="math inline">\(\alpha = 1\)</span>です。</p>
-<div id="aa437634" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="23">
+<div id="9ef244d8" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4206,11 +4230,11 @@ Name: 脂肪, dtype: float64</code></pre>
 <p>まず、予想を書いてください。<span class="math inline">\(\alpha = 0.3\)</span>は、いま選んだ<span class="math inline">\(\alpha = 1\)</span>より良いでしょうか、悪いでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いて実行したら、<code>0.3</code>を別の数（たとえば<code>3</code>や<code>0.03</code>）にも替えて実行してみてください。</p>
-<div id="441ad657" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.3 を別の数（たとえば 3 や 0.03）に替えて実行する</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">0.3</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>maes[a] <span class="op">=</span> np.mean(cv_mae(df, waves, Ridge(alpha<span class="op">=</span>a)))</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a, <span class="bu">round</span>(maes[a], <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8eabf404" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.3 を別の数（たとえば 3 や 0.03）に替えて実行する</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">0.3</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>maes[a] <span class="op">=</span> np.mean(cv_mae(df, waves, Ridge(alpha<span class="op">=</span>a)))</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(a, <span class="bu">round</span>(maes[a], <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.3 1.95</code></pre>
 </div>
@@ -4278,7 +4302,7 @@ Name: 脂肪, dtype: float64</code></pre>
 \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 + \alpha \sum_{j=1}^{100} \lvert b_j \rvert
 \]</span></p>
 <p>この線形回帰を、ラッソ（lasso）と呼びます。</p>
-<div id="8720c77b" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="25">
+<div id="d66b5a68" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4304,12 +4328,12 @@ Name: 脂肪, dtype: float64</code></pre>
 <p><code>max_iter</code>は、係数を少しずつ直していく計算を、くり返す上限の回数です。似た列が多いと、なかなか収まらず、多めに要ります。足りないと「ConvergenceWarning（収まらなかった）」という警告が出ます。そのときは<code>max_iter</code>を増やします。</p>
 <p>scikit-learnの<code>Lasso</code>の式は、外れの二乗の和を<span class="math inline">\(2n\)</span>で割ってからペナルティを足す形です（<span class="math inline">\(n\)</span>は行の数）。そのため、同じ<span class="math inline">\(\alpha\)</span>でも、リッジとラッソでペナルティの効き方の目盛りが違います。<span class="math inline">\(\alpha\)</span>は、ラッソはラッソで、交差検証で選び直します。</p>
 </details>
-<div id="90ad70a5" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>m_l <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>m_l.fit(df[waves], df[<span class="st">&#39;脂肪&#39;</span>])</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>coef_l <span class="op">=</span> pd.Series(m_l.coef_, index<span class="op">=</span>waves)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(coef_l[coef_l <span class="op">!=</span> <span class="dv">0</span>].index))</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(df, waves, m_l)), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b75797cd" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>m_l <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>m_l.fit(df[waves], df[<span class="st">&#39;脂肪&#39;</span>])</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>coef_l <span class="op">=</span> pd.Series(m_l.coef_, index<span class="op">=</span>waves)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(coef_l[coef_l <span class="op">!=</span> <span class="dv">0</span>].index))</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(df, waves, m_l)), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;870&#39;, &#39;872&#39;, &#39;874&#39;, &#39;930&#39;, &#39;956&#39;]
 3.89</code></pre>
@@ -4320,7 +4344,7 @@ Name: 脂肪, dtype: float64</code></pre>
 <section id="ラッソの解パス" class="level3">
 <h3 class="anchored" data-anchor-id="ラッソの解パス">ラッソの解パス</h3>
 <p>同じ解パスを、ラッソでも描きます。右（ペナルティが強い）から左へ、<span class="math inline">\(\alpha\)</span>を弱めていく向きに読みます。青い点線は、いま使った<span class="math inline">\(\alpha = 100\)</span>です。</p>
-<div id="a1c4b073" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="27">
+<div id="9621f278" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="28">
 <div class="cell-output cell-output-stderr">
 <pre><code>~/Documents/proj/new_lesson_applied/.venv/lib/python3.12/site-packages/sklearn/linear_model/_coordinate_descent.py:842: ConvergenceWarning: Objective did not converge. You might want to increase the number of iterations, check the scale of the features or consider increasing regularisation. Duality gap: 2.901717e+00, tolerance: 2.627e+00
   model = cd_fast.enet_coordinate_descent(</code></pre>
@@ -4347,15 +4371,15 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>入力：式の作り方<code>model</code>、くじの番号<code>s</code></li>
 <li>出力：選ばれた波長の名前のリスト</li>
 </ul>
-<div id="323e8c28" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> picked(model, s):</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> df.sample(<span class="dv">96</span>, random_state<span class="op">=</span>s)</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    model.fit(sub[waves], sub[<span class="st">&#39;脂肪&#39;</span>])</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    coef <span class="op">=</span> pd.Series(model.coef_, index<span class="op">=</span>waves)</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(coef[coef <span class="op">!=</span> <span class="dv">0</span>].index)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
-<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7d472af4" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> picked(model, s):</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> df.sample(<span class="dv">96</span>, random_state<span class="op">=</span>s)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    model.fit(sub[waves], sub[<span class="st">&#39;脂肪&#39;</span>])</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    coef <span class="op">=</span> pd.Series(model.coef_, index<span class="op">=</span>waves)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">list</span>(coef[coef <span class="op">!=</span> <span class="dv">0</span>].index)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;868&#39;, &#39;870&#39;, &#39;872&#39;, &#39;930&#39;, &#39;956&#39;, &#39;958&#39;]
 [&#39;868&#39;, &#39;870&#39;, &#39;872&#39;, &#39;930&#39;, &#39;956&#39;]
@@ -4372,18 +4396,47 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>出力：868〜874nmの選ばれた回数</li>
 </ul>
 <p>外の<code>for</code>は取り直しの20回、中の<code>for</code>は、その回に選ばれた波長の1本ずつです。選ばれるたびに、その波長の引き出しの数を1つ増やします。</p>
-<div id="f30c7fff" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> {}</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    counts[w] <span class="op">=</span> <span class="dv">0</span>                    <span class="co"># 100本の名札を0で用意</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s):</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>        counts[w] <span class="op">=</span> counts[w] <span class="op">+</span> <span class="dv">1</span>    <span class="co"># 選ばれた波長に1を足す</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts[<span class="st">&#39;868&#39;</span>], counts[<span class="st">&#39;870&#39;</span>], counts[<span class="st">&#39;872&#39;</span>], counts[<span class="st">&#39;874&#39;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="dfd5a141" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>counts <span class="op">=</span> {}</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    counts[w] <span class="op">=</span> <span class="dv">0</span>                    <span class="co"># 100本の名札を0で用意</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s):</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        counts[w] <span class="op">=</span> counts[w] <span class="op">+</span> <span class="dv">1</span>    <span class="co"># 選ばれた波長に1を足す</span></span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts[<span class="st">&#39;868&#39;</span>], counts[<span class="st">&#39;870&#39;</span>], counts[<span class="st">&#39;872&#39;</span>], counts[<span class="st">&#39;874&#39;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>7 20 18 12</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-1" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-1">1行ずつ読む</h4>
+<ul>
+<li>1行目：空の辞書を作り、<code>counts</code>と名付ける</li>
+<li>2・3行目：100本の波長<code>w</code>を1本ずつ名札にして、中身を0にする。先に0を入れておくのは、4〜6行目で「今の数に1を足す」ため</li>
+<li>4行目：くじの番号<code>s</code>を0から19まで変え、取り直しを20回くり返す</li>
+<li>5行目：その回に選ばれた波長のリストから、1本ずつ<code>w</code>に取り出す。外の<code>for</code>は回、中の<code>for</code>はその回に選ばれた波長</li>
+<li>6行目：右側で名札<code>w</code>の今の数を取り出して1を足し、同じ名札にしまい直す</li>
+<li>7行目：4本の波長の名札を開けて、選ばれた回数を出す</li>
+</ul>
+</section>
+<section id="中身を見る3回まわした数" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る3回まわした数">中身を見る：3回まわした数</h4>
+<div id="a75232aa" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>counts3 <span class="op">=</span> {}</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    counts3[w] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s):</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>        counts3[w] <span class="op">=</span> counts3[w] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(s, counts3[<span class="st">&#39;868&#39;</span>], counts3[<span class="st">&#39;874&#39;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0 1 0
+1 2 0
+2 2 0</code></pre>
+</div>
+</div>
+<p>左から、くじの番号<code>s</code>（0が1回目）、868nmの数、874nmの数です。868nmは、1・2回目に選ばれて1、2と増え、3回目は選ばれず2のままです。874nmは、3回とも選ばれず0のままです。</p>
+</section>
 </section>
 <section id="お手本回数を棒で描く" class="level3">
 <h3 class="anchored" data-anchor-id="お手本回数を棒で描く">お手本：回数を棒で描く</h3>
@@ -4393,11 +4446,11 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>出力：棒グラフ</li>
 </ul>
 <p><code>list(counts.values())</code>は、辞書の中身（回数）を、名札をしまった順（波長の順）に並べたリストです。<code>width=1.6</code>は棒の幅です。</p>
-<div id="78e47548" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;波長（nm）&#39;</span>)</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;選ばれた回数（20回中）&#39;</span>)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="11f9ecbc" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;波長（nm）&#39;</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;選ばれた回数（20回中）&#39;</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4423,16 +4476,16 @@ Name: 脂肪, dtype: float64</code></pre>
 <p>まず、予想を書いてください。ペナルティを弱く（<span class="math inline">\(\alpha\)</span>を100から30に）すると、選ばれる波長の数と、その揺れはどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>alpha=100</code>の<code>100</code>を<code>30</code>に替えて実行してください。</p>
-<div id="e6518cc9" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 100 を 30 に替えて実行する</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>counts_x <span class="op">=</span> {}</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    counts_x[w] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s):</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>        counts_x[w] <span class="op">=</span> counts_x[w] <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts_x.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f8c3d437" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 100 を 30 に替えて実行する</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>counts_x <span class="op">=</span> {}</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>    counts_x[w] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(Lasso(alpha<span class="op">=</span><span class="dv">100</span>, max_iter<span class="op">=</span><span class="dv">100000</span>), s):</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>        counts_x[w] <span class="op">=</span> counts_x[w] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts_x.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4512,18 +4565,18 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>入力：<code>picked</code>、エラスティックネット</li>
 <li>出力：棒グラフ</li>
 </ul>
-<div id="a5520102" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>counts_e <span class="op">=</span> {}</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    counts_e[w] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> ElasticNet(alpha<span class="op">=</span><span class="dv">100</span>, l1_ratio<span class="op">=</span><span class="fl">0.1</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(m, s):</span>
-<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>        counts_e[w] <span class="op">=</span> counts_e[w] <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts_e.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
-<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;波長（nm）&#39;</span>)</span>
-<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;選ばれた回数（20回中）&#39;</span>)</span>
-<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="aad5219c" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>counts_e <span class="op">=</span> {}</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    counts_e[w] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> ElasticNet(alpha<span class="op">=</span><span class="dv">100</span>, l1_ratio<span class="op">=</span><span class="fl">0.1</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(m, s):</span>
+<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>        counts_e[w] <span class="op">=</span> counts_e[w] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts_e.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
+<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;波長（nm）&#39;</span>)</span>
+<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;選ばれた回数（20回中）&#39;</span>)</span>
+<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4540,12 +4593,12 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>入力：辞書<code>counts_e</code></li>
 <li>出力：波長の名前のリスト</li>
 </ul>
-<div id="9c54667c" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>always <span class="op">=</span> []</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> counts_e:</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> counts_e[w] <span class="op">==</span> <span class="dv">20</span>:</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        always.append(w)</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(always)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d7698fb5" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>always <span class="op">=</span> []</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> counts_e:</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> counts_e[w] <span class="op">==</span> <span class="dv">20</span>:</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>        always.append(w)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(always)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[&#39;886&#39;, &#39;888&#39;, &#39;890&#39;, &#39;892&#39;, &#39;894&#39;, &#39;896&#39;, &#39;898&#39;, &#39;928&#39;, &#39;930&#39;, &#39;932&#39;, &#39;934&#39;, &#39;948&#39;, &#39;950&#39;, &#39;952&#39;]</code></pre>
 </div>
@@ -4559,9 +4612,9 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>入力：表<code>df</code>、波長の列<code>waves</code></li>
 <li>出力：交差検証のMAE</li>
 </ul>
-<div id="f8ce4063" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>m_e <span class="op">=</span> ElasticNet(alpha<span class="op">=</span><span class="dv">100</span>, l1_ratio<span class="op">=</span><span class="fl">0.1</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(df, waves, m_e)), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="10ef3ef8" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>m_e <span class="op">=</span> ElasticNet(alpha<span class="op">=</span><span class="dv">100</span>, l1_ratio<span class="op">=</span><span class="fl">0.1</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(df, waves, m_e)), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>3.11</code></pre>
 </div>
@@ -4574,18 +4627,18 @@ Name: 脂肪, dtype: float64</code></pre>
 <p>まず、予想を書いてください。混ぜる割合<span class="math inline">\(r\)</span>を0.1から0.5に替えて、ラッソ寄りにすると、帯はどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>r_x = 0.1</code>の<code>0.1</code>を<code>0.5</code>に替えて実行してください。</p>
-<div id="7adc8902" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.1 を 0.5 に替えて実行する</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>r_x <span class="op">=</span> <span class="fl">0.1</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>counts_x <span class="op">=</span> {}</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    counts_x[w] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> ElasticNet(alpha<span class="op">=</span><span class="dv">100</span>, l1_ratio<span class="op">=</span>r_x, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(m, s):</span>
-<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>        counts_x[w] <span class="op">=</span> counts_x[w] <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts_x.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
-<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0e4c204a" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.1 を 0.5 に替えて実行する</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>r_x <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>counts_x <span class="op">=</span> {}</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> waves:</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    counts_x[w] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> ElasticNet(alpha<span class="op">=</span><span class="dv">100</span>, l1_ratio<span class="op">=</span>r_x, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> picked(m, s):</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>        counts_x[w] <span class="op">=</span> counts_x[w] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>plt.bar(nm, <span class="bu">list</span>(counts_x.values()), width<span class="op">=</span><span class="fl">1.6</span>)</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4676,12 +4729,12 @@ Name: 脂肪, dtype: float64</code></pre>
 </summary>
 <p><span class="math inline">\(\alpha\)</span>も<span class="math inline">\(r\)</span>も小さい組（たとえば<span class="math inline">\(\alpha = 10\)</span>・<span class="math inline">\(r = 0.1\)</span>）は、似た列が多いこのデータでは、係数を直していく計算がなかなか収まらず、1つの組に数秒かかります。しかも<code>max_iter</code>の上限まで回っても収まりきらず、結果も確かではありません。そこで、候補は、計算が収まる範囲から選びました。候補を決めるときは、外れだけでなく、計算にかかる時間も考えます。</p>
 </details>
-<div id="49cf26a4" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">1000</span>]</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>ratios <span class="op">=</span> [<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>]</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_mae(alphas, ratios))      <span class="co"># 交差検証のMAE</span></span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_count(alphas, ratios))    <span class="co"># 残る波長の数</span></span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(alphas) <span class="op">*</span> <span class="bu">len</span>(ratios))     <span class="co"># 交差検証をした回数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6edcfff1" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">1000</span>]</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>ratios <span class="op">=</span> [<span class="fl">0.2</span>, <span class="fl">0.5</span>, <span class="fl">1.0</span>]</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_mae(alphas, ratios))      <span class="co"># 交差検証のMAE</span></span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(grid_count(alphas, ratios))    <span class="co"># 残る波長の数</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(alphas) <span class="op">*</span> <span class="bu">len</span>(ratios))     <span class="co"># 交差検証をした回数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     30    100   300    1000
 0.2  2.92  3.26  3.65   5.11
@@ -4708,21 +4761,21 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>入力：止めておく<span class="math inline">\(\alpha\)</span>（または<span class="math inline">\(r\)</span>）</li>
 <li>出力：名札が<span class="math inline">\(r\)</span>（または<span class="math inline">\(\alpha\)</span>）、中身がMAEの辞書</li>
 </ul>
-<div id="8721b16d" class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tune_r(a):</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>    maes_r <span class="op">=</span> {}</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> ratios:</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> ElasticNet(alpha<span class="op">=</span>a, l1_ratio<span class="op">=</span>r, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>        maes_r[r] <span class="op">=</span> np.mean(cv_mae(df, waves, model))</span>
-<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> maes_r</span>
-<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tune_a(r):</span>
-<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>    maes_a <span class="op">=</span> {}</span>
-<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a <span class="kw">in</span> alphas:</span>
-<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> ElasticNet(alpha<span class="op">=</span>a, l1_ratio<span class="op">=</span>r, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>        maes_a[a] <span class="op">=</span> np.mean(cv_mae(df, waves, model))</span>
-<span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> maes_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a2d3f6bb" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tune_r(a):</span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>    maes_r <span class="op">=</span> {}</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> r <span class="kw">in</span> ratios:</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> ElasticNet(alpha<span class="op">=</span>a, l1_ratio<span class="op">=</span>r, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>        maes_r[r] <span class="op">=</span> np.mean(cv_mae(df, waves, model))</span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> maes_r</span>
+<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> tune_a(r):</span>
+<span id="cb60-10"><a href="#cb60-10" aria-hidden="true" tabindex="-1"></a>    maes_a <span class="op">=</span> {}</span>
+<span id="cb60-11"><a href="#cb60-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> a <span class="kw">in</span> alphas:</span>
+<span id="cb60-12"><a href="#cb60-12" aria-hidden="true" tabindex="-1"></a>        model <span class="op">=</span> ElasticNet(alpha<span class="op">=</span>a, l1_ratio<span class="op">=</span>r, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb60-13"><a href="#cb60-13" aria-hidden="true" tabindex="-1"></a>        maes_a[a] <span class="op">=</span> np.mean(cv_mae(df, waves, model))</span>
+<span id="cb60-14"><a href="#cb60-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> maes_a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="お手本貪欲法で探す" class="level3">
@@ -4733,13 +4786,13 @@ Name: 脂肪, dtype: float64</code></pre>
 <li>出力：着いた<span class="math inline">\(\alpha\)</span>と<span class="math inline">\(r\)</span>、そのMAE、交差検証をした回数</li>
 </ul>
 <p><code>len(辞書)</code>は、辞書にしまった組の数です。2つの辞書の数を足すと、交差検証をした回数になります。</p>
-<div id="7f6201e2" class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>maes_r <span class="op">=</span> tune_r(<span class="dv">100</span>)                   <span class="co"># αを100に止めて、rを動かす</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>best_r <span class="op">=</span> <span class="bu">min</span>(maes_r, key<span class="op">=</span>maes_r.get)</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>maes_a <span class="op">=</span> tune_a(best_r)                <span class="co"># rを止めて、αを動かす</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>best_a2 <span class="op">=</span> <span class="bu">min</span>(maes_a, key<span class="op">=</span>maes_a.get)</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_a2, best_r, <span class="bu">round</span>(maes_a[best_a2], <span class="dv">2</span>))</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(maes_r) <span class="op">+</span> <span class="bu">len</span>(maes_a))       <span class="co"># 交差検証をした回数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4504cc08" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>maes_r <span class="op">=</span> tune_r(<span class="dv">100</span>)                   <span class="co"># αを100に止めて、rを動かす</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>best_r <span class="op">=</span> <span class="bu">min</span>(maes_r, key<span class="op">=</span>maes_r.get)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>maes_a <span class="op">=</span> tune_a(best_r)                <span class="co"># rを止めて、αを動かす</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>best_a2 <span class="op">=</span> <span class="bu">min</span>(maes_a, key<span class="op">=</span>maes_a.get)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_a2, best_r, <span class="bu">round</span>(maes_a[best_a2], <span class="dv">2</span>))</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(maes_r) <span class="op">+</span> <span class="bu">len</span>(maes_a))       <span class="co"># 交差検証をした回数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>30 0.2 2.92
 7</code></pre>
@@ -4751,7 +4804,7 @@ Name: 脂肪, dtype: float64</code></pre>
 <section id="貪欲法が見逃すとき" class="level3">
 <h3 class="anchored" data-anchor-id="貪欲法が見逃すとき">貪欲法が見逃すとき</h3>
 <p>いつも同じ組に着くとは限りません。下は、説明のための作り物の表です。2つのつまみが絡み、外れの小さい谷が斜めに走っています。A1の列を縦に動いてB2を選び、B2の行を横に動いてA3を選ぶと、★で止まります。谷底（A4・B4の0.0）には届きません。</p>
-<div id="e4c863e7" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="40">
+<div id="843185f6" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="42">
 <div class="cell-output cell-output-stdout">
 <pre><code>      A1   A2   A3    A4    A5
 B1   5.4  4.8  6.4  10.4  16.6
@@ -4777,7 +4830,7 @@ B5  16.6  9.2  4.0   1.2   0.6</code></pre>
 <section id="残った帯はどこ" class="level3">
 <h3 class="anchored" data-anchor-id="残った帯はどこ">残った帯は、どこ？</h3>
 <p>エラスティックネットが20回とも残した帯を、脂肪の少ない肉と多い肉のスペクトルに重ねます。</p>
-<div id="d0038fa0" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="41">
+<div id="c97491c1" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="43">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4795,14 +4848,14 @@ B5  16.6  9.2  4.0   1.2   0.6</code></pre>
 <p>まず、予想を書いてください。<span class="math inline">\(\alpha\)</span>の候補に3000を1つ足すと、グリッドサーチと貪欲法の回数は、それぞれ何回増えるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、<code>alphas</code>の最後に<code>3000</code>を足して（<code>[30, 100, 300, 1000, 3000]</code>にして）実行してください。</p>
-<div id="97e0ffc1" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: alphas の最後に 3000 を足して実行する</span></span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">1000</span>]</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(alphas) <span class="op">*</span> <span class="bu">len</span>(ratios))       <span class="co"># グリッドサーチの回数</span></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>maes_r <span class="op">=</span> tune_r(<span class="dv">100</span>)</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>best_r <span class="op">=</span> <span class="bu">min</span>(maes_r, key<span class="op">=</span>maes_r.get)</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>maes_a <span class="op">=</span> tune_a(best_r)</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(maes_r) <span class="op">+</span> <span class="bu">len</span>(maes_a))       <span class="co"># 貪欲法の回数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="81f8bd18" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: alphas の最後に 3000 を足して実行する</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>alphas <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">1000</span>]</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(alphas) <span class="op">*</span> <span class="bu">len</span>(ratios))       <span class="co"># グリッドサーチの回数</span></span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>maes_r <span class="op">=</span> tune_r(<span class="dv">100</span>)</span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>best_r <span class="op">=</span> <span class="bu">min</span>(maes_r, key<span class="op">=</span>maes_r.get)</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>maes_a <span class="op">=</span> tune_a(best_r)</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(maes_r) <span class="op">+</span> <span class="bu">len</span>(maes_a))       <span class="co"># 貪欲法の回数</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>12
 7</code></pre>
@@ -4948,26 +5001,26 @@ B5  16.6  9.2  4.0   1.2   0.6</code></pre>
 <li>出力：表<code>dd</code>と、差の列の名前<code>dcols</code></li>
 </ul>
 <p>差の列の名前は、引くほうの波長（<code>waves[i + 1]</code>）にします。たとえば<code>&#39;932&#39;</code>は「932nm − 930nm」です。<code>pd.DataFrame(辞書)</code>は、名札を列の名前に、中身を列にした表を作ります。</p>
-<div id="0d3c7e50" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>diffs <span class="op">=</span> {}</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">99</span>):</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>    diffs[waves[i <span class="op">+</span> <span class="dv">1</span>]] <span class="op">=</span> df[waves[i <span class="op">+</span> <span class="dv">1</span>]] <span class="op">-</span> df[waves[i]]</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>dd <span class="op">=</span> pd.DataFrame(diffs)</span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>dcols <span class="op">=</span> <span class="bu">list</span>(diffs.keys())</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>dd[<span class="st">&#39;脂肪&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;脂肪&#39;</span>]</span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>dd[<span class="st">&#39;組&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;組&#39;</span>]</span>
-<span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(dd.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0d3c7e50" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>diffs <span class="op">=</span> {}</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">99</span>):</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>    diffs[waves[i <span class="op">+</span> <span class="dv">1</span>]] <span class="op">=</span> df[waves[i <span class="op">+</span> <span class="dv">1</span>]] <span class="op">-</span> df[waves[i]]</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>dd <span class="op">=</span> pd.DataFrame(diffs)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>dcols <span class="op">=</span> <span class="bu">list</span>(diffs.keys())</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>dd[<span class="st">&#39;脂肪&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;脂肪&#39;</span>]</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>dd[<span class="st">&#39;組&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;組&#39;</span>]</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(dd.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(120, 101)</code></pre>
 </div>
 </div>
 <p>差の列で、ラッソを交差検証で測り、120個すべてで作ったときに残る差を表示します。</p>
-<div id="9cee715c" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>m_d <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(dd, dcols, m_d)), <span class="dv">2</span>))</span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>m_d.fit(dd[dcols], dd[<span class="st">&#39;脂肪&#39;</span>])</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>coef_d <span class="op">=</span> pd.Series(m_d.coef_, index<span class="op">=</span>dcols)</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(coef_d[coef_d <span class="op">!=</span> <span class="dv">0</span>].index))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9cee715c" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>m_d <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">100000</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(dd, dcols, m_d)), <span class="dv">2</span>))</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>m_d.fit(dd[dcols], dd[<span class="st">&#39;脂肪&#39;</span>])</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>coef_d <span class="op">=</span> pd.Series(m_d.coef_, index<span class="op">=</span>dcols)</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(coef_d[coef_d <span class="op">!=</span> <span class="dv">0</span>].index))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>3.4
 [&#39;924&#39;, &#39;940&#39;]</code></pre>
@@ -4975,17 +5028,17 @@ B5  16.6  9.2  4.0   1.2   0.6</code></pre>
 </div>
 <p>外れは3.4%で、残ったのは<code>&#39;924&#39;</code>（924nm − 922nm）と<code>&#39;940&#39;</code>（940nm − 938nm）の2本です。</p>
 <p>取り直しても同じ2本が選ばれるかを、5節と同じ手順で数えます。</p>
-<div id="f59a9c19" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>counts_d <span class="op">=</span> {}</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> dcols:</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>    counts_d[w] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> dd.sample(<span class="dv">96</span>, random_state<span class="op">=</span>s)</span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(sub[dcols], sub[<span class="st">&#39;脂肪&#39;</span>])</span>
-<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>    c_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>dcols)</span>
-<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> <span class="bu">list</span>(c_s[c_s <span class="op">!=</span> <span class="dv">0</span>].index):</span>
-<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>        counts_d[w] <span class="op">=</span> counts_d[w] <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb66-10"><a href="#cb66-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts_d[<span class="st">&#39;924&#39;</span>], counts_d[<span class="st">&#39;940&#39;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f59a9c19" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>counts_d <span class="op">=</span> {}</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> dcols:</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>    counts_d[w] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">20</span>):</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>    sub <span class="op">=</span> dd.sample(<span class="dv">96</span>, random_state<span class="op">=</span>s)</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a>    m_s <span class="op">=</span> Lasso(alpha<span class="op">=</span><span class="dv">10</span>, max_iter<span class="op">=</span><span class="dv">100000</span>).fit(sub[dcols], sub[<span class="st">&#39;脂肪&#39;</span>])</span>
+<span id="cb70-7"><a href="#cb70-7" aria-hidden="true" tabindex="-1"></a>    c_s <span class="op">=</span> pd.Series(m_s.coef_, index<span class="op">=</span>dcols)</span>
+<span id="cb70-8"><a href="#cb70-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> w <span class="kw">in</span> <span class="bu">list</span>(c_s[c_s <span class="op">!=</span> <span class="dv">0</span>].index):</span>
+<span id="cb70-9"><a href="#cb70-9" aria-hidden="true" tabindex="-1"></a>        counts_d[w] <span class="op">=</span> counts_d[w] <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb70-10"><a href="#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(counts_d[<span class="st">&#39;924&#39;</span>], counts_d[<span class="st">&#39;940&#39;</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>20 20</code></pre>
 </div>
@@ -4996,11 +5049,11 @@ B5  16.6  9.2  4.0   1.2   0.6</code></pre>
 <section id="水分を当てる" class="level3">
 <h3 class="anchored" data-anchor-id="水分を当てる">水分を当てる</h3>
 <p>答えの列を水分に替えても、同じ手順が使えるでしょうか。<code>cv_mae</code>は答えの列を<code>&#39;脂肪&#39;</code>と決めているので、ここでは水分の列に<code>&#39;脂肪&#39;</code>という名前を付けた表を作って渡します。</p>
-<div id="a385a440" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>dw <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">&#39;脂肪&#39;</span>: <span class="st">&#39;脂肪（元）&#39;</span>, <span class="st">&#39;水分&#39;</span>: <span class="st">&#39;脂肪&#39;</span>})</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.<span class="bu">abs</span>(dw[<span class="st">&#39;脂肪&#39;</span>] <span class="op">-</span> dw[<span class="st">&#39;脂肪&#39;</span>].mean()).mean(), <span class="dv">2</span>))   <span class="co"># 平均で当てる</span></span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(dw, waves, LinearRegression())), <span class="dv">2</span>))</span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(dw, waves, Ridge(alpha<span class="op">=</span><span class="dv">1</span>))), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a385a440" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>dw <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">&#39;脂肪&#39;</span>: <span class="st">&#39;脂肪（元）&#39;</span>, <span class="st">&#39;水分&#39;</span>: <span class="st">&#39;脂肪&#39;</span>})</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.<span class="bu">abs</span>(dw[<span class="st">&#39;脂肪&#39;</span>] <span class="op">-</span> dw[<span class="st">&#39;脂肪&#39;</span>].mean()).mean(), <span class="dv">2</span>))   <span class="co"># 平均で当てる</span></span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(dw, waves, LinearRegression())), <span class="dv">2</span>))</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(np.mean(cv_mae(dw, waves, Ridge(alpha<span class="op">=</span><span class="dv">1</span>))), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>9.33
 2.24

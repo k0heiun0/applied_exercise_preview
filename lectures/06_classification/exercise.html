@@ -3256,7 +3256,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>本文から、迷惑メッセージをどう見分け、その見分け方をどう評価するかに答える。</p>
 <p>携帯電話に届いたSMSの本文から、迷惑メッセージかどうかを判定します。まず、簡単なルールで判定し、正解率で評価します。ところが、正解率だけでは、良いフィルターかどうかが分かりません。そこで、当たりと外れを4つのマスに分けて数え（混同行列）、見逃しと誤検出を分けて評価します。最後に、手がかりをまとめた式で点数を出し、どこで切るかを動かします。</p>
-<p>もう1つのねらいは、条件で処理を分ける書き方（if）を使い、ルールや判定のコードを読めるようになることです。「freeを含むなら迷惑」「数字が5字以上なら迷惑」を、ifで書きます。</p>
+<p>もう1つのねらいは、条件で処理を分ける書き方（if）を使い、ルールや判定のコードを読めるようになることです。「freeを含むなら迷惑」「数字が5字以上なら迷惑」を、ifで書きます。ifを使うお手本は、ブロックで読んだあと、1行ずつ読み（「1行ずつ読む」）、変数の中身を見ます（「中身を見る」）。</p>
 <section id="公開データの世界" class="level3">
 <h3 class="anchored" data-anchor-id="公開データの世界">公開データの世界</h3>
 <p>第5回は、食品の分析のデータで、数の列が100本並ぶ表でした。今日は、文章のデータです。数の表ではなく、人が書いたメッセージそのものです。データの形が変われば、道具の組み立て方も変わります。</p>
@@ -3605,12 +3605,41 @@ free entry</code></pre>
 0</code></pre>
 </div>
 </div>
+<section id="行ずつ読む" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む">1行ずつ読む</h4>
+<ul>
+<li>1行目：関数<code>rule</code>を作る。入力は本文<code>text</code>と、探す語<code>word</code>の2つ</li>
+<li><code>def</code>の下の字下げした行が、関数の中身。呼び出したときに動く</li>
+<li>2行目：本文を小文字にそろえ（<code>text.lower()</code>）、その中に<code>word</code>があるかを調べる</li>
+<li>あればTrue、なければFalse。これが<code>if</code>の条件</li>
+<li>3行目：条件がTrueのとき、1を返す（迷惑と判定）</li>
+<li>4・5行目：条件がFalseのとき、0を返す（普通と判定）</li>
+<li><code>return</code>は、関数の答えを返して、関数を終える</li>
+<li>7行目：FREEを含む本文で呼ぶ。小文字にするとfreeを含むので1</li>
+<li>8行目：freeを含まない本文で呼ぶ。0</li>
+</ul>
+</section>
+<section id="中身を見る条件の中身" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る条件の中身">中身を見る：条件の中身</h4>
+<div id="d4e54466" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">&#39;Call FREEPHONE 0800 542 0578 now!&#39;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(text.lower())</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> text.lower())</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(text, <span class="st">&#39;free&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>call freephone 0800 542 0578 now!
+True
+1</code></pre>
+</div>
+</div>
+<p>小文字にすると、freephoneの中にfreeが入っている。だからTrueで、1</p>
 <p>1通めはFREEを含むので1、2通めは含まないので0になりました。</p>
+</section>
 </section>
 <section id="ifの分かれ道" class="level3">
 <h3 class="anchored" data-anchor-id="ifの分かれ道">ifの分かれ道</h3>
 <p>下の図は、実際のメッセージ3通が、ifの分かれ道でどちらへ進むかを描いたものです。1通ずつ、条件で道が分かれます。「Are you free now?」のような普通のメッセージも、freeを含むので、迷惑の道へ進みます。</p>
-<div id="97984188" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="10">
+<div id="49f91aed" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
 <div class="cell-output cell-output-stdout">
 <pre><code>True  → return 1（迷惑と判定） FREE entry into our £250 weekly comp ...
 True  → return 1（迷惑と判定） Are you free now?can i call now?
@@ -3626,12 +3655,12 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>出力：迷惑と判定した通数</li>
 </ul>
 <p>くり返しの結果をリストにためるのは、第4回と同じ書き方です。</p>
-<div id="64ec9994" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> []</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    pred.append(rule(text, <span class="st">&#39;free&#39;</span>))</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定&#39;</span>] <span class="op">=</span> pred</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定&#39;</span>].<span class="bu">sum</span>(), <span class="st">&#39;通を迷惑と判定&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ac4ea377" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> []</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    pred.append(rule(text, <span class="st">&#39;free&#39;</span>))</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定&#39;</span>] <span class="op">=</span> pred</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定&#39;</span>].<span class="bu">sum</span>(), <span class="st">&#39;通を迷惑と判定&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>231 通を迷惑と判定</code></pre>
 </div>
@@ -3648,9 +3677,9 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 \text{正解率} = \frac{\text{判定が当たった通数}}{\text{全部の通数}}
 \]</span></p>
 <p><code>df[&#39;判定&#39;] == df[&#39;迷惑&#39;]</code>は、当たった通ならTrue、外れた通ならFalseの列です。Trueは1、Falseは0として数えるので、平均が正解率になります。</p>
-<div id="174fab39" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>hit <span class="op">=</span> (df[<span class="st">&#39;判定&#39;</span>] <span class="op">==</span> df[<span class="st">&#39;迷惑&#39;</span>])   <span class="co"># 当たりの通はTrue</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(hit.mean(), <span class="dv">3</span>))      <span class="co"># 正解率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d0bafed5" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>hit <span class="op">=</span> (df[<span class="st">&#39;判定&#39;</span>] <span class="op">==</span> df[<span class="st">&#39;迷惑&#39;</span>])   <span class="co"># 当たりの通はTrue</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(hit.mean(), <span class="dv">3</span>))      <span class="co"># 正解率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.894</code></pre>
 </div>
@@ -3667,15 +3696,15 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <p>まず、予想を書いてください。探す語を’xyz’（どのメッセージにも出てこない語）にすると、迷惑と判定する通数と正解率は、いくつになるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>&#39;free&#39;</code>を<code>&#39;xyz&#39;</code>に替えて実行してください。</p>
-<div id="47658d4b" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;xyz&#39; に替えて実行する</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定_x&#39;</span>].<span class="bu">sum</span>())   <span class="co"># 迷惑と判定した通数</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>((df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">==</span> df[<span class="st">&#39;迷惑&#39;</span>]).mean(), <span class="dv">3</span>))   <span class="co"># 正解率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="49c0320b" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;xyz&#39; に替えて実行する</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定_x&#39;</span>].<span class="bu">sum</span>())   <span class="co"># 迷惑と判定した通数</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>((df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">==</span> df[<span class="st">&#39;迷惑&#39;</span>]).mean(), <span class="dv">3</span>))   <span class="co"># 正解率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>231
 0.894</code></pre>
@@ -3772,14 +3801,14 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li><code>条件1 and 条件2</code>：両方が成り立つときだけTrue</li>
 </ul>
 <p>下の例では、<code>x &gt;= 10</code>はFalse、<code>x &gt;= 5</code>はTrueなので、真ん中の<code>print</code>だけが動きます。</p>
-<div id="eda63e52" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">7</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="op">&gt;=</span> <span class="dv">10</span>:</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;10以上&#39;</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> x <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5以上10未満&#39;</span>)    <span class="co"># 上の条件がFalseで、この条件がTrue</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5未満&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9bac39c6" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="op">&gt;=</span> <span class="dv">10</span>:</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;10以上&#39;</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> x <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5以上10未満&#39;</span>)    <span class="co"># 上の条件がFalseで、この条件がTrue</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5未満&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5以上10未満</code></pre>
 </div>
@@ -3793,22 +3822,33 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>出力：マスの名前（‘TP’・‘FN’・‘FP’・‘TN’）</li>
 </ul>
 <p>1つめの条件から順に調べ、最初に成り立ったところで答えを返します。2つめの条件に来たのは、両方が1ではないときです。だから、<code>y == 1</code>だけで見逃しと分かります。</p>
-<div id="852418d2" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cell(y, p):</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> y <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> p <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;TP&#39;</span>        <span class="co"># 迷惑を迷惑と判定（当たり）</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> y <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;FN&#39;</span>        <span class="co"># 迷惑を普通と判定（見逃し）</span></span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> p <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;FP&#39;</span>        <span class="co"># 普通を迷惑と判定（誤検出）</span></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;TN&#39;</span>        <span class="co"># 普通を普通と判定（当たり）</span></span>
-<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cell(<span class="dv">1</span>, <span class="dv">1</span>), cell(<span class="dv">1</span>, <span class="dv">0</span>), cell(<span class="dv">0</span>, <span class="dv">1</span>), cell(<span class="dv">0</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="62fe29dd" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cell(y, p):</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> y <span class="op">==</span> <span class="dv">1</span> <span class="kw">and</span> p <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;TP&#39;</span>        <span class="co"># 迷惑を迷惑と判定（当たり）</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> y <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;FN&#39;</span>        <span class="co"># 迷惑を普通と判定（見逃し）</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> p <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;FP&#39;</span>        <span class="co"># 普通を迷惑と判定（誤検出）</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39;TN&#39;</span>        <span class="co"># 普通を普通と判定（当たり）</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cell(<span class="dv">1</span>, <span class="dv">1</span>), cell(<span class="dv">1</span>, <span class="dv">0</span>), cell(<span class="dv">0</span>, <span class="dv">1</span>), cell(<span class="dv">0</span>, <span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>TP FN FP TN</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-1" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-1">1行ずつ読む</h4>
+<ul>
+<li>1行目：関数<code>cell</code>を作る。入力は本当の答え<code>y</code>と判定<code>p</code></li>
+<li>2・3行目：両方が1（迷惑を迷惑と判定）なら、’TP’を返す</li>
+<li>4・5行目：上がFalseで、<code>y</code>が1なら、迷惑を普通と判定した。‘FN’</li>
+<li>6・7行目：ここまでFalseで、<code>p</code>が1なら、普通を迷惑と判定した。‘FP’</li>
+<li>8・9行目：どれでもなければ、普通を普通と判定した。‘TN’</li>
+<li>11行目：4つの組で呼び、4つのマスの名前が出るか確かめる</li>
+</ul>
+</section>
 </section>
 <section id="お手本4つのマスを数える" class="level3">
 <h3 class="anchored" data-anchor-id="お手本4つのマスを数える">お手本：4つのマスを数える</h3>
@@ -3824,20 +3864,20 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 </summary>
 <p><code>df[&#39;迷惑&#39;][i]</code>は、列「迷惑」の、行の番号<code>i</code>の値です。0節で行の番号を0から振り直したので、<code>range(len(df))</code>の<code>i</code>で、全部の行を1つずつ取り出せます。</p>
 </details>
-<div id="dfc55865" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion(df, col):</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    mat <span class="op">=</span> {<span class="st">&#39;TN&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;FP&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;FN&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;TP&#39;</span>: <span class="dv">0</span>}</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(df)):</span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> cell(df[<span class="st">&#39;迷惑&#39;</span>][i], df[col][i])</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        mat[c] <span class="op">=</span> mat[c] <span class="op">+</span> <span class="dv">1</span>          <span class="co"># そのマスに1を足す</span></span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mat</span>
-<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="73f5a9b1" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> confusion(df, col):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    mat <span class="op">=</span> {<span class="st">&#39;TN&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;FP&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;FN&#39;</span>: <span class="dv">0</span>, <span class="st">&#39;TP&#39;</span>: <span class="dv">0</span>}</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(df)):</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        c <span class="op">=</span> cell(df[<span class="st">&#39;迷惑&#39;</span>][i], df[col][i])</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        mat[c] <span class="op">=</span> mat[c] <span class="op">+</span> <span class="dv">1</span>          <span class="co"># そのマスに1を足す</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> mat</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4456, &#39;FP&#39;: 62, &#39;FN&#39;: 484, &#39;TP&#39;: 169}</code></pre>
 </div>
 </div>
-<div id="f62a32c1" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
+<div id="b78e7bba" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3850,9 +3890,9 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <section id="道具でも数える" class="level3">
 <h3 class="anchored" data-anchor-id="道具でも数える">道具でも数える</h3>
 <p><code>sklearn</code>の<code>confusion_matrix</code>は、本当の答えと判定から、4つのマスを2×2で数える道具です。自分で数えた辞書と同じ数になるかを確かめます。</p>
-<div id="89c8da74" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="78c1c066" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4456   62]
  [ 484  169]]</code></pre>
@@ -3872,14 +3912,14 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <p>まず、予想を書いてください。探す語をprizeにすると、見逃しと誤検出は、freeと比べてどう変わるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>&#39;free&#39;</code>を<code>&#39;prize&#39;</code>に替えて実行してください。</p>
-<div id="3023eca9" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;prize&#39; に替えて実行する</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
-<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_x&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="beb7cc34" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;prize&#39; に替えて実行する</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_x&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4456, &#39;FP&#39;: 62, &#39;FN&#39;: 484, &#39;TP&#39;: 169}</code></pre>
 </div>
@@ -3953,14 +3993,14 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>入力：<code>confusion</code>の出した辞書<code>mat</code></li>
 <li>出力：再現率と適合率（小数第3位まで）</li>
 </ul>
-<div id="e02bb8c4" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rates(mat):</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> mat[<span class="st">&#39;TP&#39;</span>] <span class="op">/</span> (mat[<span class="st">&#39;TP&#39;</span>] <span class="op">+</span> mat[<span class="st">&#39;FN&#39;</span>])</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> mat[<span class="st">&#39;TP&#39;</span>] <span class="op">/</span> (mat[<span class="st">&#39;TP&#39;</span>] <span class="op">+</span> mat[<span class="st">&#39;FP&#39;</span>])</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(recall, <span class="dv">3</span>), <span class="bu">round</span>(precision, <span class="dv">3</span>)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>mat_free <span class="op">=</span> confusion(df, <span class="st">&#39;判定&#39;</span>)</span>
-<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rates(mat_free))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9efb5eba" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rates(mat):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    recall <span class="op">=</span> mat[<span class="st">&#39;TP&#39;</span>] <span class="op">/</span> (mat[<span class="st">&#39;TP&#39;</span>] <span class="op">+</span> mat[<span class="st">&#39;FN&#39;</span>])</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    precision <span class="op">=</span> mat[<span class="st">&#39;TP&#39;</span>] <span class="op">/</span> (mat[<span class="st">&#39;TP&#39;</span>] <span class="op">+</span> mat[<span class="st">&#39;FP&#39;</span>])</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(recall, <span class="dv">3</span>), <span class="bu">round</span>(precision, <span class="dv">3</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>mat_free <span class="op">=</span> confusion(df, <span class="st">&#39;判定&#39;</span>)</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rates(mat_free))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(0.259, 0.732)</code></pre>
 </div>
@@ -3974,12 +4014,12 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>入力：表<code>df</code></li>
 <li>出力：再現率と適合率</li>
 </ul>
-<div id="b3cad030" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>pred_p <span class="op">=</span> []</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    pred_p.append(rule(text, <span class="st">&#39;prize&#39;</span>))</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_p&#39;</span>] <span class="op">=</span> pred_p</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rates(confusion(df, <span class="st">&#39;判定_p&#39;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="72512976" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>pred_p <span class="op">=</span> []</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    pred_p.append(rule(text, <span class="st">&#39;prize&#39;</span>))</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_p&#39;</span>] <span class="op">=</span> pred_p</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rates(confusion(df, <span class="st">&#39;判定_p&#39;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(0.118, 1.0)</code></pre>
 </div>
@@ -3990,9 +4030,9 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <h3 class="anchored" data-anchor-id="迷惑には番号が並ぶ">迷惑には、番号が並ぶ</h3>
 <p>迷惑の本文には、電話番号や、返信先の短い番号が書いてあります。普通のメッセージに、数字はあまり出てきません。本文の中の数字を数えたら、手がかりにならないでしょうか。</p>
 <p>文字列も、<code>for ch in 文字列:</code>で1字ずつ取り出せます。<code>isdigit()</code>は、その字が数字ならTrueを返します。</p>
-<div id="47b600a0" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;a1b2&#39;</span>:</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, ch.isdigit())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3ee03cdd" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;a1b2&#39;</span>:</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, ch.isdigit())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>a False
 1 True
@@ -4008,19 +4048,53 @@ b False
 <li>入力：本文<code>text</code></li>
 <li>出力：数字の字数</li>
 </ul>
-<div id="6a270782" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> n_digits(text):</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ch <span class="kw">in</span> text:          <span class="co"># 本文を1字ずつ</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ch.isdigit():     <span class="co"># 数字なら</span></span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>            n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span>        <span class="co"># 1を足す</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(n_digits(<span class="st">&#39;call 08707509020 now&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1001376f" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> n_digits(text):</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ch <span class="kw">in</span> text:          <span class="co"># 本文を1字ずつ</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ch.isdigit():     <span class="co"># 数字なら</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>            n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span>        <span class="co"># 1を足す</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(n_digits(<span class="st">&#39;call 08707509020 now&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>11</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-2" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-2">1行ずつ読む</h4>
+<ul>
+<li>1行目：関数<code>n_digits</code>を作る。入力は本文<code>text</code></li>
+<li>2行目：数えた数をためる変数<code>n</code>を、0から始める</li>
+<li>3行目：本文を1字ずつ取り出して<code>ch</code>に入れる</li>
+<li>4行目：<code>ch</code>が数字のときだけ、5行目へ進む</li>
+<li>5行目：<code>n</code>に1を足して、<code>n</code>にしまい直す</li>
+<li>6行目：全部の字を見終わったら<code>n</code>を返す。字下げが<code>for</code>の外なので、最後に1回だけ動く</li>
+<li>8行目：電話番号の入った本文で試す</li>
+</ul>
+</section>
+<section id="中身を見る1字ずつのnの変化" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る1字ずつのnの変化">中身を見る：1字ずつのnの変化</h4>
+<div id="7224053d" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;call 0870&#39;</span>:</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ch.isdigit():</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>c 0
+a 0
+l 0
+l 0
+  0
+0 1
+8 2
+7 3
+0 4</code></pre>
+</div>
+</div>
+<p>数字の字のところでだけ、<code>n</code>が1つ増える</p>
+</section>
 </section>
 <section id="お手本数字の数の列" class="level3">
 <h3 class="anchored" data-anchor-id="お手本数字の数の列">お手本：数字の数の列</h3>
@@ -4029,12 +4103,12 @@ b False
 <li>入力：表<code>df</code>の本文</li>
 <li>出力：迷惑（1）と普通（0）の、数字の字数の平均</li>
 </ul>
-<div id="dfd0db65" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>nd <span class="op">=</span> []</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    nd.append(n_digits(text))</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;数字&#39;</span>] <span class="op">=</span> nd</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;迷惑&#39;</span>)[<span class="st">&#39;数字&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b73f96c7" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>nd <span class="op">=</span> []</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    nd.append(n_digits(text))</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;数字&#39;</span>] <span class="op">=</span> nd</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;迷惑&#39;</span>)[<span class="st">&#39;数字&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>迷惑
 0     0.3
@@ -4043,7 +4117,7 @@ Name: 数字, dtype: float64</code></pre>
 </div>
 </div>
 <p>迷惑は平均15.5字、普通は平均0.3字です。</p>
-<div id="79439f28" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="25">
+<div id="80217d45" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="27">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4061,27 +4135,38 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：表<code>df</code>の列「数字」</li>
 <li>出力：混同行列と、再現率・適合率</li>
 </ul>
-<div id="df017a7e" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>pred_d <span class="op">=</span> []</span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">1</span>)     <span class="co"># 5字以上なら迷惑</span></span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">0</span>)</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_数字&#39;</span>] <span class="op">=</span> pred_d</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>mat_d <span class="op">=</span> confusion(df, <span class="st">&#39;判定_数字&#39;</span>)</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mat_d)</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rates(mat_d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a7c2c3bd" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>pred_d <span class="op">=</span> []</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">1</span>)     <span class="co"># 5字以上なら迷惑</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">0</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_数字&#39;</span>] <span class="op">=</span> pred_d</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>mat_d <span class="op">=</span> confusion(df, <span class="st">&#39;判定_数字&#39;</span>)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mat_d)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rates(mat_d))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4479, &#39;FP&#39;: 39, &#39;FN&#39;: 96, &#39;TP&#39;: 557}
 (0.853, 0.935)</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-3" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-3">1行ずつ読む</h4>
+<ul>
+<li>2行目：列「数字」から、1通ずつ字数を取り出して<code>n</code>に入れる</li>
+<li>3〜6行目：<code>n</code>が5以上なら1、そうでなければ0を、<code>pred_d</code>の後ろに足す</li>
+<li><code>rule</code>と違い、ifを関数に入れず、くり返しの中に直接書いた</li>
+<li>7行目：リストを列「判定_数字」にする</li>
+<li>8行目：混同行列を作り、<code>mat_d</code>にしまう</li>
+<li>9・10行目：混同行列と、2つの割合を表示する</li>
+</ul>
 <p>見逃しは、freeのルールの484通から96通に減りました。誤検出は39通です。再現率0.853、適合率0.935で、freeのルールより、どちらも良くなりました。</p>
 <blockquote class="blockquote">
 <p>重要：2つの誤りの重さは違う</p>
 <p>見逃しは、迷惑が届いてしまう。誤検出は、大事な連絡が届かない。重さが違うので、2つを分けて見る。</p>
 </blockquote>
+</section>
 </section>
 <section id="todo③数字のしきいを替える予想-実行-比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo③数字のしきいを替える予想-実行-比べる">TODO③：数字のしきいを替える（予想 → 実行 → 比べる）</h3>
@@ -4089,17 +4174,17 @@ Name: 数字, dtype: float64</code></pre>
 <p>まず、予想を書いてください。数字が1字でもあれば迷惑、にすると、再現率と適合率はどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>5</code>を<code>1</code>に替えて実行してください。</p>
-<div id="3412ce42" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 1 に替えて実行する</span></span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> k:</span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">1</span>)</span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">0</span>)</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_x&#39;</span>), rates(confusion(df, <span class="st">&#39;判定_x&#39;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1feabc0d" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 1 に替えて実行する</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> k:</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">1</span>)</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">0</span>)</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_x&#39;</span>), rates(confusion(df, <span class="st">&#39;判定_x&#39;</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4479, &#39;FP&#39;: 39, &#39;FN&#39;: 96, &#39;TP&#39;: 557} (0.853, 0.935)</code></pre>
 </div>
@@ -4163,12 +4248,12 @@ Name: 数字, dtype: float64</code></pre>
 <li>出力：全部の通の1/0のリスト</li>
 </ul>
 <p>2節では、語ごとに、1通ずつ<code>rule</code>で判定してリストにためました。語を15個にするなら、同じ4行を15回書くことになります。そこで、1回分を関数にまとめ、語をくり返しの外から渡します。中身は2節の4行と同じです。</p>
-<div id="022f2f3b" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule_col(word):</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> []</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        pred.append(rule(text, word))</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9b7fe4d0" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule_col(word):</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> []</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>        pred.append(rule(text, word))</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="お手本15語の列" class="level3">
@@ -4184,14 +4269,14 @@ Name: 数字, dtype: float64</code></pre>
 </summary>
 <p>15語は、迷惑メッセージによく出てくる語を、こちらで選びました。本当は、語を選ぶのも、訓練の組だけを見て行うのが公平です。全部の通を見て選ぶと、テストの通の答えを少しのぞいたことになります（第2回のリーク）。</p>
 </details>
-<div id="6b5979d8" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">&#39;free&#39;</span>, <span class="st">&#39;txt&#39;</span>, <span class="st">&#39;claim&#39;</span>, <span class="st">&#39;prize&#39;</span>, <span class="st">&#39;call&#39;</span>, <span class="st">&#39;win&#39;</span>, <span class="st">&#39;£&#39;</span>,</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;www&#39;</span>, <span class="st">&#39;urgent&#39;</span>, <span class="st">&#39;mobile&#39;</span>, <span class="st">&#39;reply&#39;</span>, <span class="st">&#39;stop&#39;</span>, <span class="st">&#39;cash&#39;</span>,</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;service&#39;</span>, <span class="st">&#39;new&#39;</span>]</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    df[w] <span class="op">=</span> rule_col(w)          <span class="co"># 語を含めば1、なければ0</span></span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(words), <span class="st">&#39;語と数字で&#39;</span>, <span class="bu">len</span>(cols), <span class="st">&#39;本の手がかり&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b68e4fa1" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">&#39;free&#39;</span>, <span class="st">&#39;txt&#39;</span>, <span class="st">&#39;claim&#39;</span>, <span class="st">&#39;prize&#39;</span>, <span class="st">&#39;call&#39;</span>, <span class="st">&#39;win&#39;</span>, <span class="st">&#39;£&#39;</span>,</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;www&#39;</span>, <span class="st">&#39;urgent&#39;</span>, <span class="st">&#39;mobile&#39;</span>, <span class="st">&#39;reply&#39;</span>, <span class="st">&#39;stop&#39;</span>, <span class="st">&#39;cash&#39;</span>,</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;service&#39;</span>, <span class="st">&#39;new&#39;</span>]</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    df[w] <span class="op">=</span> rule_col(w)          <span class="co"># 語を含めば1、なければ0</span></span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(words), <span class="st">&#39;語と数字で&#39;</span>, <span class="bu">len</span>(cols), <span class="st">&#39;本の手がかり&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>15 語と数字で 16 本の手がかり</code></pre>
 </div>
@@ -4218,20 +4303,20 @@ Name: 数字, dtype: float64</code></pre>
 </summary>
 <p><code>pd.Series(0.0, index=df.index)</code>は、行の番号ごとに0.0を並べた入れ物です。<code>score[te_k.index] = …</code>で、組<code>k</code>の行の番号のところに、その組の点数を書き込みます。5回まわると、全部の行が埋まります。</p>
 </details>
-<div id="509c3ff6" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;組&#39;</span>] <span class="op">=</span> df.index <span class="op">%</span> <span class="dv">5</span></span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score(df, cols):</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> pd.Series(<span class="fl">0.0</span>, index<span class="op">=</span>df.index)</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>        tr_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> k]      <span class="co"># 組k以外で訓練</span></span>
-<span id="cb52-7"><a href="#cb52-7" aria-hidden="true" tabindex="-1"></a>        te_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">==</span> k]      <span class="co"># 組kに点数を付ける</span></span>
-<span id="cb52-8"><a href="#cb52-8" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> LinearRegression().fit(tr_k[cols], tr_k[<span class="st">&#39;迷惑&#39;</span>])</span>
-<span id="cb52-9"><a href="#cb52-9" aria-hidden="true" tabindex="-1"></a>        score[te_k.index] <span class="op">=</span> m.predict(te_k[cols])</span>
-<span id="cb52-10"><a href="#cb52-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> score</span>
-<span id="cb52-11"><a href="#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb52-12"><a href="#cb52-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;点数&#39;</span>] <span class="op">=</span> cv_score(df, cols)</span>
-<span id="cb52-13"><a href="#cb52-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;点数&#39;</span>].<span class="bu">min</span>(), <span class="dv">2</span>), <span class="bu">round</span>(df[<span class="st">&#39;点数&#39;</span>].<span class="bu">max</span>(), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3960cfec" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;組&#39;</span>] <span class="op">=</span> df.index <span class="op">%</span> <span class="dv">5</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score(df, cols):</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> pd.Series(<span class="fl">0.0</span>, index<span class="op">=</span>df.index)</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>        tr_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> k]      <span class="co"># 組k以外で訓練</span></span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>        te_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">==</span> k]      <span class="co"># 組kに点数を付ける</span></span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>        m <span class="op">=</span> LinearRegression().fit(tr_k[cols], tr_k[<span class="st">&#39;迷惑&#39;</span>])</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>        score[te_k.index] <span class="op">=</span> m.predict(te_k[cols])</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> score</span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;点数&#39;</span>] <span class="op">=</span> cv_score(df, cols)</span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;点数&#39;</span>].<span class="bu">min</span>(), <span class="dv">2</span>), <span class="bu">round</span>(df[<span class="st">&#39;点数&#39;</span>].<span class="bu">max</span>(), <span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>-0.05 1.84</code></pre>
 </div>
@@ -4245,16 +4330,16 @@ Name: 数字, dtype: float64</code></pre>
 <li>出力：2色の柱の図</li>
 </ul>
 <p><code>plt.yscale(&#39;log&#39;)</code>は、縦軸を10倍ごとの目盛りにします。少ない迷惑も見えるようにするためです。</p>
-<div id="6b164d6a" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>ham <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;点数&#39;</span>]</span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>spam <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;点数&#39;</span>]</span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>plt.hist(ham, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;普通&#39;</span>)</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>plt.hist(spam, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;迷惑&#39;</span>)</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">&#39;log&#39;</span>)</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;点数&#39;</span>)</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数（対数の目盛り）&#39;</span>)</span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0f32121a" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>ham <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;点数&#39;</span>]</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>spam <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;点数&#39;</span>]</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>plt.hist(ham, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;普通&#39;</span>)</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>plt.hist(spam, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;迷惑&#39;</span>)</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">&#39;log&#39;</span>)</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;点数&#39;</span>)</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数（対数の目盛り）&#39;</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4272,8 +4357,8 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：列「点数」</li>
 <li>出力：2つの通数</li>
 </ul>
-<div id="3f6bcbcc" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((df[<span class="st">&#39;点数&#39;</span>] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), (df[<span class="st">&#39;点数&#39;</span>] <span class="op">&gt;</span> <span class="dv">1</span>).<span class="bu">sum</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="663b9cc7" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>((df[<span class="st">&#39;点数&#39;</span>] <span class="op">&lt;</span> <span class="dv">0</span>).<span class="bu">sum</span>(), (df[<span class="st">&#39;点数&#39;</span>] <span class="op">&gt;</span> <span class="dv">1</span>).<span class="bu">sum</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>13 199</code></pre>
 </div>
@@ -4291,24 +4376,43 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：点数<code>score</code>、しきい値<code>t</code></li>
 <li>出力：判定の1/0のリスト。混同行列と、再現率・適合率</li>
 </ul>
-<div id="839a32e5" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> judge(score, t):</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> []</span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> score:</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> s <span class="op">&gt;=</span> t:</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>            pred.append(<span class="dv">1</span>)       <span class="co"># しきい値以上なら迷惑</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>            pred.append(<span class="dv">0</span>)</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pred</span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_式&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数&#39;</span>], <span class="fl">0.5</span>)</span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>mat_m <span class="op">=</span> confusion(df, <span class="st">&#39;判定_式&#39;</span>)</span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mat_m, rates(mat_m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="bf42a5c6" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> judge(score, t):</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> []</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> s <span class="kw">in</span> score:</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> s <span class="op">&gt;=</span> t:</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>            pred.append(<span class="dv">1</span>)       <span class="co"># しきい値以上なら迷惑</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>            pred.append(<span class="dv">0</span>)</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pred</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_式&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数&#39;</span>], <span class="fl">0.5</span>)</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>mat_m <span class="op">=</span> confusion(df, <span class="st">&#39;判定_式&#39;</span>)</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mat_m, rates(mat_m))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4511, &#39;FP&#39;: 7, &#39;FN&#39;: 148, &#39;TP&#39;: 505} (0.773, 0.986)</code></pre>
 </div>
 </div>
-<div id="37450f63" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="34">
+<section id="行ずつ読む-4" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-4">1行ずつ読む</h4>
+<ul>
+<li>1行目：関数<code>judge</code>を作る。入力は点数の並び<code>score</code>と、しきい値<code>t</code></li>
+<li>3〜7行目：点数を1つずつ<code>s</code>に取り出し、<code>t</code>以上なら1、違えば0をためる</li>
+<li>4節の数字のルールと同じ形。5が<code>t</code>に、字数が点数になった</li>
+<li>9行目：0.5で切った判定を、列「判定_式」にする</li>
+<li>10・11行目：混同行列と、2つの割合を出す</li>
+</ul>
+</section>
+<section id="中身を見る3つの点数を切る" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る3つの点数を切る">中身を見る：3つの点数を切る</h4>
+<div id="4cf545bd" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(judge([<span class="fl">0.2</span>, <span class="fl">0.7</span>, <span class="fl">0.5</span>], <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0, 1, 1]</code></pre>
+</div>
+</div>
+<p>0.5ちょうどは、<code>&gt;=</code>なので迷惑（1）になる</p>
+<div id="27d7ea9e" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="37">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4320,18 +4424,19 @@ Name: 数字, dtype: float64</code></pre>
 <p>0と1の真ん中、0.5で切りました。誤検出は7通まで減りました。でも、見逃しは148通で、数字のルール（96通）より多くなりました。</p>
 <p>式は適合率0.986で、迷惑と言えばほぼ当たります。でも、再現率は0.773です。16本の手がかりを使ったのに、見逃しが増えてしまいました。</p>
 </section>
+</section>
 <section id="todo④手がかりから数字を外す予想-実行-比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo④手がかりから数字を外す予想-実行-比べる">TODO④：手がかりから数字を外す（予想 → 実行 → 比べる）</h3>
 <p>下のセルは、手がかりの列<code>cols_x</code>で交差検証の点数を付け、0.5で切った混同行列を表示します。</p>
 <p>まず、予想を書いてください。手がかりを15語だけにする（数字を外す）と、見逃しは148通から増えるでしょうか、減るでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>[&#39;数字&#39;] + words</code>を<code>words</code>に替えて実行してください。</p>
-<div id="cd190dd8" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: [&#39;数字&#39;] + words を words に替えて実行する</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;点数_x&#39;</span>] <span class="op">=</span> cv_score(df, cols_x)</span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数_x&#39;</span>], <span class="fl">0.5</span>)</span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_x&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1659cf64" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: [&#39;数字&#39;] + words を words に替えて実行する</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;点数_x&#39;</span>] <span class="op">=</span> cv_score(df, cols_x)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数_x&#39;</span>], <span class="fl">0.5</span>)</span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_x&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4511, &#39;FP&#39;: 7, &#39;FN&#39;: 148, &#39;TP&#39;: 505}</code></pre>
 </div>
@@ -4394,16 +4499,16 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：列「点数」</li>
 <li>出力：しきい値ごとの見逃しと誤検出の表</li>
 </ul>
-<div id="1ea5e7ab" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>]</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>fns <span class="op">=</span> []</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>fps <span class="op">=</span> []</span>
-<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">&#39;判定_t&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数&#39;</span>], t)</span>
-<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    mat <span class="op">=</span> confusion(df, <span class="st">&#39;判定_t&#39;</span>)</span>
-<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    fns.append(mat[<span class="st">&#39;FN&#39;</span>])          <span class="co"># 見逃し</span></span>
-<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>    fps.append(mat[<span class="st">&#39;FP&#39;</span>])          <span class="co"># 誤検出</span></span>
-<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;しきい値&#39;</span>: ts, <span class="st">&#39;見逃し&#39;</span>: fns, <span class="st">&#39;誤検出&#39;</span>: fps}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0855d25e" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>]</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>fns <span class="op">=</span> []</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>fps <span class="op">=</span> []</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    df[<span class="st">&#39;判定_t&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数&#39;</span>], t)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    mat <span class="op">=</span> confusion(df, <span class="st">&#39;判定_t&#39;</span>)</span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>    fns.append(mat[<span class="st">&#39;FN&#39;</span>])          <span class="co"># 見逃し</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>    fps.append(mat[<span class="st">&#39;FP&#39;</span>])          <span class="co"># 誤検出</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;しきい値&#39;</span>: ts, <span class="st">&#39;見逃し&#39;</span>: fns, <span class="st">&#39;誤検出&#39;</span>: fps}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   しきい値  見逃し  誤検出
 0   0.1   21  355
@@ -4425,13 +4530,13 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：<code>ts</code>・<code>fns</code>・<code>fps</code></li>
 <li>出力：2本の折れ線</li>
 </ul>
-<div id="986e31c3" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fns, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;見逃し（FN）&#39;</span>)</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fps, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;誤検出（FP）&#39;</span>)</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数&#39;</span>)</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="35c11571" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fns, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;見逃し（FN）&#39;</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fps, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;誤検出（FP）&#39;</span>)</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数&#39;</span>)</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4453,7 +4558,7 @@ Name: 数字, dtype: float64</code></pre>
 \text{誤検出率} = \frac{FP}{FP + TN}
 \]</span></p>
 <p>横に誤検出率、縦に再現率をとり、しきい値を細かく動かして点を打つと、1本の線になります。この線を、ROC曲線と呼びます。左上に近いほど、良い点数です。下の図には、これまでのルール（free・prize・数字5字以上）の点も打ちました。</p>
-<div id="0c0d3e91" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="38">
+<div id="b1c97f04" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4470,12 +4575,12 @@ Name: 数字, dtype: float64</code></pre>
 <p>まず、予想を書いてください。0.3で切ると、見逃しと誤検出は、数字のルール（見逃し96・誤検出39）より少なくなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>0.5</code>を<code>0.3</code>に替えて実行してください。</p>
-<div id="909a05a8" class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.5 を 0.3 に替えて実行する</span></span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数&#39;</span>], t)</span>
-<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a>mat_x <span class="op">=</span> confusion(df, <span class="st">&#39;判定_x&#39;</span>)</span>
-<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mat_x, rates(mat_x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="1ec243de" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.5 を 0.3 に替えて実行する</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> judge(df[<span class="st">&#39;点数&#39;</span>], t)</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>mat_x <span class="op">=</span> confusion(df, <span class="st">&#39;判定_x&#39;</span>)</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(mat_x, rates(mat_x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4511, &#39;FP&#39;: 7, &#39;FN&#39;: 148, &#39;TP&#39;: 505} (0.773, 0.986)</code></pre>
 </div>
@@ -4614,13 +4719,13 @@ Name: 数字, dtype: float64</code></pre>
 <li>出力：迷惑のほうが高い組の数、全部の組の数、その割合</li>
 </ul>
 <p><code>(hm &lt; s).sum()</code>は、普通の点数のうち、<code>s</code>より低いものの数です。</p>
-<div id="61304acf" class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>sp <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;点数&#39;</span>]</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>hm <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;点数&#39;</span>]</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>wins <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> sp:</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>    wins <span class="op">=</span> wins <span class="op">+</span> (hm <span class="op">&lt;</span> s).<span class="bu">sum</span>()   <span class="co"># sより点数の低い普通の数</span></span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(wins, <span class="bu">len</span>(sp) <span class="op">*</span> <span class="bu">len</span>(hm), <span class="bu">round</span>(wins <span class="op">/</span> (<span class="bu">len</span>(sp) <span class="op">*</span> <span class="bu">len</span>(hm)), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="61304acf" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>sp <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;点数&#39;</span>]</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>hm <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;点数&#39;</span>]</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>wins <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> sp:</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    wins <span class="op">=</span> wins <span class="op">+</span> (hm <span class="op">&lt;</span> s).<span class="bu">sum</span>()   <span class="co"># sより点数の低い普通の数</span></span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(wins, <span class="bu">len</span>(sp) <span class="op">*</span> <span class="bu">len</span>(hm), <span class="bu">round</span>(wins <span class="op">/</span> (<span class="bu">len</span>(sp) <span class="op">*</span> <span class="bu">len</span>(hm)), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2891554 2950254 0.98</code></pre>
 </div>
@@ -4635,34 +4740,34 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：表<code>df</code>、式の作り方<code>model</code></li>
 <li>出力：全部の通の点数</li>
 </ul>
-<div id="3f88bd4e" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
-<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge</span>
-<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score_all(df, model):</span>
-<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> pd.Series(<span class="fl">0.0</span>, index<span class="op">=</span>df.index)</span>
-<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
-<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>        tr_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> k]</span>
-<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>        te_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">==</span> k]</span>
-<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>        vec <span class="op">=</span> CountVectorizer(binary<span class="op">=</span><span class="va">True</span>).fit(tr_k[<span class="st">&#39;本文&#39;</span>])</span>
-<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>        model.fit(vec.transform(tr_k[<span class="st">&#39;本文&#39;</span>]), tr_k[<span class="st">&#39;迷惑&#39;</span>])</span>
-<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>        score[te_k.index] <span class="op">=</span> model.predict(vec.transform(te_k[<span class="st">&#39;本文&#39;</span>]))</span>
-<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> score</span>
-<span id="cb68-13"><a href="#cb68-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-14"><a href="#cb68-14" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> CountVectorizer(binary<span class="op">=</span><span class="va">True</span>).fit(df[<span class="st">&#39;本文&#39;</span>])</span>
-<span id="cb68-15"><a href="#cb68-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(vec.vocabulary_), <span class="st">&#39;種類の単語&#39;</span>)</span>
-<span id="cb68-16"><a href="#cb68-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> <span class="dv">0</span>]), <span class="st">&#39;通で訓練（組0をテストにした回）&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3f88bd4e" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> Ridge</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cv_score_all(df, model):</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> pd.Series(<span class="fl">0.0</span>, index<span class="op">=</span>df.index)</span>
+<span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>):</span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>        tr_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> k]</span>
+<span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>        te_k <span class="op">=</span> df[df[<span class="st">&#39;組&#39;</span>] <span class="op">==</span> k]</span>
+<span id="cb74-9"><a href="#cb74-9" aria-hidden="true" tabindex="-1"></a>        vec <span class="op">=</span> CountVectorizer(binary<span class="op">=</span><span class="va">True</span>).fit(tr_k[<span class="st">&#39;本文&#39;</span>])</span>
+<span id="cb74-10"><a href="#cb74-10" aria-hidden="true" tabindex="-1"></a>        model.fit(vec.transform(tr_k[<span class="st">&#39;本文&#39;</span>]), tr_k[<span class="st">&#39;迷惑&#39;</span>])</span>
+<span id="cb74-11"><a href="#cb74-11" aria-hidden="true" tabindex="-1"></a>        score[te_k.index] <span class="op">=</span> model.predict(vec.transform(te_k[<span class="st">&#39;本文&#39;</span>]))</span>
+<span id="cb74-12"><a href="#cb74-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> score</span>
+<span id="cb74-13"><a href="#cb74-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb74-14"><a href="#cb74-14" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> CountVectorizer(binary<span class="op">=</span><span class="va">True</span>).fit(df[<span class="st">&#39;本文&#39;</span>])</span>
+<span id="cb74-15"><a href="#cb74-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(vec.vocabulary_), <span class="st">&#39;種類の単語&#39;</span>)</span>
+<span id="cb74-16"><a href="#cb74-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(df[df[<span class="st">&#39;組&#39;</span>] <span class="op">!=</span> <span class="dv">0</span>]), <span class="st">&#39;通で訓練（組0をテストにした回）&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>8713 種類の単語
 4136 通で訓練（組0をテストにした回）</code></pre>
 </div>
 </div>
 <p>全部の通で数えると、単語は8,713種類あります。列が、1回の訓練の通（4,136通）より多くなります。普通の線形回帰と、第5回のリッジで、0.3で切った混同行列を比べます。</p>
-<div id="b9b00d01" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_all&#39;</span>] <span class="op">=</span> judge(cv_score_all(df, LinearRegression()), <span class="fl">0.3</span>)</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_all&#39;</span>))</span>
-<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_r&#39;</span>] <span class="op">=</span> judge(cv_score_all(df, Ridge(alpha<span class="op">=</span><span class="dv">10</span>)), <span class="fl">0.3</span>)</span>
-<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_r&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b9b00d01" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_all&#39;</span>] <span class="op">=</span> judge(cv_score_all(df, LinearRegression()), <span class="fl">0.3</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_all&#39;</span>))</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_r&#39;</span>] <span class="op">=</span> judge(cv_score_all(df, Ridge(alpha<span class="op">=</span><span class="dv">10</span>)), <span class="fl">0.3</span>)</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion(df, <span class="st">&#39;判定_r&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{&#39;TN&#39;: 4467, &#39;FP&#39;: 51, &#39;FN&#39;: 99, &#39;TP&#39;: 554}
 {&#39;TN&#39;: 4496, &#39;FP&#39;: 22, &#39;FN&#39;: 41, &#39;TP&#39;: 612}</code></pre>
