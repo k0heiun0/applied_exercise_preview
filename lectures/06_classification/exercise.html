@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>第6回 分類の判定を、混同行列で評価する（ブロックで読む版）</title>
+<title>第6回 分類の判定を、混同行列で評価する（1行ずつ読む版）</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3228,7 +3228,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">第6回 分類の判定を、混同行列で評価する（ブロックで読む版）</h1>
+<h1 class="title">第6回 分類の判定を、混同行列で評価する（1行ずつ読む版）</h1>
 </div>
 
 
@@ -3256,7 +3256,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="今日の分析目標">今日の分析目標</h2>
 <p>本文から、迷惑メッセージをどう見分け、その見分け方をどう評価するかに答える。</p>
 <p>携帯電話に届いたSMSの本文から、迷惑メッセージかどうかを判定します。まず、簡単なルールで判定し、正解率で評価します。ところが、正解率だけでは、良いフィルターかどうかが分かりません。そこで、当たりと外れを4つのマスに分けて数え（混同行列）、見逃しと誤検出を分けて評価します。最後に、手がかりをまとめて迷惑である確率を出し（ロジスティック回帰）、どこで切るかを動かします。</p>
-<p>もう1つのねらいは、条件で処理を分ける書き方（if）を使い、ルールや判定のコードを読めるようになることです。「freeを含むなら迷惑」「数字が5字以上なら迷惑」を、ifで書きます。ifを使うお手本は、ブロックで読んだあと、1行ずつ読み（「1行ずつ読む」）、変数の中身を見ます（「中身を見る」）。</p>
+<p>もう1つのねらいは、条件で処理を分ける書き方（if）を使い、ルールや判定のコードを読めるようになることです。「freeを含むなら迷惑」「数字が5字以上なら迷惑」を、ifで書きます。お手本ごとに、コードを1行ずつ読み（「1行ずつ読む」）、くり返しを少しだけ回して、変数の中身を見ます（「中身を見る」）。</p>
 <section id="公開データの世界" class="level3">
 <h3 class="anchored" data-anchor-id="公開データの世界">公開データの世界</h3>
 <p>第5回は、食品の分析のデータで、数の列が100本並ぶ表でした。今日は、文章のデータです。数の表ではなく、人が書いたメッセージそのものです。データの形が変われば、道具の組み立て方も変わります。</p>
@@ -3366,7 +3366,7 @@ window.Quarto = {
 <li>入力：なし</li>
 <li>出力：なし（終わるとセルの左に ✓ が付く）</li>
 </ul>
-<div id="63e11ea6" class="cell" data-execution_count="1">
+<div id="14c8d8db" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -3380,7 +3380,7 @@ window.Quarto = {
 <li>出力：「セットアップ完了」の表示</li>
 </ul>
 <p><code>try:</code>から先は、日本語表示の道具が動かなくなったときの保険で、中身は読まなくてかまいません。</p>
-<div id="0ed3d272" class="cell" data-execution_count="2">
+<div id="b0b208f7" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語が図の中で □ になるのを防ぐ</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install <span class="op">-</span>q japanize<span class="op">-</span>matplotlib</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
@@ -3416,7 +3416,7 @@ window.Quarto = {
 <li>入力：データの置き場所<code>DATA_DIR</code>と、ファイル名<code>sms_spam.csv</code></li>
 <li>出力：表<code>raw</code>（5,574通）</li>
 </ul>
-<div id="6f91e1d9" class="cell" data-execution_count="3">
+<div id="81dfb7ce" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
 DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
             <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
@@ -3480,13 +3480,7 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：表<code>df</code>と、通数・迷惑の通数</li>
 </ul>
 <p><code>drop_duplicates(&#39;text&#39;)</code>は、同じ本文の行を、1行だけ残して消します。<code>(df[&#39;label&#39;] == &#39;spam&#39;)</code>は、迷惑ならTrue、普通ならFalseの列で、<code>astype(int)</code>で1と0に直します。</p>
-<details>
-<summary>
-書き方メモ（読み飛ばしてよい）
-</summary>
-<p><code>reset_index(drop=True)</code>は、残った行に、0から振り直した行の番号を付けます。これで、<code>df</code>の行の番号は、0から抜けなく並びます。</p>
-</details>
-<div id="c8bd4db6" class="cell" data-execution_count="4">
+<div id="dd9c33fc" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw.drop_duplicates(<span class="st">&#39;text&#39;</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{<span class="st">&#39;text&#39;</span>: <span class="st">&#39;本文&#39;</span>})</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;label&#39;</span>] <span class="op">==</span> <span class="st">&#39;spam&#39;</span>).astype(<span class="bu">int</span>)</span>
@@ -3497,8 +3491,60 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 653 通が迷惑</code></pre>
 </div>
 </div>
+<section id="行ずつ読む" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む">1行ずつ読む</h4>
+<ul>
+<li>1行目：<code>raw</code>から、同じ本文の行を1行だけ残して消す（<code>drop_duplicates</code>）</li>
+<li>続けて<code>reset_index(drop=True)</code>で、行の番号を0から振り直し、<code>df</code>にしまう</li>
+<li>番号を振り直すと、行の番号が0から抜けなく並ぶ</li>
+<li>2行目：列の名前textを、本文に替える（<code>rename</code>）</li>
+<li>3行目：labelがspamならTrue、違えばFalse。<code>astype(int)</code>で1と0に直し、列「迷惑」にしまう</li>
+<li>4行目：<code>len(表)</code>は行の数。整える前と後の通数を並べて出す</li>
+<li>5行目：1と0の列の合計は、1の数。つまり迷惑の通数</li>
+</ul>
+</section>
+<section id="中身を見る列迷惑" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る列迷惑">中身を見る：列「迷惑」</h4>
+<div id="d6678b92" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;label&#39;</span>, <span class="st">&#39;迷惑&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">label</th>
+<th data-quarto-table-cell-role="th">迷惑</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>ham</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>ham</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>spam</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>spamの行だけが1、hamの行は0になった</p>
 <p>同じ本文が何度も届いた分を1通にまとめ、5,171通にしました。列「迷惑」は、迷惑なら1、普通なら0で、これが答えの列になります。</p>
 <hr>
+</section>
 </section>
 </section>
 <section id="どんなメッセージが届く" class="level2">
@@ -3513,9 +3559,9 @@ DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubuser
 <li>出力：通数と割合</li>
 </ul>
 <p>1と0の列の平均は、1の割合になります。</p>
-<div id="5b582b75" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;迷惑&#39;</span>].value_counts())</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;迷惑&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="19d55221" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;迷惑&#39;</span>].value_counts())</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;迷惑&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>迷惑
 0    4518
@@ -3524,7 +3570,15 @@ Name: count, dtype: int64
 0.126</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-1" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-1">1行ずつ読む</h4>
+<ul>
+<li>1行目：<code>value_counts()</code>は、値ごとに行の数を数える。0（普通）と1（迷惑）の通数</li>
+<li>2行目：<code>mean()</code>は平均。1と0の列の平均は、1の割合</li>
+<li><code>round(…, 3)</code>で、小数第3位までに丸める</li>
+</ul>
 <p>5,171通のうち、迷惑は653通、普通は4,518通です。迷惑の割合は0.126で、8通に1通ほどです。少ない側を見つけたい、というこの偏りが、今日の話の鍵になります。</p>
+</section>
 </section>
 <section id="お手本迷惑の本文を読む" class="level3">
 <h3 class="anchored" data-anchor-id="お手本迷惑の本文を読む">お手本：迷惑の本文を読む</h3>
@@ -3533,9 +3587,9 @@ Name: count, dtype: int64
 <li>入力：表<code>df</code></li>
 <li>出力：迷惑メッセージの本文5通</li>
 </ul>
-<div id="cedbd525" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;本文&#39;</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="6">
+<div id="1fb44a74" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;本文&#39;</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>2     Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA ...
 5     FreeMsg Hey there darling it&#39;s been 3 week&#39;s now and no word back! I&#39;d like ...
 8     WINNER!! As a valued network customer you have been selected to receivea £90...
@@ -3544,8 +3598,16 @@ Name: count, dtype: int64
 Name: 本文, dtype: object</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-2" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-2">1行ずつ読む</h4>
+<ul>
+<li><code>df[&#39;迷惑&#39;] == 1</code>：迷惑ならTrue、普通ならFalseの列</li>
+<li><code>df[Trueの列]</code>：Trueの行だけを取り出した表</li>
+<li><code>[&#39;本文&#39;]</code>で本文の列を取り出し、<code>head()</code>で先頭の5通を見る</li>
+</ul>
 <p>free（無料）、win（当選）、claim（受け取る）、call（電話を）のような決まり文句があり、電話番号や短い番号が並びます。この特徴を、ルールにできないでしょうか。</p>
 <hr>
+</section>
 </section>
 </section>
 <section id="ルールで見分けられる" class="level2">
@@ -3554,10 +3616,10 @@ Name: 本文, dtype: object</code></pre>
 <section id="道具文字列の中に語があるか" class="level3">
 <h3 class="anchored" data-anchor-id="道具文字列の中に語があるか">道具：文字列の中に語があるか</h3>
 <p><code>語 in 文字列</code>は、文字列の中にその語があればTrue、なければFalseになります。<code>lower()</code>は、大文字を小文字にそろえます。FREEもFreeも、freeとして探せます。</p>
-<div id="07206c0b" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> <span class="st">&#39;Are you free now?&#39;</span>)   <span class="co"># True</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> <span class="st">&#39;Tired.&#39;</span>)              <span class="co"># False</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;FREE entry&#39;</span>.lower())            <span class="co"># free entry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="8ae1a5e5" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> <span class="st">&#39;Are you free now?&#39;</span>)   <span class="co"># True</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> <span class="st">&#39;Tired.&#39;</span>)              <span class="co"># False</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;FREE entry&#39;</span>.lower())            <span class="co"># free entry</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>True
 False
@@ -3573,12 +3635,12 @@ free entry</code></pre>
 <li><code>else:</code>の下の行は、条件がFalseのときだけ動く</li>
 </ul>
 <p>下の例では、<code>x</code>が5以上なので、上の<code>print</code>だけが動きます。<code>x = 7</code>を<code>x = 3</code>に替えると、下の<code>print</code>が動きます。</p>
-<div id="19d47a3f" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">7</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5以上&#39;</span>)     <span class="co"># 条件がTrueのときだけ動く</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5未満&#39;</span>)     <span class="co"># 条件がFalseのときだけ動く</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="b37206a6" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> <span class="dv">7</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> x <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5以上&#39;</span>)     <span class="co"># 条件がTrueのときだけ動く</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;5未満&#39;</span>)     <span class="co"># 条件がFalseのときだけ動く</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>5以上</code></pre>
 </div>
@@ -3591,22 +3653,22 @@ free entry</code></pre>
 <li>入力：本文<code>text</code>、探す語<code>word</code></li>
 <li>出力：1か0</li>
 </ul>
-<div id="2d862f2f" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule(text, word):</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">in</span> text.lower():</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span>          <span class="co"># 迷惑と判定</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>          <span class="co"># 普通と判定</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(<span class="st">&#39;FREE entry into our weekly comp&#39;</span>, <span class="st">&#39;free&#39;</span>))</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(<span class="st">&#39;Tired. I have not slept well&#39;</span>, <span class="st">&#39;free&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="970eb5c0" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule(text, word):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">in</span> text.lower():</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">1</span>          <span class="co"># 迷惑と判定</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="dv">0</span>          <span class="co"># 普通と判定</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(<span class="st">&#39;FREE entry into our weekly comp&#39;</span>, <span class="st">&#39;free&#39;</span>))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(<span class="st">&#39;Tired. I have not slept well&#39;</span>, <span class="st">&#39;free&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1
 0</code></pre>
 </div>
 </div>
-<section id="行ずつ読む" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む">1行ずつ読む</h4>
+<section id="行ずつ読む-3" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-3">1行ずつ読む</h4>
 <ul>
 <li>1行目：関数<code>rule</code>を作る。入力は本文<code>text</code>と、探す語<code>word</code>の2つ</li>
 <li><code>def</code>の下の字下げした行が、関数の中身。呼び出したときに動く</li>
@@ -3621,11 +3683,11 @@ free entry</code></pre>
 </section>
 <section id="中身を見る条件の中身" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る条件の中身">中身を見る：条件の中身</h4>
-<div id="d4e54466" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">&#39;Call FREEPHONE 0800 542 0578 now!&#39;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(text.lower())</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> text.lower())</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(text, <span class="st">&#39;free&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5621c118" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>text <span class="op">=</span> <span class="st">&#39;Call FREEPHONE 0800 542 0578 now!&#39;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(text.lower())</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&#39;free&#39;</span> <span class="kw">in</span> text.lower())</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(rule(text, <span class="st">&#39;free&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>call freephone 0800 542 0578 now!
 True
@@ -3639,7 +3701,7 @@ True
 <section id="ifの分かれ道" class="level3">
 <h3 class="anchored" data-anchor-id="ifの分かれ道">ifの分かれ道</h3>
 <p>下の図は、実際のメッセージ3通が、ifの分かれ道でどちらへ進むかを描いたものです。1通ずつ、条件で道が分かれます。「Are you free now?」のような普通のメッセージも、freeを含むので、迷惑の道へ進みます。</p>
-<div id="49f91aed" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
+<div id="d084e92c" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="12">
 <div class="cell-output cell-output-stdout">
 <pre><code>True  → return 1（迷惑と判定） FREE entry into our £250 weekly comp ...
 True  → return 1（迷惑と判定） Are you free now?can i call now?
@@ -3655,16 +3717,42 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>出力：迷惑と判定した通数</li>
 </ul>
 <p>くり返しの結果をリストにためるのは、第4回と同じ書き方です。</p>
-<div id="ac4ea377" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> []</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    pred.append(rule(text, <span class="st">&#39;free&#39;</span>))</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定&#39;</span>] <span class="op">=</span> pred</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定&#39;</span>].<span class="bu">sum</span>(), <span class="st">&#39;通を迷惑と判定&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7f90e114" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> []</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    pred.append(rule(text, <span class="st">&#39;free&#39;</span>))</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定&#39;</span>] <span class="op">=</span> pred</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定&#39;</span>].<span class="bu">sum</span>(), <span class="st">&#39;通を迷惑と判定&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>231 通を迷惑と判定</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-4" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-4">1行ずつ読む</h4>
+<ul>
+<li>1行目：空のリスト<code>pred</code>を作る。ここに判定をためていく</li>
+<li>2行目：列「本文」から1通ずつ取り出して<code>text</code>に入れ、字下げした行をくり返す</li>
+<li>3行目：その1通を<code>rule</code>で判定し（1か0）、<code>pred</code>の後ろに足す（<code>append</code>）</li>
+<li>5,171回くり返すと、<code>pred</code>には5,171個の1と0が並ぶ</li>
+<li>4行目：リスト<code>pred</code>を、表の列「判定」にする</li>
+<li>5行目：1と0の列の合計は、迷惑と判定した通数</li>
+</ul>
+</section>
+<section id="中身を見る3通だけ回す" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る3通だけ回す">中身を見る：3通だけ回す</h4>
+<div id="ae421370" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> []</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>].head(<span class="dv">3</span>):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    pred.append(rule(text, <span class="st">&#39;free&#39;</span>))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[0]
+[0, 0]
+[0, 0, 1]</code></pre>
+</div>
+</div>
+<p>1回ごとに、後ろに1つ足される。3通めはFreeで始まるので1</p>
+</section>
 </section>
 <section id="お手本正解率" class="level3">
 <h3 class="anchored" data-anchor-id="お手本正解率">お手本：正解率</h3>
@@ -3677,13 +3765,21 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 \text{正解率} = \frac{\text{判定が当たった通数}}{\text{全部の通数}}
 \]</span></p>
 <p><code>sklearn</code>の<code>accuracy_score(本当, 判定)</code>は、正解率を返す道具です。</p>
-<div id="93ab4926" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(accuracy_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ac3d8a1b" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(accuracy_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.894</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-5" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-5">1行ずつ読む</h4>
+<ul>
+<li>1行目：<code>sklearn</code>の評価の道具の中から、<code>accuracy_score</code>を呼び出す</li>
+<li>2行目：本当の答え（列「迷惑」）と判定（列「判定」）を渡すと、正解率が返る</li>
+<li><code>round(…, 3)</code>で、小数第3位までに丸めて表示する</li>
+</ul>
+</section>
 <section id="accuracy_scoreがしていること" class="level4">
 <h4 class="anchored" data-anchor-id="accuracy_scoreがしていること">accuracy_scoreがしていること</h4>
 <p>1通ずつ、本当の答えと判定を見比べ、同じなら当たりとします。当たりの通数を、全部の通数で割ります。たとえば、表の5通（行の番号0・1・2・8・75）なら、次のようになります。</p>
@@ -3730,9 +3826,9 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 </tbody>
 </table>
 <p>5通のうち当たりは3通で、正解率は3 ÷ 5 = 0.6です。これを5,171通で行ったのが、上の数です。</p>
-<div id="c3228b9a" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df.loc[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">75</span>], [<span class="st">&#39;迷惑&#39;</span>, <span class="st">&#39;判定&#39;</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="14">
+<div id="4b03969f" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df.loc[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">75</span>], [<span class="st">&#39;迷惑&#39;</span>, <span class="st">&#39;判定&#39;</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
 <div>
 
 
@@ -3776,6 +3872,18 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 </div>
 </div>
 </div>
+</section>
+<section id="中身を見る5通で正解率" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る5通で正解率">中身を見る：5通で正解率</h4>
+<div id="8a0894e9" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]      <span class="co"># 本当（行0・1・2・8・75）</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]      <span class="co"># 判定</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(accuracy_score(y, p))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.6</code></pre>
+</div>
+</div>
+<p>上の表の5通の本当と判定を、リストで渡した。5通のうち3通が当たりで、0.6</p>
 <p>「freeを含むなら迷惑」だけで、正解率は0.894です。1行のルールで、9割ほどのメッセージを正しく判定できました。これは、良いフィルターと言えるでしょうか。</p>
 <blockquote class="blockquote">
 <p>今日の重要概念（Python）：if</p>
@@ -3785,19 +3893,19 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 </section>
 <section id="todo①探す語を替える予想-実行-比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo①探す語を替える予想-実行-比べる">TODO①：探す語を替える（予想 → 実行 → 比べる）</h3>
-<p>下のセルは、語<code>word</code>を含むなら迷惑と判定し、迷惑と判定した通数と正解率を表示します。</p>
+<p>下のセルは、語<code>word</code>を含むなら迷惑と判定し、迷惑と判定した通数と正解率を表示します。2節のお手本と同じ4行で、語を変数<code>word</code>にしまったので、替えるのは2行目だけです。</p>
 <p>まず、予想を書いてください。探す語を’xyz’（どのメッセージにも出てこない語）にすると、迷惑と判定する通数と正解率は、いくつになるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>&#39;free&#39;</code>を<code>&#39;xyz&#39;</code>に替えて実行してください。</p>
-<div id="a84106c1" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;xyz&#39; に替えて実行する</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定_x&#39;</span>].<span class="bu">sum</span>())   <span class="co"># 迷惑と判定した通数</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(accuracy_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))   <span class="co"># 正解率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="da3fd570" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;xyz&#39; に替えて実行する</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;判定_x&#39;</span>].<span class="bu">sum</span>())   <span class="co"># 迷惑と判定した通数</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(accuracy_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))   <span class="co"># 正解率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>231
 0.894</code></pre>
@@ -3894,14 +4002,22 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>出力：2×2の表</li>
 </ul>
 <p><code>sklearn</code>の<code>confusion_matrix(本当, 判定)</code>は、4つのマスの通数を2×2の表で返す道具です。</p>
-<div id="98836b92" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="05462b84" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4456   62]
  [ 484  169]]</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-6" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-6">1行ずつ読む</h4>
+<ul>
+<li>1行目：<code>sklearn</code>の評価の道具の中から、<code>confusion_matrix</code>を呼び出す</li>
+<li>2行目：本当の答えと判定を渡すと、2×2の表が返る。それを表示する</li>
+<li>渡す順は、本当が先、判定が後</li>
+</ul>
+</section>
 <section id="confusion_matrixがしていること" class="level4">
 <h4 class="anchored" data-anchor-id="confusion_matrixがしていること">confusion_matrixがしていること</h4>
 <p>1通ずつ、本当の答え（行）と判定（列）の組を見て、当てはまるマスに1を足します。正解率のときと同じ5通なら、次のようになります。</p>
@@ -3949,7 +4065,20 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 </table>
 <p>この5通なら、TNが2、TP・FN・FPが1ずつです。これを5,171通で数えたのが、上の4つの数です。</p>
 <p>並びは、上の行が本当の普通、下の行が本当の迷惑、左の列が判定の普通、右の列が判定の迷惑です。<code>sklearn</code>は0、1の順に並べます。教科書やネットの記事には、迷惑（1）を左上に置く表もあるので、表を読むときは、行と列の名前を先に確かめます。</p>
-<div id="b9be9132" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
+</section>
+<section id="中身を見る5通の混同行列" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る5通の混同行列">中身を見る：5通の混同行列</h4>
+<div id="b238de94" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]      <span class="co"># 本当（行0・1・2・8・75）</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]      <span class="co"># 判定</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(y, p))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[2 1]
+ [1 1]]</code></pre>
+</div>
+</div>
+<p>上の表と同じ5通。TNが2、FP・FN・TPが1ずつ。上の行が本当の0（普通）、左の列が判定の0（普通）</p>
+<div id="2724fc79" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -3972,14 +4101,14 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <p>まず、予想を書いてください。探す語をprizeにすると、見逃しと誤検出は、freeと比べてどう変わるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>&#39;free&#39;</code>を<code>&#39;prize&#39;</code>に替えて実行してください。</p>
-<div id="de0cfdfd" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;prize&#39; に替えて実行する</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6664e348" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;free&#39; を &#39;prize&#39; に替えて実行する</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>word <span class="op">=</span> <span class="st">&#39;free&#39;</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    pred_x.append(rule(text, word))</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4456   62]
  [ 484  169]]</code></pre>
@@ -4055,15 +4184,23 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>出力：再現率と適合率（小数第3位まで）</li>
 </ul>
 <p><code>recall_score(本当, 判定)</code>は再現率、<code>precision_score(本当, 判定)</code>は適合率を返す道具です。</p>
-<div id="1f0cfea8" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score, precision_score</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]), <span class="dv">3</span>))      <span class="co"># 再現率</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]), <span class="dv">3</span>))   <span class="co"># 適合率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a94501e8" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score, precision_score</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]), <span class="dv">3</span>))      <span class="co"># 再現率</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]), <span class="dv">3</span>))   <span class="co"># 適合率</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.259
 0.732</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-7" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-7">1行ずつ読む</h4>
+<ul>
+<li>1行目：再現率の道具<code>recall_score</code>と、適合率の道具<code>precision_score</code>を呼び出す</li>
+<li>2行目：本当の答えと判定を渡し、再現率を出す</li>
+<li>3行目：同じ2つを渡し、適合率を出す</li>
+</ul>
+</section>
 <section id="つの道具がしていること" class="level4">
 <h4 class="anchored" data-anchor-id="つの道具がしていること">2つの道具がしていること</h4>
 <p>どちらも、混同行列の4つのマスのうち、2つだけを使います。</p>
@@ -4071,6 +4208,18 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li><code>recall_score</code>：下の行（本当に迷惑）だけを見る。TP ÷ (TP + FN) = 169 ÷ (169 + 484)</li>
 <li><code>precision_score</code>：右の列（迷惑と判定）だけを見る。TP ÷ (TP + FP) = 169 ÷ (169 + 62)</li>
 </ul>
+</section>
+<section id="中身を見る5通の2つの割合" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る5通の2つの割合">中身を見る：5通の2つの割合</h4>
+<div id="a8fa85f6" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]      <span class="co"># 本当（行0・1・2・8・75）</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]      <span class="co"># 判定</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(recall_score(y, p), precision_score(y, p))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.5 0.5</code></pre>
+</div>
+</div>
+<p>再現率：本当に迷惑の2通（行2・8）のうち、迷惑と判定したのは1通。適合率：迷惑と判定した2通（行2・75）のうち、本当に迷惑は1通</p>
 <p>freeのルールは、再現率0.259で、迷惑の4通に1通しか捕まえていません。適合率は0.732で、迷惑と言った4通のうち3通ほどは本当に迷惑です。正解率0.894からは見えなかった弱さが、再現率に出ました。</p>
 </section>
 </section>
@@ -4081,27 +4230,34 @@ False → return 0（普通と判定） Tired. I haven&#39;t slept well the past
 <li>入力：表<code>df</code></li>
 <li>出力：再現率と適合率</li>
 </ul>
-<div id="a26b0cba" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>pred_p <span class="op">=</span> []</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    pred_p.append(rule(text, <span class="st">&#39;prize&#39;</span>))</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_p&#39;</span>] <span class="op">=</span> pred_p</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_p&#39;</span>]), <span class="dv">3</span>))</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_p&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="18b9cf27" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>pred_p <span class="op">=</span> []</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    pred_p.append(rule(text, <span class="st">&#39;prize&#39;</span>))</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_p&#39;</span>] <span class="op">=</span> pred_p</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_p&#39;</span>]), <span class="dv">3</span>))</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_p&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.118
 1.0</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-8" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-8">1行ずつ読む</h4>
+<ul>
+<li>1〜4行目：2節と同じ形。探す語をprizeにして、列「判定_p」を作る</li>
+<li>5・6行目：再現率と適合率を出す</li>
+</ul>
 <p>prizeは適合率1.0ですが、再現率は0.118です。1つの語では、迷惑の一部しか捕まえられません。</p>
+</section>
 </section>
 <section id="迷惑には番号が並ぶ" class="level3">
 <h3 class="anchored" data-anchor-id="迷惑には番号が並ぶ">迷惑には、番号が並ぶ</h3>
 <p>迷惑の本文には、電話番号や、返信先の短い番号が書いてあります。普通のメッセージに、数字はあまり出てきません。本文の中の数字を数えたら、手がかりにならないでしょうか。</p>
 <p>文字列も、<code>for ch in 文字列:</code>で1字ずつ取り出せます。<code>isdigit()</code>は、その字が数字ならTrueを返します。</p>
-<div id="47b600a0" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;a1b2&#39;</span>:</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, ch.isdigit())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fcc47a77" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;a1b2&#39;</span>:</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, ch.isdigit())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>a False
 1 True
@@ -4117,21 +4273,21 @@ b False
 <li>入力：本文<code>text</code></li>
 <li>出力：数字の字数</li>
 </ul>
-<div id="6a270782" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> n_digits(text):</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ch <span class="kw">in</span> text:          <span class="co"># 本文を1字ずつ</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ch.isdigit():     <span class="co"># 数字なら</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>            n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span>        <span class="co"># 1を足す</span></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(n_digits(<span class="st">&#39;call 08707509020 now&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9ed1a259" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> n_digits(text):</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ch <span class="kw">in</span> text:          <span class="co"># 本文を1字ずつ</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ch.isdigit():     <span class="co"># 数字なら</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>            n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span>        <span class="co"># 1を足す</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> n</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(n_digits(<span class="st">&#39;call 08707509020 now&#39;</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>11</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-1" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-1">1行ずつ読む</h4>
+<section id="行ずつ読む-9" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-9">1行ずつ読む</h4>
 <ul>
 <li>1行目：関数<code>n_digits</code>を作る。入力は本文<code>text</code></li>
 <li>2行目：数えた数をためる変数<code>n</code>を、0から始める</li>
@@ -4144,12 +4300,12 @@ b False
 </section>
 <section id="中身を見る1字ずつのnの変化" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る1字ずつのnの変化">中身を見る：1字ずつのnの変化</h4>
-<div id="529d5eb9" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;call 0870&#39;</span>:</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ch.isdigit():</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="2da376ee" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ch <span class="kw">in</span> <span class="st">&#39;call 0870&#39;</span>:</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ch.isdigit():</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        n <span class="op">=</span> n <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(ch, n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>c 0
 a 0
@@ -4172,12 +4328,12 @@ l 0
 <li>入力：表<code>df</code>の本文</li>
 <li>出力：迷惑（1）と普通（0）の、数字の字数の平均</li>
 </ul>
-<div id="7b7a6be2" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>nd <span class="op">=</span> []</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    nd.append(n_digits(text))</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;数字&#39;</span>] <span class="op">=</span> nd</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;迷惑&#39;</span>)[<span class="st">&#39;数字&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="7d6f6a1d" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>nd <span class="op">=</span> []</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    nd.append(n_digits(text))</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;数字&#39;</span>] <span class="op">=</span> nd</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;迷惑&#39;</span>)[<span class="st">&#39;数字&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>迷惑
 0     0.3
@@ -4185,8 +4341,15 @@ l 0
 Name: 数字, dtype: float64</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-10" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-10">1行ずつ読む</h4>
+<ul>
+<li>1〜4行目：2節の判定と同じ形。1通ずつ<code>n_digits</code>で数え、リストにためて列「数字」にする</li>
+<li>5行目：<code>groupby(&#39;迷惑&#39;)</code>で迷惑（1）と普通（0）に分け、列「数字」の平均を出す</li>
+<li><code>round(1)</code>で、小数第1位までに丸める</li>
+</ul>
 <p>迷惑は平均15.5字、普通は平均0.3字です。</p>
-<div id="42f31f65" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="25">
+<div id="fde0166c" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="30">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4197,6 +4360,7 @@ Name: 数字, dtype: float64</code></pre>
 </div>
 <p>普通はほとんどが0字で、迷惑は数字が何字も並ぶ通が多くあります。数字の数で、ほぼ分かれます。</p>
 </section>
+</section>
 <section id="お手本数字のルール" class="level3">
 <h3 class="anchored" data-anchor-id="お手本数字のルール">お手本：数字のルール</h3>
 <ul>
@@ -4204,17 +4368,17 @@ Name: 数字, dtype: float64</code></pre>
 <li>入力：表<code>df</code>の列「数字」</li>
 <li>出力：混同行列と、再現率・適合率</li>
 </ul>
-<div id="fb6d1d79" class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>pred_d <span class="op">=</span> []</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">1</span>)     <span class="co"># 5字以上なら迷惑</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">0</span>)</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_数字&#39;</span>] <span class="op">=</span> pred_d</span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_数字&#39;</span>]))</span>
-<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_数字&#39;</span>]), <span class="dv">3</span>))</span>
-<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_数字&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4b4321ab" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>pred_d <span class="op">=</span> []</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> <span class="dv">5</span>:</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">1</span>)     <span class="co"># 5字以上なら迷惑</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>        pred_d.append(<span class="dv">0</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_数字&#39;</span>] <span class="op">=</span> pred_d</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_数字&#39;</span>]))</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_数字&#39;</span>]), <span class="dv">3</span>))</span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_数字&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4479   39]
  [  96  557]]
@@ -4222,8 +4386,8 @@ Name: 数字, dtype: float64</code></pre>
 0.935</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-2" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-2">1行ずつ読む</h4>
+<section id="行ずつ読む-11" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-11">1行ずつ読む</h4>
 <ul>
 <li>2行目：列「数字」から、1通ずつ字数を取り出して<code>n</code>に入れる</li>
 <li>3〜6行目：<code>n</code>が5以上なら1、そうでなければ0を、<code>pred_d</code>の後ろに足す</li>
@@ -4245,19 +4409,19 @@ Name: 数字, dtype: float64</code></pre>
 <p>まず、予想を書いてください。数字が1字でもあれば迷惑、にすると、再現率と適合率はどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>5</code>を<code>1</code>に替えて実行してください。</p>
-<div id="63cb8c1a" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 1 に替えて実行する</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> k:</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">1</span>)</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">0</span>)</span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cfdc9d9f" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 1 に替えて実行する</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>pred_x <span class="op">=</span> []</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> df[<span class="st">&#39;数字&#39;</span>]:</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&gt;=</span> k:</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">1</span>)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>        pred_x.append(<span class="dv">0</span>)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> pred_x</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4479   39]
  [  96  557]]
@@ -4324,13 +4488,21 @@ Name: 数字, dtype: float64</code></pre>
 <li>出力：全部の通の1/0のリスト</li>
 </ul>
 <p>2節では、語ごとに、1通ずつ<code>rule</code>で判定してリストにためました。語を15個にするなら、同じ4行を15回書くことになります。そこで、1回分を関数にまとめ、語をくり返しの外から渡します。中身は2節の4行と同じです。</p>
-<div id="a8d121bc" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule_col(word):</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> []</span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
-<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>        pred.append(rule(text, word))</span>
-<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d52105a2" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> rule_col(word):</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> []</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> text <span class="kw">in</span> df[<span class="st">&#39;本文&#39;</span>]:</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>        pred.append(rule(text, word))</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pred</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<section id="行ずつ読む-12" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-12">1行ずつ読む</h4>
+<ul>
+<li>1行目：関数<code>rule_col</code>を作る。入力は探す語<code>word</code></li>
+<li>2〜4行目：2節の4行と同じ。<code>&#39;free&#39;</code>のところが<code>word</code>になった</li>
+<li>5行目：ためたリスト<code>pred</code>を返す</li>
+</ul>
+</section>
 </section>
 <section id="お手本15語の列" class="level3">
 <h3 class="anchored" data-anchor-id="お手本15語の列">お手本：15語の列</h3>
@@ -4345,18 +4517,79 @@ Name: 数字, dtype: float64</code></pre>
 </summary>
 <p>15語は、迷惑メッセージによく出てくる語を、こちらで選びました。本当は、語を選ぶのも、訓練の組だけを見て行うのが公平です。全部の通を見て選ぶと、テストの通の答えを少しのぞいたことになります（第2回のリーク）。</p>
 </details>
-<div id="3fda7075" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">&#39;free&#39;</span>, <span class="st">&#39;txt&#39;</span>, <span class="st">&#39;claim&#39;</span>, <span class="st">&#39;prize&#39;</span>, <span class="st">&#39;call&#39;</span>, <span class="st">&#39;win&#39;</span>, <span class="st">&#39;£&#39;</span>,</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;www&#39;</span>, <span class="st">&#39;urgent&#39;</span>, <span class="st">&#39;mobile&#39;</span>, <span class="st">&#39;reply&#39;</span>, <span class="st">&#39;stop&#39;</span>, <span class="st">&#39;cash&#39;</span>,</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;service&#39;</span>, <span class="st">&#39;new&#39;</span>]</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    df[w] <span class="op">=</span> rule_col(w)          <span class="co"># 語を含めば1、なければ0</span></span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(words), <span class="st">&#39;語と数字で&#39;</span>, <span class="bu">len</span>(cols), <span class="st">&#39;本の手がかり&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a808c297" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> [<span class="st">&#39;free&#39;</span>, <span class="st">&#39;txt&#39;</span>, <span class="st">&#39;claim&#39;</span>, <span class="st">&#39;prize&#39;</span>, <span class="st">&#39;call&#39;</span>, <span class="st">&#39;win&#39;</span>, <span class="st">&#39;£&#39;</span>,</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;www&#39;</span>, <span class="st">&#39;urgent&#39;</span>, <span class="st">&#39;mobile&#39;</span>, <span class="st">&#39;reply&#39;</span>, <span class="st">&#39;stop&#39;</span>, <span class="st">&#39;cash&#39;</span>,</span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;service&#39;</span>, <span class="st">&#39;new&#39;</span>]</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> w <span class="kw">in</span> words:</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    df[w] <span class="op">=</span> rule_col(w)          <span class="co"># 語を含めば1、なければ0</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(words), <span class="st">&#39;語と数字で&#39;</span>, <span class="bu">len</span>(cols), <span class="st">&#39;本の手がかり&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>15 語と数字で 16 本の手がかり</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-13" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-13">1行ずつ読む</h4>
+<ul>
+<li>1〜3行目：15個の語を並べたリストを<code>words</code>にしまう。長いので3行に折り返した</li>
+<li>4行目：<code>words</code>から1語ずつ取り出して<code>w</code>に入れる</li>
+<li>5行目：その語を含めば1・なければ0のリストを作り、語の名前の列にする</li>
+<li>6行目：「数字」と15語をつないだリスト（<code>+</code>でつなぐ）。7行目：本数を表示</li>
+</ul>
+</section>
+<section id="中身を見る語の列" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る語の列">中身を見る：語の列</h4>
+<div id="b5f43357" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;free&#39;</span>, <span class="st">&#39;txt&#39;</span>, <span class="st">&#39;claim&#39;</span>, <span class="st">&#39;call&#39;</span>, <span class="st">&#39;数字&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="35">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">free</th>
+<th data-quarto-table-cell-role="th">txt</th>
+<th data-quarto-table-cell-role="th">claim</th>
+<th data-quarto-table-cell-role="th">call</th>
+<th data-quarto-table-cell-role="th">数字</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>25</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>語の列は、その語を含めば1。3通めは、freeを含むので1</p>
+</section>
 </section>
 <section id="と1を確率で当てる" class="level3">
 <h3 class="anchored" data-anchor-id="と1を確率で当てる">0と1を、確率で当てる</h3>
@@ -4376,23 +4609,33 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：全部の通の確率（列「確率」）</li>
 </ul>
 <p><code>cross_val_predict(式の作り方, 手がかり, 答え, cv=5)</code>は、交差検証で全部の通の予測を出す道具です。<code>cv=5</code>は、5つの組に分けるという意味です。<code>method=&#39;predict_proba&#39;</code>を付けると、判定（0か1）ではなく、確率を返します。</p>
-<div id="21ed6319" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(LogisticRegression(), df[cols], df[<span class="st">&#39;迷惑&#39;</span>],</span>
-<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>                      cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;確率&#39;</span>] <span class="op">=</span> p[:, <span class="dv">1</span>]</span>
-<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">min</span>(), <span class="dv">3</span>), <span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">max</span>(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="10e24b52" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(LogisticRegression(), df[cols], df[<span class="st">&#39;迷惑&#39;</span>],</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                      cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;確率&#39;</span>] <span class="op">=</span> p[:, <span class="dv">1</span>]</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">min</span>(), <span class="dv">3</span>), <span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">max</span>(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.005 1.0</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-14" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-14">1行ずつ読む</h4>
+<ul>
+<li>1・2行目：ロジスティック回帰の道具と、交差検証の道具を呼び出す</li>
+<li>3・4行目：式の作り方、16本の手がかりの列、答えの列を渡す。<code>cv=5</code>は5つの組。<code>method=&#39;predict_proba&#39;</code>で、全部の通の確率が<code>p</code>に返る</li>
+<li>1行に長いので、3行目の途中で折り返した（かっこの中なら折り返せる）</li>
+<li>5行目：<code>p</code>の右の列（迷惑の確率）を取り出し、列「確率」にしまう</li>
+<li>6行目：確率のいちばん小さい値と、いちばん大きい値を表示する</li>
+</ul>
 <p>確率は0.005〜1.0です。0〜1をはみ出しません。</p>
+</section>
 <section id="predict_probaがしていること" class="level4">
 <h4 class="anchored" data-anchor-id="predict_probaがしていること">predict_probaがしていること</h4>
 <p><code>p</code>には、1通に2つの確率が入っています。左の列（0番）が普通である確率、右の列（1番）が迷惑である確率で、2つを足すと1です。<code>p[:, 1]</code>は「すべての行の、1番の列」という意味で、迷惑の確率だけを取り出します。下のセルで、行0・1・2・8・75の5通を見てみます。</p>
-<div id="c9a33c42" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">75</span>]].<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c4db5bc5" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p[[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">8</span>, <span class="dv">75</span>]].<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[0.992 0.008]
  [0.992 0.008]
@@ -4452,6 +4695,46 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 </tbody>
 </table>
 </section>
+<section id="中身を見る確率の列" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る確率の列">中身を見る：確率の列</h4>
+<div id="b7f8b73a" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;迷惑&#39;</span>, <span class="st">&#39;確率&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">迷惑</th>
+<th data-quarto-table-cell-role="th">確率</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0</td>
+<td>0.008459</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0</td>
+<td>0.008459</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>1通に1つずつ、確率が付いた。迷惑（1）の行ほど確率が高い</p>
+</section>
 </section>
 <section id="お手本確率を描く" class="level3">
 <h3 class="anchored" data-anchor-id="お手本確率を描く">お手本：確率を描く</h3>
@@ -4461,16 +4744,16 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：2色の柱の図</li>
 </ul>
 <p><code>plt.yscale(&#39;log&#39;)</code>は、縦軸を10倍ごとの目盛りにします。少ない迷惑も見えるようにするためです。</p>
-<div id="4a0a12c6" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>ham <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;確率&#39;</span>]</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>spam <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;確率&#39;</span>]</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>plt.hist(ham, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;普通&#39;</span>)</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>plt.hist(spam, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;迷惑&#39;</span>)</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">&#39;log&#39;</span>)</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;迷惑である確率&#39;</span>)</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数（対数の目盛り）&#39;</span>)</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="98125a0c" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>ham <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;確率&#39;</span>]</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>spam <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;確率&#39;</span>]</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>plt.hist(ham, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;普通&#39;</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>plt.hist(spam, bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, label<span class="op">=</span><span class="st">&#39;迷惑&#39;</span>)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">&#39;log&#39;</span>)</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;迷惑である確率&#39;</span>)</span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数（対数の目盛り）&#39;</span>)</span>
+<span id="cb66-8"><a href="#cb66-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb66-9"><a href="#cb66-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4479,7 +4762,18 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 </div>
 </div>
 </div>
+<section id="行ずつ読む-15" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-15">1行ずつ読む</h4>
+<ul>
+<li>1行目：普通の行だけを取り出し、確率の列を<code>ham</code>にしまう</li>
+<li>2行目：迷惑の行の確率を<code>spam</code>にしまう</li>
+<li>3・4行目：確率を40の区間に分けて柱を描く（<code>hist</code>）</li>
+<li><code>alpha=0.6</code>で半透明にし、重なりを見せる。<code>label</code>は凡例に出す名前</li>
+<li>5行目：縦軸を10倍ごとの目盛りにする</li>
+<li>6〜8行目：軸の名前と凡例を付ける。9行目：図を表示する</li>
+</ul>
 <p>普通は0のまわり、迷惑は1のまわりに多くあります。迷惑ほど、確率が高くなりました。</p>
+</section>
 </section>
 <section id="お手本確率を切って判定する" class="level3">
 <h3 class="anchored" data-anchor-id="お手本確率を切って判定する">お手本：確率を切って判定する</h3>
@@ -4489,11 +4783,11 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：混同行列と、再現率・適合率</li>
 </ul>
 <p><code>df[&#39;確率&#39;] &gt;= 0.5</code>は、0.5以上ならTrue、違えばFalseの列です。<code>astype(int)</code>で1と0に直します。0節で列「迷惑」を作ったのと同じ書き方です。</p>
-<div id="566c95a9" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_式&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_式&#39;</span>]))</span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_式&#39;</span>]), <span class="dv">3</span>))</span>
-<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_式&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f0440af4" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_式&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_式&#39;</span>]))</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_式&#39;</span>]), <span class="dv">3</span>))</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_式&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4495   23]
  [  83  570]]
@@ -4501,7 +4795,54 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 0.961</code></pre>
 </div>
 </div>
-<div id="c8b9332e" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="34">
+<section id="行ずつ読む-16" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-16">1行ずつ読む</h4>
+<ul>
+<li>1行目：<code>df[&#39;確率&#39;] &gt;= 0.5</code>は、1通ずつ0.5と比べ、以上ならTrueの列。<code>astype(int)</code>で1と0に直し、列「判定_式」にしまう</li>
+<li>2行目：混同行列を表示する</li>
+<li>3・4行目：再現率と適合率を表示する</li>
+</ul>
+</section>
+<section id="中身を見る確率と判定" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る確率と判定">中身を見る：確率と判定</h4>
+<div id="9893a2d5" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;確率&#39;</span>, <span class="st">&#39;判定_式&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">確率</th>
+<th data-quarto-table-cell-role="th">判定_式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.008459</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.008459</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1.000000</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>0.5以上の行だけが1になった</p>
+<div id="720957b5" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="42">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4516,19 +4857,20 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <p>ロジスティック回帰は、手がかりの1次式をシグモイドで0〜1に収め、迷惑である確率を出す。確率をしきい値で切ると、判定になる。</p>
 </blockquote>
 </section>
+</section>
 <section id="todo④手がかりから数字を外す予想-実行-比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo④手がかりから数字を外す予想-実行-比べる">TODO④：手がかりから数字を外す（予想 → 実行 → 比べる）</h3>
 <p>下のセルは、手がかりの列<code>cols_x</code>で交差検証の確率を出し、0.5で切った混同行列を表示します。</p>
 <p>まず、予想を書いてください。手がかりを15語だけにする（数字を外す）と、見逃しは83通から増えるでしょうか、減るでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>[&#39;数字&#39;] + words</code>を<code>words</code>に替えて実行してください。</p>
-<div id="2ff10129" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: [&#39;数字&#39;] + words を words に替えて実行する</span></span>
-<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(LogisticRegression(), df[cols_x], df[<span class="st">&#39;迷惑&#39;</span>],</span>
-<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>                      cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6d097819" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: [&#39;数字&#39;] + words を words に替えて実行する</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> [<span class="st">&#39;数字&#39;</span>] <span class="op">+</span> words</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(LogisticRegression(), df[cols_x], df[<span class="st">&#39;迷惑&#39;</span>],</span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a>                      cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb70-5"><a href="#cb70-5" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb70-6"><a href="#cb70-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4495   23]
  [  83  570]]</code></pre>
@@ -4593,16 +4935,16 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：しきい値ごとの見逃しと誤検出の表</li>
 </ul>
 <p><code>m = confusion_matrix(…)</code>の2×2の表から、1マスを<code>m[行, 列]</code>で取り出します（5節の<code>p[:, 1]</code>と同じ形です）。番号は0から数えます。見逃しは下の行・左の列なので<code>m[1, 0]</code>、誤検出は上の行・右の列なので<code>m[0, 1]</code>です。</p>
-<div id="41e58b2f" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>]</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>fns <span class="op">=</span> []</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>fps <span class="op">=</span> []</span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
-<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
-<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], pred)</span>
-<span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a>    fns.append(m[<span class="dv">1</span>, <span class="dv">0</span>])          <span class="co"># 見逃し</span></span>
-<span id="cb60-8"><a href="#cb60-8" aria-hidden="true" tabindex="-1"></a>    fps.append(m[<span class="dv">0</span>, <span class="dv">1</span>])          <span class="co"># 誤検出</span></span>
-<span id="cb60-9"><a href="#cb60-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;しきい値&#39;</span>: ts, <span class="st">&#39;見逃し&#39;</span>: fns, <span class="st">&#39;誤検出&#39;</span>: fps}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e2896bbc" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> [<span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>]</span>
+<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>fns <span class="op">=</span> []</span>
+<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>fps <span class="op">=</span> []</span>
+<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
+<span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>    pred <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
+<span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], pred)</span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>    fns.append(m[<span class="dv">1</span>, <span class="dv">0</span>])          <span class="co"># 見逃し</span></span>
+<span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>    fps.append(m[<span class="dv">0</span>, <span class="dv">1</span>])          <span class="co"># 誤検出</span></span>
+<span id="cb72-9"><a href="#cb72-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(pd.DataFrame({<span class="st">&#39;しきい値&#39;</span>: ts, <span class="st">&#39;見逃し&#39;</span>: fns, <span class="st">&#39;誤検出&#39;</span>: fps}))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   しきい値  見逃し  誤検出
 0   0.1   33   85
@@ -4616,6 +4958,33 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 8   0.9  143    9</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-17" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-17">1行ずつ読む</h4>
+<ul>
+<li>1行目：しきい値の候補9つのリスト<code>ts</code></li>
+<li>2・3行目：見逃しと誤検出をためる、空のリストを2つ作る</li>
+<li>4行目：<code>t</code>に0.1、0.2、…を順に入れ、字下げした4行をくり返す</li>
+<li>5行目：確率が<code>t</code>以上なら1の判定を作り、<code>pred</code>にしまう</li>
+<li>6行目：混同行列を作り、<code>m</code>にしまう</li>
+<li>7行目：<code>m[1, 0]</code>（見逃し）を、<code>fns</code>の後ろに足す</li>
+<li>8行目：<code>m[0, 1]</code>（誤検出）を、<code>fps</code>の後ろに足す</li>
+<li>9行目：3つのリストを列にした表を作り、表示する</li>
+</ul>
+</section>
+<section id="中身を見る0.5のときのm" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る0.5のときのm">中身を見る：0.5のときのm</h4>
+<div id="abc3ffb4" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>))</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m)</span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(m[<span class="dv">1</span>, <span class="dv">0</span>], m[<span class="dv">0</span>, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[4495   23]
+ [  83  570]]
+83 23</code></pre>
+</div>
+</div>
+<p><code>m[1, 0]</code>は下の行・左の列で83（見逃し）、<code>m[0, 1]</code>は上の行・右の列で23（誤検出）</p>
+</section>
 </section>
 <section id="お手本見逃しと誤検出を描く" class="level3">
 <h3 class="anchored" data-anchor-id="お手本見逃しと誤検出を描く">お手本：見逃しと誤検出を描く</h3>
@@ -4624,13 +4993,13 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>入力：<code>ts</code>・<code>fns</code>・<code>fps</code></li>
 <li>出力：2本の折れ線</li>
 </ul>
-<div id="3857823e" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fns, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;見逃し（FN）&#39;</span>)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fps, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;誤検出（FP）&#39;</span>)</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数&#39;</span>)</span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="37cc615e" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fns, <span class="st">&#39;o-&#39;</span>, label<span class="op">=</span><span class="st">&#39;見逃し（FN）&#39;</span>)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, fps, <span class="st">&#39;s-&#39;</span>, label<span class="op">=</span><span class="st">&#39;誤検出（FP）&#39;</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;通数&#39;</span>)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb76-6"><a href="#cb76-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4639,11 +5008,19 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 </div>
 </div>
 </div>
+<section id="行ずつ読む-18" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-18">1行ずつ読む</h4>
+<ul>
+<li>1行目：横にしきい値、縦に見逃しの線を描く。<code>&#39;o-&#39;</code>は丸い点を線でつなぐ</li>
+<li>2行目：誤検出の線。<code>&#39;s-&#39;</code>は四角い点</li>
+<li>3〜6行目：軸の名前と凡例を付けて、表示する</li>
+</ul>
 <p>しきい値0.1では、見逃し33・誤検出85です。0.9では、見逃し143・誤検出9です。2本の線は、逆向きに動きます。</p>
 <blockquote class="blockquote">
 <p>重要：しきい値で入れ替わる</p>
 <p>しきい値を下げると見逃しが減って誤検出が増え、上げるとその逆になる。どこで切るかで、同じ式の評価が変わる。</p>
 </blockquote>
+</section>
 </section>
 <section id="全部のしきい値を1枚にroc曲線" class="level3">
 <h3 class="anchored" data-anchor-id="全部のしきい値を1枚にroc曲線">全部のしきい値を1枚に：ROC曲線</h3>
@@ -4653,13 +5030,13 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 \]</span></p>
 <p>横に誤検出率、縦に再現率をとり、しきい値を細かく動かして点を打つと、1本の線になります。この線を、ROC曲線と呼びます。左上に近いほど、良い確率です。</p>
 <p><code>roc_curve(本当, 確率)</code>は、しきい値を少しずつ下げ、そのたびに誤検出率<code>fpr</code>と再現率<code>tpr</code>を出して並べる道具です。上の表の9つのしきい値の点も、この線の上に乗ります。</p>
-<div id="8e309b94" class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>fpr, tpr, th <span class="op">=</span> roc_curve(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;確率&#39;</span>])</span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr)</span>
-<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;誤検出率&#39;</span>)</span>
-<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;再現率&#39;</span>)</span>
-<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="45bfb91d" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>fpr, tpr, th <span class="op">=</span> roc_curve(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;確率&#39;</span>])</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr)</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;誤検出率&#39;</span>)</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;再現率&#39;</span>)</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4668,8 +5045,26 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 </div>
 </div>
 </div>
+<section id="行ずつ読む-19" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-19">1行ずつ読む</h4>
+<ul>
+<li>1行目：ROC曲線の道具<code>roc_curve</code>を呼び出す</li>
+<li>2行目：本当の答えと確率を渡すと、3つが返る。誤検出率の並び<code>fpr</code>、再現率の並び<code>tpr</code>、しきい値の並び<code>th</code></li>
+<li>3行目：誤検出率を横、再現率を縦にして、点を線で結ぶ</li>
+<li>4〜6行目：軸の名前を付けて、図を表示する</li>
+</ul>
+</section>
+<section id="中身を見る3つの並びの長さ" class="level4">
+<h4 class="anchored" data-anchor-id="中身を見る3つの並びの長さ">中身を見る：3つの並びの長さ</h4>
+<div id="09ee958c" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(fpr), <span class="bu">len</span>(tpr), <span class="bu">len</span>(th))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>276 276 276</code></pre>
+</div>
+</div>
+<p>しきい値を276通り試し、そのたびに誤検出率と再現率を出した</p>
 <p>下の図は、横軸を0.2までに広げ、これまでのルール（free・prize・数字5字以上）の点も打ったものです。</p>
-<div id="666662ae" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="39">
+<div id="9eeebc1c" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="49">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4680,6 +5075,7 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 </div>
 <p>赤い点は、これまでのルールです。どれも、式の線より下（右）にあります。同じ誤検出率なら、式のほうが多くの迷惑を捕まえます。</p>
 </section>
+</section>
 <section id="お手本aucを出す" class="level3">
 <h3 class="anchored" data-anchor-id="お手本aucを出す">お手本：AUCを出す</h3>
 <ul>
@@ -4688,13 +5084,20 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：AUC</li>
 </ul>
 <p>ROC曲線の下の面積を、AUC（area under the curve）と呼びます。1に近いほど、迷惑と普通を確率でよく分けています。でたらめな確率なら0.5です。しきい値を決めなくても出せる、確率の付き方そのものの良さです。<code>roc_auc_score(本当, 確率)</code>に、しきい値は渡しません。</p>
-<div id="42021f76" class="cell" data-execution_count="40">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;確率&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="30df7586" class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;確率&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.981</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-20" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-20">1行ずつ読む</h4>
+<ul>
+<li>1行目：AUCの道具<code>roc_auc_score</code>を呼び出す</li>
+<li>2行目：本当の答えと確率を渡すと、AUCが返る。しきい値は渡さない</li>
+</ul>
+</section>
 <section id="roc_auc_scoreがしていること" class="level4">
 <h4 class="anchored" data-anchor-id="roc_auc_scoreがしていること">roc_auc_scoreがしていること</h4>
 <p>迷惑1通と普通1通を組にして、迷惑のほうが確率の高い組を数えます。たとえば、迷惑の通の確率が0.9、普通の通の確率が0.2なら、その組は迷惑のほうが高い（○）です。迷惑の通が0.1、普通の通が0.2なら×です。迷惑653通と普通4,518通のすべての組でこれを数えた割合が、AUCと同じになります。この式では、0.981の割合の組で、迷惑のほうが確率が高くなっています。</p>
@@ -4708,22 +5111,30 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：正解率と、混同行列</li>
 </ul>
 <p>線形判別分析は、英語の頭文字からLDAとも呼びます。式の作り方を、<code>LogisticRegression()</code>から<code>LinearDiscriminantAnalysis()</code>に替えるだけです。</p>
-<div id="b52a9a33" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(LinearDiscriminantAnalysis(), df[cols],</span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>                      df[<span class="st">&#39;迷惑&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_lda&#39;</span>] <span class="op">=</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(accuracy_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_lda&#39;</span>]), <span class="dv">3</span>))</span>
-<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_lda&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="bda973b3" class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.discriminant_analysis <span class="im">import</span> LinearDiscriminantAnalysis</span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(LinearDiscriminantAnalysis(), df[cols],</span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a>                      df[<span class="st">&#39;迷惑&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>, method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_lda&#39;</span>] <span class="op">=</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(accuracy_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_lda&#39;</span>]), <span class="dv">3</span>))</span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_lda&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.973
 [[4510    8]
  [ 132  521]]</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-21" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-21">1行ずつ読む</h4>
+<ul>
+<li>1行目：LDAの道具<code>LinearDiscriminantAnalysis</code>を呼び出す</li>
+<li>2・3行目：5節の確率のお手本と同じ形。式の作り方だけを替えた</li>
+<li>4行目：0.5で切って、列「判定_lda」にしまう</li>
+<li>5・6行目：正解率と混同行列を表示する</li>
+</ul>
 <p>正解率は0.973で、ロジスティック回帰（0.98）とほとんど同じです。下のセルで、LDAのAUCも出してみます。</p>
-<div id="40c330c6" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;迷惑&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cf0cf7e4" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;迷惑&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.981</code></pre>
 </div>
@@ -4732,15 +5143,16 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <p>ところが、混同行列を並べると、見逃しはロジスティック回帰が83通、LDAが132通です。誤検出は、23通と8通です。LDAは見逃しが多く、誤検出が少ないのです。正解率もAUCも、4つのマスを1つの数にまとめた数で、どちらの誤りで外したかが消えます。</p>
 <p>どちらの式が良いかは、誤りの重さで決まります。迷惑フィルターでは、大事な連絡を迷惑フォルダに入れてしまう誤検出のほうが、致命的かもしれません。そうなら、LDAを選ぶこともあります。だから、式どうしを比べるときも、混同行列を並べます（3節と同じです）。</p>
 <p>見逃しが増えるのは、LDAの確率が0か1の近くに偏るからです。下のセルで、確率が0か1の近く（0.01未満か0.99より上）にある通の割合を比べます。</p>
-<div id="71a0e78c" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(((df[<span class="st">&#39;確率&#39;</span>] <span class="op">&lt;</span> <span class="fl">0.01</span>) <span class="op">|</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;</span> <span class="fl">0.99</span>)).mean(), <span class="dv">3</span>))</span>
-<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(((p[:, <span class="dv">1</span>] <span class="op">&lt;</span> <span class="fl">0.01</span>) <span class="op">|</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;</span> <span class="fl">0.99</span>)).mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="61d0160e" class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(((df[<span class="st">&#39;確率&#39;</span>] <span class="op">&lt;</span> <span class="fl">0.01</span>) <span class="op">|</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;</span> <span class="fl">0.99</span>)).mean(), <span class="dv">3</span>))</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(((p[:, <span class="dv">1</span>] <span class="op">&lt;</span> <span class="fl">0.01</span>) <span class="op">|</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;</span> <span class="fl">0.99</span>)).mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.777
 0.978</code></pre>
 </div>
 </div>
 <p>LDAは0.978、ロジスティック回帰は0.777の割合の通が、0か1の近くにあります。LDAが悪いのではなく、どこで切るのがよいかが、式ごとに違うのです。違いが出たのは、2つのモデルの仮定（データの出方の考え方）が違うからです。このデータではこうなりましたが、いつもLDAが見逃しを多くする、とは言えません。</p>
+</section>
 </section>
 <section id="しきい値を下げても残る見逃し" class="level3">
 <h3 class="anchored" data-anchor-id="しきい値を下げても残る見逃し">しきい値を下げても、残る見逃し</h3>
@@ -4754,15 +5166,15 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 <li>出力：通数と、本文の先頭5通</li>
 </ul>
 <p>まず迷惑の通だけを<code>spam_df</code>に取り出し、その中から確率が0.05より小さい通を取り出します。</p>
-<div id="f7b7e7be" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>spam_df <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>low <span class="op">=</span> spam_df[spam_df[<span class="st">&#39;確率&#39;</span>] <span class="op">&lt;</span> <span class="fl">0.05</span>]</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(low))</span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>low[<span class="st">&#39;本文&#39;</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="70e7d923" class="cell" data-execution_count="54">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>spam_df <span class="op">=</span> df[df[<span class="st">&#39;迷惑&#39;</span>] <span class="op">==</span> <span class="dv">1</span>]</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>low <span class="op">=</span> spam_df[spam_df[<span class="st">&#39;確率&#39;</span>] <span class="op">&lt;</span> <span class="fl">0.05</span>]</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(low))</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>low[<span class="st">&#39;本文&#39;</span>].head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>24</code></pre>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="44">
+<div class="cell-output cell-output-display" data-execution_count="54">
 <pre><code>68      Did you hear about the new &quot;Divorce Barbie&quot;? It comes with all of Ken&#39;s stuff!
 739    Do you realize that in about 40 years, we&#39;ll have thousands of old ladies ru...
 740                  You have an important customer service announcement from PREMIER.
@@ -4771,7 +5183,16 @@ z_i = b_0 + b_1 x_{i1} + \cdots + b_{16} x_{i,16}, \qquad
 Name: 本文, dtype: object</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-22" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-22">1行ずつ読む</h4>
+<ul>
+<li>1行目：迷惑の行だけを取り出し、<code>spam_df</code>にしまう</li>
+<li>2行目：その中から、確率が0.05より小さい行を取り出し、<code>low</code>にしまう</li>
+<li>3行目：<code>low</code>の通数を表示する</li>
+<li>4行目：本文の先頭5通を表示する</li>
+</ul>
 <p>迷惑なのに、確率が0.05より小さい通が24通あります。冗談や誘い、お知らせの形で、数字も15語も出てきません。16本の手がかりでは、確率が上がりません。しきい値では救えず、捕まえるには別の手がかりが要ります。</p>
+</section>
 </section>
 <section id="todo⑤しきい値を替える予想-実行-比べる" class="level3">
 <h3 class="anchored" data-anchor-id="todo⑤しきい値を替える予想-実行-比べる">TODO⑤：しきい値を替える（予想 → 実行 → 比べる）</h3>
@@ -4779,13 +5200,13 @@ Name: 本文, dtype: object</code></pre>
 <p>まず、予想を書いてください。0.3で切ると、見逃し（0.5では83）と誤検出（0.5では23）は、それぞれどう変わるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>0.5</code>を<code>0.3</code>に替えて実行してください。</p>
-<div id="bc11675b" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.5 を 0.3 に替えて実行する</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.5</span></span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
-<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span>
-<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span>
-<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f049c79a" class="cell" data-execution_count="55">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 0.5 を 0.3 に替えて実行する</span></span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> <span class="fl">0.5</span></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定_x&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>)</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]))</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(recall_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span>
+<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(precision_score(df[<span class="st">&#39;迷惑&#39;</span>], df[<span class="st">&#39;判定_x&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[4495   23]
  [  83  570]]
@@ -4921,32 +5342,48 @@ Name: 本文, dtype: object</code></pre>
 <h3 class="anchored" data-anchor-id="すべての単語を列にする">すべての単語を列にする</h3>
 <p>今日は、語を15個だけ選びました。本文に出てくる単語を、すべて列にしたらどうなるでしょうか。<code>CountVectorizer</code>は、単語ごとに、含むなら1・含まないなら0の列を作る道具です。</p>
 <p><code>make_pipeline</code>は、列を作る道具と式を作る道具をつなぎ、1つの式の作り方にする道具です。これを<code>cross_val_predict</code>に渡すと、5回のそれぞれで、式を作る組の本文だけから単語を数えます。</p>
-<div id="b498b34a" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
-<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
-<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> CountVectorizer(binary<span class="op">=</span><span class="va">True</span>).fit(df[<span class="st">&#39;本文&#39;</span>])</span>
-<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(vec.vocabulary_), <span class="st">&#39;種類の単語&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="68f01f29" class="cell" data-execution_count="56">
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.feature_extraction.text <span class="im">import</span> CountVectorizer</span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a>vec <span class="op">=</span> CountVectorizer(binary<span class="op">=</span><span class="va">True</span>).fit(df[<span class="st">&#39;本文&#39;</span>])</span>
+<span id="cb93-5"><a href="#cb93-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(vec.vocabulary_), <span class="st">&#39;種類の単語&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>8713 種類の単語</code></pre>
 </div>
 </div>
+<section id="行ずつ読む-23" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-23">1行ずつ読む</h4>
+<ul>
+<li>1・2行目：単語の列を作る道具と、道具をつなぐ道具を呼び出す</li>
+<li>4行目：全部の本文から、単語の種類を数える（<code>binary=True</code>は、含むなら1・含まないなら0）</li>
+<li>5行目：単語の種類の数を表示する</li>
+</ul>
 <p>全部の通で数えると、単語は8,713種類あります。列が、全部の通（5,171通）より多くなります。それでも式が作れるのは、<code>LogisticRegression</code>に、第5回のリッジと同じペナルティが、はじめから入っているからです。</p>
-<div id="f6723a9c" class="cell" data-execution_count="47">
-<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> make_pipeline(CountVectorizer(binary<span class="op">=</span><span class="va">True</span>),</span>
-<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>                     LogisticRegression())</span>
-<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(pipe, df[<span class="st">&#39;本文&#39;</span>], df[<span class="st">&#39;迷惑&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;迷惑&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span>
-<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="735bf124" class="cell" data-execution_count="57">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>pipe <span class="op">=</span> make_pipeline(CountVectorizer(binary<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>                     LogisticRegression())</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(pipe, df[<span class="st">&#39;本文&#39;</span>], df[<span class="st">&#39;迷惑&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;迷惑&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;迷惑&#39;</span>], (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.988
 [[4513    5]
  [  95  558]]</code></pre>
 </div>
 </div>
+</section>
+<section id="行ずつ読む-24" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-24">1行ずつ読む</h4>
+<ul>
+<li>1・2行目：単語の列を作る道具とロジスティック回帰をつなぎ、<code>pipe</code>にしまう</li>
+<li>3・4行目：<code>pipe</code>を式の作り方として渡し、交差検証で確率を出す。手がかりは本文そのもの</li>
+<li>5行目：AUCを表示する。6行目：0.5で切った判定の混同行列を表示する</li>
+</ul>
 <p>AUCは0.988で、今日の16本の手がかり（0.981）より高くなりました。0.5で切ると、見逃し95・誤検出5です。16本の式（83・23）と比べると、見逃しは少し多く、誤検出はずっと少なくなります。</p>
 <p>試すなら、<code>LogisticRegression()</code>を<code>LogisticRegression(C=0.1)</code>に替えてみましょう。<code>C</code>はペナルティの弱さで、小さいほどペナルティが強くなります（第5回のαと逆の向き）。</p>
+</section>
 </section>
 </section>
 
