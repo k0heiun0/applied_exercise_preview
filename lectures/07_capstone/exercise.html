@@ -3558,6 +3558,29 @@ window.Quarto = {
 <p>答えの列はRevenue（売上）の1本。購入したらTrue、しなければFalse</p>
 </section>
 </section>
+<section id="uciにつながらないとき" class="level3">
+<h3 class="anchored" data-anchor-id="uciにつながらないとき">UCIにつながらないとき</h3>
+<p>UCIのページが混んでいたり、止まっていたりすると、上の読み込みのセルがエラーで止まります。そのときは、下のセルを実行します。同じ表を、この授業のデータの置き場（<code>DATA_DIR</code>）から読みます。UCIから取ってきた表を、そのまま保存したものです。</p>
+<p>UCIから読めたときは、実行しなくてかまいません（実行しても、同じ表になります）。この節のほかのUCIのセル（候補の件数、答えの表、TODO①）は、つながらないあいだは飛ばします。</p>
+<div id="41a4515c" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># データはこのリポジトリから読み込む</span>
+DATA_DIR <span class="op">=</span> (<span class="st">&#39;https://raw.githubusercontent.com/k0heiun0/&#39;</span>
+            <span class="st">&#39;applied_exercise_preview/main/shared/data&#39;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/online_shoppers.csv&#39;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(raw.shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(12330, 18)</code></pre>
+</div>
+</div>
+<section id="行ずつ読む-1" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-1">1行ずつ読む</h4>
+<ul>
+<li>1行目：データの置き場所を<code>DATA_DIR</code>にしまう</li>
+<li>2行目：置き場所のファイル<code>online_shoppers.csv</code>を読み、<code>raw</code>にしまう</li>
+<li>3行目：表の形を表示する。上のセルと同じ(12330, 18)になる</li>
+</ul>
+</section>
+</section>
 <section id="お手本列の名前を日本語に" class="level3">
 <h3 class="anchored" data-anchor-id="お手本列の名前を日本語に">お手本：列の名前を日本語に</h3>
 <ul>
@@ -3566,21 +3589,21 @@ window.Quarto = {
 <li>出力：表<code>df</code></li>
 </ul>
 <p>元の名前を鍵に、日本語の名前を値にした辞書です（第5回）。</p>
-<div id="04e30a6d" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> {<span class="st">&#39;Administrative&#39;</span>: <span class="st">&#39;管理ページ数&#39;</span>,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Administrative_Duration&#39;</span>: <span class="st">&#39;管理ページ時間&#39;</span>,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Informational&#39;</span>: <span class="st">&#39;情報ページ数&#39;</span>,</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Informational_Duration&#39;</span>: <span class="st">&#39;情報ページ時間&#39;</span>,</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;ProductRelated&#39;</span>: <span class="st">&#39;商品ページ数&#39;</span>,</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;ProductRelated_Duration&#39;</span>: <span class="st">&#39;商品ページ時間&#39;</span>,</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;BounceRates&#39;</span>: <span class="st">&#39;直帰率&#39;</span>,</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;ExitRates&#39;</span>: <span class="st">&#39;離脱率&#39;</span>,</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;PageValues&#39;</span>: <span class="st">&#39;ページ価値&#39;</span>,</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;SpecialDay&#39;</span>: <span class="st">&#39;特別な日&#39;</span>}</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw.rename(columns<span class="op">=</span>names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d690286e" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> {<span class="st">&#39;Administrative&#39;</span>: <span class="st">&#39;管理ページ数&#39;</span>,</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Administrative_Duration&#39;</span>: <span class="st">&#39;管理ページ時間&#39;</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Informational&#39;</span>: <span class="st">&#39;情報ページ数&#39;</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;Informational_Duration&#39;</span>: <span class="st">&#39;情報ページ時間&#39;</span>,</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;ProductRelated&#39;</span>: <span class="st">&#39;商品ページ数&#39;</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;ProductRelated_Duration&#39;</span>: <span class="st">&#39;商品ページ時間&#39;</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;BounceRates&#39;</span>: <span class="st">&#39;直帰率&#39;</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;ExitRates&#39;</span>: <span class="st">&#39;離脱率&#39;</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;PageValues&#39;</span>: <span class="st">&#39;ページ価値&#39;</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">&#39;SpecialDay&#39;</span>: <span class="st">&#39;特別な日&#39;</span>}</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> raw.rename(columns<span class="op">=</span>names)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="行ずつ読む-1" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-1">1行ずつ読む</h4>
+<section id="行ずつ読む-2" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-2">1行ずつ読む</h4>
 <ul>
 <li>1〜10行目：元の列の名前と、日本語の名前の組を10個、辞書<code>names</code>にしまう</li>
 <li>11行目：<code>rename(columns=names)</code>で、辞書のとおりに列の名前を替え、<code>df</code>にしまう</li>
@@ -3588,9 +3611,9 @@ window.Quarto = {
 </section>
 <section id="中身を見る辞書で引く" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る辞書で引く">中身を見る：辞書で引く</h4>
-<div id="e51232ec" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(names[<span class="st">&#39;PageValues&#39;</span>])</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(names))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d00974f8" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(names[<span class="st">&#39;PageValues&#39;</span>])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(names))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ページ価値
 10</code></pre>
@@ -3606,20 +3629,20 @@ window.Quarto = {
 <li>入力：表<code>df</code></li>
 <li>出力：列「週末」「新規」「購入」と、リスト<code>cols</code></li>
 </ul>
-<div id="a554e202" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;週末&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Weekend&#39;</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;新規&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;VisitorType&#39;</span>] <span class="op">==</span> <span class="st">&#39;New_Visitor&#39;</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;購入&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Revenue&#39;</span>].astype(<span class="bu">int</span>)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;管理ページ数&#39;</span>, <span class="st">&#39;管理ページ時間&#39;</span>, <span class="st">&#39;情報ページ数&#39;</span>,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;情報ページ時間&#39;</span>, <span class="st">&#39;商品ページ数&#39;</span>, <span class="st">&#39;商品ページ時間&#39;</span>,</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;直帰率&#39;</span>, <span class="st">&#39;離脱率&#39;</span>, <span class="st">&#39;ページ価値&#39;</span>, <span class="st">&#39;特別な日&#39;</span>, <span class="st">&#39;週末&#39;</span>, <span class="st">&#39;新規&#39;</span>]</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(cols), <span class="st">&#39;本の列&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4a5b1801" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;週末&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Weekend&#39;</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;新規&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;VisitorType&#39;</span>] <span class="op">==</span> <span class="st">&#39;New_Visitor&#39;</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;購入&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;Revenue&#39;</span>].astype(<span class="bu">int</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> [<span class="st">&#39;管理ページ数&#39;</span>, <span class="st">&#39;管理ページ時間&#39;</span>, <span class="st">&#39;情報ページ数&#39;</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;情報ページ時間&#39;</span>, <span class="st">&#39;商品ページ数&#39;</span>, <span class="st">&#39;商品ページ時間&#39;</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;直帰率&#39;</span>, <span class="st">&#39;離脱率&#39;</span>, <span class="st">&#39;ページ価値&#39;</span>, <span class="st">&#39;特別な日&#39;</span>, <span class="st">&#39;週末&#39;</span>, <span class="st">&#39;新規&#39;</span>]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(cols), <span class="st">&#39;本の列&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>12 本の列</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-2" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-2">1行ずつ読む</h4>
+<section id="行ずつ読む-3" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-3">1行ずつ読む</h4>
 <ul>
 <li>1行目：週末ならTrue。<code>astype(int)</code>で1と0に直し、列「週末」にしまう</li>
 <li>2行目：初めての訪問（New_Visitor）なら1、そうでなければ0の列「新規」</li>
@@ -3630,9 +3653,9 @@ window.Quarto = {
 </section>
 <section id="中身を見る0と1の列" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る0と1の列">中身を見る：0と1の列</h4>
-<div id="1fc88076" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;Weekend&#39;</span>, <span class="st">&#39;週末&#39;</span>, <span class="st">&#39;VisitorType&#39;</span>, <span class="st">&#39;新規&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="9">
+<div id="89102aa6" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;Weekend&#39;</span>, <span class="st">&#39;週末&#39;</span>, <span class="st">&#39;VisitorType&#39;</span>, <span class="st">&#39;新規&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
 
@@ -3736,9 +3759,9 @@ window.Quarto = {
 <li>出力：件数と割合</li>
 </ul>
 <p>0と1の列の平均は、1の割合です（第6回）。</p>
-<div id="2ff3db2c" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;購入&#39;</span>].value_counts())</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;購入&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="708fa473" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;購入&#39;</span>].value_counts())</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;購入&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>購入
 0    10422
@@ -3747,8 +3770,8 @@ Name: count, dtype: int64
 0.155</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-3" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-3">1行ずつ読む</h4>
+<section id="行ずつ読む-4" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-4">1行ずつ読む</h4>
 <ul>
 <li>1行目：<code>value_counts()</code>で、0（買わない）と1（購入）の件数を数える</li>
 <li>2行目：<code>mean()</code>で、1の割合を出し、小数第3位までに丸める</li>
@@ -3763,9 +3786,9 @@ Name: count, dtype: int64
 <li>入力：表<code>df</code></li>
 <li>出力：2行2列の表</li>
 </ul>
-<div id="723cffaf" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">&#39;購入&#39;</span>)[[<span class="st">&#39;商品ページ時間&#39;</span>, <span class="st">&#39;離脱率&#39;</span>]].mean().<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div id="8e837fc1" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">&#39;購入&#39;</span>)[[<span class="st">&#39;商品ページ時間&#39;</span>, <span class="st">&#39;離脱率&#39;</span>]].mean().<span class="bu">round</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
 <div>
 
 
@@ -3799,8 +3822,8 @@ Name: count, dtype: int64
 </div>
 </div>
 </div>
-<section id="行ずつ読む-4" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-4">1行ずつ読む</h4>
+<section id="行ずつ読む-5" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-5">1行ずつ読む</h4>
 <ul>
 <li><code>groupby(&#39;購入&#39;)</code>：列「購入」の値（0と1）で、行を2つの組に分ける</li>
 <li><code>[[&#39;商品ページ時間&#39;, &#39;離脱率&#39;]]</code>：2本の列を取り出す</li>
@@ -3809,9 +3832,9 @@ Name: count, dtype: int64
 </section>
 <section id="中身を見る組ごとの件数" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る組ごとの件数">中身を見る：組ごとの件数</h4>
-<div id="6862578f" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">&#39;購入&#39;</span>)[<span class="st">&#39;商品ページ時間&#39;</span>].count()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="12">
+<div id="9612ef29" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df.groupby(<span class="st">&#39;購入&#39;</span>)[<span class="st">&#39;商品ページ時間&#39;</span>].count()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>購入
 0    10422
 1     1908
@@ -3834,11 +3857,11 @@ Name: 商品ページ時間, dtype: int64</code></pre>
 <p>まず、予想を書いてください。番号を601（工作機械）にすると、特徴の列と答えの列は、それぞれ何本でしょうか。答えの列は何を表すでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>468</code>を<code>601</code>に替えて実行してください。</p>
-<div id="735116b3" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 468 を 601 に替えて実行する</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>uci_x <span class="op">=</span> fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">468</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(uci_x.data.features.shape)</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(uci_x.data.targets.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="ae1c4cb6" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 468 を 601 に替えて実行する</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>uci_x <span class="op">=</span> fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">468</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(uci_x.data.features.shape)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(uci_x.data.targets.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>(12330, 17)
 Revenue    0.155
@@ -3895,8 +3918,8 @@ dtype: float64</code></pre>
 <section id="何も言わなくても0.845" class="level3">
 <h3 class="anchored" data-anchor-id="何も言わなくても0.845">何も言わなくても0.845</h3>
 <p>全部「買わない」と言えば、買わない訪問がすべて当たります。正解率は、1から購入の割合を引いた数です。</p>
-<div id="2579309a" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(<span class="dv">1</span> <span class="op">-</span> df[<span class="st">&#39;購入&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="55b26324" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(<span class="dv">1</span> <span class="op">-</span> df[<span class="st">&#39;購入&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.845</code></pre>
 </div>
@@ -3920,22 +3943,22 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：表<code>df</code>の12本の列<code>cols</code>と、列「購入」</li>
 <li>出力：列「確率」と、確率のいちばん小さい値・大きい値</li>
 </ul>
-<div id="e8707c49" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(StandardScaler(), LogisticRegression())</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, df[cols], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;確率&#39;</span>] <span class="op">=</span> p[:, <span class="dv">1</span>]</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">min</span>(), <span class="dv">3</span>), <span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">max</span>(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="49a9a667" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> make_pipeline</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> cross_val_predict</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> make_pipeline(StandardScaler(), LogisticRegression())</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, df[cols], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;確率&#39;</span>] <span class="op">=</span> p[:, <span class="dv">1</span>]</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">min</span>(), <span class="dv">3</span>), <span class="bu">round</span>(df[<span class="st">&#39;確率&#39;</span>].<span class="bu">max</span>(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.001 1.0</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-5" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-5">1行ずつ読む</h4>
+<section id="行ずつ読む-6" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-6">1行ずつ読む</h4>
 <ul>
 <li>1〜4行目：標準化、ロジスティック回帰、つなぐ道具、交差検証の道具を呼び出す</li>
 <li>5行目：標準化とロジスティック回帰をつなぎ、式の作り方<code>model</code>にしまう</li>
@@ -3983,9 +4006,9 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="中身を見る確率の列" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る確率の列">中身を見る：確率の列</h4>
-<div id="3c5c3a74" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;購入&#39;</span>, <span class="st">&#39;確率&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
+<div id="3415f442" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;購入&#39;</span>, <span class="st">&#39;確率&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
 <div>
 
 
@@ -4029,15 +4052,15 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：列「購入」と列「確率」</li>
 <li>出力：2色の柱の図</li>
 </ul>
-<div id="7b4e2474" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>plt.hist(df[df[<span class="st">&#39;購入&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;確率&#39;</span>], bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>,</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">&#39;買わない&#39;</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>plt.hist(df[df[<span class="st">&#39;購入&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;確率&#39;</span>], bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>,</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">&#39;買った&#39;</span>)</span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">&#39;log&#39;</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;購入の確率&#39;</span>)</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;訪問の数（対数の目盛り）&#39;</span>)</span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d04c07e7" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>plt.hist(df[df[<span class="st">&#39;購入&#39;</span>] <span class="op">==</span> <span class="dv">0</span>][<span class="st">&#39;確率&#39;</span>], bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">&#39;買わない&#39;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plt.hist(df[df[<span class="st">&#39;購入&#39;</span>] <span class="op">==</span> <span class="dv">1</span>][<span class="st">&#39;確率&#39;</span>], bins<span class="op">=</span><span class="dv">40</span>, alpha<span class="op">=</span><span class="fl">0.6</span>,</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">&#39;買った&#39;</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">&#39;log&#39;</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;購入の確率&#39;</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;訪問の数（対数の目盛り）&#39;</span>)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4046,8 +4069,8 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </div>
 </div>
 </div>
-<section id="行ずつ読む-6" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-6">1行ずつ読む</h4>
+<section id="行ずつ読む-7" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-7">1行ずつ読む</h4>
 <ul>
 <li>1〜4行目：買わなかった訪問と買った訪問の確率を、40本の柱で重ねて描く</li>
 <li>5行目：縦の目盛りを対数にする（0の近くの柱が高すぎて、ほかが見えないため）</li>
@@ -4063,17 +4086,17 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：列「確率」と列「購入」</li>
 <li>出力：列「判定」と、2×2の表</li>
 </ul>
-<div id="b2643999" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0f2179b0" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;判定&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], df[<span class="st">&#39;判定&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[10183   239]
  [ 1217   691]]</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-7" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-7">1行ずつ読む</h4>
+<section id="行ずつ読む-8" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-8">1行ずつ読む</h4>
 <ul>
 <li>1行目：混同行列の道具を呼び出す</li>
 <li>2行目：確率が0.5以上ならTrue。<code>astype(int)</code>で1と0に直し、列「判定」にしまう</li>
@@ -4082,9 +4105,9 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="中身を見る確率と判定" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る確率と判定">中身を見る：確率と判定</h4>
-<div id="db826e55" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;確率&#39;</span>, <span class="st">&#39;判定&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="19">
+<div id="922e8621" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;確率&#39;</span>, <span class="st">&#39;判定&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
 <div>
 
 
@@ -4119,7 +4142,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </div>
 </div>
 <p>確率が0.5より小さいので、3件とも判定は0（買わない）</p>
-<div id="fa611b39" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="20">
+<div id="5902972f" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4142,15 +4165,15 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：列「購入」と列「確率」</li>
 <li>出力：AUC</li>
 </ul>
-<div id="c1f7e404" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], df[<span class="st">&#39;確率&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5c7cc3b1" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], df[<span class="st">&#39;確率&#39;</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.877</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-8" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-8">1行ずつ読む</h4>
+<section id="行ずつ読む-9" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-9">1行ずつ読む</h4>
 <ul>
 <li>1行目：AUCの道具<code>roc_auc_score</code>を呼び出す</li>
 <li>2行目：本当の答えと確率を渡すと、AUCが返る。しきい値は渡さない</li>
@@ -4164,12 +4187,12 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <p>まず、予想を書いてください。商品ページにいた時間だけで確率を出すと、AUC（12本で0.877）はいくつになるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>cols</code>を<code>[&#39;商品ページ時間&#39;]</code>に替えて実行してください。</p>
-<div id="5480aaed" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: cols を [&#39;商品ページ時間&#39;] に替えて実行する</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> cols</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, df[cols_x], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="3b76a942" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: cols を [&#39;商品ページ時間&#39;] に替えて実行する</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>cols_x <span class="op">=</span> cols</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, df[cols_x], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.877</code></pre>
 </div>
@@ -4224,12 +4247,12 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="関数第3回第6回のおさらい" class="level3">
 <h3 class="anchored" data-anchor-id="関数第3回第6回のおさらい">関数：第3回・第6回のおさらい</h3>
 <p><code>def 名前(入力):</code>の下の字下げした行が、関数の中身で、呼ぶたびに動きます。<code>return</code>で答えを返します。入力を替えて呼ぶと、同じ手順が別の入力で動きます。</p>
-<div id="3c9bc7ac" class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double(x):</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> x</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(double(<span class="dv">3</span>))</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(double(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="16d1ff65" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> double(x):</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">2</span> <span class="op">*</span> x</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(double(<span class="dv">3</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(double(<span class="dv">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>6
 20</code></pre>
@@ -4243,19 +4266,19 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：列の名前のリスト<code>cols</code></li>
 <li>出力：AUC（小数第3位まで）</li>
 </ul>
-<div id="7fc2230d" class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> auc_of(cols):</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> cross_val_predict(model, df[cols], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>                          method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>)</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of(cols))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="908950ed" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> auc_of(cols):</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    p <span class="op">=</span> cross_val_predict(model, df[cols], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>                          method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of(cols))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.877</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-9" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-9">1行ずつ読む</h4>
+<section id="行ずつ読む-10" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-10">1行ずつ読む</h4>
 <ul>
 <li>1行目：関数<code>auc_of</code>を作る。入力は、列の名前のリスト<code>cols</code></li>
 <li>2・3行目：3節と同じ。渡された列で、交差検証の確率を出す</li>
@@ -4265,9 +4288,9 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="中身を見る入力を替えて呼ぶ" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る入力を替えて呼ぶ">中身を見る：入力を替えて呼ぶ</h4>
-<div id="37b2cad1" class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of([<span class="st">&#39;商品ページ時間&#39;</span>]))</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of([<span class="st">&#39;ページ価値&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="dde418c2" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of([<span class="st">&#39;商品ページ時間&#39;</span>]))</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of([<span class="st">&#39;ページ価値&#39;</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.655
 0.83</code></pre>
@@ -4279,7 +4302,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="関数は手順に付けた名前" class="level3">
 <h3 class="anchored" data-anchor-id="関数は手順に付けた名前">関数は、手順に付けた名前</h3>
 <p>下の図は、関数<code>auc_of</code>に、3つの入力を渡したときの様子です。手順は1つで、入力（列の組）を替えて呼ぶたびに、同じ手順が動きます。</p>
-<div id="6e54242f" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="26">
+<div id="95646197" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="27">
 <div class="cell-output cell-output-stdout">
 <pre><code>1 本の列 → auc_of → 0.655
 1 本の列 → auc_of → 0.83
@@ -4298,13 +4321,13 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：リスト<code>cols</code>と関数<code>auc_of</code></li>
 <li>出力：外した列の名前と、そのときのAUC（12行）</li>
 </ul>
-<div id="fdc6712f" class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> cols:</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>    rest <span class="op">=</span> []</span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> cols:</span>
-<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="op">!=</span> c:</span>
-<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>            rest.append(x)</span>
-<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(c, auc_of(rest))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="e6a11874" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> c <span class="kw">in</span> cols:</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>    rest <span class="op">=</span> []</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> cols:</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> x <span class="op">!=</span> c:</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>            rest.append(x)</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(c, auc_of(rest))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>管理ページ数 0.877
 管理ページ時間 0.877
@@ -4320,8 +4343,8 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 新規 0.875</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-10" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-10">1行ずつ読む</h4>
+<section id="行ずつ読む-11" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-11">1行ずつ読む</h4>
 <ul>
 <li>1行目：12本の列の名前を1つずつ<code>c</code>に入れ、字下げした行をくり返す。<code>c</code>が外す列</li>
 <li>2行目：残す列をためる、空のリスト<code>rest</code>を作る</li>
@@ -4333,13 +4356,13 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </section>
 <section id="中身を見る残した列" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る残した列">中身を見る：残した列</h4>
-<div id="1f7d41c9" class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="st">&#39;ページ価値&#39;</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>rest2 <span class="op">=</span> []</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> cols:</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">!=</span> c:</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>        rest2.append(x)</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(rest2), <span class="st">&#39;ページ価値&#39;</span> <span class="kw">in</span> rest2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9e053fc7" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="st">&#39;ページ価値&#39;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>rest2 <span class="op">=</span> []</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> cols:</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">!=</span> c:</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>        rest2.append(x)</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(rest2), <span class="st">&#39;ページ価値&#39;</span> <span class="kw">in</span> rest2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>11 False</code></pre>
 </div>
@@ -4356,9 +4379,9 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <li>入力：表<code>df</code></li>
 <li>出力：組ごとの割合</li>
 </ul>
-<div id="e73be8cc" class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;価値あり&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;ページ価値&#39;</span>] <span class="op">&gt;</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;購入&#39;</span>)[<span class="st">&#39;価値あり&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="22752443" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;価値あり&#39;</span>] <span class="op">=</span> (df[<span class="st">&#39;ページ価値&#39;</span>] <span class="op">&gt;</span> <span class="dv">0</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;購入&#39;</span>)[<span class="st">&#39;価値あり&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>購入
 0    0.114
@@ -4366,8 +4389,8 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 Name: 価値あり, dtype: float64</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-11" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-11">1行ずつ読む</h4>
+<section id="行ずつ読む-12" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-12">1行ずつ読む</h4>
 <ul>
 <li>1行目：ページ価値が0より大きければ1、0なら0の列「価値あり」を作る</li>
 <li>2行目：購入の0と1で組に分け、「価値あり」の平均（1の割合）を出す</li>
@@ -4375,9 +4398,9 @@ Name: 価値あり, dtype: float64</code></pre>
 </section>
 <section id="中身を見るページ価値と価値あり" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見るページ価値と価値あり">中身を見る：ページ価値と価値あり</h4>
-<div id="5927961a" class="cell" data-execution_count="30">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;ページ価値&#39;</span>, <span class="st">&#39;価値あり&#39;</span>, <span class="st">&#39;購入&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="30">
+<div id="3b5b4029" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;ページ価値&#39;</span>, <span class="st">&#39;価値あり&#39;</span>, <span class="st">&#39;購入&#39;</span>]].head(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="31">
 <div>
 
 
@@ -4436,24 +4459,24 @@ Name: 価値あり, dtype: float64</code></pre>
 <li>入力：リスト<code>cols</code></li>
 <li>出力：2×2の表</li>
 </ul>
-<div id="c71db53c" class="cell" data-execution_count="31">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>no_pv <span class="op">=</span> []</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> cols:</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">!=</span> <span class="st">&#39;ページ価値&#39;</span>:</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>        no_pv.append(x)</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, df[no_pv], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>judge <span class="op">=</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], judge))</span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(judge.<span class="bu">sum</span>(), <span class="bu">round</span>((judge <span class="op">==</span> df[<span class="st">&#39;購入&#39;</span>]).mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="14779c5e" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>no_pv <span class="op">=</span> []</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> cols:</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">!=</span> <span class="st">&#39;ページ価値&#39;</span>:</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>        no_pv.append(x)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, df[no_pv], df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>judge <span class="op">=</span> (p[:, <span class="dv">1</span>] <span class="op">&gt;=</span> <span class="fl">0.5</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], judge))</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(judge.<span class="bu">sum</span>(), <span class="bu">round</span>((judge <span class="op">==</span> df[<span class="st">&#39;購入&#39;</span>]).mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[10400    22]
  [ 1900     8]]
 30 0.844</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-12" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-12">1行ずつ読む</h4>
+<section id="行ずつ読む-13" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-13">1行ずつ読む</h4>
 <ul>
 <li>1〜4行目：ページ価値を除いた11本の列を、リスト<code>no_pv</code>にためる</li>
 <li>5・6行目：11本で、交差検証の確率を出す</li>
@@ -4463,9 +4486,9 @@ Name: 価値あり, dtype: float64</code></pre>
 </section>
 <section id="中身を見る11本の列" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る11本の列">中身を見る：11本の列</h4>
-<div id="8022f530" class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(no_pv))</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(no_pv[<span class="op">-</span><span class="dv">4</span>:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="114eef3d" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(no_pv))</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(no_pv[<span class="op">-</span><span class="dv">4</span>:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>11
 [&#39;離脱率&#39;, &#39;特別な日&#39;, &#39;週末&#39;, &#39;新規&#39;]</code></pre>
@@ -4485,14 +4508,14 @@ Name: 価値あり, dtype: float64</code></pre>
 <p>まず、予想を書いてください。離脱率を外すと、AUC（12本で0.877）はどうなるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>&#39;ページ価値&#39;</code>を<code>&#39;離脱率&#39;</code>に替えて実行してください。</p>
-<div id="6ab8283a" class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;ページ価値&#39; を &#39;離脱率&#39; に替えて実行する</span></span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="st">&#39;ページ価値&#39;</span></span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>rest_x <span class="op">=</span> []</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> cols:</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">!=</span> c:</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>        rest_x.append(x)</span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of(rest_x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="25273082" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: &#39;ページ価値&#39; を &#39;離脱率&#39; に替えて実行する</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="st">&#39;ページ価値&#39;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>rest_x <span class="op">=</span> []</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x <span class="kw">in</span> cols:</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">!=</span> c:</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>        rest_x.append(x)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(auc_of(rest_x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.718</code></pre>
 </div>
@@ -4561,22 +4584,22 @@ Name: 価値あり, dtype: float64</code></pre>
 <li>入力：列「確率」と列「購入」、見逃しの重さ<code>c_fn</code></li>
 <li>出力：リスト<code>ts</code>（しきい値）と<code>costs</code>（損の合計）</li>
 </ul>
-<div id="13b8834c" class="cell" data-execution_count="34">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>c_fn <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> []</span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>costs <span class="op">=</span> []</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">100</span>):</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> k <span class="op">/</span> <span class="dv">100</span></span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    ts.append(t)</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    costs.append(c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts[<span class="dv">0</span>], ts[<span class="op">-</span><span class="dv">1</span>], costs[<span class="dv">49</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="895c0bd5" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>c_fn <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>ts <span class="op">=</span> []</span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>costs <span class="op">=</span> []</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">100</span>):</span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> k <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    ts.append(t)</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    costs.append(c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts[<span class="dv">0</span>], ts[<span class="op">-</span><span class="dv">1</span>], costs[<span class="dv">49</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.01 0.99 6324</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-13" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-13">1行ずつ読む</h4>
+<section id="行ずつ読む-14" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-14">1行ずつ読む</h4>
 <ul>
 <li>1行目：見逃し1件の重さ<code>c_fn</code>を5にする</li>
 <li>2・3行目：しきい値をためるリスト<code>ts</code>と、損をためるリスト<code>costs</code>を、空で作る</li>
@@ -4590,11 +4613,11 @@ Name: 価値あり, dtype: float64</code></pre>
 </section>
 <section id="中身を見る最初の3回" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見る最初の3回">中身を見る：最初の3回</h4>
-<div id="121c7f17" class="cell" data-execution_count="35">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>):</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> k <span class="op">/</span> <span class="dv">100</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(t, m[<span class="dv">1</span>, <span class="dv">0</span>], m[<span class="dv">0</span>, <span class="dv">1</span>], c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d2bd2c40" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>):</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> k <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(t, m[<span class="dv">1</span>, <span class="dv">0</span>], m[<span class="dv">0</span>, <span class="dv">1</span>], c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.01 3 9532 9547
 0.02 7 9205 9240
@@ -4611,11 +4634,11 @@ Name: 価値あり, dtype: float64</code></pre>
 <li>入力：リスト<code>ts</code>と<code>costs</code></li>
 <li>出力：線の図</li>
 </ul>
-<div id="3525281b" class="cell" data-execution_count="36">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, costs)</span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;損の合計&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="36">
+<div id="ddbf15b5" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>plt.plot(ts, costs)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;損の合計&#39;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
 <pre><code>Text(0, 0.5, &#39;損の合計&#39;)</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -4626,8 +4649,8 @@ Name: 価値あり, dtype: float64</code></pre>
 </div>
 </div>
 </div>
-<section id="行ずつ読む-14" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-14">1行ずつ読む</h4>
+<section id="行ずつ読む-15" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-15">1行ずつ読む</h4>
 <ul>
 <li>1行目：横にしきい値、縦に損の合計を取り、99個の点を線でつなぐ</li>
 <li>2・3行目：軸の名前を付ける</li>
@@ -4642,15 +4665,15 @@ Name: 価値あり, dtype: float64</code></pre>
 <li>入力：リスト<code>ts</code>と<code>costs</code></li>
 <li>出力：しきい値と、そのときの損</li>
 </ul>
-<div id="4c95762c" class="cell" data-execution_count="37">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> costs.index(<span class="bu">min</span>(costs))</span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts[i], costs[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="13e8142b" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> costs.index(<span class="bu">min</span>(costs))</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts[i], costs[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.15 3749</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-15" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-15">1行ずつ読む</h4>
+<section id="行ずつ読む-16" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-16">1行ずつ読む</h4>
 <ul>
 <li>1行目：<code>min(costs)</code>で、いちばん小さい損を出す</li>
 <li>続けて<code>costs.index(…)</code>で、それがリストの何番目かを調べ、<code>i</code>にしまう</li>
@@ -4659,15 +4682,15 @@ Name: 価値あり, dtype: float64</code></pre>
 </section>
 <section id="中身を見るindexの動き" class="level4">
 <h4 class="anchored" data-anchor-id="中身を見るindexの動き">中身を見る：indexの動き</h4>
-<div id="d800cf66" class="cell" data-execution_count="38">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">10</span>, <span class="dv">20</span>]</span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">min</span>(a), a.index(<span class="bu">min</span>(a)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fc982a3d" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> [<span class="dv">30</span>, <span class="dv">10</span>, <span class="dv">20</span>]</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">min</span>(a), a.index(<span class="bu">min</span>(a)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>10 1</code></pre>
 </div>
 </div>
 <p>いちばん小さいのは10で、リストの1番目（0から数える）</p>
-<div id="20112944" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="39">
+<div id="d4af8b93" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="40">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4685,7 +4708,7 @@ Name: 価値あり, dtype: float64</code></pre>
 <p>今日の重要概念（統計）：しきい値は誤りの重さで決める</p>
 <p>しきい値は0.5に決まっていない。見逃しと誤検出に重さを置き、損の合計がいちばん小さいところで切る。</p>
 </blockquote>
-<div id="ad0df521" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="40">
+<div id="790eb5e0" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="41">
 <div class="cell-output cell-output-stdout">
 <pre><code>重さ 1  しきい値 0.36  見逃し 1008  誤検出 368
 重さ 2  しきい値 0.18  見逃し 595  誤検出 902
@@ -4742,15 +4765,15 @@ Name: 価値あり, dtype: float64</code></pre>
 <p>まず、予想を書いてください。見逃しと誤検出を同じ重さ（1）にすると、しきい値（5倍で0.15）はどうなるでしょうか。0.5になるでしょうか。</p>
 <p>（ここに予想を書く）</p>
 <p>予想を書いたら、セルの<code>5</code>を<code>1</code>に替えて実行してください。</p>
-<div id="cb5105a1" class="cell" data-execution_count="41">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 1 に替えて実行する</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>c_fn <span class="op">=</span> <span class="dv">5</span></span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>costs_x <span class="op">=</span> []</span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
-<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
-<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    costs_x.append(c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>])</span>
-<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> costs_x.index(<span class="bu">min</span>(costs_x))</span>
-<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts[i], costs_x[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="a863588e" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 1 に替えて実行する</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>c_fn <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>costs_x <span class="op">=</span> []</span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> ts:</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(df[<span class="st">&#39;購入&#39;</span>], (df[<span class="st">&#39;確率&#39;</span>] <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>    costs_x.append(c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>i <span class="op">=</span> costs_x.index(<span class="bu">min</span>(costs_x))</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(ts[i], costs_x[i])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.15 3749</code></pre>
 </div>
@@ -4882,8 +4905,8 @@ Name: 価値あり, dtype: float64</code></pre>
 <section id="月も手がかりにしたら" class="level3">
 <h3 class="anchored" data-anchor-id="月も手がかりにしたら">月も、手がかりにしたら？</h3>
 <p>購入の割合は、月で違います（11月は0.254、2月は0.016）。月を0と1の列にして足すと、AUCは上がるでしょうか。<code>pd.get_dummies</code>は、月ごとに「その月なら1」の列を作る道具です。</p>
-<div id="4aa009a7" class="cell" data-execution_count="42">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;Month&#39;</span>)[<span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4aa009a7" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;Month&#39;</span>)[<span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Month
 Aug     0.176
@@ -4899,28 +4922,28 @@ Sep     0.192
 Name: 購入, dtype: float64</code></pre>
 </div>
 </div>
-<div id="6ccd38ee" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>mon <span class="op">=</span> pd.get_dummies(df[<span class="st">&#39;Month&#39;</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>X_mon <span class="op">=</span> pd.concat([df[cols], mon], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6ccd38ee" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>mon <span class="op">=</span> pd.get_dummies(df[<span class="st">&#39;Month&#39;</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>X_mon <span class="op">=</span> pd.concat([df[cols], mon], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.859</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-16" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-16">1行ずつ読む</h4>
+<section id="行ずつ読む-17" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-17">1行ずつ読む</h4>
 <ul>
 <li>1行目：月ごとの0と1の列（10か月ぶん）を作る</li>
 <li>2行目：12本の列と月の列を、横につなぐ</li>
 <li>3〜5行目：交差検証の確率を出し、AUCを表示する</li>
 </ul>
 <p>月を足したら、0.877から0.859に下がりました。下の表で、組ごとの月の件数を見ます。</p>
-<div id="cef04671" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>fold <span class="op">=</span> np.arange(<span class="bu">len</span>(df)) <span class="op">*</span> <span class="dv">5</span> <span class="op">//</span> <span class="bu">len</span>(df) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>pd.crosstab(fold, df[<span class="st">&#39;Month&#39;</span>])[[<span class="st">&#39;Feb&#39;</span>, <span class="st">&#39;Mar&#39;</span>, <span class="st">&#39;May&#39;</span>, <span class="st">&#39;Nov&#39;</span>, <span class="st">&#39;Dec&#39;</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="44">
+<div id="cef04671" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>fold <span class="op">=</span> np.arange(<span class="bu">len</span>(df)) <span class="op">*</span> <span class="dv">5</span> <span class="op">//</span> <span class="bu">len</span>(df) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>pd.crosstab(fold, df[<span class="st">&#39;Month&#39;</span>])[[<span class="st">&#39;Feb&#39;</span>, <span class="st">&#39;Mar&#39;</span>, <span class="st">&#39;May&#39;</span>, <span class="st">&#39;Nov&#39;</span>, <span class="st">&#39;Dec&#39;</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="45">
 <div>
 
 
@@ -4991,20 +5014,20 @@ Name: 購入, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="行ずつ読む-17" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-17">1行ずつ読む</h4>
+<section id="行ずつ読む-18" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-18">1行ずつ読む</h4>
 <ul>
 <li>1行目：上から順に5つの組に分けたときの、組の番号（1〜5）を作る</li>
 <li>2行目：組と月の組み合わせごとに件数を数え（<code>pd.crosstab</code>）、5つの月を表示する</li>
 </ul>
 <p>表はほぼ月の順に並んでいて、上から5つに分けると、2月と3月は1つ目の組にしかありません。1つ目の組の確率を出すとき、式は2月と3月を一度も見ていないのです。</p>
 <p>行を混ぜてから5つの組に分けると、どうなるでしょうか。<code>KFold(5, shuffle=True, random_state=0)</code>は、行を混ぜてから5つに分ける分け方です。</p>
-<div id="bdd38afb" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
-<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>shuf <span class="op">=</span> KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span>shuf,</span>
-<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="bdd38afb" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>shuf <span class="op">=</span> KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span>shuf,</span>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.894</code></pre>
 </div>
