@@ -20,6 +20,7 @@
 | `tecator.csv` | ひき肉240個の近赤外の吸収スペクトル（850〜1048nm、100本）と、化学分析で測った水分・脂肪・たんぱく質の割合 | 240行 × 103列 | パブリックドメイン（Tecator の許可文を添えて再配布可） |
 | `sms_spam.csv` | 携帯電話の SMS の本文と、迷惑（spam）か普通（ham）かのラベル（英語） | 5,574行 × 2列 | CC BY 4.0（UCI、文献引用） |
 | `online_shoppers.csv` | ネットショップの訪問ごとの、見たページの数と時間・直帰率・離脱率・ページ価値などと、購入したか | 12,330行 × 18列 | CC BY 4.0（UCI、文献引用） |
+| `gaia_nearby.csv` | 太陽から50パーセク以内の恒星の、視差・見かけの明るさ（G等級）・色（BP−RP）（Gaia DR3） | 27,860行 × 4列 | CC BY-SA 3.0 IGO（ESA、クレジット表記と文献引用） |
 | `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -103,6 +104,11 @@
   Sakar, Polat, Katircioglu & Kastro (2019), Neural Computing and Applications 31。UCI Machine Learning Repository
   <https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset>（CC BY 4.0）。
   `ucimlrepo` で取ってきた列と並びのまま CSV にした（`tools/make_data/online_shoppers.py`）。第7回のノートは `fetch_ucirepo(id=468)` で直接読む。
+
+- **Gaia DR3 の近くの恒星**（`gaia_nearby.csv`）
+  Gaia Collaboration, Vallenari et al. (2023), Astronomy & Astrophysics 674, A1。ESA の Gaia アーカイブ
+  <https://gea.esac.esa.int/archive/>（CC BY-SA 3.0 IGO）。ESA と DPAC へのクレジットは `gaia_nearby_SOURCE.txt`。
+  視差20ミリ秒角より大きい（50パーセク以内）星を、測りの質の条件で絞って取った（`tools/make_data/gaia_nearby.py`、条件は SOURCE に）。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces

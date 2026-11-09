@@ -1,0 +1,7 @@
+Gaia Data Release 3 (DR3), European Space Agency (ESA) Gaia mission
+Archive: https://gea.esac.esa.int/archive/ (table gaiadr3.gaia_source, queried via TAP/ADQL)
+License: CC BY-SA 3.0 IGO (https://www.cosmos.esa.int/web/gaia-users/license)
+Acknowledgement: This work has made use of data from the European Space Agency (ESA) mission Gaia (https://www.cosmos.esa.int/gaia), processed by the Gaia Data Processing and Analysis Consortium (DPAC, https://www.cosmos.esa.int/web/gaia/dpac/consortium). Funding for the DPAC has been provided by national institutions, in particular the institutions participating in the Gaia Multilateral Agreement.
+Citation: Gaia Collaboration, Vallenari, A., et al. (2023). Gaia Data Release 3: Summary of the content and survey properties. Astronomy & Astrophysics, 674, A1.
+Selection: parallax > 20 mas (within 50 pc), parallax_over_error > 20, bp_rp not null, phot_bp_rp_excess_factor < 1.3 + 0.06 bp_rp^2, ruwe < 1.4, phot_bp_mean_flux_over_error > 20. Ordered by source_id.
+Made by tools/make_data/gaia_nearby.py.
