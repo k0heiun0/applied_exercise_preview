@@ -19,6 +19,7 @@
 | `nsw.csv` | 職業訓練の実験（くじ引きで訓練の有無を決めた445人の収入） | 445行 × 10列 | 文献引用（LaLonde 1986、Dehejia & Wahba 1999） |
 | `tecator.csv` | ひき肉240個の近赤外の吸収スペクトル（850〜1048nm、100本）と、化学分析で測った水分・脂肪・たんぱく質の割合 | 240行 × 103列 | パブリックドメイン（Tecator の許可文を添えて再配布可） |
 | `sms_spam.csv` | 携帯電話の SMS の本文と、迷惑（spam）か普通（ham）かのラベル（英語） | 5,574行 × 2列 | CC BY 4.0（UCI、文献引用） |
+| `online_shoppers.csv` | ネットショップの訪問ごとの、見たページの数と時間・直帰率・離脱率・ページ価値などと、購入したか | 12,330行 × 18列 | CC BY 4.0（UCI、文献引用） |
 | `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -97,6 +98,11 @@
   Almeida, Gómez Hidalgo & Yamakami (2011), DocEng'11。UCI Machine Learning Repository
   <https://archive.ics.uci.edu/dataset/228/sms+spam+collection>（CC BY 4.0）。
   元のタブ区切りのファイルを、列 `label`・`text` の CSV にした（`tools/make_data/sms_spam.py`）。
+
+- **Online Shoppers Purchasing Intention**（`online_shoppers.csv`）
+  Sakar, Polat, Katircioglu & Kastro (2019), Neural Computing and Applications 31。UCI Machine Learning Repository
+  <https://archive.ics.uci.edu/dataset/468/online+shoppers+purchasing+intention+dataset>（CC BY 4.0）。
+  `ucimlrepo` で取ってきた列と並びのまま CSV にした（`tools/make_data/online_shoppers.py`）。第7回のノートは `fetch_ucirepo(id=468)` で直接読む。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces
