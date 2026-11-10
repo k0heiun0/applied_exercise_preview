@@ -21,6 +21,7 @@
 | `sms_spam.csv` | 携帯電話の SMS の本文と、迷惑（spam）か普通（ham）かのラベル（英語） | 5,574行 × 2列 | CC BY 4.0（UCI、文献引用） |
 | `online_shoppers.csv` | ネットショップの訪問ごとの、見たページの数と時間・直帰率・離脱率・ページ価値などと、購入したか | 12,330行 × 18列 | CC BY 4.0（UCI、文献引用） |
 | `gaia_nearby.csv` | 太陽から50パーセク以内の恒星の、視差・見かけの明るさ（G等級）・色（BP−RP）（Gaia DR3） | 27,860行 × 4列 | CC BY-SA 3.0 IGO（ESA、クレジット表記と文献引用） |
+| `penguins.csv` | 南極のパーマー基地近くの3つの島で測った3種のペンギンの、くちばしの長さと深さ・ひれの長さ・体重・性別など（palmerpenguins） | 344行 × 8列 | CC0 |
 | `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `penguins.csv` | ペンギン3種の体格測定値 | 344行 × 7列 | CC-0 |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -109,6 +110,11 @@
   Gaia Collaboration, Vallenari et al. (2023), Astronomy & Astrophysics 674, A1。ESA の Gaia アーカイブ
   <https://gea.esac.esa.int/archive/>（CC BY-SA 3.0 IGO）。ESA と DPAC へのクレジットは `gaia_nearby_SOURCE.txt`。
   視差20ミリ秒角より大きい（50パーセク以内）星を、測りの質の条件で絞って取った（`tools/make_data/gaia_nearby.py`、条件は SOURCE に）。
+
+- **パーマーペンギン**（`penguins.csv`）
+  Horst, A. M., Hill, A. P., & Gorman, K. B. (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package
+  <https://allisonhorst.github.io/palmerpenguins/>（CC0）。元のデータは Gorman, Williams & Fraser (2014), PLoS ONE 9(3), e90081 と Palmer Station LTER。
+  GitHub の公開リポジトリの `inst/extdata/penguins.csv` をそのまま置いた（`tools/make_data/penguins.py`）。
 
 - **Olivetti の顔画像**（`olivetti_faces.csv.gz`）
   AT&T Laboratories Cambridge が1992〜1994年に撮影した The Database of Faces

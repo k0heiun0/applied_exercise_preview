@@ -1,10 +1,6 @@
-Palmer Penguins (palmerpenguins, CC-0)
-出典: Horst, Allison M., Hill, Alison P., and Gorman, Kristen B. (2020).
-palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package
-version 0.1.0. doi:10.5281/zenodo.3960218
-URL: https://allisonhorst.github.io/palmerpenguins/
-元データは Dr. Kristen Gorman および Palmer Station Antarctica LTER による収集。
-Palmer Station LTER Data Policy に基づく CC-0 のため再配布に制限はないが、
-教材利用にあたり上記文献を引用すること。
-列: species, island, bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g, sex
-344行。欠損を含む11行もそのまま収録（前処理の題材として使うため）。
+palmerpenguins: Palmer Archipelago (Antarctica) penguin data
+Horst, A. M., Hill, A. P., & Gorman, K. B. (2020). R package. https://allisonhorst.github.io/palmerpenguins/ (doi:10.5281/zenodo.3960218)
+File: https://raw.githubusercontent.com/allisonhorst/palmerpenguins/main/inst/extdata/penguins.csv
+License: CC0 1.0 Universal
+Original data: Gorman, K. B., Williams, T. D., & Fraser, W. R. (2014). Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus Pygoscelis). PLoS ONE 9(3), e90081. Palmer Station Antarctica LTER and K. Gorman.
+Made by tools/make_data/penguins.py (file copied as is).

@@ -1183,7 +1183,7 @@ margin-right: 0; }
 <section id="くじ引きで分けた" class="slide level2">
 <h2>くじ引きで分けた</h2>
 <div class="block-tag"><span class="block-name">① 場面</span><span class="block-dots">●●●●●●○</span></div>
-<div id="fdfd1291" class="cell" data-execution_count="2">
+<div id="9c0e3de9" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1199,7 +1199,7 @@ margin-right: 0; }
 <section id="決めたいこと" class="slide level2">
 <h2>決めたいこと</h2>
 <div class="block-tag"><span class="block-name">① 場面</span><span class="block-dots">●●●●●●●</span></div>
-<div id="25bd5927" class="cell" data-execution_count="3">
+<div id="9f1c30e9" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1233,7 +1233,7 @@ margin-right: 0; }
 <section id="データをのぞく" class="slide level2 fit-70">
 <h2>データをのぞく</h2>
 <div class="block-tag"><span class="block-name">② 手元のデータ</span><span class="block-dots">●●●</span></div>
-<div id="0e40bf3f" class="cell" data-execution_count="4">
+<div id="16ad8e46" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-stdout">
 <pre><code>   treat  age  educ  black  hispanic  married  nodegree  re74  re75      re78
 0      1   37    11      1         0        1         1   0.0   0.0   9930.05
@@ -1285,7 +1285,7 @@ margin-right: 0; }
 <section id="今日の道筋" class="slide level2">
 <h2>今日の道筋</h2>
 <div class="block-tag block-start"><span class="block-name">⑤ 今日の問い</span><span class="block-dots">●</span></div>
-<div id="e58bbd89" class="cell" data-execution_count="5">
+<div id="84f6f39a" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1352,7 +1352,7 @@ margin-right: 0; }
 </section>
 <section id="まず差を出す" class="slide level2">
 <h2>まず、差を出す</h2>
-<div id="96c52591" class="cell" data-execution_count="6">
+<div id="00553a1a" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1389,7 +1389,7 @@ margin-right: 0; }
 <section id="人" class="slide level2 fit-90">
 <h2>445人</h2>
 <div class="block-tag"><span class="block-name">1節 ① 読む</span><span class="block-dots">●●●○</span></div>
-<div id="317f6667" class="cell" data-execution_count="7">
+<div id="a0dae12d" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-stdout">
 <pre><code>(445, 10)
    訓練  年齢  教育年数  高卒資格なし  年収75      年収78
@@ -1406,7 +1406,7 @@ margin-right: 0; }
 <h2>変えてみる：群の人数</h2>
 <div class="block-tag"><span class="block-name">1節 ① 読む</span><span class="block-dots">●●●●</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href aria-label="1"></a>d[<span class="st">&#39;訓練&#39;</span>].value_counts()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="85c4c954" class="cell" data-execution_count="8">
+<div id="5a444feb" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-stdout">
 <pre><code>訓練
 0    260
@@ -1428,7 +1428,7 @@ margin-right: 0; }
 <section id="平均も中央値も受けた人が多い" class="slide level2">
 <h2>平均も中央値も、受けた人が多い</h2>
 <div class="block-tag"><span class="block-name">1節 ② 群ごと</span><span class="block-dots">●●○○</span></div>
-<div id="801ea27b" class="cell" data-execution_count="9">
+<div id="6854e604" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-stdout">
 <pre><code>      mean  median
 訓練                
@@ -1446,7 +1446,7 @@ margin-right: 0; }
 <div class="block-tag"><span class="block-name">1節 ② 群ごと</span><span class="block-dots">●●●○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href aria-label="1"></a>m <span class="op">=</span> d.groupby(<span class="st">&#39;訓練&#39;</span>)[<span class="st">&#39;年収78&#39;</span>].mean()</span>
 <span id="cb10-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="bu">round</span>(m[<span class="dv">1</span>] <span class="op">-</span> m[<span class="dv">0</span>], <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="808a9246" class="cell" data-execution_count="10">
+<div id="1fb5c0df" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-stdout">
 <pre><code>1794.3</code></pre>
 </div>
@@ -1487,7 +1487,7 @@ margin-right: 0; }
 <section id="左の端に山がない" class="slide level2">
 <h2>左の端に、山がない？</h2>
 <div class="block-tag"><span class="block-name">1節 ③ 分布</span><span class="block-dots">●●●○○○</span></div>
-<div id="2b6b92cd" class="cell" data-execution_count="11">
+<div id="73debdd3" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1500,7 +1500,7 @@ margin-right: 0; }
 <section id="ドルの人が多い" class="slide level2">
 <h2>0ドルの人が多い</h2>
 <div class="block-tag"><span class="block-name">1節 ③ 分布</span><span class="block-dots">●●●●○○</span></div>
-<div id="34d33b40" class="cell" data-execution_count="12">
+<div id="a5a3eadd" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1527,7 +1527,7 @@ margin-right: 0; }
 <section id="収入の無い人が少ない" class="slide level2">
 <h2>収入の無い人が少ない</h2>
 <div class="block-tag"><span class="block-name">1節 ③ 分布</span><span class="block-dots">●●●●●●</span></div>
-<div id="18fba819" class="cell" data-execution_count="13">
+<div id="138bdb2a" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1553,7 +1553,7 @@ margin-right: 0; }
 <div class="block-tag"><span class="block-name">1節 ④ そろったか</span><span class="block-dots">●●○○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href aria-label="1"></a>before <span class="op">=</span> [<span class="st">&#39;年齢&#39;</span>, <span class="st">&#39;教育年数&#39;</span>, <span class="st">&#39;高卒資格なし&#39;</span>, <span class="st">&#39;年収75&#39;</span>]</span>
 <span id="cb14-2"><a href aria-label="2"></a>d.groupby(<span class="st">&#39;訓練&#39;</span>)[before].mean().<span class="bu">round</span>(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="00664d84" class="cell" data-execution_count="14">
+<div id="f735eb64" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-stdout">
 <pre><code>       年齢   教育年数  高卒資格なし     年収75
 訓練                               
@@ -1601,7 +1601,7 @@ margin-right: 0; }
 </section>
 <section id="偶然のずれとどう見分ける" class="slide level2">
 <h2>偶然のずれと、どう見分ける？</h2>
-<div id="a3b4423b" class="cell" data-execution_count="15">
+<div id="761d8f02" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1643,7 +1643,7 @@ margin-right: 0; }
 <section id="人で描く" class="slide level2">
 <h2>6人で描く</h2>
 <div class="block-tag block-start"><span class="block-name">2節 ② 並べ替える</span><span class="block-dots">●○○○</span></div>
-<div id="b5925346" class="cell" data-execution_count="16">
+<div id="1f5e1a74" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1659,7 +1659,7 @@ margin-right: 0; }
 <section id="ラベルだけを入れ替える" class="slide level2">
 <h2>ラベルだけを入れ替える</h2>
 <div class="block-tag"><span class="block-name">2節 ② 並べ替える</span><span class="block-dots">●●○○</span></div>
-<div id="c1844b10" class="cell" data-execution_count="17">
+<div id="6bd33e4a" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1675,7 +1675,7 @@ margin-right: 0; }
 <section id="並べ替えても3人ずつ" class="slide level2">
 <h2>並べ替えても、3人ずつ</h2>
 <div class="block-tag"><span class="block-name">2節 ② 並べ替える</span><span class="block-dots">●●●○</span></div>
-<div id="ec48c591" class="cell" data-execution_count="18">
+<div id="84a99e04" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1703,7 +1703,7 @@ margin-right: 0; }
 <div class="block-tag block-start"><span class="block-name">2節 ③ 乱数</span><span class="block-dots">●○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href aria-label="1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
 <span id="cb16-2"><a href aria-label="2"></a><span class="bu">print</span>(rng.permutation([<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="ccd628d3" class="cell" data-execution_count="19">
+<div id="ffa884b7" class="cell" data-execution_count="19">
 <div class="cell-output cell-output-stdout">
 <pre><code>[0 1 0 0 1 1]</code></pre>
 </div>
@@ -1728,7 +1728,7 @@ margin-right: 0; }
 <span id="cb18-2"><a href aria-label="2"></a>t <span class="op">=</span> d[<span class="st">&#39;訓練&#39;</span>].to_numpy()</span>
 <span id="cb18-3"><a href aria-label="3"></a>obs <span class="op">=</span> y[t <span class="op">==</span> <span class="dv">1</span>].mean() <span class="op">-</span> y[t <span class="op">==</span> <span class="dv">0</span>].mean()</span>
 <span id="cb18-4"><a href aria-label="4"></a><span class="bu">print</span>(<span class="bu">round</span>(obs, <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="0bca94ce" class="cell" data-execution_count="20">
+<div id="cd977207" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-stdout">
 <pre><code>1794.3</code></pre>
 </div>
@@ -1778,7 +1778,7 @@ margin-right: 0; }
 <span id="cb21-2"><a href aria-label="2"></a>s <span class="op">=</span> rng.permutation(t)</span>
 <span id="cb21-3"><a href aria-label="3"></a><span class="bu">print</span>(s.<span class="bu">sum</span>())</span>
 <span id="cb21-4"><a href aria-label="4"></a><span class="bu">print</span>(<span class="bu">round</span>(y[s <span class="op">==</span> <span class="dv">1</span>].mean() <span class="op">-</span> y[s <span class="op">==</span> <span class="dv">0</span>].mean(), <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="a5b47ce7" class="cell" data-execution_count="21">
+<div id="d322ce5e" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-stdout">
 <pre><code>185
 -559.9</code></pre>
@@ -1808,7 +1808,7 @@ margin-right: 0; }
 </section>
 <section id="くじを1万回引き直す" class="slide level2">
 <h2>くじを、1万回引き直す</h2>
-<div id="8aa64b2a" class="cell" data-execution_count="22">
+<div id="d37c6bfd" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1829,7 +1829,7 @@ margin-right: 0; }
 <span id="cb23-2"><a href aria-label="2"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">3</span>):</span>
 <span id="cb23-3"><a href aria-label="3"></a>    out.append(k <span class="op">*</span> <span class="dv">10</span>)</span>
 <span id="cb23-4"><a href aria-label="4"></a><span class="bu">print</span>(out)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="ec833f2a" class="cell" data-execution_count="23">
+<div id="7bab5534" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-stdout">
 <pre><code>[0, 10, 20]</code></pre>
 </div>
@@ -1871,7 +1871,7 @@ margin-right: 0; }
 <section id="万個たまった" class="slide level2">
 <h2>1万個たまった</h2>
 <div class="block-tag"><span class="block-name">3節 ① ためる</span><span class="block-dots">●●●●●○</span></div>
-<div id="fe96ed28" class="cell" data-execution_count="24">
+<div id="c91931d0" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-stdout">
 <pre><code>10000
 [-559.9  705.1  -58.4]</code></pre>
@@ -1907,7 +1907,7 @@ margin-right: 0; }
 <section id="赤い線はどこにある" class="slide level2">
 <h2>赤い線は、どこにある？</h2>
 <div class="block-tag"><span class="block-name">3節 ② 分布</span><span class="block-dots">●●○○</span></div>
-<div id="f0f2d590" class="cell" data-execution_count="25">
+<div id="5882d3f6" class="cell" data-execution_count="25">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1920,7 +1920,7 @@ margin-right: 0; }
 <section id="山は0のまわり" class="slide level2">
 <h2>山は0のまわり</h2>
 <div class="block-tag"><span class="block-name">3節 ② 分布</span><span class="block-dots">●●●○</span></div>
-<div id="73928ae2" class="cell" data-execution_count="26">
+<div id="76d6b5b4" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-stdout">
 <pre><code>-3.6 639.8</code></pre>
 </div>
@@ -1933,7 +1933,7 @@ margin-right: 0; }
 <section id="赤い線は山の外" class="slide level2">
 <h2>赤い線は、山の外</h2>
 <div class="block-tag"><span class="block-name">3節 ② 分布</span><span class="block-dots">●●●●</span></div>
-<div id="b903fe9a" class="cell" data-execution_count="27">
+<div id="ef885df1" class="cell" data-execution_count="27">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1975,7 +1975,7 @@ margin-right: 0; }
 <section id="両側を数える" class="slide level2">
 <h2>両側を数える</h2>
 <div class="block-tag"><span class="block-name">3節 ③ p値</span><span class="block-dots">●●●●○</span></div>
-<div id="52065b18" class="cell" data-execution_count="28">
+<div id="0f6b48c9" class="cell" data-execution_count="28">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2003,7 +2003,7 @@ margin-right: 0; }
 <div class="block-tag block-start"><span class="block-name">3節 ④ 割合</span><span class="block-dots">●○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href aria-label="1"></a><span class="bu">print</span>(np.mean(np.array([<span class="va">True</span>, <span class="va">False</span>, <span class="va">True</span>, <span class="va">True</span>])))</span>
 <span id="cb29-2"><a href aria-label="2"></a><span class="bu">print</span>(np.<span class="bu">abs</span>(np.array([<span class="op">-</span><span class="dv">3</span>, <span class="dv">2</span>])))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="bd7cd42d" class="cell" data-execution_count="29">
+<div id="3b4cb667" class="cell" data-execution_count="29">
 <div class="cell-output cell-output-stdout">
 <pre><code>0.75
 [3 2]</code></pre>
@@ -2054,7 +2054,7 @@ margin-right: 0; }
 <span id="cb32-2"><a href aria-label="2"></a><span class="bu">print</span>(big.<span class="bu">sum</span>())</span>
 <span id="cb32-3"><a href aria-label="3"></a>p <span class="op">=</span> np.mean(big)</span>
 <span id="cb32-4"><a href aria-label="4"></a><span class="bu">print</span>(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="44ba426c" class="cell" data-execution_count="30">
+<div id="400db1b1" class="cell" data-execution_count="30">
 <div class="cell-output cell-output-stdout">
 <pre><code>45
 0.0045</code></pre>
@@ -2093,7 +2093,7 @@ margin-right: 0; }
 </section>
 <section id="効果はどれくらい" class="slide level2">
 <h2>効果は、どれくらい？</h2>
-<div id="6107e21c" class="cell" data-execution_count="31">
+<div id="e8551914" class="cell" data-execution_count="31">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2145,7 +2145,7 @@ margin-right: 0; }
 <section id="人で描く-1" class="slide level2">
 <h2>5人で描く</h2>
 <div class="block-tag"><span class="block-name">4節 ① 考え方</span><span class="block-dots">●●●●●○</span></div>
-<div id="6b26c072" class="cell" data-execution_count="32">
+<div id="7518ffc2" class="cell" data-execution_count="32">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2161,7 +2161,7 @@ margin-right: 0; }
 <section id="同じ人が何回も" class="slide level2">
 <h2>同じ人が、何回も</h2>
 <div class="block-tag"><span class="block-name">4節 ① 考え方</span><span class="block-dots">●●●●●●</span></div>
-<div id="0fd920e5" class="cell" data-execution_count="33">
+<div id="6ddecc9b" class="cell" data-execution_count="33">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2180,7 +2180,7 @@ margin-right: 0; }
 <div class="block-tag block-start"><span class="block-name">4節 ② choice</span><span class="block-dots">●</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href aria-label="1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
 <span id="cb34-2"><a href aria-label="2"></a><span class="bu">print</span>(rng.choice([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>], <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="24c11edc" class="cell" data-execution_count="34">
+<div id="9a434eae" class="cell" data-execution_count="34">
 <div class="cell-output cell-output-stdout">
 <pre><code>[50 40 30 20 20]</code></pre>
 </div>
@@ -2212,7 +2212,7 @@ margin-right: 0; }
 <section id="集め直すと1522.1ドル" class="slide level2">
 <h2>集め直すと、1522.1ドル</h2>
 <div class="block-tag"><span class="block-name">4節 ③ 1回ぶん</span><span class="block-dots">●●●</span></div>
-<div id="7fd23930" class="cell" data-execution_count="35">
+<div id="6cee9e3f" class="cell" data-execution_count="35">
 <div class="cell-output cell-output-stdout">
 <pre><code>1522.1</code></pre>
 </div>
@@ -2260,7 +2260,7 @@ margin-right: 0; }
 <section id="山はどこにできた" class="slide level2">
 <h2>山は、どこにできた？</h2>
 <div class="block-tag"><span class="block-name">4節 ④ 1万回</span><span class="block-dots">●●●●○</span></div>
-<div id="8ce94190" class="cell" data-execution_count="36">
+<div id="b2c4260d" class="cell" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2273,7 +2273,7 @@ margin-right: 0; }
 <section id="山は観測した差のまわり" class="slide level2">
 <h2>山は、観測した差のまわり</h2>
 <div class="block-tag"><span class="block-name">4節 ④ 1万回</span><span class="block-dots">●●●●●</span></div>
-<div id="987174f0" class="cell" data-execution_count="37">
+<div id="f886f058" class="cell" data-execution_count="37">
 <div class="cell-output cell-output-stdout">
 <pre><code>1800.2 670.0</code></pre>
 </div>
@@ -2286,7 +2286,7 @@ margin-right: 0; }
 <section id="つの山は違う場所" class="slide level2">
 <h2>2つの山は、違う場所</h2>
 <div class="block-tag block-start"><span class="block-name">4節 ⑤ 2つの山</span><span class="block-dots">●○</span></div>
-<div id="a89beb46" class="cell" data-execution_count="38">
+<div id="eef11613" class="cell" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2329,7 +2329,7 @@ margin-right: 0; }
 <h2>新しい書き方：パーセンタイル</h2>
 <div class="block-tag"><span class="block-name">4節 ⑥ 95%区間</span><span class="block-dots">●●●</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href aria-label="1"></a><span class="bu">print</span>(np.percentile([<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>], [<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">100</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="0c5677b2" class="cell" data-execution_count="39">
+<div id="cf3eefa3" class="cell" data-execution_count="39">
 <div class="cell-output cell-output-stdout">
 <pre><code>[10. 30. 50.]</code></pre>
 </div>
@@ -2368,7 +2368,7 @@ margin-right: 0; }
 <h2>答え合わせ：TODO③</h2>
 <div class="block-tag"><span class="block-name">4節 ⑦ 区間を出す</span><span class="block-dots">●●●○○○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href aria-label="1"></a><span class="bu">print</span>(np.percentile(boot, [<span class="fl">2.5</span>, <span class="fl">97.5</span>]).<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="8042d92d" class="cell" data-execution_count="40">
+<div id="18f70020" class="cell" data-execution_count="40">
 <div class="cell-output cell-output-stdout">
 <pre><code>[ 550.9 3162.4]</code></pre>
 </div>
@@ -2380,7 +2380,7 @@ margin-right: 0; }
 <section id="区間を図に重ねる" class="slide level2">
 <h2>区間を、図に重ねる</h2>
 <div class="block-tag"><span class="block-name">4節 ⑦ 区間を出す</span><span class="block-dots">●●●●○○</span></div>
-<div id="ddb42e93" class="cell" data-execution_count="41">
+<div id="ce763065" class="cell" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2418,7 +2418,7 @@ margin-right: 0; }
 </section>
 <section id="平均は引っぱられる" class="slide level2">
 <h2>平均は、引っぱられる</h2>
-<div id="ba2559bb" class="cell" data-execution_count="42">
+<div id="db62982d" class="cell" data-execution_count="42">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2445,7 +2445,7 @@ margin-right: 0; }
 <section id="万ドルを超える人が3人" class="slide level2">
 <h2>3万ドルを超える人が3人</h2>
 <div class="block-tag"><span class="block-name">5節 ① 高い人</span><span class="block-dots">●●○</span></div>
-<div id="2ead46a5" class="cell" data-execution_count="43">
+<div id="2423b7de" class="cell" data-execution_count="43">
 <div class="cell-output cell-output-stdout">
 <pre><code>[34099. 36647. 60308.]
 1093.5</code></pre>
@@ -2489,7 +2489,7 @@ margin-right: 0; }
 <span id="cb47-2"><a href aria-label="2"></a><span class="bu">print</span>(f([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>]))</span>
 <span id="cb47-3"><a href aria-label="3"></a>f <span class="op">=</span> np.mean</span>
 <span id="cb47-4"><a href aria-label="4"></a><span class="bu">print</span>(f([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">10</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="466f6d89" class="cell" data-execution_count="44">
+<div id="bb21ba9e" class="cell" data-execution_count="44">
 <div class="cell-output cell-output-stdout">
 <pre><code>2.0
 4.333333333333333</code></pre>
@@ -2542,7 +2542,7 @@ margin-right: 0; }
 <section id="同じ1万個" class="slide level2">
 <h2>同じ1万個</h2>
 <div class="block-tag"><span class="block-name">5節 ④ 確かめる</span><span class="block-dots">●●</span></div>
-<div id="1a9f0a55" class="cell" data-execution_count="45">
+<div id="72e5c297" class="cell" data-execution_count="45">
 <div class="cell-output cell-output-stdout">
 <pre><code>True</code></pre>
 </div>
@@ -2583,7 +2583,7 @@ margin-right: 0; }
 <div class="block-tag"><span class="block-name">5節 ⑤ 中央値の区間</span><span class="block-dots">●●●○○○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href aria-label="1"></a>bmed <span class="op">=</span> boot_diff(np.median)</span>
 <span id="cb53-2"><a href aria-label="2"></a><span class="bu">print</span>(np.percentile(bmed, [<span class="fl">2.5</span>, <span class="fl">97.5</span>]).<span class="bu">round</span>(<span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="3c3afeea" class="cell" data-execution_count="46">
+<div id="16c7de8d" class="cell" data-execution_count="46">
 <div class="cell-output cell-output-stdout">
 <pre><code>[-444.7 3019.7]</code></pre>
 </div>
@@ -2592,7 +2592,7 @@ margin-right: 0; }
 <section id="区間が0をまたぐ" class="slide level2">
 <h2>区間が、0をまたぐ？</h2>
 <div class="block-tag"><span class="block-name">5節 ⑤ 中央値の区間</span><span class="block-dots">●●●●○○</span></div>
-<div id="2ddbada7" class="cell" data-execution_count="47">
+<div id="c2135499" class="cell" data-execution_count="47">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2614,7 +2614,7 @@ margin-right: 0; }
 <section id="山がでこぼこ" class="slide level2">
 <h2>山が、でこぼこ</h2>
 <div class="block-tag"><span class="block-name">5節 ⑤ 中央値の区間</span><span class="block-dots">●●●●●●</span></div>
-<div id="7104e5ae" class="cell" data-execution_count="48">
+<div id="28ce65c4" class="cell" data-execution_count="48">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2653,7 +2653,7 @@ margin-right: 0; }
 </section>
 <section id="物差しで言えることが違う" class="slide level2">
 <h2>物差しで、言えることが違う</h2>
-<div id="3f9b6c04" class="cell" data-execution_count="49">
+<div id="73699248" class="cell" data-execution_count="49">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2672,7 +2672,7 @@ margin-right: 0; }
 <div class="block-tag block-start"><span class="block-name">6節 ① 表にする</span><span class="block-dots">●○○○○</span></div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href aria-label="1"></a>rows <span class="op">=</span> [{<span class="st">&#39;名前&#39;</span>: <span class="st">&#39;A&#39;</span>, <span class="st">&#39;値&#39;</span>: <span class="dv">1</span>}, {<span class="st">&#39;名前&#39;</span>: <span class="st">&#39;B&#39;</span>, <span class="st">&#39;値&#39;</span>: <span class="dv">2</span>}]</span>
 <span id="cb55-2"><a href aria-label="2"></a>pd.DataFrame(rows)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div id="aa7196d8" class="cell" data-execution_count="50">
+<div id="e844c7d3" class="cell" data-execution_count="50">
 <div class="cell-output cell-output-stdout">
 <pre><code>  名前  値
 0  A  1
@@ -2705,7 +2705,7 @@ margin-right: 0; }
 <section id="並べると違いが見える" class="slide level2">
 <h2>並べると、違いが見える</h2>
 <div class="block-tag"><span class="block-name">6節 ① 表にする</span><span class="block-dots">●●●●○</span></div>
-<div id="487c14d0" class="cell" data-execution_count="51">
+<div id="963de053" class="cell" data-execution_count="51">
 <div class="cell-output cell-output-stdout">
 <pre><code>   物差し       差     下限      上限
 0   平均  1794.3  550.9  3162.4
@@ -2719,7 +2719,7 @@ margin-right: 0; }
 <section id="図で並べる" class="slide level2">
 <h2>図で並べる</h2>
 <div class="block-tag"><span class="block-name">6節 ① 表にする</span><span class="block-dots">●●●●●</span></div>
-<div id="d5753e44" class="cell" data-execution_count="52">
+<div id="e3dddf6f" class="cell" data-execution_count="52">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2791,7 +2791,7 @@ margin-right: 0; }
 <section id="今日の道筋を振り返る" class="slide level2">
 <h2>今日の道筋を振り返る</h2>
 <div class="block-tag block-start"><span class="block-name">⑥ 振り返る</span><span class="block-dots">●○○○○○</span></div>
-<div id="20a86e86" class="cell" data-execution_count="53">
+<div id="250c64dd" class="cell" data-execution_count="53">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2920,7 +2920,7 @@ margin-right: 0; }
 </section>
 <section id="人で差は1154.0ドル" class="slide level2">
 <h2>348人で、差は1154.0ドル</h2>
-<div id="0eba7ddd" class="cell" data-execution_count="54">
+<div id="8abaef59" class="cell" data-execution_count="54">
 <div class="cell-output cell-output-stdout">
 <pre><code>348
 訓練
@@ -2937,7 +2937,7 @@ margin-right: 0; }
 </section>
 <section id="偶然でも出る範囲" class="slide level2">
 <h2>偶然でも出る範囲</h2>
-<div id="b7f5271d" class="cell" data-execution_count="55">
+<div id="5fe76a60" class="cell" data-execution_count="55">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -2966,7 +2966,7 @@ margin-right: 0; }
 </section>
 <section id="下限は245.0ドル" class="slide level2">
 <h2>下限は−245.0ドル</h2>
-<div id="ab96133d" class="cell" data-execution_count="56">
+<div id="d6ae4660" class="cell" data-execution_count="56">
 <div class="cell-output cell-output-stdout">
 <pre><code>[-245.  2675.9]
 答え: -245.0</code></pre>
@@ -3080,7 +3080,7 @@ margin-right: 0; }
 </section>
 <section id="kごとのgap" class="slide level2 fit-90">
 <h2>KごとのGap</h2>
-<div id="da5953d9" class="cell" data-execution_count="57">
+<div id="b165a720" class="cell" data-execution_count="57">
 <div class="cell-output cell-output-stdout">
 <pre><code>     Gap   標準誤差
 1  0.126  0.054
@@ -3107,7 +3107,7 @@ margin-right: 0; }
 </section>
 <section id="規則が選ぶのはk2" class="slide level2 fit-90">
 <h2>規則が選ぶのはK＝2</h2>
-<div id="ea29ad31" class="cell" data-execution_count="58">
+<div id="a6dffbf3" class="cell" data-execution_count="58">
 <div class="cell-output cell-output-stdout">
 <pre><code>選ぶK: 2</code></pre>
 </div>
