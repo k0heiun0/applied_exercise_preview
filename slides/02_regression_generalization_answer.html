@@ -1088,7 +1088,7 @@ margin-right: 0; }
 </section>
 <section id="応用①5通りの分け方" class="slide level2 fit-90">
 <h2>応用①：5通りの分け方</h2>
-<div id="bb98643e" class="cell" data-execution_count="2">
+<div id="a8d87de6" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>r2_list <span class="op">=</span> []</span>
 <span id="cb1-2"><a href aria-label="2"></a><span class="cf">for</span> rs <span class="kw">in</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>]:</span>
 <span id="cb1-3"><a href aria-label="3"></a>    X_tr_r, X_te_r, y_tr_r, y_te_r <span class="op">=</span> train_test_split(</span>
@@ -1108,7 +1108,7 @@ random_state = 4  テスト R² = 0.7532</code></pre>
 </section>
 <section id="分け方だけでこんなに動く" class="slide level2">
 <h2>分け方だけでこんなに動く</h2>
-<div id="fcd4c699" class="cell" data-execution_count="3">
+<div id="9e59a1fa" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-stdout">
 <pre><code>random_state = 0  テスト R² = 0.8046
 random_state = 1  テスト R² = 0.8257
@@ -1123,7 +1123,7 @@ random_state = 4  テスト R² = 0.7532</code></pre>
 </section>
 <section id="応用②最大と最小の差" class="slide level2">
 <h2>応用②：最大と最小の差</h2>
-<div id="67cb2ea4" class="cell" data-execution_count="4">
+<div id="2112dcf6" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href aria-label="1"></a>r2_arr <span class="op">=</span> np.array(r2_list)</span>
 <span id="cb4-2"><a href aria-label="2"></a>diff <span class="op">=</span> r2_arr.<span class="bu">max</span>() <span class="op">-</span> r2_arr.<span class="bu">min</span>()</span>
 <span id="cb4-3"><a href aria-label="3"></a><span class="bu">print</span>(<span class="bu">round</span>(r2_arr.<span class="bu">max</span>(), <span class="dv">4</span>), <span class="bu">round</span>(r2_arr.<span class="bu">min</span>(), <span class="dv">4</span>), <span class="bu">round</span>(diff, <span class="dv">4</span>))</span>
