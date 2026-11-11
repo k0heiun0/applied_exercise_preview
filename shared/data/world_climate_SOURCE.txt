@@ -1,0 +1,7 @@
+Weather data by Open-Meteo.com (https://open-meteo.com/)
+API: Historical Weather API, https://archive-api.open-meteo.com/v1/archive
+License: CC BY 4.0 (https://open-meteo.com/en/licence)
+Underlying data: ECMWF reanalysis (ERA5 and related), Copernicus Climate Change Service.
+Request: daily temperature_2m_mean and precipitation_sum, 2015-01-01 to 2024-12-31, timezone UTC, for 67 cities (latitude/longitude in tools/make_data/world_climate.py).
+Each city's API response is stored unchanged under "response".
+Made by tools/make_data/world_climate.py.
