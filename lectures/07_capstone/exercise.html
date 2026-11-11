@@ -3284,8 +3284,9 @@ window.Quarto = {
 <li>作って測る：12本の列から、ロジスティック回帰で購入の確率を出します。AUCは0.877です。0.5で切ると、買った訪問の6割を見逃します。</li>
 <li>確かめる：えっ、列を1本ずつ外すと、ページ価値を外したときだけ、AUCが0.718まで下がります。データの説明を読むと、ページ価値は購入の売上から計算された値でした。使ってよいかは、いつの購入から計算したかで決まります。</li>
 <li>しきい値を決める：見逃しを誤検出の5倍と置くと、0.15で切るのが、損の合計がいちばん小さくなります。</li>
+<li>時期で確かめる：2〜10月で決めたしきい値は、年末（11・12月）には、損がいちばん小さい所からずれます。</li>
 </ol>
-<p>このあと、この4つの段の中身を、1つずつ開けていきます。</p>
+<p>このあと、この5つの段の中身を、1つずつ開けていきます。</p>
 </section>
 <section id="今日の問いとやること" class="level3">
 <h3 class="anchored" data-anchor-id="今日の問いとやること">今日の問いとやること</h3>
@@ -3323,6 +3324,11 @@ window.Quarto = {
 <td>どこで切る？</td>
 <td>2つの誤りに重さを置き、損の合計がいちばん小さいところで切る</td>
 </tr>
+<tr class="odd">
+<td>時期で確かめる（6節）</td>
+<td>年末にも使える？</td>
+<td>2〜10月で式としきい値を決め、11・12月に当てる</td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -3342,6 +3348,7 @@ window.Quarto = {
 <li>解析の手順を関数にまとめ、列の組を替えて呼び、どの列が効いているかを確かめられる</li>
 <li>成績を決めている列が何から作られたかを、データの説明で確かめられる</li>
 <li>見逃しと誤検出に重さを置き、損の合計がいちばん小さいしきい値を選べる</li>
+<li>時期で分けて確かめ、手元で決めたしきい値が新しい時期にずれることを説明できる</li>
 </ul>
 <hr>
 </section>
@@ -3905,6 +3912,10 @@ dtype: float64</code></pre>
 <td>しきい値を決める（5節）</td>
 <td>？（このあとの段で）</td>
 </tr>
+<tr class="odd">
+<td>時期で確かめる（6節）</td>
+<td>？（このあとの段で）</td>
+</tr>
 </tbody>
 </table>
 <p>まだ分からないのは、購入をどのくらい見分けられるか、です。</p>
@@ -4142,7 +4153,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 </div>
 </div>
 <p>確率が0.5より小さいので、3件とも判定は0（買わない）</p>
-<div id="5902972f" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="21">
+<div id="5902972f" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4234,6 +4245,10 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <td>しきい値を決める（5節）</td>
 <td>？（このあとの段で）</td>
 </tr>
+<tr class="odd">
+<td>時期で確かめる（6節）</td>
+<td>？（このあとの段で）</td>
+</tr>
 </tbody>
 </table>
 <p>まだ分からないのは、このAUCを信じてよいか、どの列が効いているか、です。</p>
@@ -4302,7 +4317,7 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}
 <section id="関数は手順に付けた名前" class="level3">
 <h3 class="anchored" data-anchor-id="関数は手順に付けた名前">関数は、手順に付けた名前</h3>
 <p>下の図は、関数<code>auc_of</code>に、3つの入力を渡したときの様子です。手順は1つで、入力（列の組）を替えて呼ぶたびに、同じ手順が動きます。</p>
-<div id="95646197" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="27">
+<div id="95646197" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="27">
 <div class="cell-output cell-output-stdout">
 <pre><code>1 本の列 → auc_of → 0.655
 1 本の列 → auc_of → 0.83
@@ -4557,6 +4572,10 @@ Name: 価値あり, dtype: float64</code></pre>
 <td>しきい値を決める（5節）</td>
 <td>？（このあとの段で）</td>
 </tr>
+<tr class="odd">
+<td>時期で確かめる（6節）</td>
+<td>？（このあとの段で）</td>
+</tr>
 </tbody>
 </table>
 <p>まだ分からないのは、確率をどこで切ればよいか、です。</p>
@@ -4690,7 +4709,7 @@ Name: 価値あり, dtype: float64</code></pre>
 </div>
 </div>
 <p>いちばん小さいのは10で、リストの1番目（0から数える）</p>
-<div id="d4af8b93" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="40">
+<div id="d4af8b93" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="40">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4815,9 +4834,228 @@ Name: 価値あり, dtype: float64</code></pre>
 <td>しきい値を決める（5節）</td>
 <td>見逃しを5倍と置くと、0.15で切る。損は6,324から3,749に</td>
 </tr>
+<tr class="odd">
+<td>時期で確かめる（6節）</td>
+<td>？（このあとの段で）</td>
+</tr>
 </tbody>
 </table>
-<p>4つの段がそろい、今日の問いに答えられます。</p>
+<p>まだ分からないのは、決めたしきい値が、これからの訪問にも使えるか、です。</p>
+<hr>
+</section>
+</section>
+<section id="年末にも使える" class="level2">
+<h2 class="anchored" data-anchor-id="年末にも使える">6. 年末にも使える？</h2>
+<p>ここから、段5「時期で確かめる」（6節）です。問いは、手元のデータで決めたしきい値を、これからの訪問にも使ってよいか、です。</p>
+<p>見逃しを5倍と置くと、0.15で切るのが、損がいちばん小さくなりました。ただし、そのしきい値は、手元の全部の訪問で決めました。実際には、決めたしきい値を、これからの訪問に使います。これからも、今までと同じでしょうか。</p>
+<p>そこで、2〜10月の訪問で式を作ってしきい値を決め（過去）、11・12月の訪問に当てて、確率と損を測ります（これから）。交差検証は時期を混ぜて分けるので、「これから」を確かめるには、時期で分けます。</p>
+<section id="お手本時期で分ける" class="level3">
+<h3 class="anchored" data-anchor-id="お手本時期で分ける">お手本：時期で分ける</h3>
+<ul>
+<li>役割：年末（11・12月）と、それより前（2〜10月）に分け、訪問の数と購入の割合を見る</li>
+<li>入力：表<code>df</code>の月の列<code>Month</code></li>
+<li>出力：<code>late</code>・<code>early</code>（TrueとFalseの列）</li>
+</ul>
+<div id="43aad2ea" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>late <span class="op">=</span> df[<span class="st">&#39;Month&#39;</span>].isin([<span class="st">&#39;Nov&#39;</span>, <span class="st">&#39;Dec&#39;</span>])</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>early <span class="op">=</span> <span class="op">~</span>late</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(early.<span class="bu">sum</span>(), late.<span class="bu">sum</span>())</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.loc[early, <span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>),</span>
+<span id="cb71-5"><a href="#cb71-5" aria-hidden="true" tabindex="-1"></a>      df.loc[late, <span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>7605 4725
+0.123 0.207</code></pre>
+</div>
+</div>
+<section id="行ずつ読む-17" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-17">1行ずつ読む</h4>
+<ul>
+<li>1行目：月が11月か12月ならTrue（<code>isin</code>）。年末の訪問</li>
+<li>2行目：<code>~</code>でTrueとFalseを入れ替える。2〜10月の訪問</li>
+<li>3〜5行目：訪問の数と、購入の割合</li>
+</ul>
+<p>年末は購入が多くなっています（0.123と0.207）。</p>
+</section>
+</section>
+<section id="お手本過去で作り年末に当てる" class="level3">
+<h3 class="anchored" data-anchor-id="お手本過去で作り年末に当てる">お手本：過去で作り、年末に当てる</h3>
+<ul>
+<li>役割：過去の中だけで交差検証の確率を出し、過去の全部で式を作って、年末の確率を出す</li>
+<li>入力：<code>model</code>、<code>cols</code>、<code>early</code>・<code>late</code></li>
+<li>出力：確率<code>p_e</code>（過去）と<code>p_l</code>（年末）、2つのAUC</li>
+</ul>
+<div id="d7625401" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>y_e <span class="op">=</span> df.loc[early, <span class="st">&#39;購入&#39;</span>]</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>y_l <span class="op">=</span> df.loc[late, <span class="st">&#39;購入&#39;</span>]</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>p_e <span class="op">=</span> cross_val_predict(model, df.loc[early, cols], y_e, cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>                        method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)[:, <span class="dv">1</span>]</span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>model.fit(df.loc[early, cols], y_e)</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>p_l <span class="op">=</span> model.predict_proba(df.loc[late, cols])[:, <span class="dv">1</span>]</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>auc_e <span class="op">=</span> roc_auc_score(y_e, p_e)</span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>auc_l <span class="op">=</span> roc_auc_score(y_l, p_l)</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(auc_e, <span class="dv">3</span>), <span class="bu">round</span>(auc_l, <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.906 0.826</code></pre>
+</div>
+</div>
+<section id="行ずつ読む-18" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-18">1行ずつ読む</h4>
+<ul>
+<li>1・2行目：過去と年末の、購入の列</li>
+<li>3・4行目：過去の中だけで、交差検証の確率を出す（3節と同じ）</li>
+<li>5・6行目：過去の全部で式を作り（<code>fit</code>）、年末の訪問の確率を出す（<code>predict_proba</code>）</li>
+<li>7〜9行目：過去（交差検証）と年末のAUC</li>
+</ul>
+<p>年末のAUCは、0.906から0.826に下がりました。</p>
+<div id="0fa57820" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(p_l.mean().<span class="bu">round</span>(<span class="dv">3</span>), y_l.mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.148 0.207</code></pre>
+</div>
+</div>
+<p>えっ、年末の確率の平均は0.148なのに、実際に買ったのは0.207です。過去の式は、年末の「買いやすさ」を知りません。見分ける力（AUC）も下がりました。</p>
+</section>
+</section>
+<section id="お手本2つの関数" class="level3">
+<h3 class="anchored" data-anchor-id="お手本2つの関数">お手本：2つの関数</h3>
+<p>過去と年末で、同じ「損を数えて、いちばん小さい所を探す」をくり返します。5節の手順を、関数にまとめます（4節の関数と同じ考え）。</p>
+<ul>
+<li>役割：<code>cost_at</code>はしきい値<code>t</code>で切ったときの損を、<code>best_threshold</code>は損がいちばん小さいしきい値を返す</li>
+<li>入力：答え<code>y</code>、確率<code>p</code>、しきい値<code>t</code>、重さ<code>c_fn</code></li>
+<li>出力：損、またはしきい値</li>
+</ul>
+<div id="330235de" class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> cost_at(y, p, t, c_fn):</span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> confusion_matrix(y, (p <span class="op">&gt;=</span> t).astype(<span class="bu">int</span>))</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c_fn <span class="op">*</span> m[<span class="dv">1</span>, <span class="dv">0</span>] <span class="op">+</span> m[<span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> best_threshold(y, p, c_fn):</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a>    costs <span class="op">=</span> []</span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">100</span>):</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>        costs.append(cost_at(y, p, k <span class="op">/</span> <span class="dv">100</span>, c_fn))</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> costs.index(<span class="bu">min</span>(costs))</span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (i <span class="op">+</span> <span class="dv">1</span>) <span class="op">/</span> <span class="dv">100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="行ずつ読む-19" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-19">1行ずつ読む</h4>
+<ul>
+<li>1〜3行目：しきい値<code>t</code>で切った混同行列から、損の合計を返す（5節と同じ計算）</li>
+<li>6・7行目：入力は答え<code>y</code>・確率<code>p</code>・重さ<code>c_fn</code>。損をためるリストを作る</li>
+<li>8・9行目：しきい値0.01〜0.99で、1つ目の関数<code>cost_at</code>を呼んで損をためる</li>
+<li>10・11行目：いちばん小さい損の位置から、しきい値を返す（<code>i</code>番目は<code>(i + 1) / 100</code>）</li>
+</ul>
+</section>
+</section>
+<section id="お手本過去で決め年末で測る" class="level3">
+<h3 class="anchored" data-anchor-id="お手本過去で決め年末で測る">お手本：過去で決め、年末で測る</h3>
+<div id="8a38cbff" class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>t_e <span class="op">=</span> best_threshold(y_e, p_e, <span class="dv">5</span>)</span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>t_l <span class="op">=</span> best_threshold(y_l, p_l, <span class="dv">5</span>)</span>
+<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(t_e, t_l)</span>
+<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cost_at(y_l, p_l, t_e, <span class="dv">5</span>), cost_at(y_l, p_l, t_l, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.12 0.09
+2289 2123</code></pre>
+</div>
+</div>
+<section id="行ずつ読む-20" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-20">1行ずつ読む</h4>
+<ul>
+<li>1行目：過去で決めたしきい値</li>
+<li>2行目：年末の答えを知っていたら選べた、年末の最良</li>
+<li>3・4行目：2つのしきい値と、年末の損</li>
+</ul>
+<p>過去で決めた0.12は、年末の最良0.09からずれ、損が166だけ大きくなります。</p>
+<div id="67799e9f" class="cell" data-execution_count="48">
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>ts_l <span class="op">=</span> []</span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>costs_l <span class="op">=</span> []</span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">100</span>):</span>
+<span id="cb80-4"><a href="#cb80-4" aria-hidden="true" tabindex="-1"></a>    ts_l.append(k <span class="op">/</span> <span class="dv">100</span>)</span>
+<span id="cb80-5"><a href="#cb80-5" aria-hidden="true" tabindex="-1"></a>    costs_l.append(cost_at(y_l, p_l, k <span class="op">/</span> <span class="dv">100</span>, <span class="dv">5</span>))</span>
+<span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>plt.plot(ts_l, costs_l)</span>
+<span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>plt.axvline(t_e, color<span class="op">=</span><span class="st">&#39;tab:red&#39;</span>, linestyle<span class="op">=</span><span class="st">&#39;--&#39;</span>)</span>
+<span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>plt.axvline(t_l, color<span class="op">=</span><span class="st">&#39;tab:green&#39;</span>, linestyle<span class="op">=</span><span class="st">&#39;:&#39;</span>)</span>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>, <span class="fl">0.6</span>)</span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;しきい値&#39;</span>)</span>
+<span id="cb80-11"><a href="#cb80-11" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;年末の損の合計&#39;</span>)</span>
+<span id="cb80-12"><a href="#cb80-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img role="img" src="data:image/png;base64,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" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>年末の谷の底は0.09（緑）です。過去で決めた0.12（赤）は、底から少し右にずれています。</p>
+<blockquote class="blockquote">
+<p>重要：購入の割合や見分ける力は、時期で変わる。手元で決めたしきい値は、新しい時期のデータで確かめ直す。</p>
+</blockquote>
+</section>
+</section>
+<section id="todo⑤重さを10にする予想-実行-比べる" class="level3">
+<h3 class="anchored" data-anchor-id="todo⑤重さを10にする予想-実行-比べる">TODO⑤：重さを10にする（予想 → 実行 → 比べる）</h3>
+<p>下のセルは、見逃しの重さ<code>c_fn</code>で、過去で決めたしきい値と年末の最良、それぞれの年末の損を表示します。</p>
+<p>まず、予想を書いてください。見逃しをもっと重くすると、過去で決めたしきい値のずれは大きくなるでしょうか。</p>
+<p>（ここに予想を書く）</p>
+<p>予想を書いたら、セルの<code>5</code>を<code>10</code>に替えて実行してください（<code>c_fn = 5</code>の行）。</p>
+<div id="68aec7fd" class="cell" data-execution_count="49">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co">: 5 を 10 に替えて実行する</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>c_fn <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>t_e <span class="op">=</span> best_threshold(y_e, p_e, c_fn)</span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>t_l <span class="op">=</span> best_threshold(y_l, p_l, c_fn)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(t_e, t_l)</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cost_at(y_l, p_l, t_e, c_fn), cost_at(y_l, p_l, t_l, c_fn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.12 0.09
+2289 2123</code></pre>
+</div>
+</div>
+</section>
+<section id="やってみよう予想と比べる-4" class="level3">
+<h3 class="anchored" data-anchor-id="やってみよう予想と比べる-4">やってみよう：予想と比べる</h3>
+<p>実行した結果を、予想と比べてください。ずれと損の差は、どう変わりましたか。</p>
+<p>（ここに答えを書く）</p>
+<p>重さ10では、過去で決めた0.1と年末の最良0.06の差が広がり、損の差は863（3962と3099）になります。見逃しを重くするほど、年末の「買いやすさ」を見落とした分が、大きく効きます。</p>
+</section>
+<section id="ここまでで分かったこと-4" class="level3">
+<h3 class="anchored" data-anchor-id="ここまでで分かったこと-4">ここまでで分かったこと</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>段</th>
+<th>分かったこと</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>選ぶ・予想（1・2節）</td>
+<td>UCIで3本を比べ、ネットショップの訪問を選んだ。購入は0.155</td>
+</tr>
+<tr class="even">
+<td>作って測る（3節）</td>
+<td>12本の列で確率。AUCは0.877。0.5では買った訪問の6割を見逃す</td>
+</tr>
+<tr class="odd">
+<td>確かめる（4節）</td>
+<td>ページ価値を外すとAUC 0.718。購入から計算された列。仮定を置いて使う</td>
+</tr>
+<tr class="even">
+<td>しきい値を決める（5節）</td>
+<td>見逃しを5倍と置くと、0.15で切る。損は6,324から3,749に</td>
+</tr>
+<tr class="odd">
+<td>時期で確かめる（6節）</td>
+<td>2〜10月で決めた0.12は、年末には最良でない（年末の最良は0.09）</td>
+</tr>
+</tbody>
+</table>
+<p>5つの段がそろい、今日の問いに答えられます。</p>
 </section>
 <section id="答え" class="level3">
 <h3 class="anchored" data-anchor-id="答え">答え</h3>
@@ -4905,8 +5143,8 @@ Name: 価値あり, dtype: float64</code></pre>
 <section id="月も手がかりにしたら" class="level3">
 <h3 class="anchored" data-anchor-id="月も手がかりにしたら">月も、手がかりにしたら？</h3>
 <p>購入の割合は、月で違います（11月は0.254、2月は0.016）。月を0と1の列にして足すと、AUCは上がるでしょうか。<code>pd.get_dummies</code>は、月ごとに「その月なら1」の列を作る道具です。</p>
-<div id="4aa009a7" class="cell" data-execution_count="43">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;Month&#39;</span>)[<span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="4aa009a7" class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.groupby(<span class="st">&#39;Month&#39;</span>)[<span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Month
 Aug     0.176
@@ -4922,28 +5160,28 @@ Sep     0.192
 Name: 購入, dtype: float64</code></pre>
 </div>
 </div>
-<div id="6ccd38ee" class="cell" data-execution_count="44">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>mon <span class="op">=</span> pd.get_dummies(df[<span class="st">&#39;Month&#39;</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
-<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>X_mon <span class="op">=</span> pd.concat([df[cols], mon], axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
-<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="6ccd38ee" class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>mon <span class="op">=</span> pd.get_dummies(df[<span class="st">&#39;Month&#39;</span>], dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>X_mon <span class="op">=</span> pd.concat([df[cols], mon], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.859</code></pre>
 </div>
 </div>
-<section id="行ずつ読む-17" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-17">1行ずつ読む</h4>
+<section id="行ずつ読む-21" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-21">1行ずつ読む</h4>
 <ul>
 <li>1行目：月ごとの0と1の列（10か月ぶん）を作る</li>
 <li>2行目：12本の列と月の列を、横につなぐ</li>
 <li>3〜5行目：交差検証の確率を出し、AUCを表示する</li>
 </ul>
 <p>月を足したら、0.877から0.859に下がりました。下の表で、組ごとの月の件数を見ます。</p>
-<div id="cef04671" class="cell" data-execution_count="45">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>fold <span class="op">=</span> np.arange(<span class="bu">len</span>(df)) <span class="op">*</span> <span class="dv">5</span> <span class="op">//</span> <span class="bu">len</span>(df) <span class="op">+</span> <span class="dv">1</span></span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>pd.crosstab(fold, df[<span class="st">&#39;Month&#39;</span>])[[<span class="st">&#39;Feb&#39;</span>, <span class="st">&#39;Mar&#39;</span>, <span class="st">&#39;May&#39;</span>, <span class="st">&#39;Nov&#39;</span>, <span class="st">&#39;Dec&#39;</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div id="cef04671" class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>fold <span class="op">=</span> np.arange(<span class="bu">len</span>(df)) <span class="op">*</span> <span class="dv">5</span> <span class="op">//</span> <span class="bu">len</span>(df) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>pd.crosstab(fold, df[<span class="st">&#39;Month&#39;</span>])[[<span class="st">&#39;Feb&#39;</span>, <span class="st">&#39;Mar&#39;</span>, <span class="st">&#39;May&#39;</span>, <span class="st">&#39;Nov&#39;</span>, <span class="st">&#39;Dec&#39;</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="52">
 <div>
 
 
@@ -5014,20 +5252,20 @@ Name: 購入, dtype: float64</code></pre>
 </div>
 </div>
 </section>
-<section id="行ずつ読む-18" class="level4">
-<h4 class="anchored" data-anchor-id="行ずつ読む-18">1行ずつ読む</h4>
+<section id="行ずつ読む-22" class="level4">
+<h4 class="anchored" data-anchor-id="行ずつ読む-22">1行ずつ読む</h4>
 <ul>
 <li>1行目：上から順に5つの組に分けたときの、組の番号（1〜5）を作る</li>
 <li>2行目：組と月の組み合わせごとに件数を数え（<code>pd.crosstab</code>）、5つの月を表示する</li>
 </ul>
 <p>表はほぼ月の順に並んでいて、上から5つに分けると、2月と3月は1つ目の組にしかありません。1つ目の組の確率を出すとき、式は2月と3月を一度も見ていないのです。</p>
 <p>行を混ぜてから5つの組に分けると、どうなるでしょうか。<code>KFold(5, shuffle=True, random_state=0)</code>は、行を混ぜてから5つに分ける分け方です。</p>
-<div id="bdd38afb" class="cell" data-execution_count="46">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
-<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>shuf <span class="op">=</span> KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span>shuf,</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="bdd38afb" class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> KFold</span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>shuf <span class="op">=</span> KFold(<span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> cross_val_predict(model, X_mon, df[<span class="st">&#39;購入&#39;</span>], cv<span class="op">=</span>shuf,</span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>                      method<span class="op">=</span><span class="st">&#39;predict_proba&#39;</span>)</span>
+<span id="cb88-5"><a href="#cb88-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(roc_auc_score(df[<span class="st">&#39;購入&#39;</span>], p[:, <span class="dv">1</span>]), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.894</code></pre>
 </div>
