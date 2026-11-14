@@ -24,6 +24,7 @@
 | `penguins.csv` | 南極のパーマー基地近くの3つの島で測った3種のペンギンの、くちばしの長さと深さ・ひれの長さ・体重・性別など（palmerpenguins） | 344行 × 8列 | CC0 |
 | `world_climate.json` | 世界の67都市の、2015〜2024年の毎日の平均気温（°C）と降水量（mm）。Open-Meteo の API が返した JSON をそのまま都市ごとに入れたもの | 67都市 × 3,653日 | CC BY 4.0（Open-Meteo、クレジット表記） |
 | `openflights_routes.dat`・`openflights_airports.dat` | 世界の航空路線（出発・到着の空港、2014年6月まで）と空港（名前・都市・国・緯度・経度・時間帯）。OpenFlights のファイルをそのまま | 67,663行・7,698行 | ODbL（OpenFlights、クレジット表記。公開する派生物も自由なライセンスで） |
+| `upworthy_exploratory.csv.gz` | ニュースサイト Upworthy の見出しのA/Bテスト（2013〜2015年）。1行が1つのテストの中の1つの案で、見出し・画像の番号・表示の数・クリックの数など。Upworthy Research Archive の exploratory の表を gzip で縮めただけ | 22,666行 × 17列（4,873件のテスト） | CC BY 4.0（Cornell University、論文の引用） |
 | `sdss_galaxies.csv` | 銀河の5色の明るさ（等級）と、分光で測った赤方偏移（SDSS DR18） | 14,983行 × 9列 | SDSS（公開、クレジット表記と文献引用） |
 | `rat_eye.csv` | ラットの目の遺伝子発現量（TRIM32 と200遺伝子） | 120行 × 202列 | 文献引用（Scheetz 2006、NCBI GEO） |
 | `rat_eye_full.csv.gz` | 同、全プローブ（gzip 圧縮） | 120行 × 31,100列 | 文献引用（Scheetz 2006、NCBI GEO） |
@@ -115,6 +116,12 @@
 - **世界の航空路線**（`openflights_routes.dat`・`openflights_airports.dat`）
   OpenFlights <https://openflights.org/data>（Open Database License、個々の内容は Database Contents License）。
   GitHub の jpatokal/openflights の `data/routes.dat`・`data/airports.dat` を手を加えずに置いた（`tools/make_data/openflights.py`）。路線は2014年6月で更新が止まっている。
+
+- **Upworthy Research Archive**（`upworthy_exploratory.csv.gz`）
+  J. N. Matias, K. Munger, M. Aubin Le Quere and C. Ebersole (2021). *The Upworthy Research Archive,
+  a time series of 32,487 experiments in U.S. media*. Scientific Data 8, 195.
+  <https://doi.org/10.1038/s41597-021-00934-7>。OSF <https://osf.io/jd64p/>（CC BY 4.0）の
+  exploratory の表を、中身に手を加えずに gzip で縮めて置いた（`tools/make_data/upworthy.py`）。
 
 - **世界の都市の気候**（`world_climate.json`）
   Open-Meteo Historical Weather API <https://open-meteo.com/>（CC BY 4.0）。"Weather data by Open-Meteo.com"。

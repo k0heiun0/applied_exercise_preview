@@ -1,0 +1,8 @@
+The Upworthy Research Archive（第10回）
+Paper: J. N. Matias, K. Munger, M. Aubin Le Quere and C. Ebersole (2021). The Upworthy Research
+Archive, a time series of 32,487 experiments in U.S. media. Scientific Data 8, 195.
+https://doi.org/10.1038/s41597-021-00934-7
+Files: https://osf.io/jd64p/ (upworthy-archive-exploratory-packages-03.12.2020.csv), copied unchanged
+and gzip-compressed as upworthy_exploratory.csv.gz.
+License: Creative Commons Attribution 4.0 International (CC BY 4.0), published by Cornell University.
+Made by tools/make_data/upworthy.py.

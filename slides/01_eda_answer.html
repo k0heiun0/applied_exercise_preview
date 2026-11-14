@@ -1088,7 +1088,7 @@ margin-right: 0; }
 </section>
 <section id="応用①時刻ごとに集計する" class="slide level2 fit-90">
 <h2>応用①：時刻ごとに集計する</h2>
-<div id="b643e3f0" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="2">
+<div id="30ede504" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href aria-label="1"></a>hour <span class="op">=</span> pd.read_csv(<span class="ss">f&#39;</span><span class="sc">{</span>DATA_DIR<span class="sc">}</span><span class="ss">/bike_hour.csv&#39;</span>)</span>
 <span id="cb1-2"><a href aria-label="2"></a>hour <span class="op">=</span> hour.rename(columns<span class="op">=</span>ja_names)        <span class="co"># 1節と同じ前処理</span></span>
 <span id="cb1-3"><a href aria-label="3"></a>hour <span class="op">=</span> hour.rename(columns<span class="op">=</span>{<span class="st">&#39;hr&#39;</span>: <span class="st">&#39;時刻&#39;</span>})   <span class="co"># 時間別だけにある列</span></span>
@@ -1108,7 +1108,7 @@ margin-right: 0; }
 </section>
 <section id="日の中でどう変わる" class="slide level2">
 <h2>1日の中で、どう変わる？</h2>
-<div id="ad43c39f" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="3">
+<div id="539d21a7" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1123,7 +1123,7 @@ margin-right: 0; }
 </section>
 <section id="山が2つある" class="slide level2">
 <h2>山が2つある</h2>
-<div id="c7cbd031" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="4">
+<div id="19557870" class="cell" data-fig-height="2.4" data-fig-width="8" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div>
 <figure>
@@ -1138,7 +1138,7 @@ margin-right: 0; }
 </section>
 <section id="応用②最も多い時刻" class="slide level2">
 <h2>応用②：最も多い時刻</h2>
-<div id="350dcc58" class="cell" data-execution_count="5">
+<div id="5d5fdf35" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href aria-label="1"></a><span class="bu">print</span>(<span class="st">&#39;最大の平均台数:&#39;</span>, <span class="bu">round</span>(by_hr.<span class="bu">max</span>(), <span class="dv">1</span>))</span>
 <span id="cb2-2"><a href aria-label="2"></a><span class="bu">print</span>(<span class="st">&#39;答え:&#39;</span>, <span class="bu">int</span>(by_hr.idxmax()))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1152,7 +1152,7 @@ margin-right: 0; }
 </section>
 <section id="目で見ずコードで取り出す" class="slide level2">
 <h2>目で見ず、コードで取り出す</h2>
-<div id="4982daca" class="cell" data-execution_count="6">
+<div id="74894dc0" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-stdout">
 <pre><code>時刻
 16    312.0
