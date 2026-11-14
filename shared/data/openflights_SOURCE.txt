@@ -1,0 +1,6 @@
+OpenFlights Airports and Routes Databases (https://openflights.org/data)
+Files: https://github.com/jpatokal/openflights (data/routes.dat, data/airports.dat), copied unchanged.
+License: Open Database License (ODbL) v1.0; individual contents under the Database Contents License.
+Attribution: Data from OpenFlights (openflights.org). Derived works made public must carry a free license.
+Note: the route data stopped being updated in June 2014 (67,663 routes); treat it as the world of 2014.
+Made by tools/make_data/openflights.py.
