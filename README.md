@@ -2,7 +2,7 @@
 
 動画を作る前に、スライドと演習ノートを確かめるための確認用の公開です。学生向けの配布先ではありません。
 
-- スライド：ブラウザでそのまま開けます（第1・2回は本編・解答・発展の3本。第3回からは、本編の後ろに発展と解答をつなげた1本）。矢印キーでめくれます。
+- スライド：ブラウザでそのまま開けます（第1・2回は本編・解答・発展の3本。第3回からは、本編の後ろに解答と発展をつなげた1本）。矢印キーでめくれます。
 - 演習・解答：Colab で開きます。開いたノートは、そのまま実行して使えます。
 - 読む：演習ノートを、TODO を空欄のまま実行した HTML です。
 
@@ -24,7 +24,7 @@
 | 14 | ネットワーク分析：次数・最短経路・コミュニティ | [本編](https://k0heiun0.github.io/applied_exercise_preview/slides/14_network.html) | [開く](https://colab.research.google.com/github/k0heiun0/applied_exercise_preview/blob/main/lectures/14_network/exercise.ipynb) | [開く](https://colab.research.google.com/github/k0heiun0/applied_exercise_preview/blob/main/lectures/14_network/solutions.ipynb) | [読む](https://k0heiun0.github.io/applied_exercise_preview/lectures/14_network/exercise.html) |
 
 データは `shared/data/` にあり、ノート冒頭の `DATA_DIR` から読み込みます。出典とライセンスは `shared/data/README.md` を見てください。
-第12回のデータ（銀河の画像）は著者のリポジトリから、第14回のデータ（映画の一覧）は GroupLens から、ノートの中で取ってきます。
+第13回のデータ（映画の一覧）は GroupLens から、ノートの中で取ってきます。
 
 ## 期末レポート
 
