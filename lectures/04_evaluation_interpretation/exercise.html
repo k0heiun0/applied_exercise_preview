@@ -3248,7 +3248,7 @@ window.Quarto = {
 <hr>
 <section id="前回からの接続" class="level2">
 <h2 class="anchored" data-anchor-id="前回からの接続">前回からの接続</h2>
-<p>第3回は、民泊のホストとして、データを整えてから線形回帰の式を作り、1泊の値段を付けました。整えるたびに、テストでの平均絶対誤差（MAE）を測って比べました。</p>
+<p>第3回は、民泊のホストとして、データを整えてから線形回帰（linear regression）の式を作り、1泊の値段を付けました。整えるたびに、テストでの平均絶対誤差（MAE）を測って比べました。</p>
 <p>ただ、そのMAEは、訓練とテストへの分け方1通りで測った数でした。分け方を変えたら、数はどれくらい変わるのでしょうか。そして、式の係数が何を言っているのかは、まだ読んでいません。今日は、題材を宇宙に移し、式の評価と係数の読み方に取り組みます。</p>
 <hr>
 </section>
@@ -3607,7 +3607,7 @@ Name: 赤方偏移, dtype: float64
 <section id="お手本外れを測る" class="level3">
 <h3 class="anchored" data-anchor-id="お手本外れを測る">お手本：外れを測る</h3>
 <ul>
-<li>役割：テストの銀河ごとの外れの大きさを出し、MAE・距離に直したMAE・決定係数R²を表示する</li>
+<li>役割：テストの銀河ごとの外れの大きさを出し、MAE・距離に直したMAE・決定係数（coefficient of determination）R²を表示する</li>
 <li>入力：テストの表<code>te</code>と予測<code>pred</code></li>
 <li>出力：MAE、距離に直したMAE（億光年）、R²</li>
 </ul>
@@ -3923,7 +3923,7 @@ Name: 赤方偏移, dtype: float64
 </div>
 </div>
 <p><code>for</code>が1回まわるたびに、<code>maes</code>の後ろに1つ増えます。下の図の赤い箱が、その回に<code>append</code>で足した1つです。20回まわると、20個のMAEがたまります。</p>
-<div id="771be025" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
+<div id="771be025" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -4076,7 +4076,7 @@ Name: 赤方偏移, dtype: float64
 <section id="別々の分け方どうしで比べると" class="level3">
 <h3 class="anchored" data-anchor-id="別々の分け方どうしで比べると">別々の分け方どうしで比べると</h3>
 <p>では、5色の式はある分け方で、uを外した式は別の分け方で測って比べたら、どうなるでしょうか。分け方の番号の組み合わせ（同じ番号どうしを除く380組）すべてで比べます。数えるセルは実行するだけでよく、中身は読み飛ばしてかまいません。</p>
-<div id="7b879acf" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
+<div id="7b879acf" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="17">
 <div class="cell-output cell-output-stdout">
 <pre><code>9 組で、u を外した式のほうが良く見えた（380組のうち）</code></pre>
 </div>
@@ -4095,7 +4095,7 @@ Name: 赤方偏移, dtype: float64
 \text{CV} = \frac{1}{K}\sum_{k=1}^{K} \text{MAE}_k
 \]</span></p>
 <p><span class="math inline">\(K\)</span>は組の数（今日は5）、<span class="math inline">\(\text{MAE}_k\)</span>は<span class="math inline">\(k\)</span>番目の組をテストにしたときのMAEです。このやり方を、<span class="math inline">\(K\)</span>分割交差検証（K-fold cross-validation, CV）と呼びます。平均するのはMAEでなくてもよく、ほかの外れの物差しでも同じ手順で比べられます。</p>
-<div id="86889581" class="cell" data-tags="[&quot;remove-input&quot;]" data-execution_count="18">
+<div id="86889581" class="cell" data-cellview="form" data-jupyter="{&quot;source_hidden&quot;:true}" data-tags="[&quot;remove-input&quot;]" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
