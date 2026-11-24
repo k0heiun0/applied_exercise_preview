@@ -4441,12 +4441,12 @@ Name: proportion, dtype: float64</code></pre>
 <section id="道具同じ案の組を探す" class="level3">
 <h3 class="anchored" data-anchor-id="道具同じ案の組を探す">道具：同じ案の組を探す</h3>
 <p>テストの一覧から、同じテストの中で、まったく同じ案の組を探し、組ごとに<code>pval</code>でp値を出す道具の関数です。中身は読み飛ばしてかまいません。</p>
-<div id="e3b6d740" class="cell" data-execution_count="36">
+<div id="8491f4ef" class="cell" data-execution_count="36">
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># @title 道具：同じ案の組を探す（中身は読み飛ばしてよい）</span></span>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> same_pairs(df):</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>    cols <span class="op">=</span> [<span class="st">&#39;見出し&#39;</span>, <span class="st">&#39;eyecatcher_id&#39;</span>, <span class="st">&#39;excerpt&#39;</span>, <span class="st">&#39;lede&#39;</span>, <span class="st">&#39;share_text&#39;</span>,</span>
 <span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;square&#39;</span>]</span>
-<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    key <span class="op">=</span> df[cols].astype(<span class="bu">str</span>).<span class="bu">apply</span>(<span class="st">&#39;|&#39;</span>.join, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>    key <span class="op">=</span> df[cols].fillna(<span class="st">&#39;&#39;</span>).astype(<span class="bu">str</span>).<span class="bu">apply</span>(<span class="st">&#39;|&#39;</span>.join, axis<span class="op">=</span><span class="dv">1</span>)</span>
 <span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
 <span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (tid, kk), g <span class="kw">in</span> df.groupby([df[<span class="st">&#39;テスト&#39;</span>], key]):</span>
 <span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(g) <span class="op">&gt;=</span> <span class="dv">2</span>:</span>
