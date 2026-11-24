@@ -3584,10 +3584,10 @@ M = m - 5 \log_{10} \frac{d}{10}
 <li>入力：表<code>df</code>の視差と見かけの等級</li>
 <li>出力：表<code>df</code>に足した列「距離」「絶対等級」</li>
 </ul>
-<div id="26b20a31" class="cell" data-execution_count="5">
+<div id="0e7613ec" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;距離&#39;</span>] <span class="op">=</span> <span class="dv">1000</span> <span class="op">/</span> df[<span class="st">&#39;視差&#39;</span>]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;絶対等級&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;見かけの等級&#39;</span>] <span class="op">-</span> <span class="dv">5</span> <span class="op">*</span> np.log10(df[<span class="st">&#39;距離&#39;</span>] <span class="op">/</span> <span class="dv">10</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;距離&#39;</span>].<span class="bu">max</span>().<span class="bu">round</span>(<span class="dv">1</span>))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df[<span class="st">&#39;距離&#39;</span>].<span class="bu">round</span>(<span class="dv">1</span>).<span class="bu">max</span>())</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&#39;視差&#39;</span>, <span class="st">&#39;距離&#39;</span>, <span class="st">&#39;見かけの等級&#39;</span>, <span class="st">&#39;絶対等級&#39;</span>]].head(<span class="dv">3</span>).<span class="bu">round</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>50.0</code></pre>

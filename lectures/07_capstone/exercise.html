@@ -4956,12 +4956,12 @@ Name: 価値あり, dtype: float64</code></pre>
 <li>入力：表<code>df</code>の月の列<code>Month</code></li>
 <li>出力：<code>late</code>・<code>early</code>（TrueとFalseの列）</li>
 </ul>
-<div id="05c0d2d2" class="cell" data-execution_count="45">
+<div id="a0c8da4b" class="cell" data-execution_count="45">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>late <span class="op">=</span> df[<span class="st">&#39;Month&#39;</span>].isin([<span class="st">&#39;Nov&#39;</span>, <span class="st">&#39;Dec&#39;</span>])</span>
 <span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a>early <span class="op">=</span> <span class="op">~</span>late</span>
 <span id="cb76-3"><a href="#cb76-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(early.<span class="bu">sum</span>(), late.<span class="bu">sum</span>())</span>
-<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.loc[early, <span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>),</span>
-<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>      df.loc[late, <span class="st">&#39;購入&#39;</span>].mean().<span class="bu">round</span>(<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb76-4"><a href="#cb76-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(df.loc[early, <span class="st">&#39;購入&#39;</span>].mean(), <span class="dv">3</span>),</span>
+<span id="cb76-5"><a href="#cb76-5" aria-hidden="true" tabindex="-1"></a>      <span class="bu">round</span>(df.loc[late, <span class="st">&#39;購入&#39;</span>].mean(), <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>7605 4725
 0.123 0.207</code></pre>
